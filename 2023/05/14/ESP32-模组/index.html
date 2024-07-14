@@ -17,29 +17,29 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="软件工程师、文艺青年:)">
+    <meta name="description" content="概述&emsp;&emsp; ESP32 是 ESP8266 的升级版本。除了 WIFI 模块外，ESP32 还包括蓝牙模块。  参考 ESP32 vs ESP8266 – Pros and Cons .">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TestPost">
-<meta property="og:url" content="https://orchidrock.github.io/2024/07/14/TestPost/">
+<meta property="og:title" content="ESP32 模组">
+<meta property="og:url" content="https://orchidrock.github.io/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/">
 <meta property="og:site_name" content="StoneTough">
-<meta property="og:description" content="软件工程师、文艺青年:)">
+<meta property="og:description" content="概述&emsp;&emsp; ESP32 是 ESP8266 的升级版本。除了 WIFI 模块外，ESP32 还包括蓝牙模块。  参考 ESP32 vs ESP8266 – Pros and Cons .">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-07-14T03:29:07.000Z">
-<meta property="article:modified_time" content="2024-07-14T03:29:07.435Z">
+<meta property="article:published_time" content="2023-05-14T12:31:00.000Z">
+<meta property="article:modified_time" content="2024-07-14T07:47:21.751Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2024/07/14/TestPost/">
+<link rel="canonical" href="https://orchidrock.github.io/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/07/14/TestPost/","path":"2024/07/14/TestPost/","title":"TestPost"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/","path":"2023/05/14/ESP32-模组/","title":"ESP32 模组"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>TestPost | StoneTough</title>
+<title>ESP32 模组 | StoneTough</title>
   
 
 
@@ -80,6 +80,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -87,19 +88,45 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -112,6 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -124,13 +152,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -182,7 +210,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/07/14/TestPost/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,12 +223,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="TestPost | StoneTough">
+      <meta itemprop="name" content="ESP32 模组 | StoneTough">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          TestPost
+          ESP32 模组
         </h1>
 
         <div class="post-meta-container">
@@ -211,7 +239,27 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-07-14 11:29:07" itemprop="dateCreated datePublished" datetime="2024-07-14T11:29:07+08:00">2024-07-14</time>
+      <time title="创建时间：2023-05-14 20:31:00" itemprop="dateCreated datePublished" datetime="2023-05-14T20:31:00+08:00">2023-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-14 15:47:21" itemprop="dateModified" datetime="2024-07-14T15:47:21+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">开源硬件</span></a>
+        </span>
     </span>
 
   
@@ -221,7 +269,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>100</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -238,7 +286,11 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+
     </div>
 
     
@@ -261,11 +313,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/07/10/hello-world/" rel="prev" title="Hello World">
-                  <i class="fa fa-angle-left"></i> Hello World
+                <a href="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/" rel="prev" title="嵌入式系统中的WatchDog">
+                  <i class="fa fa-angle-left"></i> 嵌入式系统中的WatchDog
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/" rel="next" title="RISC-V 架构介绍">
+                  RISC-V 架构介绍 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -296,13 +351,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">64k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6 分钟</span>
+    <span title="站点阅读时长">1:47</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
@@ -329,21 +384,30 @@
 
 
   
-  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
   
 
 
 
 
-
-
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 

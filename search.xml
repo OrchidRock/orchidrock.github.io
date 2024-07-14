@@ -181,9 +181,742 @@
       </tags>
   </entry>
   <entry>
-    <title>TestPost</title>
-    <url>/2024/07/14/TestPost/</url>
+    <title>CUDA Tutorial</title>
+    <url>/2023/04/12/CUDA-Tutorial/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
+<blockquote>
+<p>参考 <a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a>。<br>参考 <a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">CUDA C++ Best Practices Guide</a>。<br>参考 <strong>《CUDA By Example : An introduction to General-Purpose GPU Programming》</strong> By Jason Sanders &amp; Edward Kandrot.</p>
+</blockquote>
+<span id="more"></span>
+
+
+<h2 id="开发环境和工具包"><a href="#开发环境和工具包" class="headerlink" title="开发环境和工具包"></a>开发环境和工具包</h2><p><strong>查看显卡型号</strong>：</p>
+<p><code>$ ubuntu-drivers devices</code></p>
+<p>在<a href="https://developer.nvidia.com/zh-cn/cuda-gpus#compute">CUDA-GPUS 官网</a> 查询该型号显卡是否支持 GPU 计算。</p>
+<p><strong>安装驱动</strong>:<br><code>$ sudo apt-get install nvidia-driver-&lt;xxx&gt;</code></p>
+<p>注意在 Linux 平台要禁用 <code>nouveau</code> 驱动，避免和 <code>NVIDIA 驱动</code>冲突。</p>
+<p><strong>查看安装后的显卡驱动版本（以及支持的 CUDA 版本）：</strong><br><code>$ nvidia-smi</code></p>
+<p><strong>安装 CUDA（Ubuntu 平台已经对 CUDA 进行了打包）</strong> ：</p>
+<p><code>$ sudo apt-get install nvidia-cuda-toolkit</code></p>
+<p>或者 参考<a href="https://developer.nvidia.com/cuda-toolkit-archive">CUDA 官网安装方法</a></p>
+<p><strong>cmake 支持</strong>，参考：<a href="https://developer.nvidia.com/zh-cn/blog/building-cuda-applications-cmake/">使用 CMake 构建跨平台 CUDA 应用程序</a>。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>&emsp;&emsp; GPU 在某些应用上的性能为什么比在 CPU 上更将大？GPU 的架构和 CPU 的架构有什么不同呢？</p>
+<p>&emsp;&emsp; 相比而言，GPU 更加注重并行计算。尽管 CPU 被设计成擅长以尽可能快的速度执行线程，并且可以并行执行几十个这样的线程，但 GPU 被设计成擅长并行执行数千个（甚至更多）的线程（将较慢的单线程的性能进行分摊，以获得更大的吞吐量）。</p>
+<p>&emsp;&emsp; 另外在硬件设计上，GPU 的晶体管更多的用于<code>数据处理（data processing）</code>而不是<code>数据缓存（data caching）</code>和<code>控制（flow control）</code>。GPU 和 CPU 在芯片资源上的分布如下图所示：</p>
+<p><img src="/2023/04/12/CUDA-Tutorial/GPU_CPU_Layout.png"></p>
+<p>GPU 可以通过计算来隐藏存储器访问延迟，而不是依赖于大量数据缓存和复杂的流控制来避免过长的存储器访问延迟（这两者在晶体管方面都是昂贵的）。</p>
+<p>通常，对于具有高度并行性的应用，在 GPU 上比在 CPU 上更能发掘它的并行潜能。</p>
+<p>无论是 CPU 还是 GPU，目前基本上都是<code>多核</code>的，这使得<code>并行计算</code>变得越来越重要。但早期的 GPU 计算使用起来非常的复杂，它受限于图形 API 的编程模型（例如 <code>OpenGL</code> 和 <code>DirectX</code>），因为它是和 GPU 交互的唯一方式。</p>
+<p>后来，NVIDIA 在其<code>GeForce 8800 GTX</code>产品中首次使用 <code>CUDA</code> 架构，<code>CUDA</code> 架构专门为 GPU 计算设计了一个全新的模块，目的是减轻早期 CPU 计算中存在的一些限制。</p>
+<p>CUDA 架构包含了一个统一的<code>着色器流水线</code>，使得执行通用计算的程序能够对芯片上的每个 <code>ALU （算术逻辑单元）</code>进行排列，而且这些 ALU 满足 <code>IEEE</code> 单精度浮点运算，并可以使用一个裁减后的指令集进行通用计算。GPU 上的执行单元既能任意地读写内存，还可以访问由软件管理的缓冲，也称为共享内存（注意与 <code>IPC</code> 机制区分）。</p>
+<p>NVIDIA 不仅仅使用 CUDA 架构的硬件来提供通用计算和图形功能，还在软件层面开发了面向 GPU 的高级语言的编译器（如 <code>CUDA C</code>）。<code>CUDA C</code> 在 C 语言的基础上增加了一小部分关键字。另外，NVIDIA 还提供了专门的硬件驱动程序来发挥 CUDA 架构的大规模计算功能。这些都使得用户既不需要了解 <code>OpenGL</code>或 <code>DirectX</code>图形编程框架，<strong>也不需要将通用问题伪装成图形计算问题</strong>。</p>
+<p><code>CUDA C</code> 提供了三个主要的抽象：线程块的层次结构、共享内存和<code>屏障同步（barrier synchronization ）</code>。这些抽象提供了细粒度的数据级并行和线程级并行，并嵌套在粗粒度的数据级并行和任务级并行中。用户需要将其要解决的问题划分成子问题，这些子问题可以独立并行地被<code>线程块</code>执行，子问题中更加细粒度的交互可以由块中的线程来完成。</p>
+<p>这样分解（<code>block</code> 和 <code>block threads</code> ）使得解决子问题的线程可以相互交互，也可以保持一种可扩展性。线程块的具体调度由运行时系统完成，而不需要用户关心，也就是说同样的程序可以运行在不同档次的 GPU 上而<strong>自动</strong>获得不同的性能。</p>
+<h2 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h2><h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p><code>CUDA C++</code> 是如何描述并行任务的?<br><code>CUDA C++</code> 对 <code>C++</code> 进行了扩展，使得用户可以定义 <code>核函数</code>。<code>核函数</code> 与 一般的 C++ 函数不同之处在于：它可以被 N 个 <em>CUDA 线程</em> 并行执行 N 次。</p>
+<p><code>核函数</code> 需要使用<code>__global__</code> 声明标识符，当调用<code>核函数</code>时需要使用语言扩展符号 <code>&lt;&lt;&lt;...&gt;&gt;&gt;</code>指定<strong>线程组</strong>。每个执行核函数的线程都会指定一个单独的 <em>线程ID</em>，并可以在核函数中通过变量<code>threadIdx</code>访问。一个简单例子如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">float</span>* A, <span class="type">float</span>* B, <span class="type">float</span>* C)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = threadIdx.x;</span><br><span class="line">    C[i] = A[i] + B[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    add&lt;&lt;&lt;<span class="number">1</span>, N&gt;&gt;&gt;(A, B, C);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程块"><a href="#线程块" class="headerlink" title="线程块"></a>线程块</h3><p><code>线程块</code>中的线程可以在逻辑上被组织成一维结构、二维结构和三维结构；同样地，线程块中也可以被组织成单维或多维结构的<code>线程格(Grid)</code>。在一个线程块中的线程的个数是有限制的，可以使用<code>cudaDeviceProp</code>结构中的<code>maxThreadPerBlock</code>成员变量来获得该值（对于当前的 GPU，该值为1024）。</p>
+<p>在&lt;&lt;&lt;…&gt;&gt;&gt;中指定<code>线程格</code>和<code>线程块</code>结构时，可以使用<code>int</code>或者<code>dim3</code>类型，使用<code>int</code>就默认指示其结构是一维的。每个块都有一个单独的<code>块 ID</code>，可以使用变量<code>blockIdx</code>访问。每个块的<code>度（可以理解为块的长度和宽度）</code>可以使用变量<code>blockDim</code>访问。线程格的<code>度</code>可以使用<code>gridDim</code>变量访问。</p>
+<p>修改上节中的例子，使用二维结构的线程格和二维结构的线程块：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">float</span> A[N][N], <span class="type">float</span> B[N][N], <span class="type">float</span> C[N][N])</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = threadIdx.x + blockIdx.x * blockDim.x;</span><br><span class="line">    <span class="type">int</span> j = threadIdx.y + blockIdx.y * blockDim.y;</span><br><span class="line">    C[i][j] = A[i][j] + B[i][j];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function">dim3 <span class="title">threadsPerBlock</span><span class="params">(<span class="number">16</span>, <span class="number">16</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> xDim = (N + threadsPerBlock.x - <span class="number">1</span>) / threadsPerBlock.x;</span><br><span class="line">    <span class="type">int</span> yDim = (N + threadsPerBlock.y - <span class="number">1</span>) / threadsPerBlock.y;</span><br><span class="line">    <span class="function">dim3 <span class="title">numBlocks</span><span class="params">(xDim, yDim)</span></span>;</span><br><span class="line">    add&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;&gt;&gt;(A, B, C);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有线程块并行执行，并且执行顺序是任意的，也就是线程块之间不能存在逻辑上或者数据上的相互依赖。每个线程块中的线程虽然也是并行的，但可以访问共享内存（使用<code>__shared__</code>声明标示符），并可以使用<code>__syncthreads()</code> 函数进行同步。</p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>每个线程有私有的本地存储。每个线程块有共享内存，该块中的每个线程都可以访问。另外，所有的线程都可以访问全局内存。另外，还有两种只读内存：<code>常量内存（constant memory）</code>和<code>纹理内存（texture memory）</code>，它们可以被所有线程访问。全局内存、常量内存和纹理内存空间对不同的内存使用场景进行了优化，因此恰当地使用合适的内存空间可以显著提供程序的内存性能。<br><img src="/2023/04/12/CUDA-Tutorial/cuda_memory.png"></p>
+<h3 id="异构编程"><a href="#异构编程" class="headerlink" title="异构编程"></a>异构编程</h3><h3 id="一个简单例子"><a href="#一个简单例子" class="headerlink" title="一个简单例子"></a>一个简单例子</h3>]]></content>
+      <categories>
+        <category>高性能计算</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>DroidCam 工具使用</title>
+    <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
+<span id="more"></span>
+
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><h3 id="App端"><a href="#App端" class="headerlink" title="App端"></a>App端</h3><p>下载 App 端</p>
+<h3 id="PC-端"><a href="#PC-端" class="headerlink" title="PC 端"></a>PC 端</h3><p><strong>下载安装：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.2.zip</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">sha1sum</span>: d1038e6d62cac6f60b0dd8caa8d5849c79065a7b</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">unzip droidcam_latest.zip -d droidcam</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> droidcam &amp;&amp; <span class="built_in">sudo</span> ./install-client</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Video 模块</strong>：</p>
+<p>安装 <code>v4l2loopback-dc</code> 内核模块：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-video</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 检查是否安装成功</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">lsmod | grep v4l2loopback_dc</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Audio 模块</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-audio</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用-WIFI-连接"><a href="#使用-WIFI-连接" class="headerlink" title="使用 WIFI 连接"></a>使用 WIFI 连接</h3><p>运行<code>droidcam</code> 或者 <code>droidcam-cli</code>：</p>
+<p><code>$ droidcam</code></p>
+<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_wifi.png"></p>
+<p>其中 <code>Phone IP</code> 填写手机 App 中显示的 IP 地址。然后点击 <code>Connect</code> 即可。</p>
+<p>然后，用户可以在浏览器中的网络摄像头列表中找到对应的一项，可以在网站： <a href="https://www.webcamtest.cc/">网络摄像头测试</a> 中进行检验。</p>
+<p>使用完成后，可以在上面的<code>DroidCam Client</code>界面中点击 <code>Stop</code> 后退出。</p>
+<h3 id="使用-USB-连接"><a href="#使用-USB-连接" class="headerlink" title="使用 USB 连接"></a>使用 USB 连接</h3><p>首先打开手机的 <code>Debugging 模式</code>，具体方法可以查询网络资源。</p>
+<p>下载安装 <code>adb</code> 工具：</p>
+<p><code>$ sudo apt-get install adb</code></p>
+<p>检查设备是否可用：</p>
+<p><code>$ adb devices</code></p>
+<p>接下来，打开 <code>droidcam</code> 客户端，选择 <code>USB</code> 连接模式：</p>
+<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_usb.png"></p>
+<p>然后点击 <code>Connect</code> 。最后在浏览器中进行再进行检验即可。</p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ESP32 模组</title>
+    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>开源硬件</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GMP库的使用</title>
+    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
+<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
+<blockquote>
+<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>编译应用程序时的链接选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
+
+<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
+<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
+<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
+<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
+<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
+<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
+<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
+<ol>
+<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
+<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
+<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
+<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
+<li>设置<em>custom allocation</em>的函数；</li>
+<li>生成随机数的函数。</li>
+</ol>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
+
+<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel Introduction</title>
+    <url>/2023/03/08/Linux-Kernel-Introduction/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.kernel.org/">Linux kernel</a> 是开源的<code>单内核</code>(Monolithic Kernel)、<code>模块化</code>和<code>多任务</code>的<code>类Unix</code>操作系统。</p>
+<p>&emsp;&emsp;在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://encyclopedia.thefreedictionary.com/linux+kernel">Linux Kernel - wikipedia</a><br>参考《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 <a href="https://0xax.gitbooks.io/linux-insides/content/">linux-insides</a> - By <strong>0xax</strong> | <a href="https://www.bookstack.cn/read/linux-insides-zh/README.md">Linux内核揭秘-中文版</a>。</p>
+</blockquote>
+<h2 id="Unix-渊源"><a href="#Unix-渊源" class="headerlink" title="Unix 渊源"></a>Unix 渊源</h2><p>&emsp;&emsp; Unix 系统最初在 1969 年诞生于贝尔实验室。Unix 衍生出了很多变种，例如 <code>OpenBSD</code>等，它的很多设计理念也深刻影响了 GNU&#x2F;Linux（<em>准确来说，主要影响的是内核上层的应用程序和环境</em>） 。更重要的是，<code>Unix</code>有着开放源码和同僚复审的传统，这种理念产生的优势被 Linux 充分的发挥和利用。关于这个主题，可以阅读经典的《The Art of UNIX Programming》 (在 <a href="http://1.117.83.246/index.php/archives/187/">Unix编程艺术笔记</a> 中有一些摘要总结)。</p>
+<p>&emsp;&emsp;Linux 的成长伴随着互联网的崛起，这就使得它与 <code>Unix</code> 在开发模式上有些不同。Linux 几乎是通过来源于”网络部落“的一些“松散”的开发者贡献给世界的，但它现在已经变得十分强大。《大教堂与集市》一书中有详细和精彩的描述。</p>
+<blockquote>
+<p>乐趣是一个符号，意味着效能、效率和高产。 —— TAOUP</p>
+</blockquote>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="内核-用户-API"><a href="#内核-用户-API" class="headerlink" title="内核-用户 API"></a>内核-用户 API</h3><h3 id="内核-用户-ABI"><a href="#内核-用户-ABI" class="headerlink" title="内核-用户 ABI"></a>内核-用户 ABI</h3><p>&emsp;&emsp;当前针对在不同的 <code>GNU/Linux</code>系统间保持应用和二进制兼容的标准是 <strong>LSB(Linux Standard Base)<strong>。LSB 中和内核相关的标准包括：</strong>General ABI</strong>、<strong>System V ABI</strong>、<strong>ELF</strong>和<strong>Processor Specific ABI</strong>。其中，和处理器相关的 ABI 定义了在函数调用时如何传递系统调用号及其他参数（例如，使用寄存器还是栈，以及使用哪些寄存器）。</p>
+<h3 id="系统调用规范"><a href="#系统调用规范" class="headerlink" title="系统调用规范"></a>系统调用规范</h3><p>系统调用和用户空间中的函数调用存在一些不同点，以<code>x86_64</code>架构为例：</p>
+<ol>
+<li>进程内核栈除了需要保存内核空间过程调用外，还需要保存用户空间栈的数据和返回地址，以便 在返回用户空间继续执行。</li>
+<li>过程调用中寄存器调用约定不同。<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">Registers on entry:</span><br><span class="line"> rax  system call number</span><br><span class="line"> rcx  return address</span><br><span class="line"> r11  saved rflags (note: r11 is callee-clobbered register in C ABI)</span><br><span class="line"> rdi   arg0</span><br><span class="line"> rsi    arg1</span><br><span class="line"> rdx  arg2</span><br><span class="line"> r10  arg3 (needs to be moved to rcx to conform to C ABI)</span><br><span class="line"> r8    arg4</span><br><span class="line"> r9    arg5</span><br><span class="line"> (note: r12-r15, rbp, rbx are callee-preserved in C ABI)</span><br></pre></td></tr></table></figure>
+具体定义可查看源代码<code>arch/x86/entry/common.c</code>。</li>
+</ol>
+<p>在代码 <code>arch/x86/entry/entry_64.S</code> 中可查看切换的具体过程：</p>
+<ol>
+<li>用户栈到进程内核栈的切换（修改 <code>rsp</code> 寄存器的值）。</li>
+<li>依次将用户空间寄存器压栈，和数据结构<code>struct pt_regs</code> 成员一一对应（顺序固定且是倒序）。</li>
+</ol>
+<img src="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp" width="70%">
+
+
+<h2 id="内核的整体结构"><a href="#内核的整体结构" class="headerlink" title="内核的整体结构"></a>内核的整体结构</h2><p>&emsp;&emsp; 用一句话来总结内核的角色：<code>内核是最懒的资源管理者</code>。这里的资源可以分为三大类：<code>CPU</code>、<code>内存</code>和 <code>I/O</code>。内核通过抽象这些资源形成<code>进程</code>、<code>线程</code>、<code>文件</code>和<code>虚拟内存</code>等概念。抽象是对抗复杂性的很有效的手段之一。换句话说，内核也可以看作用户进程执行的<code>环境</code>。</p>
+<p>&emsp;&emsp; 内核的<code>懒</code>是它的特点也是对它的要求，特别是对于支持多任务并发的内核来说。除非被唤醒，它应该什么都不做；即使被唤醒，也应该做的尽量少、尽量快，然后继续”睡觉“。这种特性与整个系统并发的效率紧密相关。</p>
+<h3 id="进程-内核模式"><a href="#进程-内核模式" class="headerlink" title="进程&#x2F;内核模式"></a>进程&#x2F;内核模式</h3><p>&emsp;&emsp;将内核唤醒的方式几乎都是事件驱动的，这些事件简单来说分为<code>中断</code>和<code>异常</code>，<code>中断</code>又可以大致分为<code>硬中断</code>和<code>软中断</code>。<code>POSIX</code>定义了系统调用接口 API，系统调用也可以认为是软中断的一种，支持从用户程序唤醒内核，但标准并没有限制内核如何设计。</p>
+<p>&emsp;&emsp;类Unix内核区分<code>内核态</code>和<code>用户态</code>。用户进程几乎不与硬件资源直接交互，而是使用系统调用进入内核态请求资源。</p>
+<h3 id="单内核-Monolithic-kernel-与微内核-Microkernel"><a href="#单内核-Monolithic-kernel-与微内核-Microkernel" class="headerlink" title="单内核(Monolithic kernel)与微内核(Microkernel)"></a>单内核(Monolithic kernel)与微内核(Microkernel)</h3><p>可以用下面一张图来描述二者的不同:</p>
+<img src="https://img2.tfd.com/pp/wikiimg.ashx?p=commons%2fthumb%2f6%2f67%2fOS-structure.svg%2f750px-OS-structure.svg.png" width=80%>
+
+<p>很容易看出，微内核更简单、更模块化，但模块间的通信交互开销会更高。另外，微内核的 RAM利用效率会更高，因为不被调用的系统进程可以被<code>换出</code>。Linux 为了既吸收微内核的优势又不影响性能，提供了<code>模块（Module）</code>。模块是一个目标文件，可以在运行时链接到内核或者从内核解除链接。<strong>模块不是作为一个特殊的进程来执行，它代表当前进程在内核态下执行。</strong></p>
+<h3 id="可重入内核"><a href="#可重入内核" class="headerlink" title="可重入内核"></a>可重入内核</h3><p>&emsp;&emsp; 可重入内核也必须是可抢占内核。也就是说，即使当前 CPU 处于内核态，也仍然可以被抢占，这使得内核具有很高的<code>实时性</code>。可重入内核必须引入同步机制来访问共享数据结构。大多数传统的 Unix 内核都是非抢占内核，但 Linux 是可抢占内核，特别在 SMP 系统上，可抢占内核可以获得更好的并行性能。</p>
+<p>&emsp;&emsp;同步机制可以包括<code>禁止中断</code>、<code>信号量</code>、<code>自旋锁（针对SMP系统）</code>。</p>
+<h3 id="子系统"><a href="#子系统" class="headerlink" title="子系统"></a>子系统</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_subsystem.png"></p>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>&emsp;&emsp; 我们说内核是最懒的资源管理者，从内核的角度看，进程的目的就是担当分配系统资源（CPU时间、内存）的实体。</p>
+<h3 id="进程描述符"><a href="#进程描述符" class="headerlink" title="进程描述符"></a>进程描述符</h3><p>&emsp;&emsp; 进程的核心数据结构是<code>进程描述符（Process Descriptor, PCB）</code>，它的子段包含了与一个进程相关的所有信息。PCB 是相当复杂的，它不仅包含了很多进程属性的子段，而且包括了指向其他数据结构的指针。其大致结构如下（具体定义位于头文件<code>include/linux/sched.h:624</code>中，以 5.4 版本为例）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">long</span> state;               <span class="comment">// 进程状态</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_THREAD_INFO_IN_TASK</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span>  <span class="title">thread_info</span>;</span>   <span class="comment">// 进程基本信息</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="type">void</span>  *<span class="built_in">stack</span>;                      <span class="comment">// 指向内核栈</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> <span class="title">mm</span>;</span>               <span class="comment">// 指向进程内存空间描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">real_parent</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">parent</span>;</span>  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">children</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">sibling</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fs_struct</span> * <span class="title">fs</span>              // 文件系统（当前目录）</span></span><br><span class="line"><span class="class">    <span class="keyword">struct</span> <span class="title">files_struct</span> *<span class="title">files</span>;</span>        <span class="comment">// 指向打开文件的描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">signal_struct</span> *<span class="title">signal</span>;</span>      <span class="comment">// 所接收信号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">tasks</span>;</span>            <span class="comment">// 进程链表</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><p>状态转换图：</p>
+<pre class="mermaid">stateDiagram-v2
+    S00: 就绪(RUNNING)
+    S0: 正运行(RUNNING)
+    S1: 可中断等待或不可中断等待
+    S4: 暂停(STOPPED)
+    S8: 跟踪(TRACED)
+    S20: 僵死(ZOMBIE)
+    S10: 僵死撤消(DEAD)
+    S00 --> S0
+    S0 --> S00
+    S0 --> S1
+    S1 --> S00
+    S0 -->  S10</pre>
+
+<h3 id="进程标识符"><a href="#进程标识符" class="headerlink" title="进程标识符"></a>进程标识符</h3><p>进程与进程描述符之间有严格的一一对应关系，可以使用<strong>进程描述符地址</strong>描述进程。另外，内核也允许用户使用 <strong>PID</strong>来标识进程，<strong>PID</strong>存放在 PCB 的 <code>pid</code>  字段中。另外<code>tgid</code>字段代表所在线程组中领头线程的 <strong>PID</strong>。 PID是 32 位的无符号整数，它被顺序编号。<strong>PID 是 内核提供给用户操作进程的接口</strong>。</p>
+<p>内核必须有效地从进程 <strong>PID</strong> 导出它的进程描述符指针，效率非常重要。内核使用 pid 哈希链表<code>pidhash</code>来建立映射关系，内核引入了<code>PIDTYPE_MAX</code> 个 pid 哈希链表，在 PCB 中对应字段<code>struct hlist_node pid_links[PIDTYPE_MAX]</code>。</p>
+<h3 id="内核栈"><a href="#内核栈" class="headerlink" title="内核栈"></a>内核栈</h3><p>在每一个进程的生命周期中，经常会通过系统调用（SYSCALL）陷入内核。在执行系统调用陷入内核之后，这些内核代码所使用的栈并不是原先用户空间中的栈，而是一个内核空间的栈，这个称作进程的<code>内核栈</code>。每个 task 的栈都包含用户栈和内核栈两部分。进程内核栈的定义如下（<code>include/linux/sched.h:1628</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">thread_union</span> &#123;</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_ARCH_TASK_STRUCT_ON_STACK</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> <span class="title">task</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_THREAD_INFO_IN_TASK</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> <span class="title">thread_info</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span> <span class="built_in">stack</span>[THREAD_SIZE/<span class="keyword">sizeof</span>(<span class="type">long</span>)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中<code>THREAD_SIZE</code> 在 32 位系统是 8KB，64 位系统里是 16KB。那么，其中 <code>thread_info</code> 有什么用呢？<br>在不同的体系结构里，进程需要存储的信息不尽相同，Linux 使用<code>task_struct</code>存储通用的信息，将体系结构相关的部分存储在<code>thread_info</code>中。例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* x86 */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span>        flags;    <span class="comment">/* low level flags */</span></span><br><span class="line">	u32                  status;   <span class="comment">/* thread synchronous flags */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ARM */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span>        flags;             <span class="comment">/* low level flags */</span></span><br><span class="line">	<span class="type">int</span>                  preempt_count;     <span class="comment">/* 0 =&gt; preemptable, &lt;0 =&gt; bug */</span></span><br><span class="line">	<span class="type">mm_segment_t</span>         addr_limit;        <span class="comment">/* address limit */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>   *<span class="title">task</span>;</span>             <span class="comment">/* main task structure */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>进程描述符 <code>task_struct</code> 中的字段<code>void *stack</code>指向内核栈。根据宏<code>CONFIG_THREAD_INFO_IN_TASK</code> 是否设置，我们可以分情况讨论。<br>首先，如果<code>thread_info</code>在进程内核栈中，我们可以得到下面的结构图（以 ARM 为例）：</p>
+<img src="https://pic2.zhimg.com/80/v2-3f8f0a1ccadf4cf2ca408a0810417679_720w.webp" width="80%">
+
+<p>因此，我们可以获得当前进程内核栈的sp寄存器存储的地址时，根据THREAD_SIZE对齐就可以获取<code>thread_info</code>结构的基地址。</p>
+<p>然后，如果 <code>thread_info</code> 结构在进程描述符中，以下面结构图所示：<br><img src="https://pic4.zhimg.com/80/v2-ea673275121a42b4ea81999a9707bbc7_720w.webp" width="80%"></p>
+<p>以上复杂的结构，用于实现<code>current</code>宏，来获得当前进程对应的 PCB 地址。例如对于 ARM 架构：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// arch/arm/include/asm/thread_info.h</span></span><br><span class="line">        <span class="keyword">register</span> <span class="type">unsigned</span> <span class="type">long</span> current_stack_pointer <span class="title function_">asm</span> <span class="params">(<span class="string">&quot;sp&quot;</span>)</span>;</span><br><span class="line">	</span><br><span class="line">        <span class="type">static</span> <span class="keyword">inline</span> <span class="keyword">struct</span> thread_info *<span class="title function_">current_thread_info</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">return</span> (<span class="keyword">struct</span> thread_info *)</span><br><span class="line">                (current_stack_pointer &amp; ~(THREAD_SIZE - <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">// include/asm-generic/current.h</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> get_current() (current_thread_info()-&gt;task)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> current get_current()</span></span><br></pre></td></tr></table></figure>
+
+<p>ARM64 不再使用通过计算栈偏移量的方式获得进程 PCB 地址，而是使用寄存器<code>sp_el0</code>，在进程切换时暂存 PCB 地址。</p>
+<p>而在 x86 体系结构中，linux 一直采用另一种方式：使用了<code>current_task</code>这个 CPU 变量，来存储当前正在使用的 CPU 的进程 PCB 地址。如下所示（<code>arch/x86/include/asm/current.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>;</span></span><br><span class="line">DECLARE_PER_CPU(<span class="keyword">struct</span> task_struct *, current_task);</span><br><span class="line"><span class="type">static</span> __always_inline <span class="keyword">struct</span> task_struct *<span class="title function_">get_current</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> this_cpu_read_stable(current_task);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> current get_current()</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>DECLARE_PER_CPU</code> 和 <code>this_cpu_read_stable</code> 用于支持 SMP 系统。</p>
+<p>那么如何获得内核栈的栈指针呢？在<code>x86</code>架构中，使用特殊的段类型： <code>TSS</code>，它被用来存放硬件上下文。TSS 反映了 CPU 上的当前进程的特权级。linux 为每一个 cpu 提供一个 <code>TSS段</code>，并且在<code>tr</code>寄存器中保存该段。</p>
+<p>在从用户态切换到内核态时，可以通过获取 <code>TSS段</code>中的 <code>esp0</code>来获取当前进程的内核栈 <strong>栈顶指针</strong>，从而可以保存用户态的<code>cs</code>，<code>esp</code>，<code>eip</code>等上下文。相关结构体和宏在<code>arch/x86/include/asm/processor.h</code> 中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> cpu_current_top_of_stack cpu_tss_rw.x86_tss.sp1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tss_struct</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">x86_hw_tss</span> <span class="title">x86_tss</span>;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> io_bitmap[IO_BITMAP_LONGS + <span class="number">1</span>];</span><br><span class="line">&#125; __aligned(PAGE_SIZE);</span><br><span class="line"></span><br><span class="line">DECLARE_PER_CPU_PAGE_ALIGNED(<span class="keyword">struct</span> tss_struct cpu_tss_rw);</span><br><span class="line"></span><br><span class="line"><span class="comment">// for x86_64</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">x86_hw_tss</span> &#123;</span></span><br><span class="line">    u32 reserved1;</span><br><span class="line">    u64 sp0;</span><br><span class="line">    u64 sp1;</span><br><span class="line">    ...</span><br><span class="line">&#125; __attribute__((packed));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>linux的<code>tss段</code>中只使用<code>esp0</code>和<code>iomap</code>等字段，并且不用它的其他字段来保存寄存器。在一个用户进程被中断进入内核态的时候，从<code>tss</code>中的硬件状态结构中取出<code>esp0</code>（即内核栈栈顶指针），然后切到<code>esp0</code>，其它的寄存器则保存在<code>esp0</code>指的内核栈上而不保存在<code>tss</code>中。</p>
+<h3 id="进程组织"><a href="#进程组织" class="headerlink" title="进程组织"></a>进程组织</h3><p>所有（处于TASK_RUNNING状态的）进程被组织在双向链表中。在每个进程的 PCB 中都包含链表节点（<code>struct list_head tasks</code>），<code>tasks</code>和其他指针字段一起将所有进程组织成<strong>进程树</strong>。</p>
+<p>表示进程间亲属关系的字段有<code>parent</code>、<code>real_parent</code>、<code>children</code>和<code>sibling</code>。进程之间还存在非亲属关系，例如一个进程可能是一个进程组或登陆会话的领头进程。这些字段包括<code>group_leader</code>、<code>tgid</code>等。</p>
+<p>对于处于等待状态中的进程，内核将它放入被等待事件的<strong>等待队列</strong>中，并可以在未来条件满足时唤醒进程。<strong>等待队列</strong>由双向链表实现。</p>
+<h3 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h3><p>进程切换任务主要由 <code>siwtch_to</code>宏完成，它定义在<code>include/asm-generic/switch-to.h</code>中：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *__<span class="title">switch_to</span>(<span class="keyword">struct</span> <span class="title">task_struct</span> *,</span></span><br><span class="line"><span class="class">				       <span class="keyword">struct</span> <span class="title">task_struct</span> *);</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> switch_to(prev, next, last)					\</span></span><br><span class="line"><span class="meta">	do &#123;								\</span></span><br><span class="line"><span class="meta">		((last) = __switch_to((prev), (next)));			\</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>&emsp;&emsp; Linux 在32位系统使用传统的二级页表，在64位系统使用三级或四级页表。<code>分页</code>是内核与硬件共同协作完成的功能。概括来说，每个进程在自己的地址空间中都有属于自己的多级页表，并且在进程描述符中包含第一级页表的指针。该指针使用时会被写入一个特定的控制寄存器（在 <code>80x86</code>中为<code>cr3</code>控制寄存器）。在进程切换时，控制寄存器的值会被保存到前一个进程的进程描述符中，随后的地址翻译几乎全由硬件完成（<code>MMU</code>）。相关头文件：<code>arch/&lt;ARCH&gt;/include/asm/&#123;page.h, pgtable.h&#125;</code>等。</p>
+<p>&emsp;&emsp;页表的每一项是一个无符号整数，其中包含标志位和（<strong>页或者下一级页表的</strong>）物理地址的高位。对于<code>4k</code>大小的页，页物理地址的低12位为0，所以正好可以放置标志位。重要的几个标志位如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">位</th>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left"><strong>Present</strong></td>
+<td align="left">1: 该页在物理内存中；0: 该页没有分配，其他标志位无意义。</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left"><strong>Writeable</strong></td>
+<td align="left">1: 该页可写；0：该页只读。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>User&#x2F;Supervisor</strong></td>
+<td align="left">1：用户<strong>可以</strong>访问该页；0：用户<strong>不可以</strong>访问该页。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>PWT</strong></td>
+<td align="left">1：该页对应的 cache 使用<code>write through</code>模式；0：使用<code>write back</code>模式。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>PCD</strong></td>
+<td align="left">1：该页不能被cache；0：是否可以被cache，由<code>cr0</code>寄存器的<code>CD</code>位决定。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>Access</strong></td>
+<td align="left">该页被访问（读&#x2F;写）后，被置1；用户可以置0；此位决定了该页的地址映射关系是否可以被 <code>TLB</code>缓存。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><strong>Dirty</strong></td>
+<td align="left">该位只对映射非线性磁盘文件的页有意义。当该页被写入时，则置1；后续需要回收页时，该页被flush到下级存储，然后此位被置0。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left"><strong>PSE&#x2F;PAT</strong></td>
+<td align="left">1：PSE，使用<code>4M或2M</code>的页；0：PAT，使用<code>4k</code>的页。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><strong>Global</strong></td>
+<td align="left">该位用于决定在<code>上下文切换</code>时是否需要冲刷(flush) TLB 中的 entry。</td>
+</tr>
+</tbody></table>
+<p><strong>内核页表</strong></p>
+<h3 id="高速缓冲和TLB"><a href="#高速缓冲和TLB" class="headerlink" title="高速缓冲和TLB"></a>高速缓冲和TLB</h3><p>&emsp;&emsp; <code>高速缓存</code>处于内存和寄存器之间，一般使用 SRAM 实现。高速缓存与内存的一致性由 CPU 自动同步；但 <code>TLB</code> 与进程页表的同步需要内核来完成。</p>
+<ul>
+<li>文件系统</li>
+<li>设备驱动</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel: 内核数据结构</title>
+    <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 《Linux Kernel Development, Third Edition》 By Robert Love.</p>
+</blockquote>
+<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>双向链表<code>list_head</code> 在头文件<code>include/linux/types.h</code> 中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>基本的处理函数和宏在头文件<code>include/linux/list.h</code> 中定义。</p>
+<h3 id="初始化链表"><a href="#初始化链表" class="headerlink" title="初始化链表"></a>初始化链表</h3><p>初始化链表 <code>LIST_HEAD_INIT</code> 和 <code>LIST_HEAD</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct list_head name = LIST_HEAD_INIT(name)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询操作最重要的不是获取<code>list_head</code>类型的指针，而是获得<code>list_head</code>所在的结构体的基地址。例如我们定义下面的结构体：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">person</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们如何根据一个<code>struct list_head *</code>指针类型获取其所在<code>struct person</code>结构体的基地址呢？<code>container_of</code>宏主要通过指针偏移运算来完成这个工作（<code>include/linux/kernel.h</code>）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> container_of(ptr, type, member) (&#123;				\</span></span><br><span class="line"><span class="meta">	void *__mptr = (void *)(ptr);					\</span></span><br><span class="line"><span class="meta">	BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)-&gt;member) &amp;&amp;	\</span></span><br><span class="line"><span class="meta">			 !__same_type(*(ptr), void),			\</span></span><br><span class="line"><span class="meta">			 <span class="string">&quot;pointer type mismatch in container_of()&quot;</span>);	\</span></span><br><span class="line"><span class="meta">	((type *)(__mptr - offsetof(type, member))); &#125;)</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>offsetof</code> 在<code>include/linux/stddef.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;NUMBER)</span></span><br></pre></td></tr></table></figure>
+<p>注意这里使用<code>TYPE*</code>类型的 <code>NULL(0)</code>指针并不会导致运行时错误，因为在编译阶段，编译器会将上诉代码翻译为<code>0+OFFSET</code>，其中<code>OFFSET</code>为<code>NUMBER</code>在类型<code>TYPE</code>中的偏移量。然后我们在<code>container_of</code>宏中将<code>struct list_head ptr</code>的地址减去该偏移量就可以获得其所在<code>TYPE</code>结构体的地址。</p>
+<p>然后可以定义<code>list_entry</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	container_of(ptr, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_first_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;next, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_last_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;prev, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_next_entry - get the next element in list</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to cursor</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_next_entry(pos, member) \</span></span><br><span class="line"><span class="meta">	list_entry((pos)-&gt;member.next, typeof(*(pos)), member)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>直接遍历<code>struct list_head</code> 节点：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each	-	iterate over a list</span></span><br><span class="line"><span class="comment"> * @pos:	the &amp;struct list_head to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each(pos, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @n: another &amp;struct list_head to use as temporary storage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_safe(pos, n, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</span></span><br><span class="line"><span class="meta">		pos = n, n = pos-&gt;next)</span></span><br></pre></td></tr></table></figure>
+<p>注意，<code>list_for_each_safe</code>可以用在遍历链表的过程中执行删除节点操作，它是通过增加一个额外的临时<code>hlist_node</code>指针<code>n</code>来实现的。</p>
+<p>遍历 <strong>entry</strong> :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each_entry	-	iterate over list of given type</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_entry(pos, head, member)				\</span></span><br><span class="line"><span class="meta">	for (pos = list_first_entry(head, typeof(*pos), member);	\</span></span><br><span class="line"><span class="meta">	     &amp;pos-&gt;member != (head);					\</span></span><br><span class="line"><span class="meta">	     pos = list_next_entry(pos, member))</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="边界检查"><a href="#边界检查" class="headerlink" title="边界检查"></a>边界检查</h3><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>进程链表是运用链表最重要的例子之一。在结构体<code>task_struct</code>中包含字段<code>struct list_head tasks</code>。</p>
+<p>另外一个例子是<strong>等待队列</strong>。</p>
+<h2 id="哈希链表"><a href="#哈希链表" class="headerlink" title="哈希链表"></a>哈希链表</h2><p>哈希链表由于自身特点的考虑，不使用双向链表。</p>
+<p>定义如下（<code>include/linux/types.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>为什么头节点(<code>struct hlist_head</code>)不直接使用<code>struct hlist_node</code>，而是要重新定义一个结构体呢？<strong>答案是为了节省空间</strong>。</p>
+<p>另外，使用二级指针<code>**pprev</code>在删除节点上的处理非常简单，无需关心是否是 head 节点。而使用单链表或双向链表时需要单独判断是否是 head 节点。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD_INIT &#123; .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD(name) struct hlist_head name = &#123;  .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_HLIST_HEAD(ptr) ((ptr)-&gt;first = NULL)</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">INIT_HLIST_NODE</span><span class="params">(<span class="keyword">struct</span> hlist_node *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	h-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	h-&gt;pprev = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><p>向<code>hlist</code>链表添加节点时，可以直接添加到链表头部，也可以插入到中间位置。操作函数和宏在<code>include/linux/list.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_add_head</span><span class="params">(<span class="keyword">struct</span> hlist_node *n, <span class="keyword">struct</span> hlist_head *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span> =</span> h-&gt;first;</span><br><span class="line">	n-&gt;next = first;</span><br><span class="line">	<span class="keyword">if</span> (first)</span><br><span class="line">		first-&gt;pprev = &amp;n-&gt;next;</span><br><span class="line">	WRITE_ONCE(h-&gt;first, n);</span><br><span class="line">	n-&gt;pprev = &amp;h-&gt;first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __hlist_del(<span class="keyword">struct</span> hlist_node *n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span> =</span> n-&gt;next;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> **<span class="title">pprev</span> =</span> n-&gt;pprev;</span><br><span class="line"></span><br><span class="line">	WRITE_ONCE(*pprev, next);</span><br><span class="line">	<span class="keyword">if</span> (next)</span><br><span class="line">		next-&gt;pprev = pprev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_del</span><span class="params">(<span class="keyword">struct</span> hlist_node *n)</span></span><br><span class="line">&#123;</span><br><span class="line">	__hlist_del(n);</span><br><span class="line">	n-&gt;next = LIST_POISON1;</span><br><span class="line">	n-&gt;pprev = LIST_POISON2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h3><h2 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h2><p>等待队列使用双向链表实现（<code>include/linux/wait.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_entry</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		flags;</span><br><span class="line">	<span class="type">void</span>			*private;</span><br><span class="line">	<span class="type">wait_queue_func_t</span>	func;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> &#123;</span></span><br><span class="line">	<span class="type">spinlock_t</span>		lock;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">head</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> <span class="title">wait_queue_head_t</span>;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
+<p>动态分配节点的初始化：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux kernel User Guide</title>
+    <url>/2023/03/09/Linux-kernel-User-Guide/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
+<blockquote>
+<p>参考 <a href="https://docs.kernel.org/admin-guide/index.html">The Linux kernel user’s and administrator’s guide</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><p>可以在 <a href="https://mirrors.edge.kernel.org/pub/linux/kernel">内核仓库</a> 中找到对应版本的源码压缩包、签名和补丁，也可以使用 git 克隆内核仓库。我们以 <code>5.4</code> 版本为例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.xz`</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.sign</span></span><br></pre></td></tr></table></figure>
+
+<p>解压并验证签名：<br><code>$ xz -cd linux-5.4.tar.xz | gpg --verify linux-5.4.tar.sign -</code></p>
+<p><code>$ tar xf linux-5.4.tar</code><br><code>$ cd linux-5.4</code></p>
+<h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><p>编译环境所依赖的软件包列表：<a href="https://docs.kernel.org/process/changes.html#changes">Minimal requirements to compile the Kernel</a>。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="还原环境"><a href="#还原环境" class="headerlink" title="还原环境"></a>还原环境</h3><p><code>$ make mrproper</code><br>每次需要将内核源码树还原到刚解压时的状态，可运行该命令。</p>
+<p><code>$ make clean</code><br>删除生成的目标文件（不会删除<code>.config</code>）</p>
+<h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><p><code>make oldconfig</code> - 基于<code>Host</code>系统上的.config 进行配置，如<code>/boot/config-5.xx.xx-xx-generic</code></p>
+<p><code>make defconfig</code> - 按默认选项进行配置（<strong>x86_64_defconfig</strong>）<br><code>make allnoconfig</code> - 除必须选项外，其他一律不选（常用于嵌入式系统）<br><code>make allyesconfig</code> -</p>
+<p><code>make menuconfig</code> - 交互式界面</p>
+<p>可以查看 <code>make help</code> 来获取更多信息。</p>
+<p><strong>建议：</strong></p>
+<ul>
+<li>使用 <code>make defconfig</code> 获取默认配置</li>
+<li>使用当前<code>Host</code>系统上的 config 文件，一般为 <code>/boot/config-xxxxxxxxx</code></li>
+<li>其他发行版系统的配置文件</li>
+</ul>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p><code>make -j&lt;N&gt;</code></p>
+<p>可以使用 <code>ccache</code> 加速编译。</p>
+<p>如果遇到下面的问题：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://lkml.org/lkml/2021/1/14/387">https://lkml.org/lkml/2021/1/14/387</a></p>
+<p>如果遇到：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order&#x27;;</span><br><span class="line">arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://lkml.org/lkml/2020/1/29/494">https://lkml.org/lkml/2020/1/29/494</a></p>
+<p>很多编译问题都可以在<a href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
+<p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
+<p>然后修改 <code>grub</code> 配置文件</p>
+<h3 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h3><p><code>$ sudo make modules_install</code></p>
+<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>&emsp;&emsp;我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
+<h3 id="模块参数"><a href="#模块参数" class="headerlink" title="模块参数"></a>模块参数</h3><p>模块的参数可以通过内核命令行设置，例如：<br><code>usbcore.blinkenlights=1</code></p>
+<p>也可以使用 <code>modprobe</code> ：<br><code>modprobe usbcore blinkenlights=1</code></p>
+<p>使用 <code>modinfo info &lt;module_name&gt;</code> 可以获取可加载模块的参数列表。对于可加载模块，当被载入内核时，会将所有参数映射为 <code>/proc/modules/&#123;module_name&#125;/parameters/</code> 中的文件，这使得用户可以直接修改该文件来设置模块参数。</p>
+<h3 id="命令行参数格式"><a href="#命令行参数格式" class="headerlink" title="命令行参数格式"></a>命令行参数格式</h3><ul>
+<li><code>-</code> 与 <code>_</code> 是等价的，例如<code>log_buf=1M</code> 等价于 <code>log-buf=1M</code></li>
+<li>对于带空格的字符串使用双引号，例如<code>param=&quot;spaces in here&quot;</code></li>
+<li></li>
+</ul>
+<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
+]]></content>
+      <categories>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MicroPython介绍</title>
+    <url>/2023/04/25/MicroPython%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://micropython.org/">MicroPython</a> 是为 MCU 等资源受限环境提供精简和高效的 <code>Python3</code> 实现。它包括了 <code>Python3</code> 标准库的一个子集并且针对 MCU 进行了优化。</p>
+<p>&emsp;&emsp; MicroPython 提供了完全的 Python 解析器环境，用户可以在 <code>REPL</code> 中 直接执行命令，也可以导入并运行内置文件系统中的脚本。<code>REPL</code> 提供了命令行环境的通用特性，包括<code>自动补全</code>、<code>自动缩进</code>、<code>历史记录</code>和<code>复制粘贴</code>等。</p>
+<span id="more"></span>
+
+<h2 id="下载固件"><a href="#下载固件" class="headerlink" title="下载固件"></a>下载固件</h2><p>以 <code>ESP8266</code> 为例，参考<a href="/index.php/archives/226/">ESP8266 NodeMCU 介绍</a> 。</p>
+<h2 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h2><p>在启动时，会首先执行在内部<em>冻结模块</em>中的 <code>_boot.py</code> 脚本，该脚本会负责在<code>FlashROM</code>中挂载文件系统，如果文件系统不可用，它会进行模块的首次载入并创建文件系统。该部分的启动行为不能被用户修改（即使从源代码构建，也不要去修改它，除非你知道自己在做什么）。</p>
+<blockquote>
+<p>冷冻模块（frozen module）是用Python编写的模块，其编译字节代码对象由 Python 的<code>Freeze Utility</code>纳入了定制的 Python 解释器中。</p>
+</blockquote>
+<p>一旦文件系统被挂载，就可以找到其中的<code>boot.py</code>脚本并执行。它会负责启动<code>WebREPL</code> 后台服务（默认不启动）以及其他服务。该脚本可以被用户修改，例如用户可以修改一些参数或者增加其他后台服务。</p>
+<p>未修改的 <code>boot.py</code>，类似下面的脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># This file is executed on every boot (including wake-boot from deepsleep)</span></span><br><span class="line"><span class="comment">#import esp</span></span><br><span class="line"><span class="comment">#esp.osdebug(None)</span></span><br><span class="line"><span class="keyword">import</span> uos, machine</span><br><span class="line"><span class="comment">#uos.dupterm(None, 1) # disable REPL on UART(0)</span></span><br><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"><span class="keyword">import</span> webrepl</span><br><span class="line">webrepl.start()</span><br><span class="line">gc.collect()</span><br></pre></td></tr></table></figure>
+
+<p>最后，运行用户程序 <code>main.py</code>，如果该脚本存在于文件系统中 （并且由 boot.py 导入并执行入口函数）。</p>
+<h2 id="REPL"><a href="#REPL" class="headerlink" title="REPL"></a>REPL</h2><h3 id="串口-REPL"><a href="#串口-REPL" class="headerlink" title="串口 REPL"></a>串口 REPL</h3><p>可以通过 UART0 （GPIO1-TX，GPIO0-RX）获得<code>REPL</code>，例如通过<code>USB-&gt;TTL</code>转换器连接到 UART0，并使用串口工具通信：</p>
+<p><code>$ picocom /dev/ttyUSB0 -b115200</code></p>
+<p>连接成功后，会得到类似下面的输出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">MicroPython v1.20.0 on 2023-04-26; ESP module with ESP8266</span><br><span class="line">Type &quot;help()&quot; for more information.</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt;</span> </span><br></pre></td></tr></table></figure>
+<h3 id="WebREPL"><a href="#WebREPL" class="headerlink" title="WebREPL"></a>WebREPL</h3><p><code>WebREPL</code> 允许用户通过连接 WiFi 后在浏览器中获得 Python 命令行。WebREPL 的客户端可以通过浏览器访问：<a href="http://micropython.org/webrepl">WebREPL Client</a>。</p>
+<p>在此之前，用户需要使用 串口 REPL 启用<code>WebREPL</code>后台服务，并设置访问密码。在串口命令行中，执行下面的命令：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> webrepl_setup</span><br></pre></td></tr></table></figure>
+<p>并根据提示，进行相后续的相关配置（例如访问密码）。</p>
+<p>配置完成并重新启动后，会得到下面类似的启动信息：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">WebREPL server started on http://192.168.4.1:8266/</span><br><span class="line">Started webrepl in normal mode</span><br><span class="line"></span><br><span class="line">MicroPython v1.20.0 on 2023-04-26; ESP module with ESP8266</span><br><span class="line">Type &quot;help()&quot; for more information.</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>192.168.4.1</code>是 MicroPython 启动的 AP（无线热点） 中的局部 IP 地址，因此用户需要连接 AP（MicroPython-xxxxx）后才能访问该地址。如果用户已经配置 ESP8266 连接上了一个路由器，则可以不需要再连接 MicroPython AP。</p>
+<p>通过浏览器访问 WebREPL Server，会得到类型下面的界面：</p>
+<p><img src="/2023/04/25/MicroPython%E4%BB%8B%E7%BB%8D/WebREPL.png"></p>
+<p>输入前面配置的密码，就可以看到熟悉的命令行提示符 <code>&gt;&gt;&gt;</code>。</p>
+<h3 id="连接-WiFi"><a href="#连接-WiFi" class="headerlink" title="连接 WiFi"></a>连接 WiFi</h3><p>连接 WiFi 的命令如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> network</span><br><span class="line">sta_if = network.WLAN(network.STA_IF)</span><br><span class="line">sta_if.active(<span class="literal">True</span>)</span><br><span class="line">sta_if.connect(<span class="string">&#x27;&lt;your SSID&gt;&#x27;</span>, <span class="string">&#x27;&lt;your key&gt;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果 AP 不再使用，可以关闭它：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ap_if = network.WLAN(network.AP_IF)</span><br><span class="line">ap_if.active(<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>为了在启动时自动连接 WiFi，用户可以将下面的代码放到 <code>boot.py</code>中：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_connect</span>():</span><br><span class="line">    <span class="keyword">import</span> network</span><br><span class="line">    sta_if = network.WLAN(network.STA_IF)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> sta_if.isconnected():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;connecting to network...&#x27;</span>)</span><br><span class="line">        sta_if.active(<span class="literal">True</span>)</span><br><span class="line">        sta_if.connect(<span class="string">&#x27;&lt;ssid&gt;&#x27;</span>, <span class="string">&#x27;&lt;key&gt;&#x27;</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> sta_if.isconnected():</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;network config:&#x27;</span>, sta_if.ifconfig())</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>N-Body问题的数值模拟</title>
+    <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;从历史上看，第一个特殊研究的三体问题是<strong>太阳</strong>、<strong>地球</strong>和<strong>月亮</strong>间的运动。从现代意义上说，它可以指经典力学或量子力学中三个粒子运动的任何问题。</p>
+<blockquote>
+<p>参考 <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题 - wikipedia</a> 。<br>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<h2 id="数学建模"><a href="#数学建模" class="headerlink" title="数学建模"></a>数学建模</h2><h3 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h3><p>假设在时刻 <code>t</code> ，行星 <strong>q</strong>  的位置为 $ s_q(t) $，行星 <strong>k</strong> 的位置为 $ s_k(t) $，则根据牛顿定律，行星 k 作用于行星 q 上的引力为：<br>$$ f_{qk}(t) &#x3D; -\frac {Gm_qm_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } ( s_q(t) - s_k(t) ) $$</p>
+<p>其中， <strong>G</strong> 为 万有引力常量（$ 6.673<em>10^{-11} m^3&#x2F;(kg</em>s^2) $），m 为 行星质量，<strong>s</strong> 和 <strong>f</strong> 均为带方向的<strong>向量</strong>。</p>
+<p>进一步，我们可以计算所有其他行星作用于行星 q 上的引力和（向量和）：<br>$$ F_q(t) &#x3D; \sum_{k&#x3D;0,k\neq q}^{n-1}f_{qk} &#x3D; -Gm_q \sum_{k&#x3D;0,k \neq q} ^ {n-1} \frac {m_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } [s_q(t) - s_k(t)] $$</p>
+<p>最后，我们可以计算行星 q 在时刻 t 时的加速度：<br>$$ a_q(t) &#x3D; -G \sum_{j&#x3D;0,j \neq q}^{n-1} \frac {m_j} { { ( s_q(t) - s_j(t) ) } ^ 3 } [s_q(t) - s_j(t)] $$</p>
+<p>实际上，也可以用下面的等式表示：<br>$$ a_q(t) &#x3D; {s_q}’’(t) &#x3D; \frac {F_q(t)} {m_q} $$</p>
+<h3 id="数值模拟"><a href="#数值模拟" class="headerlink" title="数值模拟"></a>数值模拟</h3><p>如果要求 $ s_q(t) $，直接求解上节最后的<strong>微分公式</strong>是困难的，但是可以使用数值模拟方法来求得其近似值。我们使用最简单的<strong>欧拉方法</strong>，作为数值模拟方法。对于在定义域内连续的函数 $ g(t) $，在其曲线上有点$ (t_0, g(t_0)) $，那么当 $ t &#x3D; t_0 + \Delta{t} $时，<br>$$ y &#x3D; g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>且当 $ \Delta{t} $足够小时：<br>$$ g(t_0 + \Delta(t)) \approx g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>以此，我们可以模拟 $ s_q(t) $和$ v_q(t) $的值。假设，在时刻 0，行星 q 的位置和速度为 $ s_q(0) $ 和 $ v_q(0) $，那么，在时刻 $ \Delta{t} $，其位置和速度为：<br>$$ s_q(\Delta{t}) \approx s_q(0) + \Delta{t}s_q’(0) &#x3D; s_q(0) + \Delta{t}v_q(0) $$</p>
+<p>$$ v_q(\Delta{t}) \approx v_q(0) + \Delta{t}v_q’(0) &#x3D; v_q(0) + \Delta{t}a_q(0) &#x3D; v_q(0) + \Delta{t}\frac{1}{m_q}F_q(0) $$</p>
+<p>当我们求得$s_q(\Delta{t})$ 和 $v_q(\Delta{t})$后，我们可以使用相同的公式计算 $s_q(2\Delta{t})$ 和 $v_q(2\Delta{t})$，以此类推。</p>
+<h2 id="OpenMP"><a href="#OpenMP" class="headerlink" title="OpenMP"></a>OpenMP</h2><h2 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h2><h2 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h2>]]></content>
+      <categories>
+        <category>高性能计算</category>
+        <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenGL 工具库</title>
+    <url>/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; OpenGL(OpenGL Utility Toolkit)  。<code>freeglut</code> 是 <code>GLUT</code> 的一个完全开源替代库。</p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenMP Tutorial</title>
+    <url>/2023/03/02/OpenMP-Tutorial/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.openmp.org/">OpenMP</a> 可以认为是用于<code>共享内存型并行编程</code> 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。</p>
+<blockquote>
+<p>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="OpenMP-Vs-Pthreads"><a href="#OpenMP-Vs-Pthreads" class="headerlink" title="OpenMP Vs Pthreads"></a>OpenMP Vs Pthreads</h2><p>&emsp;&emsp; 尽管 <code>Pthreads</code> 也用于共享内存式的编程，但它和 OpenMP 有些不同：</p>
+<ul>
+<li>Pthreads 要求用户<strong>显示定义</strong>每个线程的行为；OpenMP 只用<strong>声明</strong>目标代码块需要并行，具体的行为交给编译器和运行时环境完成。</li>
+<li>Pthreads 可以作为与主程序进行链接的<strong>库</strong>，使用 C 编译器编译即可；但 OpenMP 需要编译器的额外支持，因此使用不支持 OpenMP 的 C 编译器来编译 OpenMP 程序不会获得预想的并行执行行为。</li>
+<li>Pthreads 更加底层，赋予用户控制线程行为细节的能力，但也给用户增加了编程负担；OpenMP 使得并行编程更加简单，但控制底层线程行为的能力较弱。</li>
+</ul>
+<p>&emsp;&emsp;对于大型的高性能程序，学术界和工业界的很多人都相信使用 Pthreads API 是非常困难的。OpenMP 被显式设计为一种更高层的 API，使得用户可以<strong>增量式</strong>地将串行程序并行化。</p>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><p>&emsp;&emsp; OpenMP 使用 “基于声明式” 的API，在C&#x2F;C++语言中表现为使用预处理指令 <code>#pragma</code>。 #pragma 所定义的很多指示字是编译器特有的，在不同的编译器间是不可移植的。预处理期将忽略它不认识的 #pragma 指令，不同的编译器可能以不同的方式解释同一条 #pragma 指令。对于 OpenMP, 使用 <code>#pragma omp</code> 作为声明的前缀。</p>
+<p><strong>一个简单的 HelloWorld 程序 omp_hello.c：</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _OPENMP</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&lt;omp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _OPENMP</span></span><br><span class="line">    <span class="type">int</span> my_rank = omp_get_thread_num();</span><br><span class="line">    <span class="type">int</span> thread_count = omp_get_num_threads();</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="type">int</span> my_rank = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> thread_count = <span class="number">1</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello from thread %d of %d\n&quot;</span>, my_rank, thread_count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> thread_count = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> omp parallel num_threads(thread_count)</span></span><br><span class="line">    hello();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>带有 <code>-fopenmp</code> 选项进行编译：</p>
+<p><code>$ gcc -g -Wall -fopenmp -o omp_hello omp_hello.c</code></p>
+<p>运行（指定4个线程）：<br><code>$ ./omp_hello 4</code></p>
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Hello from thread 0 of 4</span><br><span class="line">Hello from thread 3 of 4</span><br><span class="line">Hello from thread 2 of 4</span><br><span class="line">Hello from thread 1 of 4</span><br></pre></td></tr></table></figure>
+
+<p>由于 4 个线程竞争使用 <em>stdout</em> ，所以上述输出顺序不一定与线程的编号一致，当再次执行时，输出顺序就可能不同。</p>
+<p>使用 <code>single</code> 声明可以指定代码只能被一个线程执行。</p>
+<p>在上述代码中，<code>#pragma omp</code>声明中 <code>parallel</code> 指令表示紧跟的结构块（structured block）需要被多个线程执行。结构块可以是单个语句或者只有一个入口和出口组合语句（类似于编译理论中的“基本块”），即它不包括分支语句，也不是任何分支语句的目标。</p>
+<p><code>num_threads</code> 被称为子句（clause），它可以修改 <code>parallel</code> 指令的默认行为。</p>
+<p>上述声明所代表的底层行为到底是怎么样的呢？<br>首先当主线程（Master）运行到 <code>parallel</code> 指令时，会生成 thread_cnt-1 个从线程（Slave），然后每个线程都会执行结构块中的代码，最后当某个线程执行完成后，会等待其他线程完成。当所有线程完成后，从线程会被终结，主线程继续执行结构块之后的代码。Master线程和所有Slave线程组成一个 team 。</p>
+<h2 id="一个复杂例子"><a href="#一个复杂例子" class="headerlink" title="一个复杂例子"></a>一个复杂例子</h2><p>&emsp;&emsp; 该节以计算某个函数 f 在区间 [a,b] 上的积分为例。我们使用梯形公式：<br>令 $ h &#x3D; \frac{(b-a)}{n} $ （n 代表将定义域分为等长区间的个数）：<br>$$ S &#x3D; h[\frac{f(x_0)}{2} + f(x_1) + f(x_2)+\cdots+\frac{f(x_n)}{2}] $$</p>
+<p>calc 函数代表每个线程需要执行的结构块，它会根据当前线程的编号执行对应的子任务，其结果被写入 <em>group_result_ptr</em> 变量。<em>group_result_ptr</em> 变量必须进行互斥访问，可以使用 <code>#pragma omp critical</code> 来声明。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x* x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">calc</span> <span class="params">(<span class="type">double</span> a, <span class="type">double</span> b, <span class="type">int</span> n, <span class="type">double</span> *global_result_p)</span>&#123;</span><br><span class="line">    <span class="type">double</span> h, x, my_result;</span><br><span class="line">    <span class="type">double</span> local_a, local_b;</span><br><span class="line">    <span class="type">int</span> i, local_n;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> my_rank = omp_get_thread_num();</span><br><span class="line">    <span class="type">int</span> thread_count = omp_get_num_threads();</span><br><span class="line"></span><br><span class="line">    h = (b-a) / n;</span><br><span class="line">    local_n = n / thread_count;</span><br><span class="line">    local_a = a + my_rank*local_n*h;</span><br><span class="line">    local_b = local_a + local_n*h;</span><br><span class="line">    </span><br><span class="line">    my_result = (f(local_a) + f(local_b)) / <span class="number">2.0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;= local_n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        x = local_a  + i * h;</span><br><span class="line">        my_result += f(x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    my_result = my_result*h;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp critical</span></span><br><span class="line">    *global_result_p += my_result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们定义 <code>f(x) = x*x</code> 来作为待积分的函数，main 函数如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">double</span> global_result = <span class="number">0.0</span>;</span><br><span class="line">    <span class="type">double</span> a, b;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">int</span> thread_count;</span><br><span class="line">    </span><br><span class="line">    thread_count = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Enter a, b, and n: \n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%lf %lf %d&quot;</span>, &amp;a, &amp;b, &amp;n);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp parallel num_threads(thread_count)</span></span><br><span class="line">    calc(a, b, n, &amp;global_result);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;With n = %d trapezoids, our estimate\n&quot;</span>, n);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;of the integral from %f to %f = %.14e\n&quot;</span>,a, b, global_result);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main 函数与第2节中的代码基本相同，这里<code>calc</code>函数被声明需要并行执行。</p>
+<p>编译后执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./trap 4</span></span><br><span class="line">Enter a, b, and n: </span><br><span class="line">3 6 100</span><br><span class="line">With n = 100 trapezoids, our estimate</span><br><span class="line">of the integral from 3.000000 to 6.000000 = 6.30004500000000e+01</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>精确值为 63，上面的输出结果是合适的，如果增加n值，会得到更精确的积分结果。</p>
+<h2 id="变量的作用域"><a href="#变量的作用域" class="headerlink" title="变量的作用域"></a>变量的作用域</h2><p><strong>还原（reduction）、还原变量及还原操作符（reduction operator）</strong><br><strong>还原子句</strong>： <code>reduction(&lt;operator&gt; : &lt;variable list&gt;)</code></p>
+<p>使用 <code>private(var1,var2,...)</code> 子句可以声明某些变量位于私有域中。<br>使用 <code>shared(var1, var2,...)</code> 子句可以声明某些变量位于共享域中。</p>
+<h2 id="使用parallel-for-指令"><a href="#使用parallel-for-指令" class="headerlink" title="使用parallel for 指令"></a>使用<code>parallel for</code> 指令</h2><p>&emsp;&emsp; <code>parallel for</code>指令可用于声明 for 循环为并行执行，上文的积分程序可以不使用 <code>parallel</code> 指令，而使用 <code>parallel for</code>指令，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">h = (b-a)/n;</span><br><span class="line">approx = (f(a) + f(b))/<span class="number">2.0</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp parallel for num_threads(thread_count) reduction(+:approx)</span></span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;= n<span class="number">-1</span>; i++) &#123;</span><br><span class="line">    approx += f(a+i*h);</span><br><span class="line">&#125;</span><br><span class="line">approx += h* approx;</span><br></pre></td></tr></table></figure>
+<p>值的注意的是，approx 必须被声明为还原变量，+为还原运算符。另外，在使用<code>parallel</code>声明时，每个线程所要完成的子任务由线程自己分配，但使用<code>parallel for</code>声明时，任务的分配由系统决定。</p>
+<p>for 循环中的 i 位于私有域中，即每个线程有一个 i 的拷贝，如果位于共享域，<code>i++</code>语句的执行 会导致数据竞争。对于被<code>parallel for</code>声明的for循环，其中的所有变量都位于共享域，但循环变量除外，例如这里的 i 。</p>
+<p>可以使用<code>parallel for</code> 声明的 for 循环是有限制的，它需要满足一定的规范形式。否则的话，运行时系统如何在执行之前知道for循环的迭代次数呢？</p>
+<p>另外，非常重要的两点是：</p>
+<ul>
+<li>对于使用 <code>parallel for</code>声明的for循环，OpenMP 编译器不会检测循环中不同迭代间的依赖关系，这些依赖必须由编程人员自己来检查。</li>
+<li>所以，对于不同迭代间存在依赖的 for循环，通常不能被 OpenMP 并行化。</li>
+</ul>
+<p>使用 <code>default(none)</code> 子句可以强制用户为每个变量声明域，例如循环变量，在前文我们知道，循环遍历默认是私有的，但使用<code>default(none)</code>子句后，我们必须使用<code>private</code>显式声明它是私有的。</p>
+<h3 id="并行化排序程序"><a href="#并行化排序程序" class="headerlink" title="并行化排序程序"></a>并行化排序程序</h3><h2 id="循环调度"><a href="#循环调度" class="headerlink" title="循环调度"></a>循环调度</h2><p>&emsp;&emsp;在使用<code>parallel for</code>声明 for 循环时，任务分配是由系统决定的，系统可以使用简单的块划分方法：前<code>n/thread_count</code>次迭代分配给线程0，接着的 <code>n/thread_count</code> 次迭代分配给线程1，依次类推，直到分配完所有迭代。但有时候这并不是最优的分配方案，比如当不同迭代的负载并不相同的时候。</p>
+<p>OpenMP 的 <code>schedule</code>子句可以用来调度迭代，来获得性能提升。格式为：</p>
+<p><code>schedule(&lt;type&gt; [, &lt;chunksize&gt;])</code></p>
+<p><code>&lt;type&gt;</code>可以是下面的任意一种：</p>
+<ul>
+<li><code>static</code>：在循环执行前分配迭代。</li>
+<li><code>dynamic</code> 或 <code>guided</code>：循环执行期间分配迭代，即一个线程完成它的任务后，还可以从运行时系统获取更多的任务。</li>
+<li><code>auto</code>：由编译器或者运行时系统决定调度。</li>
+<li><code>runtime</code>：由运行时系统决定调度。</li>
+</ul>
+<p>对于 <code>static</code> 调度，使用 <code>round-robin</code> 分配方法，如果我们有12个迭代和3个线程，<code>schedule(static, 1)</code>的分配方案如下：</p>
+<ul>
+<li>Thread0 ：0，3，6，9</li>
+<li>Thread1 ：1，4，7，10</li>
+<li>Thread2 ：2，5，8，11</li>
+</ul>
+<p><code>&lt;chunksize&gt;</code>默认为<code>total_iterations/thread_count</code>，在这种情况下的分配方案几乎等价于默认的分配方案（即简单的块划分）。</p>
+<p>对于 <code>dynamic</code>调度，<code>&lt;chunksize&gt;</code>默认为 1 。对于 <code>guided</code>调度，当某个线程完成它的任务时，重新获得的迭代个数会递减。</p>
+<p>对于 <code>runtime</code> 调度，具体的调度策略由环境变量 <code>OMP_SCHEDULE</code> 决定。</p>
+<p>那么应该使用哪一种调度策略呢？</p>
+<p><code>schedule</code>子句是存在开销（overhead）的，且<code>guided</code>调度的开销最大，<code>dynamic</code>次之，<code>static</code>最小。如果不使用 <code>schedule</code>子句时的程序性能是可以接受的，就不要使用它。下面是一些总结：</p>
+<ul>
+<li>如果每次迭代的负载基本相同，就<code>不要</code>使用<code>schedule</code>子句。</li>
+<li>如果每次迭代的负载是线性递增的，使用<code>schedule(static,1)</code> 或许可以获得更好的性能。</li>
+<li>如果迭代的负载不确定，可以使用不同的调度选项进行探测，这是可以使用 <code>schedule(runtime)</code>，每次探测可以对 <code>OMP_SCHEDULE</code>环境变量设定不同的值。</li>
+</ul>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>&emsp;&emsp; <code>pragma omp barrier</code> 可以在 <code>parallel</code>结构块的中间<strong>显式</strong>声明同步语义，即 team 中的任一线程必须在屏障点等待其他所有线程也到达屏障点之后才能继续执行。<strong>另外，<code>parallel</code>、<code>parallel for</code> 和 <code>for</code> 指令在结构块的结尾加入了一个隐含的屏障。对于一些 OpenMP 实现，支持使用<code>nowait</code>声明来取消这个隐式的屏障。</strong></p>
+<p>&emsp;&emsp; <code>pragma omp atomic</code> 指令类似 <code>critical</code> 但拥有更好的性能。使用 <code>atomic</code>声明的临界区只能是单语句：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">x &lt;op&gt;= &lt;expression&gt;</span><br><span class="line">x++;</span><br><span class="line">++x;</span><br><span class="line">x--;</span><br><span class="line">--x;</span><br></pre></td></tr></table></figure>
+<p>另外，<code>critical(name)</code> 与 <code>critical</code>不同，它可以声明不同的临界区（以不同的 name 命名），这些临界区的代码可以并行执行。</p>
+<p><strong>锁（locks）</strong>：被用于数据结构而非代码块的互斥访问。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">omp_init_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_set_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_unset_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_destory_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>另外需要注意的是：</p>
+<ul>
+<li>对于单个临界区不应该混合使用不同类型的同步原语。</li>
+<li><strong>不保证</strong>线程一定不会饥饿。</li>
+<li>嵌套使用同步原语是“危险”的，有可能造成死锁。</li>
+</ul>
+<h2 id="Cache一致性"><a href="#Cache一致性" class="headerlink" title="Cache一致性"></a>Cache一致性</h2><h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>&emsp;&emsp; 在结构块中调用外部函数时，要清楚地知道该函数是否线程安全（thread-safe），如果不是线程安全的，则该结构块不能被并行化，除非我们可以使用线程安全的函数替换它。</p>
+<h2 id="其他-directive-和-clause"><a href="#其他-directive-和-clause" class="headerlink" title="其他 directive 和 clause"></a>其他 directive 和 clause</h2><h3 id="directive"><a href="#directive" class="headerlink" title="directive"></a>directive</h3><ul>
+<li><code>atomic</code> : 内存位置将会原子更新（Specifies that a memory location that will be updated atomically）。</li>
+<li><code>flush</code> : 所有线程对所有共享对象具有相同的内存视图（view of memory）。</li>
+<li><code>master</code> : 指定由主线程来执行接下来的程式。</li>
+<li><code>ordered</code>: 指定在接下来的代码块中，被并行化的 for 循环将依序执行（sequential loop）。</li>
+<li><code>sections</code> : 将接下来的代码块包含将被并行执行的section块。</li>
+<li><code>single</code> : 之后的程式将只会在一个线程（未必是主线程）中被执行，不会被并行执行。</li>
+<li><code>threadprivate</code> : 指定一个变量是线程局部存储（thread local storage）。</li>
+</ul>
+<h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>]]></content>
+      <categories>
+        <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenWRT for Raspberry Pi Model 3</title>
+    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
+<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
+<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
+<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
+<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
+<p>设置口令：<br><code>sudo passwd openwrt</code></p>
+<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
+<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
+<p>我们使用最新的 <code>22.03.3</code> 版本</p>
+<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
+<p>具体配置选项:</p>
+<ul>
+<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
+<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
+<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
+<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
+<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
+<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
+</ul>
+</li>
+<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
+<li><strong>Luci &gt; Application</strong>:<ul>
+<li>luci-app-dockerman 容器</li>
+<li>luci-app-frpc 内网穿透客户端</li>
+<li>luci-app-ddns 动态域名解析</li>
+<li>luci-app-mwan3  分流助手(多运营商网络)</li>
+<li>luci-app-samba4 SMB网络共享</li>
+<li>luci-app-ttyd 网页终端插件</li>
+<li>luci-app-wol 网络唤醒</li>
+</ul>
+</li>
+<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
+</ul>
+<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
+<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
+]]></content>
+      <categories>
+        <category>开源硬件</category>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>RISC-V 架构介绍</title>
+    <url>/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[]]></content>
+      <categories>
+        <category>计算机科学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>TSP问题的数值模拟</title>
+    <url>/2023/03/13/TSP%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>旅行商问题（Traveling SalesPerson Program, TSP）</code>是一个经典的组合优化问题。给定一个城市列表以及各相邻城市间的<strong>旅行代价值</strong>（例如物理距离），一个商人从出发城市开始，需要<strong>访问并且只访问一次</strong>其他所有城市后返回出发地，并要求旅行代价值最小。<br>&emsp;&emsp; 从图论的角度上分析，TSP 问题是 <strong>NP 完全问题</strong>。实际上，从工程实践的角度上看，它意味着在任何情况下，没有已知算法可以比<strong>穷举法</strong>更好地解决该问题。但是对于穷举法，随着顶点数的增加，会产生组合爆炸问题。<br>&emsp;&emsp;虽然如此，目前仍然存在许多近似算法和启发式算法可以使用，例如遗传算法、模拟退火法、蚁群算法、禁忌搜索算法、贪婪算法和神经网络等。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<h2 id="树搜索方法"><a href="#树搜索方法" class="headerlink" title="树搜索方法"></a>树搜索方法</h2><pre class="mermaid">graph LR
+emperor((0)) -- 1 --> emperor1((1))
+emperor1((1)) -- 5 --> emperor((0))
+emperor((0)) -- 3 --> emperor2((2))
+emperor2((2)) -- 1 --> emperor((0))
+emperor((0)) -- 8 --> emperor3((3))
+emperor3((3)) -- 7 --> emperor((0))
+emperor1((1)) -- 2 --> emperor2((2))
+emperor2((2)) -- 18 --> emperor1((1))
+emperor1((1)) -- 6 --> emperor3((3))
+emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
+      <categories>
+        <category>高性能计算</category>
+        <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>嵌入式系统中的WatchDog</title>
+    <url>/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp; 对于一些特殊的硬件设备（例如远程空间探测器），如果系统出现故障，想要通过人工手动恢复几乎是不可能的，这时候设备需要“自力更生”，<code>WatchDog</code>定时器就可以派上用场了。另外，在运行不受信任的代码时，也可以使用 <code>WatchDog</code>，以限制该代码对 CPU 的使用时间，从而防止某些类型的<code>拒绝服务攻击（DOS Attack）</code>。</p>
+<blockquote>
+<p>参考 <a href="https://interrupt.memfault.com/blog/firmware-watchdog-best-practices">《A Guide to Watchdog Timers for Embedded Systems》</a> - By <strong>Chris Coleman</strong>.<br>参考  <a href="https://encyclopedia.thefreedictionary.com/Watchdog+timer">Wikipedia - WatchDog timer</a>.</p>
+</blockquote>
+<h2 id="硬件-WatchDog"><a href="#硬件-WatchDog" class="headerlink" title="硬件 WatchDog"></a>硬件 WatchDog</h2><p>&emsp;&emsp; 许多芯片厂商在他们的 MCU 中包含了一个分立的 RTL 模块，称为”WatchDog 定时器”。该外围设备（peripheral）由一个随时钟周期信号自动递减的计数器组成，当计数器到达零时，硬件将自动重置（Reset）设备。</p>
+<p>&emsp;&emsp; <code>WatchDog 定时器</code>通常在默认情况下是禁用的，程序员有责任对其进行配置并且在软件中对其使能（enable）。一旦使能后，软件需要周期性地重置计数器，以防止设备被重启（Reset）。这个操作通常被称为“喂（Feeding）”、 “踢（Kicking）” 或者 “拍（Patting）” 狗。这样做的理由是，如果软件不能够重置 WatchDog 定时器，表明系统没有处于预期的运行状态，这时就需要将系统重置到正常状态。</p>
+<h2 id="为什么需要-WatchDog-定时器"><a href="#为什么需要-WatchDog-定时器" class="headerlink" title="为什么需要 WatchDog 定时器"></a>为什么需要 WatchDog 定时器</h2><p>&emsp;&emsp; 嵌入式系统在很多情况下都会被挂起（Hang），最常见的情况列举如下：</p>
+<ul>
+<li>内存已损坏，代码陷于无限循环中（infinite loop）。</li>
+<li>一个硬件组件（例如 HRM、加速度计或者 NOR Flash芯片）被卡住（wedged），不能响应请求。</li>
+<li>一个或者多个任务进入死锁（互斥体被按照错误的顺序占用或者没有被释放）。</li>
+<li>一个高优先级的 RTOS 任务占用了太多 CPU 时间，导致低优先级任务饥饿。</li>
+</ul>
+<p>对于嵌入式系统，<strong>应该</strong>在适当的位置包含 WatchDog 定时器子系统。这是识别系统挂起并收集足够信息以从根本上解决潜在问题（issue）并提供修复的最佳方法。</p>
+<h2 id="配置-WatchDog"><a href="#配置-WatchDog" class="headerlink" title="配置 WatchDog"></a>配置 WatchDog</h2><h3 id="什么时候对-WatchDog-的配置进行重置"><a href="#什么时候对-WatchDog-的配置进行重置" class="headerlink" title="什么时候对 WatchDog 的配置进行重置?"></a>什么时候对 WatchDog 的配置进行重置?</h3><p>通过情况下，有下面两种选择：</p>
+<ul>
+<li>WatchDog 可以被 使能(enable) 或者禁用（disable）多次，并且在每次重启时<strong>必须</strong>被配置。</li>
+<li>WatchDog 只能被配置和使能一次。一旦被使能后，只有特定类型的重置才能禁用（disable）WatchDog.</li>
+</ul>
+<h3 id="WatchDog-超时后会发生什么"><a href="#WatchDog-超时后会发生什么" class="headerlink" title="WatchDog 超时后会发生什么?"></a>WatchDog 超时后会发生什么?</h3><p>通常的选择有下面几种：</p>
+<ul>
+<li>当 WatchDog 超时后，硬件将立即对系统进行重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>接近超时时</strong>触发中断；在中断处理程序中，软件可以决定“喂狗”来防止系统被重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>超时时</strong>触发中断；MCU 将分配软件额外的一些时钟周期来做一些清理，然后重置系统。但这种做法往往是令人失望的，除非软件<strong>非常小心地</strong>分配清理工作执行所需的时钟周期数，否则硬件很可能在清理工作未完成前重置系统。</li>
+</ul>
+<h2 id="WatchDog-类型"><a href="#WatchDog-类型" class="headerlink" title="WatchDog 类型"></a>WatchDog 类型</h2><h3 id="单级-WatchDog"><a href="#单级-WatchDog" class="headerlink" title="单级 WatchDog"></a>单级 WatchDog</h3><p>Watchdog 定时器可以有多种配置，而且许多允许修改其配置。MCU 通常有一个集成的 Watchdog 。在其他计算机设备中，Watchdog 可能直接位于在 CPU 附近且直接相连的芯片中，或者位于计算机机箱中的外部扩展卡中。Watchdog 可以和 CPU 共用同一个时钟信号，如下图所示，或者它们可以有独立的时钟信号。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png"></p>
+<h3 id="多级-WatchDog"><a href="#多级-WatchDog" class="headerlink" title="多级 WatchDog"></a>多级 WatchDog</h3><p>多级 Watchdog 计时器通常由多个计时器级联而成。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png"></p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -202,5 +935,368 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>MPI Tutorial</title>
+    <url>/2023/03/06/MPI-Tutorial/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在并行 MIMD（多指令多数据）的世界中的大多数计算机都可以分为<code>分布式内存型</code>和<code>共享内存型</code>两种类型的系统。我们在<a href="http://1.117.83.246/index.php/archives/265/">OpenMP Tutorial</a> 中介绍了后一种，从编程人员的角度看，共享内存型的系统由多个核及可以全局访问的内存组成，在那里任何核可以访问任何内存地址。我们这篇文章介绍前一种系统的并行编程，通过使用一种消息传递（Message-Passing）接口 API。</p>
+<blockquote>
+<p>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<span id="more"></span>
+
+<p>&emsp;&emsp; <em>熟悉 Linux&#x2F;Unix 系统编程的开发人员会自觉地将 MPI 接口与部分进程间通信机制进行类比。常用的非共享内存的进程间通信机制包括管道、信号、消息队列等，但这些机制并不适合跨系统的分布式系统编程。</em></p>
+<h2 id="下载安装-MPI-实现"><a href="#下载安装-MPI-实现" class="headerlink" title="下载安装 MPI 实现"></a>下载安装 MPI 实现</h2><p>&emsp;&emsp;MPI 作为一种<strong>标准</strong>，可以有多种<strong>实现</strong>。</p>
+<p>&emsp;&emsp;<a href="https://www.mpich.org/">MPICH</a> 是一种高性能和可移植的 MPI 的实现，它的目标如下：</p>
+<ul>
+<li>有效支持不同类型的计算和通信平台，包括商用集群（commodity clusters）、高速网络和高端计算机系统（例如Blue Gene 和 Cray）。</li>
+<li>通过一种已扩展的模块化的框架来支持使用 MPI 的尖端研究。</li>
+</ul>
+<p>&emsp;&emsp;在 Ubuntu 系统上下载：<code>sudo apt-get install mpich</code></p>
+<p>&emsp;&emsp;我们可以看到该包依赖另外两个包<code>libmpich-dev</code> 和 <code>libmpich12</code>，它分别代表头文件和动态链接库（支持c&#x2F;c++&#x2F;fortran语言）。</p>
+<p>&emsp;&emsp; <a href="https://www.open-mpi.org/">OpenMPI</a> 是 MPI 标准的另外一种实现。<br>&emsp;&emsp;在 ubuntu 上下载安装： <code>sudo apt-get instal libopenmpi-dev libopenmpi3 openmpi-bin opemmpi-common</code>。这些包包含了头文件、动态链接库和相关工具等。</p>
+<p>&emsp;&emsp;我们下面的示例将使用 <strong>openmpi</strong> 实现。</p>
+<h2 id="一个-HelloWord-程序"><a href="#一个-HelloWord-程序" class="headerlink" title="一个 HelloWord 程序"></a>一个 HelloWord 程序</h2><p>&emsp;&emsp; 我们把消息传递的主体称作进程（基本上与实际的进程等价），进程间的通信通过两个函数完成：<code>send</code> 函数和<code>receive</code>函数。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openmpi/mpi.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAX_STRING = <span class="number">100</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> greeting[MAX_STRING];</span><br><span class="line">    <span class="type">int</span> comm_sz;</span><br><span class="line">    <span class="type">int</span> my_rank;</span><br><span class="line">    </span><br><span class="line">    MPI_Init(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_sz);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(my_rank != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">sprintf</span>(greeting, <span class="string">&quot;Greeting from process %d of %d!&quot;</span>, my_rank, comm_sz);</span><br><span class="line">        MPI_Send(greeting, <span class="built_in">strlen</span>(greeting)+<span class="number">1</span>, MPI_CHAR, <span class="number">0</span>,<span class="number">0</span>,MPI_COMM_WORLD);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Greetings from process %d of %d!\n&quot;</span>, my_rank, comm_sz);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> q = <span class="number">1</span>; q &lt; comm_sz; q++)&#123;</span><br><span class="line">            MPI_Recv(greeting, MAX_STRING, MPI_CHAR, q, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, greeting);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    MPI_Finalize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的程序中，进程0接收来自其他非0进程的消息（通过一个<code>for</code>循环），非0进程则向进程0发送消息，编译该程序：</p>
+<p><code>$ mpicc -g -Wall -o hello_mpi hello_mpi.c</code></p>
+<p><code>mpicc</code> 是对 C 编译器的包装器，它简化了编译命令，使得用户不需要考虑指定头文件路径或链接动态库等编译选项。当然，我们也可以支持使用 C 编译器：</p>
+<p><code>$ gcc -g -Wall -o hello_mpi hello_mpi.c -lmpi</code></p>
+<p>我们可以直接运行 <code>./hello_mpi</code>:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./hello_mpi</span></span><br><span class="line">Greetings from process 0 of 1!</span><br></pre></td></tr></table></figure>
+<p>可以看到只有一个进程 0 被生成，并没有进程间通信。我们使用 <code>mpiexec</code> 来生成多个实例进程：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mpiexec -n 2 ./hello_mpi</span></span><br><span class="line">Greetings from process 0 of 2!</span><br><span class="line">Greeting from process 1 of 2!</span><br></pre></td></tr></table></figure>
+<p><code>mpiexec -n &lt;number&gt; ./hello_mpi</code> 命令首先会让系统生成 <em>number</em> 个 <code>./hello_mpi</code> 程序实例（进程），然后可能会让系统调度不同的实例到不同的 Core 上运行，一旦所有进程运行后，MPI 实现会负责确保进程间可以相互通信。在我的系统上只有两个 Core，所以 <em>number</em> 最大为 2 。</p>
+<p>也可以使用 <strong>硬件线程</strong> 来完成并发执行：</p>
+<p><code>$ mpiexec -n 3 --use-hwthread-cpus ./hello_mpi</code></p>
+<h2 id="主要-API"><a href="#主要-API" class="headerlink" title="主要 API"></a>主要 API</h2><h3 id="MPI-Init-和-MPI-Finalize"><a href="#MPI-Init-和-MPI-Finalize" class="headerlink" title="MPI_Init 和 MPI_Finalize"></a>MPI_Init 和 MPI_Finalize</h3><p><code>MPI_Init</code> 接口的原型如下:</p>
+<p><code>int MPI_Init (int* argc_p, char*** argv_p);</code></p>
+<p><code>argc_p</code> 和 <code>argv_p</code> 分别指向 <code>main</code>函数的 <code>argc</code>和 <code>argv</code>，MPI_Init 可以接管对命令行参数的处理，如果不需要，则将 argc_p 和 argv_p 置为 <code>NULL</code>。MPI_Init 接口负责 MPI 系统的初始化，例如为消息Buffer分配存储空间，为进程实例分配 Rank 等。也就是说，MPI_Init 必须在所有其他 MPI_XXXX 接口前调用。</p>
+<p><code>MPI_Finalize</code> 接口的原型如下：</p>
+<p><code>int MPI_FInalize(void);</code></p>
+<p><code>MPI_Finalize</code> 会通知 MPI 系统我们已经完成了 MPI， 它会释放内部的动态内存空间。</p>
+<p>###3.2 MPI_Comm_size 和 MPI_Comm_rank</p>
+<p>MPI 系统定义了 <code>通讯者（Communicators）</code>的概念，它代表所有彼此可以通信的进程。在具体接口定义中，称为 <code>MPI_COMM_WORLD</code>。</p>
+<p><code>MPI_Comm_size</code> 接口的原型如下：</p>
+<p><code>int MPI_Comm_size(MPI_Comm comm, int* comm_sz_p);</code></p>
+<p>该接口返回 <code>Communicators</code>（即形参 <code>comm</code>） 中所有进程的个数。</p>
+<p><code>MPI_Comm_rank</code>接口的原型如下：</p>
+<p><code>int MPI_Comm_rank(MPI_Comm comm, int* my_rank_p);</code></p>
+<p>该接口返回<code>Communicators</code>（即形参 <code>comm</code>） 中当前进程（即当前调用 <code>MPI_Comm_rank</code>的进程）的排名（Rank）。</p>
+<h3 id="SPMD-程序"><a href="#SPMD-程序" class="headerlink" title="SPMD 程序"></a>SPMD 程序</h3><p>&emsp;&emsp;在我们上面的 HelloWorld 例子中，所有的进程都共用同一个程序，但在程序内部使用<code>if-else</code>分支语句区分非0进程和0号进程的行为，进程的排名（Rank）通过调用 <code>MPI_Comm_rank</code>接口获得。这种并行编程的方法可以称为 <code>SPMD（单程序，多数据）</code>。SPMD 程序可以被任意多个进程运行。</p>
+<h3 id="MPI-Send"><a href="#MPI-Send" class="headerlink" title="MPI_Send"></a>MPI_Send</h3><p><code>MPI_Send</code> 接口的原型为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Send</span><span class="params">(<span class="type">void</span>* msg_buf_p, <span class="type">int</span> msg_size, MPI_Datatype msg_type, </span></span><br><span class="line"><span class="params">             <span class="type">int</span> dest, <span class="type">int</span> tag, MPI_Comm communicator)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>msg_buf_p</code> 指向消息的内容，<code>msg_size</code> 和 <code>msg_type</code> 共同决定了消息的大小。<code>MPI_Datatype</code> 代表数据单元的类型，类型列表如下：</p>
+<ul>
+<li>MPI_CHAR，MPI_UNSIGNED_CHAR</li>
+<li>MPI_SHORT，MPI_UNSIGNED_SHORT</li>
+<li>MPI_INT，MPI_UNSIGNED</li>
+<li>MPI_LONG，MPI_UNSIGNED_LONG</li>
+<li>MPI_LONGLONG</li>
+<li>MPI_FLOAT</li>
+<li>MPI_DOUBLE，MPI_LONG_DOUBLE</li>
+<li>MPI_BYTE</li>
+<li>MPI_PACKED</li>
+</ul>
+<p><code>dest</code> 代表目标进程的Rank，<code>tag</code>是非负整数，用来区分不同的消息（这是一种语义上的不同），<code>communicator</code> 代表<code>通讯者</code>，所有通讯类 MPI 接口都必须包含该参数。<code>Communicators</code> 定义了一种”通信宇宙”，不同<code>Communicators</code>中的进程不能相互通信。<br>例如，在某些场景中，我们需要使用两个库，它们都使用了MPI，但它们是独立建模的。我们需要防止两个库中的进程相互通信，一种简单的做法就是为两个库使用不同的<code>Communicators</code>。</p>
+<p>需要特别注意的是，<code>MPI_Send</code> 接口的调用可能会使当前进程<strong>阻塞</strong>，也可能立即返回。MPI 为不同的语义提供了不同的接口。在<code>MPI_Send</code>的语义层面，对于消息的发送而言，不同实现有不同的细节。通常来说，我们使用 “信封” 模型，信息是 “信”，但我们需要增加一些额外的信息放在“信封”上面，这些信息包括：目标进程Rank、当前进程Rank、消息Tag、<code>Communicators</code>和消息的长度等。</p>
+<h3 id="MPI-Recv"><a href="#MPI-Recv" class="headerlink" title="MPI_Recv"></a>MPI_Recv</h3><p><code>MPI_Recv</code> 接口的原型为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Recv</span><span class="params">(<span class="type">void</span>* msg_buf_p, <span class="type">int</span> msg_size, MPI_Datatype msg_type, </span></span><br><span class="line"><span class="params">             <span class="type">int</span> source, <span class="type">int</span> tag, MPI_Comm communicator, </span></span><br><span class="line"><span class="params">             MPI_Status* status_p)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>大部分参数与 <code>MPI_Send</code> 接口相同，其中 <code>source</code> 代表消息来源进程的Rank；<code>tag</code>则需要和发送者 <code>MPI_Send</code> 中的 <code>tag</code> 保持匹配，<code>communicator</code> 也需要和发送者进程所在的<code>Communicators</code>保持匹配；<code>status_p</code> 大部分情况不会被用到，我们传递 <code>MPI_STATUS_IGNORE</code> 实参给它。</p>
+<p>特别注意的是，<code>MPI_Recv</code>总是会<strong>阻塞</strong>，直到一个匹配的消息被完全接收。MPI 也提供了非阻塞的通信接口。</p>
+<p>MPI 要求消息是 <code>非重叠的（nonovertaking）</code>，即如果一个进程 q 发送了两个消息给进程 r，那么在接收第二个消息之前，第一个消息对于r来说必须是可用的。但对于不同进程发送的消息，就没有这样的限制。换句话说，进程 m 相对进程 n 更早地向进程 r 发送消息，但并不代表进程 r 会更早地接收它。MPI 可能会运行在地理布局非常大的分布式系统中，这种系统中节点之间的网络通信速率可能相差很大。</p>
+<h3 id="消息匹配"><a href="#消息匹配" class="headerlink" title="消息匹配"></a>消息匹配</h3><p>发送信息的进程 q 如果要确保信息被目标进程 r 接收，需满足以下条件：</p>
+<ul>
+<li>tag 要一致</li>
+<li>communicator 要一致</li>
+<li>dest &#x3D; r 并且 source &#x3D; q</li>
+<li>msg_type 要一致，而且 r 的 msg_size 要大于等于 q 的 msg_size。</li>
+</ul>
+<p>这里有一个特殊情况，如果进程 r 从多个进程接收消息，这些进程完成任务的时间是不可预测的；如果 r 简单的以进程的排名顺序来接收消息，可能会导致部分“快进程”需要等待“慢进程”完成。为避免这个问题，MPI 提供了 <code>MPI_ANY_SOURCE</code> 常量，它可以作为进程 r <code>MPI_Recv</code> 接口中 <code>source</code> 的实参。这样进程 r 就可以按照发送者进程的完成顺序来接收消息。</p>
+<p>类似的做法适用于 <code>tag</code> 形参。MPI 提供了 <code>MPI_ANY_TAG</code> 常量，它可以作为 <code>MPI_Recv</code> 中 <code>tag</code> 的实参，这使得 r 进程不用再指定不同tag消息的接收顺序。</p>
+<p><code>MPI_ANY_TAG</code> 和 <code>MPI_ANY_SOURCE</code> 统称为 “通配符(Wildcard)” 参数，它的使用需要注意：</p>
+<ul>
+<li>只能有<strong>一个</strong>接收进程使用 “通配符” 参数。</li>
+<li>对于 <code>Communicator</code> 参数没有”通配符” 实参。</li>
+</ul>
+<p>在实际编程中，消息匹配是非常重要的，如果使用 <code>MPI_Recv</code> 的进程没有接收到匹配的消息，它会一直阻塞。对于使用 <code>MPI_Send</code> 的进程，如果发送的信息没有任何接收进程匹配，那么它也会阻塞（如果使用非阻塞接口，发送的信息会丢失）。</p>
+<h3 id="status-p-参数"><a href="#status-p-参数" class="headerlink" title="status_p 参数"></a><code>status_p</code> 参数</h3><p>在 3.6 节中我们说明了”通配符” 参数的使用，那么接收进程如何获取消息的发送者、消息的tag和消息的实际大小呢？</p>
+<p>使用 <code>MPI_Recv</code> 接口的  <code>status_p</code> 参数可以用来获取这些信息，它是一个至少包含下面三个成员的结构体：</p>
+<ul>
+<li><strong>MPI_SOURCE</strong> ： 指定消息的发送者</li>
+<li><strong>MPI_TAG</strong>: 指定消息的tag</li>
+<li><strong>MPI_ERROR</strong></li>
+</ul>
+<p>消息的大小可以使用 <code>MPI_Get_count</code> 接口获取，其原型为：</p>
+<p><code>int MPI_Get_Count(MPI_Status* status_p, MPI_Datatype type, int* count_p);</code></p>
+<p>其中 <code>status_P</code> 和 <code>type</code> 要使用与<code>MPI_Recv</code>接口中相同的实参。</p>
+<h2 id="一个复杂例子"><a href="#一个复杂例子" class="headerlink" title="一个复杂例子"></a>一个复杂例子</h2><h3 id="数值积分"><a href="#数值积分" class="headerlink" title="数值积分"></a>数值积分</h3><p>&emsp;&emsp; 与<a href="http://1.117.83.246/index.php/archives/265/">OpenMP Tutorial</a> 中相同，我们仍然以“使用梯形法则进行数值积分“作为例子:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openmpi/mpi.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="title function_">f</span><span class="params">(<span class="type">double</span> x)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x*x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">double</span> <span class="title function_">Trap</span><span class="params">(<span class="type">double</span> a, <span class="type">double</span> b, <span class="type">int</span> n, <span class="type">double</span> h)</span> &#123;</span><br><span class="line">    <span class="type">double</span> ans = <span class="number">0</span>;</span><br><span class="line">    ans  =  (f(a) + f(b))/<span class="number">2.0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;n;i++)&#123;</span><br><span class="line">        ans += f(a+i*h);</span><br><span class="line">    &#125;</span><br><span class="line">    ans *= h;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> my_rank, comm_sz, n = <span class="number">1024</span>, local_n;</span><br><span class="line">    <span class="type">double</span> a = <span class="number">0.0</span>, b = <span class="number">3.0</span>, h, local_a, local_b;</span><br><span class="line">    <span class="type">double</span> local_int, total_int;</span><br><span class="line">    <span class="type">int</span> source;</span><br><span class="line"></span><br><span class="line">    MPI_Init(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_sz);</span><br><span class="line"></span><br><span class="line">    h = (b-a)/n;</span><br><span class="line">    local_n = n / comm_sz;</span><br><span class="line">    local_a = a + my_rank * local_n * h;</span><br><span class="line">    local_b = local_a + local_n * h;</span><br><span class="line">    local_int = Trap(local_a, local_b, local_n, h);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(my_rank != <span class="number">0</span>) &#123;</span><br><span class="line">        MPI_Send(&amp;local_int, <span class="number">1</span>, MPI_DOUBLE, <span class="number">0</span>, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        total_int = local_int;</span><br><span class="line">        <span class="keyword">for</span>(source = <span class="number">1</span>; source &lt; comm_sz; source++)&#123;</span><br><span class="line">            MPI_Recv(&amp;local_int, <span class="number">1</span>, MPI_DOUBLE, source, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">            total_int += local_int;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">       </span><br><span class="line">    <span class="keyword">if</span>(my_rank == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;With n = %d trapezoids, our estimate\n&quot;</span>, n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;of the integral from %f to %f = %.15e\n&quot;</span>, a, b</span><br><span class="line">                        , total_int);</span><br><span class="line">    &#125;</span><br><span class="line">    MPI_Finalize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码中可以看出，被积分函数为<code>f(x) = x*x</code> ，进程 0 除了完成自己的计算任务外，还负责接收其他进程的计算结果，并累加到最后的积分结果中。</p>
+<p>编译后运行结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mpiexec -n 2 ./tap</span></span><br><span class="line">With n = 1024 trapezoids, our estimate</span><br><span class="line">of the integral from 0.000000 to 3.000000 = 9.006596088409424e+00</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于I-O"><a href="#关于I-O" class="headerlink" title="关于I&#x2F;O"></a>关于I&#x2F;O</h3><p>&emsp;&emsp; 对于同一 <code>Communicator</code>中的进程，输出端口<code>stdout</code>是共享的。如果多个进程同时使用它，就会产生竞争行为，输出结果的顺序也是无法预测的。 对于 <code>stdin</code> 输入端口，大多数 MPI 的实现只允许进程 0 访问 <code>stdin</code>，然后再由进程 0 将输入数据发送给其他进程。</p>
+<h2 id="聚合通信"><a href="#聚合通信" class="headerlink" title="聚合通信"></a>聚合通信</h2><p>&emsp;&emsp;4.1 节中的例子存在什么问题呢？我们可以看到进程0有点“委屈地”完成所有的求和处理，而其他进程仅仅告诉进程0 ”将我的结果加到最终结果上“ 后就退出了。为了进一步提高通信效率，我们将尝试使用一些其他的通信布局。</p>
+<h3 id="树形通信"><a href="#树形通信" class="headerlink" title="树形通信"></a>树形通信</h3><p>&emsp;&emsp;我们可以用下图来描述树形通信的一种类型，在这里求和工作可以在多个进程中并行执行，而不是像4.1中那样只有进程0来完成。</p>
+<p><img src="/2023/03/06/MPI-Tutorial/mpi_tree.png"></p>
+<p>树形通信虽然有很大的优势，但编程更加复杂。而且在不同的场景下，使用哪一种树形结构并不是预先知道的。</p>
+<p>幸运的是，MPI实现 提供了方便的接口来帮助用户获得优化的 “全局求和函数（global-sum function）” 。与<code>MPI_Send</code>和<code>MPI_Recv</code>只代表两个进程的通信不同，“全局求和函数”包括了所有进程，我们也称这种通信为 <code>聚合通信（collective communications）</code>。为了区分，<code>MPI_Send</code>和<code>MPI_Recv</code> 经常被称为<code>点对点通信</code>。</p>
+<h3 id="MPI-Reduce"><a href="#MPI-Reduce" class="headerlink" title="MPI_Reduce"></a>MPI_Reduce</h3><p>&emsp;&emsp;实际上，全局求和只是整个聚合通信大类中的特例。例如，全局求积、全局求最大值&#x2F;最小值等也是聚合通信的例子。</p>
+<p>MPI 泛化了全局求和函数，使得它可以使用一个函数来实现多种类型的聚合通信，这个函数就是<br><code>MPI_Reduce</code>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Reduce</span> <span class="params">(<span class="type">void</span>* input_data_p, <span class="type">void</span>* output_data_p, <span class="type">int</span> count</span></span><br><span class="line"><span class="params">                MPI_Datatype datatype, MPI_Op operator, </span></span><br><span class="line"><span class="params">                <span class="type">int</span> dest_process, MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>MPI_Reduce</code>函数的通用性体现在 <code>MPI_Op</code> 参数中，它代表操作符（就4.1节中的例子而言，该参数的实参应该是<code>MPI_SUM</code>），MPI 提供了多种类型的操作符。（对于熟悉函数式编程的用户来说，MPI_Reduce类似于高阶函数，它定义了聚合的概念，但并不依赖具体聚合类型。）</p>
+<p>4.1 节中的全局求和代码<code>if(my_rank==0)&#123;...&#125;else&#123;...&#125;</code> 可以替换为下面一条语句：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">MPI_Reduce(&amp;local_int, &amp;total_int, <span class="number">1</span>, </span><br><span class="line">            MPI_DOUBLE, MPI_SUM, <span class="number">0</span>, MPI_COMM_WORLD);</span><br></pre></td></tr></table></figure>
+<p>值的注意的是，<code>count</code>参数可以使得 <code>MPI_Reduce</code> 可以操作数组而不仅仅操作标量数据。</p>
+<p>MPI 预定义的 <code>Reduction 操作符</code>如下：</p>
+<ul>
+<li>MPI_MAX， MPI_MIN</li>
+<li>MPI_SUM， MPI_PROD</li>
+<li>MPI_LAND，MPI_BAND</li>
+<li>MPI_LOR， MPI_BOR</li>
+<li>MPI_LXOR，MPI_BXOR</li>
+<li>MPI_MAXLOC，MPI_MINLOC</li>
+</ul>
+<p>用户也可以定义自己的操作符。</p>
+<p>对于聚合通信和点对点通信的区别，还需要特别注意以下几点：</p>
+<ul>
+<li>在 <code>Communicator</code> 中的所有进程必须调用相同的聚合函数。</li>
+<li>每个进程调用 MPI 聚合函数的实参必须 “兼容”。</li>
+<li><code>output_data_p</code>参数只会在 <code>dest_process</code> 进程中用到。但其他进程仍然需要传递对应的实参，即使它的值为 NULL。</li>
+<li><code>点对点通信</code>的匹配基于<code>Communicator</code>和 tag，但<code>聚合通信</code>的匹配不基于 tag ，它基于<code>Communicator</code>和聚合函数被调用的<strong>顺序</strong>。</li>
+</ul>
+<h3 id="MPI-Allreduce"><a href="#MPI-Allreduce" class="headerlink" title="MPI_Allreduce"></a>MPI_Allreduce</h3><p>&emsp;&emsp; 在前面的例子中，只有进程0可以获得最终求和结果并打印出来，但有时候其他进程也需要获得全局求和结果来完成一些更大的计算。为了做到这点，我们可以在进程0获得结果后再分发给其他进程，以下面的<strong>反转树</strong>为例：</p>
+<p><img src="/2023/03/06/MPI-Tutorial/mpi_all_reduce.png"></p>
+<p>另外，我们也可以使用一种称为 <strong>Butterfly</strong> 的通信模型：</p>
+<p><img src="/2023/03/06/MPI-Tutorial/mpi_butterfly.png"></p>
+<p>类似的，MPI 为用户提供了接口 <code>MPI_Allreduce</code>，该接口负责具体使用哪种分发模型获得最好的通信效率。<code>MPI_Allreduce</code>接口的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Allreduce</span> <span class="params">(<span class="type">void</span>* input_data_p, <span class="type">void</span>* output_data_p, <span class="type">int</span> count</span></span><br><span class="line"><span class="params">                MPI_Datatype datatype, MPI_Op operator,MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure>
+<p>和<code>MPI_Reduce</code>不同的是，这里没有 <code>dest_precoss</code> 参数，因为所有的进程都应该获得最终结果。</p>
+<h3 id="广播-MPI-Bcast"><a href="#广播-MPI-Bcast" class="headerlink" title="广播 MPI_Bcast"></a>广播 MPI_Bcast</h3><p>&emsp;&emsp;在4.2中，我们描述了 MPI 对输入输出的处理，在那里我们说进程0会将输入数据发送到其他进程。 一种简单的方法仍然是使用<code>MPI_Send</code>和<code>MPI_Recv</code>，进程0会在以一个<code>for</code>循环中向每个进程 <code>MPI_Send</code> 输入数据。我们可以想到使用树形结构进行优化（就像聚合函数一样），在聚合通信中，一个进程向<strong>所有</strong>其他进程发送数据称为一次<code>广播(Broadcast)</code>。MPI 提供了 <strong>广播函数</strong>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Bcast</span><span class="params">(<span class="type">void</span>* data_p, <span class="type">int</span> count, MPI_Datatype datatype, </span></span><br><span class="line"><span class="params">               <span class="type">int</span> source_proc, MPI_Comm comm)</span>;`</span><br></pre></td></tr></table></figure>
+
+<p>进程<code>source_proc</code>将由<code>data_p</code>指向的数据内容发送给所有<code>comm</code> 中的进程（包括它自己吗？）。</p>
+<p>例如4.1节中的 <code>a</code>, <code>b</code>, <code>n</code> 可以在进程0中通过<code>stdin</code>输入，然后再广播给其他进程，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Get_input</span><span class="params">(<span class="type">int</span> my_rank, <span class="type">int</span> comm_sz, <span class="type">double</span> *a_p,</span></span><br><span class="line"><span class="params">                <span class="type">double</span> *b_p, <span class="type">int</span>* n_p)</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (my_rank == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Enter a, b, and n\n&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lf %lf %d&quot;</span>, a_p, b_p, n_p);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    MPI_Bcast(a_p, <span class="number">1</span>, MPI_DOUBLE, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    MPI_Bcast(b_p, <span class="number">1</span>, MPI_DOUBLE, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    MPI_Bcast(n_p, <span class="number">1</span>, MPI_INT, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="MPI-Scatter"><a href="#MPI-Scatter" class="headerlink" title="MPI_Scatter"></a>MPI_Scatter</h3><p>&emsp;&emsp; 在上节中我们说单个进程可以使用 <code>MPI_Bcast</code> 向其他所有进程广播数据，最后所有的进程得到的数据是相同的。但有时候我们不愿意这样做，例如在“求向量A和向量B的和”的程序中，A与B在进程0中输入，但进程0不需要将所有A和B的所有项广播出去，它只需要传播其他进程所需要的项即可。<code>MPI_Scatter</code>可以满足这样的需求，其原型为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Scatter</span><span class="params">(<span class="type">void</span>* send_buf_p, <span class="type">int</span> send_count, </span></span><br><span class="line"><span class="params">                MPI_Datatype send_type, </span></span><br><span class="line"><span class="params">                <span class="type">void</span>* recv_buf_p, <span class="type">int</span> recv_count,</span></span><br><span class="line"><span class="params">                MPI_Datatype recv_type,</span></span><br><span class="line"><span class="params">                <span class="type">int</span> src_proc, MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure>
+<p><code>send_buf_p</code> 所指向的数据（假设共有 n 项）将会被 MPI 分成 <code>comm_sz</code> 份，例如如果使用<code>块划分</code>（与<code>OpenMP</code>中的<code>块划分</code>类似），那么进程0将获得前<code>n/comm_sz</code>项，进程1获得接下来的 <code>n/comm_sz</code>项，依次类推。每个进程需要传递本地向量指针作为<code>recv_buf_p</code>的实参，<code>recv_cnt</code>必须等于<code>n/comm_sz</code>。<code>send_type</code>与<code>recv_type</code>必须匹配，<code>src_proc</code>需等于 0 。注意<code>send_count</code>也要等于<code>n/comm_sz</code>。</p>
+<h3 id="MPI-Gather"><a href="#MPI-Gather" class="headerlink" title="MPI_Gather"></a>MPI_Gather</h3><p><code>MPI_Gatter</code> 接口负责将所有的分组数据收集起来：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Gather</span><span class="params">(<span class="type">void</span>* send_buf_p, <span class="type">int</span> send_count, </span></span><br><span class="line"><span class="params">                MPI_Datatype send_type, </span></span><br><span class="line"><span class="params">                <span class="type">void</span>* recv_buf_p, <span class="type">int</span> recv_count,</span></span><br><span class="line"><span class="params">                MPI_Datatype recv_type,</span></span><br><span class="line"><span class="params">                <span class="type">int</span> dest_proc, MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure>
+<p>它与<code>MPI_Scatter</code>几乎相同，<code>dest_proc</code>需等于 0 。</p>
+<h3 id="MPI-Allgather"><a href="#MPI-Allgather" class="headerlink" title="MPI_Allgather"></a>MPI_Allgather</h3><p>&emsp;&emsp;我们以矩阵-向量乘法程序为例，<code>y</code> &#x3D; <strong>A</strong><code>x</code>，其中 x 为 n 维向量，<strong>A</strong>为 m 行 n 列的矩阵，那么 y 为 m 维向量。一个串行的程序如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Mat_vect_mult</span><span class="params">(<span class="type">double</span> A[], <span class="type">double</span> x[], <span class="type">double</span> y[], <span class="type">int</span> m, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;m ; i++)&#123;</span><br><span class="line">        y[i] = <span class="number">0.0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>; j&lt;n; j++) &#123;</span><br><span class="line">            y[i] += A[i*n+j] * x[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里使用一维数据模拟矩阵 <strong>A</strong> 。我们如何并行化这个程序呢?<br>我们以 <strong>A</strong> 的<strong>行</strong>来划分任务，即前<code>m/comm_sz</code>行分配给进程0，接下来的<code>m/comm_sz</code>行分配给进程1，依次类推。等价于，向量 y 的前<code>m/comm_sz</code>项的求取分配给进程0，接下来的<code>m/comm_sz</code>项的求取分配给进程1，依次类推。</p>
+<p>向量 x 与 向量 y 如果在聚合通信中使用相同的数据分发机制（如<code>MPI_Scatter</code>），那么我们就需要对 x 作额外的处理。因为在每个进程中我们需要知道 x 的所有项，我们想到可以使用 <code>MPI_Bcast + MPI_Gather</code>来满足该需求，但可以使用性能更好的 <code>MPI_Allgather</code>接口（它使用 <strong>Butterfly</strong>广播模型）。</p>
+<p>该接口的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_AllGather</span><span class="params">(<span class="type">void</span>* send_buf_p, <span class="type">int</span> send_count, </span></span><br><span class="line"><span class="params">                MPI_Datatype send_type, </span></span><br><span class="line"><span class="params">                <span class="type">void</span>* recv_buf_p, <span class="type">int</span> recv_count,</span></span><br><span class="line"><span class="params">                MPI_Datatype recv_type,</span></span><br><span class="line"><span class="params">                MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure>
+<p>与<code>MPI_Gather</code>相比，我们不再需要<code>dest_proc</code>参数，因为我们收集的数据来自于所有进程而不是进程0（这也是<strong>Butterfly</strong>广播模型拥有更高通信效率的原因）；而且所有的进程都获得了收集后的数据，而不仅仅是<code>MPI_Gather</code>中的<code>dest_proc</code>进程。</p>
+<p>现在我们可以编写并行版本的矩阵-向量乘法程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Mat_vect_mult</span><span class="params">(<span class="type">double</span> local_A[], <span class="type">double</span> local_x[],</span></span><br><span class="line"><span class="params">                   <span class="type">double</span> local_y[], <span class="type">int</span> local_m,</span></span><br><span class="line"><span class="params">                   <span class="type">int</span> n, <span class="type">int</span> local_n,</span></span><br><span class="line"><span class="params">                   MPI_Comm comm)</span> &#123;</span><br><span class="line">    <span class="type">double</span> *x = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">int</span> local_i, j;</span><br><span class="line">    <span class="type">int</span> local_ok = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    x = <span class="built_in">malloc</span>(n∗<span class="keyword">sizeof</span>(<span class="type">double</span>));</span><br><span class="line">    MPI_Allgather(local_x, local_n, MPI_DOUBLE,</span><br><span class="line">                    x, local_n, MPI_DOUBLE, comm);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (local_i = <span class="number">0</span>; local_i &lt; local_m; local_i++) &#123;</span><br><span class="line">        local_y[local_i] = <span class="number">0.0</span>;</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">            local_y[local_i] += local_A[local_i∗n+j]∗x[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="MPI-派生数据类型"><a href="#MPI-派生数据类型" class="headerlink" title="MPI 派生数据类型"></a>MPI 派生数据类型</h2><p>&emsp;&emsp; 在分布式环境中，通信的代价往往比本地计算要昂贵，因此每次通信应该发送&#x2F;接收尽量多的数据（还一种说法就是，我们应该减少发送 Message 的个数）。MPI 提供了三种方法来<code>合并(consolidating)</code>数据：</p>
+<ul>
+<li>通信函数中的<code>count</code>参数</li>
+<li>派生数据类型(derived datatype)</li>
+<li><code>MPI_Pack/MPI_Unpack</code>接口</li>
+</ul>
+<p>MPI 派生数据类型类似于 C 语言的结构体，例如我们5.4节中<code>Get_Input()</code>中的三个广播函数可以优化为一个，只要我们定义一个派生数据类型<code>&#123;(MPI_DOUBLE,0), (MPI_DOUBLE, 16),(MPI_INT,24)&#125;</code>。（类型+偏移量）</p>
+<p><code>MPI_Type_create_struct</code>接口用来定义派生数据结构，其原型为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Type_create_struct</span><span class="params">(<span class="type">int</span> count, <span class="type">int</span> array_of_blocklengths[],</span></span><br><span class="line"><span class="params">                           MPI_Aint array_of_displacements[],</span></span><br><span class="line"><span class="params">                           MPI_Datatype array_of_types[],</span></span><br><span class="line"><span class="params">                           MPI_Datatype* new_type_p)</span>; </span><br></pre></td></tr></table></figure>
+<p>对于我们的例子:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> count = <span class="number">3</span>;</span><br><span class="line"><span class="type">int</span> array_of_blocklengths[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>&#125;;</span><br><span class="line">MPI_Aint array_of_displacements[] = &#123;<span class="number">0</span>, <span class="number">16</span>, <span class="number">24</span>&#125;;</span><br><span class="line">MPI_Datatype array_of_types[] = &#123;MPI_DOUBLE, MPI_DOUBLE, MPI_INT&#125;;</span><br><span class="line">MPI_Datatype input_mpi;</span><br><span class="line"></span><br><span class="line">MPI_Type_create_struct(count, array_of_blocklengths,</span><br><span class="line">                       array_of_displacements,</span><br><span class="line">                       array_of_types, &amp;input_mpi);</span><br><span class="line">MPI_Type_commit(&amp;input_mpi);</span><br><span class="line">MPI_Bcast(&amp;a, <span class="number">1</span>, input_mpi, <span class="number">0</span>, MPI_COMM_WORLD);</span><br></pre></td></tr></table></figure>
+<p>为了获得 <code>array_of_displacements</code> 中数据成员的偏移量，可以使用 <code>MPI_Get_address</code>接口：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Get_address</span><span class="params">(<span class="type">void</span> *location_p, MPI_Aint* address_p)</span>;</span><br><span class="line">MPI_Aint a_addr, b_addr, n_addr;</span><br><span class="line">MPI_Get_address(&amp;a, &amp;a_addr);</span><br><span class="line">array_of_displacements[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">MPI_Get_address(&amp;b, &amp;b_addr);</span><br><span class="line">array_of_displacements[<span class="number">1</span>] = b_addr - a_addr;</span><br><span class="line">MPI_Get_address(&amp;n, &amp;n_addr);</span><br><span class="line">array_of_displacements[<span class="number">2</span>] = n_addr - a_addr;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="其他可参考文章"><a href="#其他可参考文章" class="headerlink" title="其他可参考文章"></a>其他可参考文章</h2><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/158584571">《MPI，OpenMPI 与深度学习》</a></li>
+<li><a href="https://mpitutorial.com/tutorials/mpi-introduction/">《MPI Tutorial Introduction》</a> By Wes Kendall.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Unix编程艺术笔记</title>
+    <url>/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="第1章-Unix-哲学"><a href="#第1章-Unix-哲学" class="headerlink" title="第1章 Unix 哲学"></a>第1章 Unix 哲学</h3><h4 id="emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid"><a href="#emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid" class="headerlink" title="&emsp;&emsp; K.I.S.S Keep It Simple, Stupid!"></a>&emsp;&emsp; <code>K.I.S.S</code> <code>Keep It Simple, Stupid!</code></h4><p>&emsp;&emsp;一个程序只做好一件事，并做好。程序要能够协作，要能够处理文本流，因为这是最通用的接口。<br>&emsp;&emsp; <em><code>不懂Unix的人最终还要发明一个蹩脚的Unix。</code></em></p>
+<span id="more"></span>
+
+<p>&emsp;&emsp; <strong>Robe Pike的表述:</strong></p>
+<ul>
+<li>a. 你无法断定程序会在什么地方耗费运行时间。（不要过早优化！）</li>
+<li>b. 估量。在对代码没有进行估量前，不要优化速度。</li>
+<li>c. 花哨的算法在n很小时通常很慢，而n通常很小。花哨算法的的常数复杂度通常很大。除非你确定n总是很大，否则不要用花哨的算法（即使n很大，也优先考虑原则b）。</li>
+<li>d. 花哨的算法比简单算法更容易出bug、更难实现。尽量使用<strong>简单的数据算法配合简单的数据结构</strong>。（这个原则突出表现了Unix哲学传统追求实用、实效的特点，这也决定了它不可能诞生于那些‘过于理论的’‘学者’之手。）*<code>（Ken Thomson: 拿不准就穷举。）</code>*</li>
+<li>e.数据压倒一切。如果已经选择了正确的数据结构并且把一切都组织得仅仅有条，正确的算法也就不言自明。<strong>编程的核心是数据结构，而不是算法。</strong>（SICP：一种数据结构和操作它的一百种方法要比10种数据结构，每种都有10种操作方法更简单。复杂的数据数据弥漫在各种流行的编程语言中。）</li>
+</ul>
+<p>&emsp;&emsp; <strong>总结：</strong></p>
+<ul>
+<li><strong>a.模块原则</strong>：使用简单的接口拼合简单的部件。(Fred Brooks: 没有万能药。)</li>
+<li><strong>b.清晰原则</strong>：清晰胜于机巧。（很多人重机巧来‘炫耀’自己；一些公司管理拙劣，研发的系统过分追求机巧，可维护性极差，还没有自知之明。）……为了取得程序一丁点的性能提升就大幅度增加技术的复杂度和晦涩性。</li>
+<li><strong>c.组合原则</strong>：设计时考虑拼接组合。（既联结又独立）要想让程序具有组合性，就要使程序彼此独立。</li>
+<li><strong>d.分离原则</strong>：策略同机制分离，接口同引擎分离。</li>
+<li><strong>e.简洁原则</strong>：设计要简洁，复杂度能低就低。技术上的虚荣心理：程序员都很聪明，常常以能玩转复杂东西和卖弄抽象概念的能力为傲，这一点也无可厚非。（但程序员和一些科学家都‘嫉妒’数学家，因为没有什么人可以比数学家更能‘摆弄’抽象概念。）更为常见的是商业环境下的要求使得软件的复杂度上升。要避免这些陷阱，唯一的方法就是鼓励另一种软件文化，以简洁为美。</li>
+<li><strong>f.吝啬原则</strong>：除非别无它法，不要编写庞大的程序。（Windows平台的软件都以‘庞大’自居自傲！）</li>
+<li><strong>g.透明性原则</strong>：设计要可见，以便审查和调试。软件系统的透明性是指你一眼就能看出软件是做什么的以及怎么做的。显见性是指程序带有监视和显示内部状态的功能，这样程序不仅能够运行良好，而且能够看得出它以何种方式运行。</li>
+<li><strong>h.健壮性原则</strong>：健壮源于透明和简洁。在有异常输入的情况下，保证软件健壮的一个相当重要的策略就是避免在代码中出现特例。bug通常隐藏在处理特例的代码以及处理不同特殊情况的交互操作部分的代码中。</li>
+<li><strong>i.表示原则</strong>：把知识叠入数据以求逻辑质朴而健壮。数据要比编程逻辑更容易驾驭。在设计中，你应该主动将代码的复杂度转移到数据之中去。</li>
+<li><strong>j.通俗原则</strong>：接口设计避免标新立异。（最少惊奇原则）最易用的程序就是用户需要学习新东西最小的东西——或者，换句话说，最易用的程序就是最切合用户已有知识的程序。（程序和求知的关系，程序如果能够使得用户获得新的知识或者对已有知识产生更深刻的理解，那么程序和人的交互就会产生质的变化，程序不在仅仅作为一种解决问题的工具，而是一种认知的方式和媒介。）</li>
+<li><strong>k.缄默原则</strong>：如果一个程序没什么好说的，就保持沉默。</li>
+<li><strong>l.补救原则</strong>：出现异常时，马上退出并给出足够错误信息。</li>
+<li><strong>m.经济原则</strong>：宁花机器一分，不花程序员一秒。</li>
+<li><strong>n.生成原则</strong>：避免手工hack, 尽量编写程序去生成程序。</li>
+<li><strong>o.优化原则</strong>：雕琢前先得有原型， 跑之前先学会走。”90%的功能现在能够实现，比100%的功能永远实现不了强。”做好原型设计可以帮助你避免为蝇头小利而投入过多的时间。（Donald Knuth: 过早优化是万恶之源。）<strong>先制作原型，再精雕细琢。优化之前先确保能用。</strong>先给你的设计做个未优化的、运行缓慢、很耗内存但是正确的实现，然后进行系统地调整，寻找那些可以铜鼓牺牲最小的局部简洁性而获得较大性能提升的地方。<strong>Ken Thompson: “我最有成效的一天就是扔掉了1000行代码。”</strong></li>
+<li><strong>p.多样性原则</strong>：绝不相信“不二法门”的断言。设计一种僵化、封闭、不愿意与外界沟通的软件，简直就是一种病态的傲慢。（这一点还表现在人的性格上！！！）</li>
+<li><strong>q.扩展原则</strong>：设计着眼未来，未来总比预想快。绝不要认为自己找到了最终答案。</li>
+</ul>
+<h3 id="第4章-模块性：保持清晰，保持简单"><a href="#第4章-模块性：保持清晰，保持简单" class="headerlink" title="第4章 模块性：保持清晰，保持简单"></a>第4章 模块性：保持清晰，保持简单</h3><p><strong>1. 紧凑性和正交性：</strong></p>
+<ul>
+<li>紧凑性：这是一个设计能否装入人脑的特性。有经验的用户需要手册吗？许多软件是相对紧凑或者半紧凑的，即它们有一个紧凑的功能子集，能够满足专家用户80%以上的一般需求。</li>
+<li>正交性：任何操作都没有副作用，每一个动作只改变一件事，不会影响其他。无论你控制什么系统，改变每个属性的方法有且只有一个。<strong>重构</strong>：改变代码的组织和结构，而不改变其外在行为。重构的原则性目标就是提高正交性。</li>
+<li>STOP原则：不要重复自身。任何一个知识点在系统内都应当有一个唯一、明确和权威的表述。<strong>无论何时，重复代码都是危险信号。</strong></li>
+<li>强单一中心：Unix的许多有效工具都是围绕强单一算法直接转换的瘦包装器。<br>&emsp;&emsp;<strong>不要想着多做什么事情，要尽量去想最少能做的事情。</strong></li>
+</ul>
+<p><strong>2. 层次化：</strong></p>
+<ul>
+<li>自底向上和自顶向下的结合。</li>
+<li>胶合层的作用：顶层的应用逻辑和底层的域原语必须用胶合逻辑层来进行阻抗匹配。<strong>胶合层要尽可能薄。</strong> <strong>完美之道，不在无可增加，而在无可删减。</strong></li>
+</ul>
+<p><strong>3. 程序库：</strong><br>&emsp;&emsp;Unix编程风格强调模块性和定义良好的API，它所产生的影响之一就是：强烈倾向于将程序分解为由胶合层连接的库集合，特别是共享库。</p>
+<p><strong>4.OO面向对象：</strong><br>&emsp;&emsp;OO往往产生过厚的胶合层，OO在GUI、仿真和图形领域取得成功，在于在这些领域很难弄错类型的本体问题。（或者说这些领域中模拟的对象以及对象间的关系与现实世界有着清晰的对应关系。）</p>
+<p><strong>5.模块化编码</strong></p>
+<p>&emsp;&emsp;Unix 風格程序设计所面临的主要挑战就是如何将分离法的优点（将问题从原始的场景中简化、归纳）同代码和设计的薄胶合、浅平透层次结构的优点相结合。</p>
+<p>&emsp;&emsp; (LLVM的设计就是程序库、模块化和及模块、组合原则的应用体现。)</p>
+<h3 id="第5章-文本化：好协议产生好实践"><a href="#第5章-文本化：好协议产生好实践" class="headerlink" title="第5章 文本化：好协议产生好实践"></a>第5章 文本化：好协议产生好实践</h3><p>&emsp;&emsp;为了便于数据的传输和存储，像链表这样的数据结构，其可遍历的准空间部署需要平整化或者序列化为字节流表达，以便日后能够从这个表达中恢复数据结构。（我以前没有深入思考过这点，数据结构如何在不同的机器间的移植问题，现代的网络协议是如何做到这点的？）<br>&emsp;&emsp;互用性，透明性，可扩展性和存储&#x2F;事务处理的经济性——这些都是设计文件格式和应用协议时需要考虑的重要方向。<br><strong>数据文件元格式：</strong>（范例：SMTP、POP、IMAP）</p>
+<ul>
+<li>DSV风格： 使用分隔符分隔值（例如passwd文件使用冒号作为值分隔符）</li>
+<li>RFC822风格：如HTTP1.1</li>
+<li>Cookie-Jar风格：%%或%作为文本分隔符</li>
+<li>Record-Jar风格：</li>
+<li>XML</li>
+<li>Windows INI</li>
+</ul>
+<p>** Unix文本文件格式的约定：**</p>
+<ul>
+<li>1.如果可能，以新行符结束的每一行只存一个记录</li>
+<li>2.如果可能，每行不超过80个字符</li>
+<li>3.使用#引入注释</li>
+<li>4.支持反斜杠约定</li>
+<li>5.在每行一条记录的格式中，使用冒号或任何连续的空白作为字段分割符</li>
+<li>6.不要过分区分tab和whitespace</li>
+<li>7.优先使用十六进制而不是八进制</li>
+<li>8.对于复杂的记录，使用节（stanza）格式，一个记录若有多行，就使用%%\n或%\n作为记录分割符</li>
+<li>9.在节格式中，要么每行一个记录字段，要么让记录格式和RFC822电子邮件头类似，用冒号终止的字段名关键字作为引导字段</li>
+<li>10.在节格式中，支持连续行</li>
+<li>11.要么包含一个版本号，要么将格式设计成相互独立的自描述字节块</li>
+<li>12.注意浮点取整问题</li>
+<li>13.不要仅对文件的一部分压缩或二进制编码</li>
+</ul>
+<p>&emsp;&emsp;（LLVM IR 的设计体现了该原则的应用。）</p>
+<h3 id="第6章-透明性：来点光"><a href="#第6章-透明性：来点光" class="headerlink" title="第6章 透明性：来点光"></a>第6章 透明性：来点光</h3><p>&emsp;&emsp;美在计算机科学中的地位，要比在其他任何技术中的地位都重要。因为软件太复杂了，而美是抵御复杂的终极武器。——《机器美学:优雅和技术本质》</p>
+<p>&emsp;&emsp;如果软件所包含的功能是为了帮助用户建立对软件”做什么，怎么做”的心理模型而设计的，这个软件系统就是可显的。…可显性是一种主动品质。</p>
+<p>&emsp;&emsp;优雅是力量和简洁的结合。优雅的代码事半功倍;优雅的代码不仅正确，而且显然正确;优雅的代码不仅将算法传递给计算机，同时还将见解和信心传递给阅读代码的人。通过追求优雅的代码，我们可以编写更好的代码。</p>
+<p><strong>&emsp;&emsp;为透明性和可显性设计：</strong></p>
+<ul>
+<li>不要在具体操作的代码上叠放太多的抽象层。</li>
+</ul>
+<p><strong>&emsp;&emsp;为可维护性而设计</strong></p>
+<h3 id="第7章-多道程序设计：分离进程为独立的功能"><a href="#第7章-多道程序设计：分离进程为独立的功能" class="headerlink" title="第7章 多道程序设计：分离进程为独立的功能"></a>第7章 多道程序设计：分离进程为独立的功能</h3><p>&emsp;&emsp; <strong><code>做单件事并做好</code></strong></p>
+<ol>
+<li><strong>从性能调整中分离复杂度控制</strong><br>&emsp;&emsp;尽量使用协作进程，而不是线程。</li>
+<li>IPC分类：</li>
+</ol>
+<ul>
+<li>将任务传给专门程序（shellout）：两者不需要交流</li>
+<li>管道、重定向和过滤器</li>
+<li>wrapper（包装器）</li>
+<li>从进程：需要内部状态机处理两者的通信协议（如scp和ssh）</li>
+<li>对等进程间通信：临时文件、信号、套接字、共享内存。<br>&emsp;&emsp; <strong>慎用RPC和线程</strong></li>
+</ul>
+<h3 id="第8章-微型语言：寻找歌唱的音符"><a href="#第8章-微型语言：寻找歌唱的音符" class="headerlink" title="第8章 微型语言：寻找歌唱的音符"></a>第8章 微型语言：寻找歌唱的音符</h3><p>&emsp;&emsp; <strong><code>专门领域的小语言是非常强大的设计理念。</code><strong>使用微型语言比起采用低级硬编码的设计而言，降低了全局复杂度。首先，微型语言提高了编程问题规格的层次，这种表示法与通用语言所支持的表示法相比，</strong>更加紧凑，更具有表现力</strong>。（和SICP中的<strong>元语言抽象</strong>概念相似）。<br>&emsp;&emsp;分类：</p>
+<ul>
+<li>数据格式：SNG，passwd，vimrc等</li>
+<li>微型语言：m4、yacc、lex、make、xslt、pic、tbl、eqn、awk、troff、script、（dc|bc）等。趋势是从声明性发展到命令性。</li>
+<li>解释器：（dc|bc）、Lisp、JS、tcl、shell、Perl、Python、Java</li>
+</ul>
+<h3 id="第9章-生成：提高规格说明的层次"><a href="#第9章-生成：提高规格说明的层次" class="headerlink" title="第9章 生成：提高规格说明的层次"></a>第9章 生成：提高规格说明的层次</h3><p>&emsp;&emsp;数据比程序更容易理解，不管这些数据是普通表格、<em>说明性标记语言</em>、模板系统还是一组可以扩展为逻辑控制的宏。<strong>尽可能把设计的复杂度由程序代码转移到数据中去。</strong>（说明式标记语言区别于过程性或者命令式语言，它只提供说明式的’做什么‘的知识，而不包含’怎么做‘的知识。）</p>
+<ul>
+<li><strong>数据驱动编程</strong> ：（注意与SICP中数据导向风格编程的对比，在那里，数据与过程的界限已经很模糊。）与OO相比，这里的数据不仅仅指对象的状态还表示程序的控制流。这里重要的思想其实是将程序逻辑从硬编定的控制结构转移到数据中。*<code>尽量避免手工编码。</code>*</li>
+<li><strong>专用代码的生成：</strong>尽量少干活、让数据塑造代码、依靠工具、将机制从策略中分离。<strong>建设性的懒惰是大师级程序员的美德。</strong></li>
+</ul>
+<h3 id="第10章-配置：迈出正确的第一步"><a href="#第10章-配置：迈出正确的第一步" class="headerlink" title="第10章 配置：迈出正确的第一步"></a>第10章 配置：迈出正确的第一步</h3><p>Unix：<strong>一切都是可配置的。</strong> <strong>但什么是不应该可配置的？</strong></p>
+<ul>
+<li>a. 能够可靠的进行自动检测的东西，就不要提供配置开关（自动检测可能会稍微增加运行时的延迟，但延迟不超过一定界限就是可以接受的）；</li>
+<li>b. 能够用脚本包装器或简单管道实现的任务就不要用配置开关实现。能够简单使用其他程序实现的任务，就不要增加本程序的复杂度。（*<code>不要过度配置</code>*）</li>
+</ul>
+<p><strong>配置的位置</strong>：对调用时可能发生变化的选项，使用命令和开关；对改动很少但确实应该由各个用户控制的选项，使用用户主目录的运行控制文件；对需要由系统管理员设置而不是由用户改变的整个系统级选项数据，使用整个系统里运行控制文件。</p>
+<ul>
+<li>特殊情况是坏消息。（特殊情况会破坏程序的简单性和透明性，增加复杂度。）</li>
+</ul>
+<p><strong>运行控制文件配置的一般通用规则：</strong></p>
+<ul>
+<li>支持说明性注释</li>
+<li>不要区别隐匿的空白符</li>
+<li>把多个空行和注释行视为单个空行</li>
+<li>词法上把文件视为简单的用空白分隔的标记序列，或多行标记</li>
+<li>支持反斜杠语法以在字符串中嵌入不可打印字符或者特殊字符</li>
+</ul>
+<p><strong>环境变量：</strong>系统环境变量、用户环境变量。在有些情况下，使用用户环境变量是有用的，特别当这些变量由大量不同程序共享，独立于应用程序的优先选项。**</p>
+<p><strong>使用环境变量的情况：</strong></p>
+<ul>
+<li>变量值根据共享点文件或者父进程需要向多个子进程传递信息的上下文环境的不同而变化。</li>
+<li>变量值随点文件不同而频繁改变，但每次启动都不变化。</li>
+<li>进程唯一的覆盖必须以不要求改变命令行调用的方式来表述。例如LD_LIBRARY_PATH环境变量。</li>
+</ul>
+<p><strong>命令行选项：</strong></p>
+<h3 id="第11章-接口"><a href="#第11章-接口" class="headerlink" title="第11章 接口"></a>第11章 接口</h3><p>&emsp;&emsp;<strong>最小立异原则</strong>：如有可能，尽量允许用户将接口功能委派给熟悉的程序来完成。提倡以共生或委派策略来提高代码的复用并降低软件复杂度。**<code>不能委派就仿效。</code>**<br>&emsp;&emsp; 评估标准：简洁、表现力、易用、透明和脚本化能力。<br>&emsp;&emsp;<strong>Unix接口设计模式:</strong></p>
+<ul>
+<li>过滤器模式</li>
+<li>Cantrip模式：没有输入、没有输出、只被调用一次，产生退出状态数值</li>
+<li>源模式：不需要输入、输出在启动条件中控制。如ls、who、ps等。</li>
+<li>接收器模式：只接纳标准输入而不发送任何东西到标准输出。</li>
+<li>编译器模式：无标准输入、无标准输出，只将错误信息发送到标准错误端。</li>
+<li>ed模式：交互设计模式</li>
+<li>Roguelike模式：支持全屏幕、可视界面风格、但使用字符界面显示，没有鼠标和图形界面。</li>
+<li>引擎与接口分离模式：将程序的引擎部分与接口部分分离。（参考MVC模式，模型-视图-控制器）。这种模式的一种形式是将策略接口（通常是结合了视图和控制器功能的GUI）和包含了一个专用定义域微型语言解释器的引擎相连。（如mysql数据库程序）<ul>
+<li>配置者&#x2F;执行者组合</li>
+<li>假脱机&#x2F;守护进程组合： Spooler将任务和数据放入spool目录，daemon不断轮询spool目录，如果有任务就执行任务，完成后将其从spool目录中删除。 （如Unix打印程序 lpr&#x2F;lprd）</li>
+<li>驱动&#x2F;引擎组合：a)交互性 b)引擎以自身接口单独运行的能力。</li>
+<li>CS组合：两者之间的协议可以由开放标准定义（如HTTP、FTP、DNS等）</li>
+<li>CLI服务器</li>
+</ul>
+</li>
+<li>基于语言的接口模式</li>
+<li>多价程序模式：程序的应用定义域逻辑封存在一个文档化的API库中，该库可以被其他程序链接。程序同外部的接口逻辑是一个基于库的薄胶合层。或者有几个不同风格的UI层，每一个层都可以链接该库。</li>
+</ul>
+<h3 id="第12章-优化"><a href="#第12章-优化" class="headerlink" title="第12章 优化"></a>第12章 优化</h3><p>&emsp;&emsp; <em><code>过早优化是万恶之源</code></em><br>&emsp;&emsp;程序员工具箱中最强大的优化技术就是不去优化。<br>&emsp;&emsp; <em><code>小就是美</code></em></p>
+<h3 id="第13章-复杂度：尽可能简单，但不要简单过了头"><a href="#第13章-复杂度：尽可能简单，但不要简单过了头" class="headerlink" title="第13章 复杂度：尽可能简单，但不要简单过了头"></a>第13章 复杂度：尽可能简单，但不要简单过了头</h3><p>&emsp;&emsp; <strong>代码量、实现复杂度和接口复杂度</strong><br>&emsp;&emsp; <strong>本质的、偶然的和选择复杂度</strong><br>&emsp;&emsp;不要为了简洁而简洁。同其他美学形式一样，我们需要注意何时设计上的简约已经不再是有价值的自律形式，而开始成为一件伪装的苦行者外衣——一种实际上把美德作为接口来敷衍工作的纵容方式。<br>&emsp;&emsp; <strong>框架的重要性：</strong>对共享上下文环境的统一管理，是Emacs的选择复杂度换来的。小巧锐利工具的教义，降低接口复杂度和代码库规模的压力，可能正好导向<strong>手工陷阱</strong>——用户不得不自己维护所有共享的上下文环境。（vi的<strong>专用陷阱</strong>问题）</p>
+<h3 id="第14章-C还是非C"><a href="#第14章-C还是非C" class="headerlink" title="第14章 C还是非C"></a>第14章 C还是非C</h3><p>&emsp;&emsp;要有效应用Unix哲学，在工具包中就不能只有Ｃ语言，必须学会使用Ｕnix的其他语言（特别是脚本语言），并且学会如何在大型程序系统中把担任各个专门角色的多个语言轻松地融合在一起。</p>
+<h3 id="第15章-工具，开发的战术"><a href="#第15章-工具，开发的战术" class="headerlink" title="第15章 工具，开发的战术"></a>第15章 工具，开发的战术</h3><ul>
+<li><strong>操作系统</strong>：IDE对于缺乏工具的单一语言编程非常有意义。然而在Unix下，语言和工具的选择广泛多样。所以同时使用多个代码生成器、定制配置器以及许多其他标准定制工具就是司空见惯的事。Unix提倡一种更灵活的风格，一种以编辑&#x2F;编译&#x2F;调试循环为中心、排它性更少的风格。</li>
+<li><strong>编辑器</strong>： <code>vi</code>和<code>Emacs</code></li>
+<li><strong>专用代码生成器</strong>：<code>lex</code>和<code>yacc</code></li>
+<li><strong>自动化编译</strong>: <code>make</code>工具，尽量不要嵌套使用make，这样会使问题复杂化。</li>
+<li><strong>版本控制系统</strong>：</li>
+<li><strong>运行期调试</strong>：牢记Unix哲学。将时间花费在设计质量上，而不是低层次的细节上，尽可能自动化一切——包括运行期调试的细节工作。</li>
+<li><strong>性能分析</strong>：</li>
+<li>使用Emacs整合工具</li>
+</ul>
+<h3 id="第16章-重用：不要重复发明轮子"><a href="#第16章-重用：不要重复发明轮子" class="headerlink" title="第16章 重用：不要重复发明轮子"></a>第16章 重用：不要重复发明轮子</h3><p>&emsp;&emsp; <code>重用代码</code>是程序员良好的美德。</p>
+<p>&emsp;&emsp; <code>透明性</code>是重用的关键。</p>
+<p>&emsp;&emsp; <code>开源</code>:设计最好的实践需要情感的投入，而不是冷漠无聊的过程。软件开发者，同任何其他类型的工匠和技师一样：它们想要成为艺术家，这并不是什么私密。<strong>他们不仅仅希望重用代码，也希望自己的代码得到重用。</strong></p>
+<h3 id="第17章-可移植性"><a href="#第17章-可移植性" class="headerlink" title="第17章 可移植性"></a>第17章 可移植性</h3><h3 id="第18章-文档-向网络世界阐释代码"><a href="#第18章-文档-向网络世界阐释代码" class="headerlink" title="第18章 文档:向网络世界阐释代码"></a>第18章 文档:向网络世界阐释代码</h3><p>&emsp;&emsp; <code>troff</code>和<code>TEX</code>排版工具; <code>Textinfo</code>、<code>HTML</code>、<code>DocBook</code></p>
+<h3 id="第19章-开放源码：在Unix社区中编程"><a href="#第19章-开放源码：在Unix社区中编程" class="headerlink" title="第19章 开放源码：在Unix社区中编程"></a>第19章 开放源码：在Unix社区中编程</h3>]]></content>
+      <categories>
+        <category>计算机科学</category>
+        <category>GNU/Linux 操作系统</category>
+        <category>读书笔记</category>
+      </categories>
   </entry>
 </search>

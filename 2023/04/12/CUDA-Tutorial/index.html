@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 OpenACC。  参考 CUDA C++ Programming Guide。参考 CUDA C++ Best Practices Guide。参考 《CUDA By Example :">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA Tutorial">
+<meta property="og:url" content="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 OpenACC。  参考 CUDA C++ Programming Guide。参考 CUDA C++ Best Practices Guide。参考 《CUDA By Example :">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/GPU_CPU_Layout.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/cuda_memory.png">
+<meta property="article:published_time" content="2023-04-11T23:35:00.000Z">
+<meta property="article:modified_time" content="2024-07-14T06:43:33.396Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/GPU_CPU_Layout.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/","path":"2023/04/12/CUDA-Tutorial/","title":"CUDA Tutorial"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CUDA Tutorial | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%92%8C%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">2.</span> <span class="nav-text">开发环境和工具包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">编程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%9D%97"><span class="nav-number">4.2.</span> <span class="nav-text">线程块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98"><span class="nav-number">4.3.</span> <span class="nav-text">内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E7%BC%96%E7%A8%8B"><span class="nav-number">4.4.</span> <span class="nav-text">异构编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90"><span class="nav-number">4.5.</span> <span class="nav-text">一个简单例子</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/04/12/CUDA-Tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CUDA Tutorial | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CUDA Tutorial
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-12 07:35:00" itemprop="dateCreated datePublished" datetime="2023-04-12T07:35:00+08:00">2023-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-14 14:43:33" itemprop="dateModified" datetime="2024-07-14T14:43:33+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">高性能计算</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html">CUDA C++ Programming Guide</a>。<br>参考 <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html">CUDA C++ Best Practices Guide</a>。<br>参考 <strong>《CUDA By Example : An introduction to General-Purpose GPU Programming》</strong> By Jason Sanders &amp; Edward Kandrot.</p>
+</blockquote>
+<span id="more"></span>
+
+
+<h2 id="开发环境和工具包"><a href="#开发环境和工具包" class="headerlink" title="开发环境和工具包"></a>开发环境和工具包</h2><p><strong>查看显卡型号</strong>：</p>
+<p><code>$ ubuntu-drivers devices</code></p>
+<p>在<a target="_blank" rel="noopener" href="https://developer.nvidia.com/zh-cn/cuda-gpus#compute">CUDA-GPUS 官网</a> 查询该型号显卡是否支持 GPU 计算。</p>
+<p><strong>安装驱动</strong>:<br><code>$ sudo apt-get install nvidia-driver-&lt;xxx&gt;</code></p>
+<p>注意在 Linux 平台要禁用 <code>nouveau</code> 驱动，避免和 <code>NVIDIA 驱动</code>冲突。</p>
+<p><strong>查看安装后的显卡驱动版本（以及支持的 CUDA 版本）：</strong><br><code>$ nvidia-smi</code></p>
+<p><strong>安装 CUDA（Ubuntu 平台已经对 CUDA 进行了打包）</strong> ：</p>
+<p><code>$ sudo apt-get install nvidia-cuda-toolkit</code></p>
+<p>或者 参考<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">CUDA 官网安装方法</a></p>
+<p><strong>cmake 支持</strong>，参考：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/zh-cn/blog/building-cuda-applications-cmake/">使用 CMake 构建跨平台 CUDA 应用程序</a>。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>&emsp;&emsp; GPU 在某些应用上的性能为什么比在 CPU 上更将大？GPU 的架构和 CPU 的架构有什么不同呢？</p>
+<p>&emsp;&emsp; 相比而言，GPU 更加注重并行计算。尽管 CPU 被设计成擅长以尽可能快的速度执行线程，并且可以并行执行几十个这样的线程，但 GPU 被设计成擅长并行执行数千个（甚至更多）的线程（将较慢的单线程的性能进行分摊，以获得更大的吞吐量）。</p>
+<p>&emsp;&emsp; 另外在硬件设计上，GPU 的晶体管更多的用于<code>数据处理（data processing）</code>而不是<code>数据缓存（data caching）</code>和<code>控制（flow control）</code>。GPU 和 CPU 在芯片资源上的分布如下图所示：</p>
+<p><img src="/2023/04/12/CUDA-Tutorial/GPU_CPU_Layout.png"></p>
+<p>GPU 可以通过计算来隐藏存储器访问延迟，而不是依赖于大量数据缓存和复杂的流控制来避免过长的存储器访问延迟（这两者在晶体管方面都是昂贵的）。</p>
+<p>通常，对于具有高度并行性的应用，在 GPU 上比在 CPU 上更能发掘它的并行潜能。</p>
+<p>无论是 CPU 还是 GPU，目前基本上都是<code>多核</code>的，这使得<code>并行计算</code>变得越来越重要。但早期的 GPU 计算使用起来非常的复杂，它受限于图形 API 的编程模型（例如 <code>OpenGL</code> 和 <code>DirectX</code>），因为它是和 GPU 交互的唯一方式。</p>
+<p>后来，NVIDIA 在其<code>GeForce 8800 GTX</code>产品中首次使用 <code>CUDA</code> 架构，<code>CUDA</code> 架构专门为 GPU 计算设计了一个全新的模块，目的是减轻早期 CPU 计算中存在的一些限制。</p>
+<p>CUDA 架构包含了一个统一的<code>着色器流水线</code>，使得执行通用计算的程序能够对芯片上的每个 <code>ALU （算术逻辑单元）</code>进行排列，而且这些 ALU 满足 <code>IEEE</code> 单精度浮点运算，并可以使用一个裁减后的指令集进行通用计算。GPU 上的执行单元既能任意地读写内存，还可以访问由软件管理的缓冲，也称为共享内存（注意与 <code>IPC</code> 机制区分）。</p>
+<p>NVIDIA 不仅仅使用 CUDA 架构的硬件来提供通用计算和图形功能，还在软件层面开发了面向 GPU 的高级语言的编译器（如 <code>CUDA C</code>）。<code>CUDA C</code> 在 C 语言的基础上增加了一小部分关键字。另外，NVIDIA 还提供了专门的硬件驱动程序来发挥 CUDA 架构的大规模计算功能。这些都使得用户既不需要了解 <code>OpenGL</code>或 <code>DirectX</code>图形编程框架，<strong>也不需要将通用问题伪装成图形计算问题</strong>。</p>
+<p><code>CUDA C</code> 提供了三个主要的抽象：线程块的层次结构、共享内存和<code>屏障同步（barrier synchronization ）</code>。这些抽象提供了细粒度的数据级并行和线程级并行，并嵌套在粗粒度的数据级并行和任务级并行中。用户需要将其要解决的问题划分成子问题，这些子问题可以独立并行地被<code>线程块</code>执行，子问题中更加细粒度的交互可以由块中的线程来完成。</p>
+<p>这样分解（<code>block</code> 和 <code>block threads</code> ）使得解决子问题的线程可以相互交互，也可以保持一种可扩展性。线程块的具体调度由运行时系统完成，而不需要用户关心，也就是说同样的程序可以运行在不同档次的 GPU 上而<strong>自动</strong>获得不同的性能。</p>
+<h2 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h2><h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p><code>CUDA C++</code> 是如何描述并行任务的?<br><code>CUDA C++</code> 对 <code>C++</code> 进行了扩展，使得用户可以定义 <code>核函数</code>。<code>核函数</code> 与 一般的 C++ 函数不同之处在于：它可以被 N 个 <em>CUDA 线程</em> 并行执行 N 次。</p>
+<p><code>核函数</code> 需要使用<code>__global__</code> 声明标识符，当调用<code>核函数</code>时需要使用语言扩展符号 <code>&lt;&lt;&lt;...&gt;&gt;&gt;</code>指定<strong>线程组</strong>。每个执行核函数的线程都会指定一个单独的 <em>线程ID</em>，并可以在核函数中通过变量<code>threadIdx</code>访问。一个简单例子如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">float</span>* A, <span class="type">float</span>* B, <span class="type">float</span>* C)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = threadIdx.x;</span><br><span class="line">    C[i] = A[i] + B[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    add&lt;&lt;&lt;<span class="number">1</span>, N&gt;&gt;&gt;(A, B, C);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程块"><a href="#线程块" class="headerlink" title="线程块"></a>线程块</h3><p><code>线程块</code>中的线程可以在逻辑上被组织成一维结构、二维结构和三维结构；同样地，线程块中也可以被组织成单维或多维结构的<code>线程格(Grid)</code>。在一个线程块中的线程的个数是有限制的，可以使用<code>cudaDeviceProp</code>结构中的<code>maxThreadPerBlock</code>成员变量来获得该值（对于当前的 GPU，该值为1024）。</p>
+<p>在&lt;&lt;&lt;…&gt;&gt;&gt;中指定<code>线程格</code>和<code>线程块</code>结构时，可以使用<code>int</code>或者<code>dim3</code>类型，使用<code>int</code>就默认指示其结构是一维的。每个块都有一个单独的<code>块 ID</code>，可以使用变量<code>blockIdx</code>访问。每个块的<code>度（可以理解为块的长度和宽度）</code>可以使用变量<code>blockDim</code>访问。线程格的<code>度</code>可以使用<code>gridDim</code>变量访问。</p>
+<p>修改上节中的例子，使用二维结构的线程格和二维结构的线程块：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">float</span> A[N][N], <span class="type">float</span> B[N][N], <span class="type">float</span> C[N][N])</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = threadIdx.x + blockIdx.x * blockDim.x;</span><br><span class="line">    <span class="type">int</span> j = threadIdx.y + blockIdx.y * blockDim.y;</span><br><span class="line">    C[i][j] = A[i][j] + B[i][j];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function">dim3 <span class="title">threadsPerBlock</span><span class="params">(<span class="number">16</span>, <span class="number">16</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> xDim = (N + threadsPerBlock.x - <span class="number">1</span>) / threadsPerBlock.x;</span><br><span class="line">    <span class="type">int</span> yDim = (N + threadsPerBlock.y - <span class="number">1</span>) / threadsPerBlock.y;</span><br><span class="line">    <span class="function">dim3 <span class="title">numBlocks</span><span class="params">(xDim, yDim)</span></span>;</span><br><span class="line">    add&lt;&lt;&lt;numBlocks, threadsPerBlock&gt;&gt;&gt;(A, B, C);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有线程块并行执行，并且执行顺序是任意的，也就是线程块之间不能存在逻辑上或者数据上的相互依赖。每个线程块中的线程虽然也是并行的，但可以访问共享内存（使用<code>__shared__</code>声明标示符），并可以使用<code>__syncthreads()</code> 函数进行同步。</p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>每个线程有私有的本地存储。每个线程块有共享内存，该块中的每个线程都可以访问。另外，所有的线程都可以访问全局内存。另外，还有两种只读内存：<code>常量内存（constant memory）</code>和<code>纹理内存（texture memory）</code>，它们可以被所有线程访问。全局内存、常量内存和纹理内存空间对不同的内存使用场景进行了优化，因此恰当地使用合适的内存空间可以显著提供程序的内存性能。<br><img src="/2023/04/12/CUDA-Tutorial/cuda_memory.png"></p>
+<h3 id="异构编程"><a href="#异构编程" class="headerlink" title="异构编程"></a>异构编程</h3><h3 id="一个简单例子"><a href="#一个简单例子" class="headerlink" title="一个简单例子"></a>一个简单例子</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="GMP库的使用">
+                  <i class="fa fa-angle-left"></i> GMP库的使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/" rel="next" title="OpenGL 工具库">
+                  OpenGL 工具库 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">64k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:47</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
