@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp;本系列文章主要是重新整理 Embedded Systems-Shape The World 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。 &emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底">
+<meta property="og:type" content="article">
+<meta property="og:title" content="嵌入式系统介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp;本系列文章主要是重新整理 Embedded Systems-Shape The World 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。 &emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png">
+<meta property="og:image" content="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png">
+<meta property="article:published_time" content="2021-04-19T14:48:00.000Z">
+<meta property="article:modified_time" content="2024-07-14T14:46:31.621Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/","path":"2021/04/19/嵌入式系统介绍/","title":"嵌入式系统介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>嵌入式系统介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O%E6%8E%A5%E5%8F%A3%EF%BC%88I-O-Interface%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">I&#x2F;O接口（I&#x2F;O Interface）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%EF%BC%88Device-Driver%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">设备驱动（Device Driver）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8CIO%E7%AB%AF%E5%8F%A3%EF%BC%88GPIO%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">并行IO端口（GPIO）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1"><span class="nav-number">6.</span> <span class="nav-text">串口通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%99%E7%AD%89%E3%80%81%E8%BD%AE%E8%AF%A2%E5%92%8C%E4%B8%AD%E6%96%AD"><span class="nav-number">7.</span> <span class="nav-text">忙等、轮询和中断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Systick%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">Systick定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-Lock-Loop-PLL"><span class="nav-number">9.</span> <span class="nav-text">Phase-Lock-Loop(PLL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%A8%A1%E8%BD%AC%E6%8D%A2%EF%BC%88DAC%EF%BC%89%E4%B8%8E%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%EF%BC%88ADC%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">数模转换（DAC）与模数转换（ADC）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="嵌入式系统介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          嵌入式系统介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-19 22:48:00" itemprop="dateCreated datePublished" datetime="2021-04-19T22:48:00+08:00">2021-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-14 22:46:31" itemprop="dateModified" datetime="2024-07-14T22:46:31+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a target="_blank" rel="noopener" href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
+<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
+<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
+<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
+<ol>
+<li>并行接口（Parallel Interface）</li>
+<li>串行接口（Serial Interface）</li>
+<li>模拟接口（Analog Interface）</li>
+<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
+</ol>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
+<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
+<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
+<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
+<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
+<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
+<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
+<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/" rel="next" title="Unix编程艺术笔记">
+                  Unix编程艺术笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">80k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:14</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

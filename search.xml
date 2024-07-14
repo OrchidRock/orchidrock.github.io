@@ -6,10 +6,25 @@
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
 <span id="more"></span>
 
-<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<blockquote>
+<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
+</blockquote>
+<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
+<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
+<li>与平台环境耦合性强，跨平台性不足</li>
+<li></li>
+</ul>
+<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
 <ul>
-<li>可复用性强</li>
-<li>简单性</li>
+<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
+<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
+<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
+<li><strong>以目标（target）为中心的方法论</strong>：</li>
+<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
+<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
+<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
+<li><strong>组件化&#x2F;模块化</strong>：</li>
+<li>支持多种构建模式</li>
 </ul>
 <h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
 <h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
@@ -279,6 +294,75 @@
       </categories>
   </entry>
   <entry>
+    <title>FreeRTOS+TCP介绍</title>
+    <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
+<ul>
+<li><strong>Berkeley 套接字API</strong></li>
+<li>可选支持TCP滑动窗口</li>
+<li>API完全可重入和线程安全</li>
+<li>包括 ARP, DHCP, DNS, LLMNR, NBNS等协议</li>
+<li>免费ARP（Gratuitous ARP）</li>
+</ul>
+<span id="more"></span>
+
+
+<ul>
+<li>静态、DHCP和Auto-IP地址分配</li>
+<li>可以被用作 <strong>UDP only stack</strong></li>
+<li>可选的回调接口</li>
+<li>可选的输出包分段</li>
+</ul>
+<blockquote>
+<p>详细资料请参看<a href="https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html">官方文档</a> 。</p>
+</blockquote>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>&emsp;&emsp;网络接口层位于IP协议栈和硬件驱动层之间：</p>
+<img src="https://www.freertos.org/fr-content-src/uploads/2018/07/network_interface.png" width=40%>
+
+<p>注意: <strong>FreeRTOS+TCP协议栈的实现是依赖于FreeRTOS 内核的，这与FreeRTOS Core不同。</strong></p>
+<p>注意：在FreeRTOS+TCP的所有函数中，<em>FreeRTOS_IPInit</em> API必须首先被调用，它会生成FreeRTOS+TCP任务，该任务会初始化网络接口，并根据配置回调 * vIPNetworkEventHook*函数。</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>FreeRTOS Socket的用法和通常的Berkeley Socket的用法基本相同。</p>
+<ul>
+<li>客户端：<ol>
+<li>FreeRTOS_socket -&gt; FreeRTOS_setsockopt-&gt; FreeRTOS_bind -&gt; FreeRTOS_connect</li>
+<li>FreeRTOS_send &lt;&#x3D;&gt; FreeRTOS_recv</li>
+<li>FreeRTOS_shutdown -&gt; FreeRTOS_closesocket</li>
+</ol>
+</li>
+<li>服务端：<ol>
+<li>FreeRTOS_socket -&gt; FreeRTOS_setsockopt -&gt; FreeRTOS_bind -&gt; FreeRTOS_listen -&gt; FreeRTOS_accept</li>
+<li>FreeRTOS_recv &lt;&#x3D;&gt; FreeRTOS_send</li>
+<li>FreeRTOS_shutdown -&gt; FreeRTOS_closesocket</li>
+</ol>
+</li>
+</ul>
+<p>服务端可以采用多线程并发模式，为每个客户端连接新建一个任务，由该任务负责后续服务。</p>
+<p><strong>注意</strong>：在调用FreeRTOS_closesocket前，需调用FreeRTOS_shutdown API，然后调用FreeRTOS_recv循环等待，直到返回**-pdFREERTOS_ERRNO_EINVAL<strong>，表明socket连接已经断开。从安全的角度讲，socket的不正常关闭很可能造成服务器的资源泄漏，而引发崩溃或者拒绝服务。<br><strong>提示：</strong> UDP的用法与TCP的用户大都相同，UDP的发送可以采用</strong>零拷贝(zero-copying)技术**。</p>
+<h3 id="网络数据缓存-Network-data-buffer"><a href="#网络数据缓存-Network-data-buffer" class="headerlink" title="网络数据缓存(Network data buffer)"></a>网络数据缓存(Network data buffer)</h3><ul>
+<li><p>BufferAllocation_1.c</p>
+</li>
+<li><p>BufferAllocation_2.c</p>
+</li>
+</ul>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>&emsp;&emsp;<strong>FreeRTOSIPConfig.h</strong>的主要配置项：</p>
+<ul>
+<li>影响TCP&#x2F;IP栈任务行为的常量</li>
+<li>调试、跟踪和日志设置</li>
+<li>针对硬件和驱动的设置</li>
+<li>针对TCP的设置</li>
+<li>针对UDP的设置</li>
+<li>影响Socket行为的常量</li>
+<li>影响ARP行为的常量</li>
+<li>影响DHCP和名字服务的常量</li>
+<li>影响IP和ICMP行为的常量</li>
+<li>提供支持目标板的常量</li>
+</ul>
+<h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>GMP库的使用</title>
     <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
@@ -340,61 +424,143 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux Kernel: 内核数据结构</title>
-    <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
+    <title>GNU Unix/Linux下 常用工具</title>
+    <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
+<li><code>tmux</code></li>
+</ul>
 <span id="more"></span>
 
-<blockquote>
-<p>参考 《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 《Linux Kernel Development, Third Edition》 By Robert Love.</p>
-</blockquote>
-<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>双向链表<code>list_head</code> 在头文件<code>include/linux/types.h</code> 中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>基本的处理函数和宏在头文件<code>include/linux/list.h</code> 中定义。</p>
-<h3 id="初始化链表"><a href="#初始化链表" class="headerlink" title="初始化链表"></a>初始化链表</h3><p>初始化链表 <code>LIST_HEAD_INIT</code> 和 <code>LIST_HEAD</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct list_head name = LIST_HEAD_INIT(name)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询操作最重要的不是获取<code>list_head</code>类型的指针，而是获得<code>list_head</code>所在的结构体的基地址。例如我们定义下面的结构体：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">person</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>我们如何根据一个<code>struct list_head *</code>指针类型获取其所在<code>struct person</code>结构体的基地址呢？<code>container_of</code>宏主要通过指针偏移运算来完成这个工作（<code>include/linux/kernel.h</code>）。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> container_of(ptr, type, member) (&#123;				\</span></span><br><span class="line"><span class="meta">	void *__mptr = (void *)(ptr);					\</span></span><br><span class="line"><span class="meta">	BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)-&gt;member) &amp;&amp;	\</span></span><br><span class="line"><span class="meta">			 !__same_type(*(ptr), void),			\</span></span><br><span class="line"><span class="meta">			 <span class="string">&quot;pointer type mismatch in container_of()&quot;</span>);	\</span></span><br><span class="line"><span class="meta">	((type *)(__mptr - offsetof(type, member))); &#125;)</span></span><br></pre></td></tr></table></figure>
-<p>其中，<code>offsetof</code> 在<code>include/linux/stddef.h</code>中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;NUMBER)</span></span><br></pre></td></tr></table></figure>
-<p>注意这里使用<code>TYPE*</code>类型的 <code>NULL(0)</code>指针并不会导致运行时错误，因为在编译阶段，编译器会将上诉代码翻译为<code>0+OFFSET</code>，其中<code>OFFSET</code>为<code>NUMBER</code>在类型<code>TYPE</code>中的偏移量。然后我们在<code>container_of</code>宏中将<code>struct list_head ptr</code>的地址减去该偏移量就可以获得其所在<code>TYPE</code>结构体的地址。</p>
-<p>然后可以定义<code>list_entry</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	container_of(ptr, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_first_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;next, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_last_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;prev, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_next_entry - get the next element in list</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to cursor</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_next_entry(pos, member) \</span></span><br><span class="line"><span class="meta">	list_entry((pos)-&gt;member.next, typeof(*(pos)), member)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>直接遍历<code>struct list_head</code> 节点：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each	-	iterate over a list</span></span><br><span class="line"><span class="comment"> * @pos:	the &amp;struct list_head to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each(pos, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @n: another &amp;struct list_head to use as temporary storage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_safe(pos, n, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</span></span><br><span class="line"><span class="meta">		pos = n, n = pos-&gt;next)</span></span><br></pre></td></tr></table></figure>
-<p>注意，<code>list_for_each_safe</code>可以用在遍历链表的过程中执行删除节点操作，它是通过增加一个额外的临时<code>hlist_node</code>指针<code>n</code>来实现的。</p>
-<p>遍历 <strong>entry</strong> :</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each_entry	-	iterate over list of given type</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_entry(pos, head, member)				\</span></span><br><span class="line"><span class="meta">	for (pos = list_first_entry(head, typeof(*pos), member);	\</span></span><br><span class="line"><span class="meta">	     &amp;pos-&gt;member != (head);					\</span></span><br><span class="line"><span class="meta">	     pos = list_next_entry(pos, member))</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="边界检查"><a href="#边界检查" class="headerlink" title="边界检查"></a>边界检查</h3><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>进程链表是运用链表最重要的例子之一。在结构体<code>task_struct</code>中包含字段<code>struct list_head tasks</code>。</p>
-<p>另外一个例子是<strong>等待队列</strong>。</p>
-<h2 id="哈希链表"><a href="#哈希链表" class="headerlink" title="哈希链表"></a>哈希链表</h2><p>哈希链表由于自身特点的考虑，不使用双向链表。</p>
-<p>定义如下（<code>include/linux/types.h</code>）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>为什么头节点(<code>struct hlist_head</code>)不直接使用<code>struct hlist_node</code>，而是要重新定义一个结构体呢？<strong>答案是为了节省空间</strong>。</p>
-<p>另外，使用二级指针<code>**pprev</code>在删除节点上的处理非常简单，无需关心是否是 head 节点。而使用单链表或双向链表时需要单独判断是否是 head 节点。</p>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD_INIT &#123; .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD(name) struct hlist_head name = &#123;  .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_HLIST_HEAD(ptr) ((ptr)-&gt;first = NULL)</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">INIT_HLIST_NODE</span><span class="params">(<span class="keyword">struct</span> hlist_node *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	h-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	h-&gt;pprev = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><p>向<code>hlist</code>链表添加节点时，可以直接添加到链表头部，也可以插入到中间位置。操作函数和宏在<code>include/linux/list.h</code>中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_add_head</span><span class="params">(<span class="keyword">struct</span> hlist_node *n, <span class="keyword">struct</span> hlist_head *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span> =</span> h-&gt;first;</span><br><span class="line">	n-&gt;next = first;</span><br><span class="line">	<span class="keyword">if</span> (first)</span><br><span class="line">		first-&gt;pprev = &amp;n-&gt;next;</span><br><span class="line">	WRITE_ONCE(h-&gt;first, n);</span><br><span class="line">	n-&gt;pprev = &amp;h-&gt;first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __hlist_del(<span class="keyword">struct</span> hlist_node *n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span> =</span> n-&gt;next;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> **<span class="title">pprev</span> =</span> n-&gt;pprev;</span><br><span class="line"></span><br><span class="line">	WRITE_ONCE(*pprev, next);</span><br><span class="line">	<span class="keyword">if</span> (next)</span><br><span class="line">		next-&gt;pprev = pprev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_del</span><span class="params">(<span class="keyword">struct</span> hlist_node *n)</span></span><br><span class="line">&#123;</span><br><span class="line">	__hlist_del(n);</span><br><span class="line">	n-&gt;next = LIST_POISON1;</span><br><span class="line">	n-&gt;pprev = LIST_POISON2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h3><h2 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h2><p>等待队列使用双向链表实现（<code>include/linux/wait.h</code>）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_entry</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		flags;</span><br><span class="line">	<span class="type">void</span>			*private;</span><br><span class="line">	<span class="type">wait_queue_func_t</span>	func;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> &#123;</span></span><br><span class="line">	<span class="type">spinlock_t</span>		lock;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">head</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> <span class="title">wait_queue_head_t</span>;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
-<p>动态分配节点的初始化：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="网络工具类"><a href="#网络工具类" class="headerlink" title="网络工具类"></a>网络工具类</h3><ul>
+<li><code>xchat</code>: IRC客户端</li>
+<li><code>iproute2</code> : 网络及其流量控制工包</li>
+<li><code>net-tools</code> : NET-3网络工具包</li>
+<li><code>openssh-server</code>: OpenSSH SSH服务器端</li>
+<li><code>wireshark</code>:强大的交互式网络抓包和分析工具</li>
+<li><code>ufw</code>: 网络防火墙管理工具</li>
+<li><code>nmap</code>: 网络嗅探工具</li>
+<li><code>nslookup</code>: DNS交互式查询工具</li>
+<li><code>telnet</code>:</li>
+<li><code>netcat|nc</code>: 连接和监听TCP&#x2F;UDP端口工具</li>
+<li><code>openssl</code>：SSL&#x2F;TLS网络加密协议的开源实现</li>
+<li><code>urlview</code>：URL解析器</li>
+<li><code>amule</code>：ed2k&#x2F;Kad 网络客户端</li>
+<li><code>iw</code>：无线设备管理和配置工具</li>
+<li><code>tcpdump</code>：抓包和包分析工具</li>
+<li><code>axel</code>：CLI接口的网络下载加速器</li>
+<li><code>aria2</code>：网络下载加速器</li>
+<li><code>lynx</code> : 通用的Roguelike风格的WWW分布式网页浏览器</li>
+<li><code>wscat</code>: 通过Websocket通信</li>
+</ul>
+<h3 id="多媒体类"><a href="#多媒体类" class="headerlink" title="多媒体类"></a>多媒体类</h3><ul>
+<li><code>vlc</code>: VLC多媒体播放器</li>
+<li><code>ffmpeg</code> : 一个功能强大的跨平台的音视频流处理工具</li>
+<li><code>audacity</code> : 跨平台的音频编辑器</li>
+<li><code>icotool</code> : 制作win32图标</li>
+<li><code>sng</code>：一种编辑PNG图片的文本化标记语言</li>
+<li><code>jpegoptim</code> ：优化&#x2F;压缩JPEG图片</li>
+<li><code>pngcrush</code> ： PNG优化工具</li>
+</ul>
+<h3 id="编辑器和文件阅读器"><a href="#编辑器和文件阅读器" class="headerlink" title="编辑器和文件阅读器"></a>编辑器和文件阅读器</h3><h3 id="设计、开发和调试工具"><a href="#设计、开发和调试工具" class="headerlink" title="设计、开发和调试工具"></a>设计、开发和调试工具</h3><p>A. <em>Linux可执行文件分析工具：</em></p>
+<ul>
+<li><code>strip</code>：从object文件中去除符号表。</li>
+<li><code>nm</code> ： 列出object文件的符号表。</li>
+<li><code>readelf</code> : 分析ELF文件。</li>
+<li><code>objdump</code> : 分析可执行文件（包括反汇编）。</li>
+<li><code>ldd</code>：打印共享库依赖。</li>
+<li><code>strace</code> : 跟踪系统调用和信号。</li>
+<li><code>size</code>: 打印二进制文件各个段的大小。</li>
+<li><code>pmap</code>: 打印进程的内存映射</li>
+<li><code>ipcs</code> : 打印当前系统IPC机制的信息</li>
+<li><code>ctags</code>: 为源代码文件生成tags</li>
+<li><code>cxref</code>: 为C语言代码生成交叉引用表</li>
+<li><code>cflow</code>：打印函数调用树</li>
+<li><code>valgrind</code>：检测数组访问错误和内存泄漏</li>
+</ul>
+<h3 id="系统管理工具"><a href="#系统管理工具" class="headerlink" title="系统管理工具"></a>系统管理工具</h3><ul>
+<li><code>top</code>：Roguelike风格的进程&#x2F;内存监控工具</li>
+<li><code>iostat</code>：报告CPU和I&#x2F;O设备的统计信息</li>
+<li><code>mpstat</code>：报告处理器统计信息</li>
+<li><code>pidstat</code>：报告进程的统计信息</li>
+<li><code>sar</code>：收集、报告、打印系统活动信息</li>
+<li><code>sadf</code>：以多种格式输出sar的统计信息，包括SVG图片</li>
+<li><code>iotop</code>：简单的top-like的I&#x2F;O监控工具</li>
+<li><code>updatedb</code>：为mlocate更新数据库</li>
+<li><code>locate</code>：基于数据库进行文件检索</li>
+<li><code>extundelete</code> ：从ext3&#x2F;ext4文件系统中恢复文件</li>
+<li><code>e2label</code>：改变ext2&#x2F;ext3&#x2F;ext4文件系统的Label</li>
+<li><code>tune2fs</code>：调整ext2&#x2F;ext3&#x2F;ext4文件系统参数，使用<code>-l</code>参数可打印当前参数值</li>
+<li><code>lsof</code> : 列出进程打开文件,包括socket</li>
+</ul>
+<h3 id="科学计算、自动化EDA"><a href="#科学计算、自动化EDA" class="headerlink" title="科学计算、自动化EDA"></a>科学计算、自动化EDA</h3><ul>
+<li><code>octave</code>：Octave是一种科学计算软件，旨在提供与Matlab语法兼容的开放源代码科学计算及数值分析的工具。</li>
+</ul>
+<h3 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h3><ul>
+<li><code>safecopy</code> : 安全拷贝，可用于数据备份</li>
+<li><code>TestDisk</code>: 修复分区、引导等；找回删除文件；分区备份等</li>
+<li><code>photorec &amp; fidentity</code>: 不依赖文件系统的完整性来恢复数据，默认支持400多种文件格式。但对于某些文件（例如数据库），当文件系统损坏后，可能无法完全恢复。</li>
+<li><code>foremost</code>: 基于文件magic指纹进行修复，可自定义文件格式。</li>
+<li><code>fsck &amp; e2fsck</code> : 检查和修复文件系统，<code>e2fsck</code>专门针对ext文件系统。在某些情况下，fsck相比前面的工具可以更有效地解决因文件系统损坏导致的重要文件无法访问的问题。</li>
+</ul>
 ]]></content>
       <categories>
-        <category>Linux Kernel</category>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GNU编译调试工具链手册</title>
+    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
+<span id="more"></span>
+
+
+<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
+<blockquote>
+<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
+</li>
+<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
+</li>
+<li><p><strong>递归</strong>：</p>
+</li>
+<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
+</li>
+</ul>
+<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
+<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
+<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
+<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
+<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
+<li><p><strong>开始和停止</strong></p>
+<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
+</li>
+<li><p><strong>断点</strong></p>
+<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
+</li>
+<li><p><strong>执行</strong></p>
+<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
+</li>
+<li><p><strong>检查代码</strong></p>
+<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
+</li>
+<li><p><strong>检查数据</strong></p>
+<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
+</li>
+<li><p><strong>信息</strong></p>
+<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
+</li>
+</ul>
+<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
+<li>gprof</li>
+<li>valgrind</li>
+</ul>
+<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -548,6 +714,64 @@
 <li>文件系统</li>
 <li>设备驱动</li>
 </ul>
+]]></content>
+      <categories>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel: 内核数据结构</title>
+    <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 《Linux Kernel Development, Third Edition》 By Robert Love.</p>
+</blockquote>
+<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>双向链表<code>list_head</code> 在头文件<code>include/linux/types.h</code> 中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>基本的处理函数和宏在头文件<code>include/linux/list.h</code> 中定义。</p>
+<h3 id="初始化链表"><a href="#初始化链表" class="headerlink" title="初始化链表"></a>初始化链表</h3><p>初始化链表 <code>LIST_HEAD_INIT</code> 和 <code>LIST_HEAD</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct list_head name = LIST_HEAD_INIT(name)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询操作最重要的不是获取<code>list_head</code>类型的指针，而是获得<code>list_head</code>所在的结构体的基地址。例如我们定义下面的结构体：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">person</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们如何根据一个<code>struct list_head *</code>指针类型获取其所在<code>struct person</code>结构体的基地址呢？<code>container_of</code>宏主要通过指针偏移运算来完成这个工作（<code>include/linux/kernel.h</code>）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> container_of(ptr, type, member) (&#123;				\</span></span><br><span class="line"><span class="meta">	void *__mptr = (void *)(ptr);					\</span></span><br><span class="line"><span class="meta">	BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)-&gt;member) &amp;&amp;	\</span></span><br><span class="line"><span class="meta">			 !__same_type(*(ptr), void),			\</span></span><br><span class="line"><span class="meta">			 <span class="string">&quot;pointer type mismatch in container_of()&quot;</span>);	\</span></span><br><span class="line"><span class="meta">	((type *)(__mptr - offsetof(type, member))); &#125;)</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>offsetof</code> 在<code>include/linux/stddef.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;NUMBER)</span></span><br></pre></td></tr></table></figure>
+<p>注意这里使用<code>TYPE*</code>类型的 <code>NULL(0)</code>指针并不会导致运行时错误，因为在编译阶段，编译器会将上诉代码翻译为<code>0+OFFSET</code>，其中<code>OFFSET</code>为<code>NUMBER</code>在类型<code>TYPE</code>中的偏移量。然后我们在<code>container_of</code>宏中将<code>struct list_head ptr</code>的地址减去该偏移量就可以获得其所在<code>TYPE</code>结构体的地址。</p>
+<p>然后可以定义<code>list_entry</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	container_of(ptr, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_first_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;next, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_last_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;prev, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_next_entry - get the next element in list</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to cursor</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_next_entry(pos, member) \</span></span><br><span class="line"><span class="meta">	list_entry((pos)-&gt;member.next, typeof(*(pos)), member)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>直接遍历<code>struct list_head</code> 节点：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each	-	iterate over a list</span></span><br><span class="line"><span class="comment"> * @pos:	the &amp;struct list_head to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each(pos, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @n: another &amp;struct list_head to use as temporary storage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_safe(pos, n, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</span></span><br><span class="line"><span class="meta">		pos = n, n = pos-&gt;next)</span></span><br></pre></td></tr></table></figure>
+<p>注意，<code>list_for_each_safe</code>可以用在遍历链表的过程中执行删除节点操作，它是通过增加一个额外的临时<code>hlist_node</code>指针<code>n</code>来实现的。</p>
+<p>遍历 <strong>entry</strong> :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each_entry	-	iterate over list of given type</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_entry(pos, head, member)				\</span></span><br><span class="line"><span class="meta">	for (pos = list_first_entry(head, typeof(*pos), member);	\</span></span><br><span class="line"><span class="meta">	     &amp;pos-&gt;member != (head);					\</span></span><br><span class="line"><span class="meta">	     pos = list_next_entry(pos, member))</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="边界检查"><a href="#边界检查" class="headerlink" title="边界检查"></a>边界检查</h3><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>进程链表是运用链表最重要的例子之一。在结构体<code>task_struct</code>中包含字段<code>struct list_head tasks</code>。</p>
+<p>另外一个例子是<strong>等待队列</strong>。</p>
+<h2 id="哈希链表"><a href="#哈希链表" class="headerlink" title="哈希链表"></a>哈希链表</h2><p>哈希链表由于自身特点的考虑，不使用双向链表。</p>
+<p>定义如下（<code>include/linux/types.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>为什么头节点(<code>struct hlist_head</code>)不直接使用<code>struct hlist_node</code>，而是要重新定义一个结构体呢？<strong>答案是为了节省空间</strong>。</p>
+<p>另外，使用二级指针<code>**pprev</code>在删除节点上的处理非常简单，无需关心是否是 head 节点。而使用单链表或双向链表时需要单独判断是否是 head 节点。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD_INIT &#123; .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD(name) struct hlist_head name = &#123;  .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_HLIST_HEAD(ptr) ((ptr)-&gt;first = NULL)</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">INIT_HLIST_NODE</span><span class="params">(<span class="keyword">struct</span> hlist_node *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	h-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	h-&gt;pprev = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><p>向<code>hlist</code>链表添加节点时，可以直接添加到链表头部，也可以插入到中间位置。操作函数和宏在<code>include/linux/list.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_add_head</span><span class="params">(<span class="keyword">struct</span> hlist_node *n, <span class="keyword">struct</span> hlist_head *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span> =</span> h-&gt;first;</span><br><span class="line">	n-&gt;next = first;</span><br><span class="line">	<span class="keyword">if</span> (first)</span><br><span class="line">		first-&gt;pprev = &amp;n-&gt;next;</span><br><span class="line">	WRITE_ONCE(h-&gt;first, n);</span><br><span class="line">	n-&gt;pprev = &amp;h-&gt;first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __hlist_del(<span class="keyword">struct</span> hlist_node *n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span> =</span> n-&gt;next;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> **<span class="title">pprev</span> =</span> n-&gt;pprev;</span><br><span class="line"></span><br><span class="line">	WRITE_ONCE(*pprev, next);</span><br><span class="line">	<span class="keyword">if</span> (next)</span><br><span class="line">		next-&gt;pprev = pprev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_del</span><span class="params">(<span class="keyword">struct</span> hlist_node *n)</span></span><br><span class="line">&#123;</span><br><span class="line">	__hlist_del(n);</span><br><span class="line">	n-&gt;next = LIST_POISON1;</span><br><span class="line">	n-&gt;pprev = LIST_POISON2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h3><h2 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h2><p>等待队列使用双向链表实现（<code>include/linux/wait.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_entry</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		flags;</span><br><span class="line">	<span class="type">void</span>			*private;</span><br><span class="line">	<span class="type">wait_queue_func_t</span>	func;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> &#123;</span></span><br><span class="line">	<span class="type">spinlock_t</span>		lock;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">head</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> <span class="title">wait_queue_head_t</span>;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
+<p>动态分配节点的初始化：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Linux Kernel</category>
@@ -841,8 +1065,8 @@
 <h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
 ]]></content>
       <categories>
-        <category>开源硬件</category>
         <category>GNU/Linux操作系统</category>
+        <category>开源硬件</category>
       </categories>
   </entry>
   <entry>
@@ -913,6 +1137,189 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png"></p>
 <h3 id="多级-WatchDog"><a href="#多级-WatchDog" class="headerlink" title="多级 WatchDog"></a>多级 WatchDog</h3><p>多级 Watchdog 计时器通常由多个计时器级联而成。</p>
 <p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png"></p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>嵌入式系统介绍</title>
+    <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
+<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
+<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
+<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
+<ol>
+<li>并行接口（Parallel Interface）</li>
+<li>串行接口（Serial Interface）</li>
+<li>模拟接口（Analog Interface）</li>
+<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
+</ol>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
+<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
+<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
+<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
+<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
+<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
+<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
+<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>FreeRTOS 介绍</title>
+    <url>/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<a href="https://www.freertos.org/zh-cn-cmn-s/">FreeRTOS</a> 是<code>实时操作系统(RTOS)</code>的一种，它非常小巧，被专门设计运行在 MCU 上。<code>FreeRTOS (kernel)</code> 只提供核心的<strong>实时调度</strong>、<strong>内部任务通信</strong>、<strong>定时器</strong>和<strong>同步原语</strong>，所以更准确地说它是一个实时内核。它的一些特性包括：</p>
+<span id="more"></span>
+
+<ul>
+<li>支持40多种架构，为这些不同架构和开发工具提供同一的解决方案。</li>
+<li>可靠，可裁减、简单易用。</li>
+<li>包含丰富的特性和活跃的持续开发。</li>
+<li>资源占用非常小。通常，一个二进制的 kernel image 只占用 6k-12k 字节。</li>
+<li>非常简单小巧。内核的核心部分只包含 3 个 C 文件(<code>tasks.c</code>、<code>queue.c</code>和<code>list.c</code>)。</li>
+<li>完全 <strong>free</strong> 。</li>
+<li>可以迁移到 <a href="https://www.highintegritysystems.com/">SafeRTOS</a>。</li>
+<li>稳定且仍在增长的用户群。</li>
+<li>详细完整的示例以及支持论坛。</li>
+</ul>
+<blockquote>
+<p>下文部分参考 <a href="https://www.freertos.org/RTOS.html">FreeRTOS - 官方文档</a>。</p>
+</blockquote>
+<h3 id="基本原理-Fundamentals"><a href="#基本原理-Fundamentals" class="headerlink" title="基本原理(Fundamentals)"></a>基本原理(Fundamentals)</h3><h4 id="多任务-Multitasking"><a href="#多任务-Multitasking" class="headerlink" title="多任务(Multitasking)"></a>多任务(Multitasking)</h4><p>多任务是现代操作系统的基本特性，它是一种降低系统设计复杂性的抽象方法：</p>
+<ul>
+<li>多任务和任务间内部通信特性可以使得复杂应用被分解为更小、更易管理的子应用。</li>
+<li>这种任务的划分便于进行软件测试，团队协作和代码重用。</li>
+<li>任务间复杂的时序或执行顺序问题可以交给操作系统来完成。</li>
+</ul>
+<h4 id="调度-Scheduling"><a href="#调度-Scheduling" class="headerlink" title="调度(Scheduling)"></a>调度(Scheduling)</h4><p>&emsp;&emsp;调度模块是<code>多任务 os </code>的核心，调度算法及实现的优劣直接影响系统的多方面性能，比如吞吐率、实时性、可靠性等。不同的场景可能会采取不同的调度策略(Policy)。对于非实时（no-realtime）多用户系统，每个任务被分配 <em>接近公平</em> 的CPU资源，高优先级的任务可以获得 <em>软实时</em> 能力，及操作系统会尽量优先执行该任务，但不保证满足该任务的时间延迟或者响应要求。<strong>RTOS</strong> 则提供 <em>硬实时</em> 特性，它保证满足任务的严格的时间约束、响应及可预测的行为。</p>
+<h4 id="上下文切换-Context-Switching"><a href="#上下文切换-Context-Switching" class="headerlink" title="上下文切换(Context Switching)"></a>上下文切换(Context Switching)</h4><p>&emsp;&emsp;每个任务都是任务代码和任务环境的一种抽象，任务环境就是当前任务所占用的资源：包括寄存器、RAM(栈)、ROM、IO端口等。所以当一个任务被内核暂停（suspended）前，内核会负责保存任务的执行环境，当该任务重新调度执行时，再进行恢复。这种机制形成一种每个任务都独占计算资源的假象。切换的效率以及频率会影响系统的实时性能。<br>&emsp;&emsp; <strong>注意上下文切换与中断的区别，上下文切换可能由中断触发，例如SysTick，但在其他情况下，可由用户编写软件来完成，即它可以是一种软件特性。</strong></p>
+<h4 id="实时应用"><a href="#实时应用" class="headerlink" title="实时应用"></a>实时应用</h4><p>&emsp;&emsp;在现实世界，很多事件必须在严格时间内获得响应，这个时间称为 <strong>deadline</strong>，实时&#x2F;嵌入式系统的调度策略则是必须满足事件的 <strong>deadline</strong> 。实时调度策略首先可以是基于 <strong>优先级</strong>的，高优先级任务可以<strong>抢占</strong>低优先级任务，而相同优先级的任务则进行 “公平” 调度。优先级的分配一般由用户完成。例如，<code>EDF</code> 调度算法是一种基本的实时调度算法，它优先调度 <strong>deadline</strong> 最早的任务，但该算法需要已知所有任务的 <strong>deadline</strong>。</p>
+<h4 id="实时调度"><a href="#实时调度" class="headerlink" title="实时调度"></a>实时调度</h4><h3 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h3><p>FreeRTOS 的任务类似于非RTOS（例如<code>Linux</code>）中的线程，每个任务都有自己独立的栈，但可以同步访问共享数据（例如信号量、共享队列、互斥锁、事件组等）。内核调度器负责在不同任务间进行切换。每个任务在内核中都对应一个 <code>TCB</code> 数据结构，<code>TCB</code>中会包含任务的栈指针、优先级、状态、计数器等信息，这些信息可以被调度器使用，来进行任务切换。</p>
+<p><strong>状态：</strong><br>任务的状态转换如下：</p>
+<img src="https://www.freertos.org/fr-content-src/uploads/2018/07/tskstate.gif" width="50%">  
+
+<p><strong>优先级：</strong><br>任务的优先级范围是：<code>0</code> - <code>configMAX_PRIORITIES - 1</code>，<strong>值越小优先级也越小。</strong>** idle task**的优先级为0。</p>
+<p><code>要特别注意任务优先级和中断优先级的区别:</code></p>
+<ul>
+<li>任务是一种<strong>软件特性</strong>，它的优先级由应用开发者指定，并由软件算法（调度器）来决定哪一个任务进入<code>Running</code>状态。它和 正在运行 FreeRTOS 的硬件无关。</li>
+<li><code>ISR</code> 虽然使用软件编写，但却是<strong>硬件特性</strong>，因为硬件将控制哪一个 ISR 运行以及什么时候运行。以 TM4C123GH6PM 为例，它包含很多中断事件，例如 <code>GPIO</code>、<code>UART</code>、<code>Timer</code>、<code>ADC/DAC</code>、<code>SysTick</code>、<code>PWM</code>等，这些事件的中断优先级由 NVIC 等相关寄存器设置和管理。任何一个任务只有在当前没有 <code>ISR</code> 运行的情况下才能运行，<strong>即最低优先级的中断也可以抢占最高优先级的任务，反之不行。</strong></li>
+</ul>
+<p><strong>调度:</strong><br>单核下默认的调度策略：</p>
+<ul>
+<li>优先级固定：任务的优先级一旦确认就不再改变；相比而言，Linux 内核采用一种<code>动态优先级策略</code>，动态优先级有很多优点，但稍显复杂。</li>
+<li>可抢占：优先级高的任务总是可以抢占优先级低的任务。</li>
+<li>时间片：对于优先级相同的任务，调度器会在每个 tick 中断时进行切换。相邻 tick 中断的时间间隔称为一个时间片。</li>
+</ul>
+<p>&emsp;&emsp;抢占策略容易产生<strong>饥饿</strong>问题，即低优先级任务可能长时间不能被调度。在Linux系统上，使用 <strong>Aged</strong>策略来解决饥饿问题，但 FreeRTOS 将问题的解决交给用户：高优先级的任务在等待事件时要<code>主动放弃 CPU（Blocked）</code>，而不是<code>忙等（Busy-loop-wait）</code>。当事件发生时，可以利用任务间通信机制和同步原语来唤醒高优先级任务。这种模型称为<strong>事件驱动</strong>编程模型。</p>
+<p>AMP下调度策略：每个 core 上运行单独的 FreeRTOS 实例，因此每个 core 的调度策略与上面相同。</p>
+<p>SMP下调度策略：SMP下只有单个 FreeRTOS 实例，因此调度策略与上面大体相同，只是允许多个任务进入 <code>Running</code> 状态，这些任务或被分配到不同的 core 上运行。，高优先级任务和低优先级任务可能在不同 core 上<strong>并行</strong>执行。在SMP下，任务可以设置 <code>configUSE_CORE_AFFINITY</code> 来强制自己在特定 core 上运行。</p>
+<p><strong>空闲任务：</strong><br>&emsp;&emsp;<strong>Idle Task</strong> 是 FreeRTOS 启动调度时自动生成的任务，确保当前至少有一个任务可以运行。该任务的优先级最低，它负责回收被删除任务的内存。其他任务也可以设定为与空闲任务相同的优先级，但这些任务的行为可以通过配置 <code>configIDLE_SHOULD_YIELD</code> 来调整。但很多情况下，尽量将任务的优先级设置高于空闲任务的优先级。如果用户想要一些应用运行在最低优先级，则有两种选择，一是使用空闲任务挂钩 <code>void vApplicationIdleHook( void )</code>，<strong>该回调函数不能阻塞</strong>；二是生成最小优先级的新任务，但这种做法更加消耗内存。</p>
+<h3 id="队列、互斥量和信号量"><a href="#队列、互斥量和信号量" class="headerlink" title="队列、互斥量和信号量"></a>队列、互斥量和信号量</h3><p>&emsp;&emsp;<code>queue</code> 是主要的任务间通信形式，可以把它看作线程安全的 <code>FIFO</code>。消息是被拷贝进入 <code>queue</code> 的，而不是仅仅在<code>queue</code>中放入消息数据的引用。</p>
+<ul>
+<li>小的消息可以直接包含在 c 变量中，这些变量可以直接被发送到 queue 或者从 queue 中读取，不需要中间过程。</li>
+<li>变量本身仍可以马上重用，因为它先前的数据已经拷贝到 queue 中。</li>
+<li>当然，queue 也可以传递指针或者引用，特别是当指针指向的数据块较大时，例如 UDP 网络数据包。</li>
+<li>queue 内存的分配完全交由内核管理。</li>
+<li>支持可变字节的消息，queue 支持特殊的结构体，该结构体中可以存放消息的具体大小。</li>
+<li>支持不同类型的消息，这由特殊的结构体来支持。消息的解析也根据消息类型来进行。</li>
+<li>这种实现适合在带有内存保护的环境中使用。通过 queue 可以在不同保护区内传递消息，因为 queue 工作在内核特权级别，它可以进入所有保护区。</li>
+<li>使得 API 更简单。</li>
+</ul>
+<p>&emsp;&emsp;任务读空 queue 或者写已经满的 queue 都会阻塞（进入 <code>Blocked状态</code>）。当有多个任务阻塞在 queue 上时，高优先级的任务在 queue 可访问时首先被唤醒。</p>
+<p>&emsp;&emsp;<code>二进制信号量</code>可以用于任务间同步，更重要的是任务不会在信号量上忙等，如果信号量被占用，任务会在信号量上阻塞（Blcoked），进而不再占用CPU资源。<br><code>计数信号量</code>用于多个共享资源的访问，也可以用于特殊的读者-写者问题。</p>
+<p>&emsp;&emsp;<code>互斥体</code>是包含优先级继承机制的二进制信号量，<strong>互斥体更适合用于资源的互斥访问</strong>。（互斥体的优先级集成机制可以解决可能发生的<strong>死锁</strong>问题。）即一个高优先级的任务在某个互斥体上阻塞，因为该互斥体已经被一个低优先级的任务占用，那么占用者的优先级会被临时提高到阻塞者的优先级。这样做可以尽量减少高优先级任务的阻塞时间，也可以尽量减少低优先级任务的“优先级反转”。</p>
+<p>注意，<code>queue</code> 和<code>二进制信号量</code>也可以用于中断与任务间通信，但在中断中,同步原语 API 函数要使用以 <code>FromISR</code> 结尾的。<br><code>互斥体</code>不应该在中断中使用。&#96;</p>
+<h3 id="任务通知"><a href="#任务通知" class="headerlink" title="任务通知"></a>任务通知</h3><p>&emsp;&emsp;每个任务都有一组任务通知（<em>task notifications</em>），每个任务通知都有一个通知状态，<em>pending</em>或者<em>no-pending</em>。事件可以直接发送到任务通知，此时任务通知的状态变为<em>pending</em>，而不用通过中间机制，即如 queue。任务可以阻塞在某个通知上，直到该通知状态因事件而变为<em>pending</em>。注意，任务在任何时间只能阻塞在一个通知上。</p>
+<p>任务通知相比其他中间机制有着性能优势，但使用时也有下面的限制：</p>
+<ul>
+<li><strong>事件的接收者只有一个</strong>。</li>
+<li><strong>当接收者阻塞在通知上时，发送者在发送未完成前不能阻塞</strong>。</li>
+</ul>
+<p>在下面的场景,则不能使用任务通知:</p>
+<ul>
+<li>向 ISR 发送事件或者数据</li>
+<li>当有多个事件接收者时</li>
+</ul>
+<h3 id="流和消息缓存"><a href="#流和消息缓存" class="headerlink" title="流和消息缓存"></a>流和消息缓存</h3><p>&emsp;&emsp;<code>Stream 缓存</code>用于任务间或者任务与中断间通信，它被优化用于<code>单写者-单读者场景</code>。但对于多个写任务或者多个读任务，它不是线程安全的。<strong>流</strong>是面向字节的，即可以读写任意长度的字节，类似于<code>socket</code>。<code>Stream 缓存</code>使用任务通知，因此调用其 API 函数会使得任务阻塞，也会改变该任务的任务通知的状态。<br>&emsp;&emsp;<code>Trigger Level</code>被阻塞任务设置，如果一个读任务阻塞在空的 Stream 上，除非 Strem 中有这么多字节，该阻塞任务不会被唤醒。当然，如果任务在调用 API 函数时设置了超时值，超时后仍然没有满足<code>Trigger Level</code>，那么 API 返回当前已经可用的字节数据。</p>
+<p>&emsp;&emsp;<code>Message缓存</code>工作在<code>Stream缓存</code>的上层，它是面向消息的，且消息的长度可变。</p>
+<p>&emsp;&emsp;<code>在中断中，API函数要使用以 &quot;FromISR&quot; 结尾的。</code></p>
+<h3 id="软定时器"><a href="#软定时器" class="headerlink" title="软定时器"></a>软定时器</h3><p>&emsp;&emsp; FreeRTOS 的软定时器的回调函数<strong>不工作</strong>在中断上下文中，而是<strong>工作</strong>在 <em>Timer service Task</em> 的上下文中。这与很多定时器的机制不太相同。当然，回调函数不同阻塞。<code>Timer</code> 的很多 API 都是利用一个 queue 来向<em>Timer service Task</em> 发送命令，这个 queue 是私有的，其他任务不能直接访问。Timer 需要在使用前进行配置，比如 <em>Timer service Task</em> 的优先级、私有命令 queue 的长度、栈大小。<em>one-shot</em>定时器只执行一次，<em>auto-loaded</em>定时器是周期性定时器。<br>&emsp;&emsp;<strong>要特别注意<code>软Timer</code>和<code>硬Timer</code>的区别</strong>。</p>
+<h3 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h3><h3 id="定制"><a href="#定制" class="headerlink" title="定制"></a>定制</h3><p><code>FreeRTOSConfig.h</code>中包含所有的定制选项，任何应用都要包含该文件。这些配置选项包括：</p>
+<ul>
+<li>抢占调度或者协作调度、任务最大优先级、时间片、<strong>内核中断优先级</strong></li>
+<li>一些回调函数：内存分配失败回调、Daemon任务启动回调、Tick回调</li>
+<li>内部时钟频率以及 Tick 变量大小</li>
+<li>Tick 中断频率</li>
+<li>软定时器、定时器 daemon 任务的优先级、定时器命令队列长度、Daemon任务的栈深度</li>
+<li>最小的栈空间、栈溢出检查、栈深度类型、栈类型</li>
+<li>使能任务通知、互斥体、递归互斥体、计数信号量、队列</li>
+<li>静态内存分配（如果设置则必须手动为 <code>Idle任务</code> 和<code>Timer任务</code>实现内存分配函数）</li>
+<li>动态内存分配、堆大小、堆类型（FreeRTOS 堆或者用户堆）</li>
+<li>SMP支持</li>
+<li>面向特定架构的选项</li>
+<li>其他</li>
+</ul>
+<p><strong>任何使用 FreeRTOS API 的中断都必须设置与内核相同的优先级（configKERNEL_INTERRUPT_PRIORITY）。</strong></p>
+<h3 id="静态内存分配和动态内存分配"><a href="#静态内存分配和动态内存分配" class="headerlink" title="静态内存分配和动态内存分配"></a>静态内存分配和动态内存分配</h3><p>动态分配的特性：</p>
+<ul>
+<li>可以很大程度上较少内存的使用</li>
+<li>对象生成函数更加简单</li>
+<li>用户不需要自己分配内存，对象由内核动态生成，如：task、软timer、队列、事件组、信号量、互斥体等。</li>
+<li>可以动态监控堆大小进而进行优化</li>
+<li>对象释放后，所占用的内存可以重用</li>
+<li>可选的动态内存分配策略</li>
+</ul>
+<p>静态分配的特性：</p>
+<ul>
+<li>对象可以放置在特定的内存位置</li>
+<li>最大内存空间可以在链接时决定</li>
+<li>不需要处理内存分配错误的处理</li>
+<li>其他</li>
+</ul>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>&emsp;&emsp;FreeRTOS 的内存管理比较灵活，它没有设置单一的分配策略，而是将内存分配模块放到可移植层，即用户可以根据自己的实际情况使用不同的分配策略。</p>
+<ul>
+<li><strong>heap_1.c</strong>：最简单，内存一旦分配不允许释放。适用于：不需要释放对象的应用；行为确定（执行时间总是很稳定）和不会导致内存碎片化的应用；不需要或者不允许动态内存分配到应用。</li>
+<li><strong>heap_2.c</strong>：使用<strong>Best fit 算法</strong>，允许分配的内存被释放。适用于动态内存分配大小总是不变的任务（且重复生成和释放对象），否则如果内存分配大小比较随机或者不稳定，则很容易导致内存碎片化。这种实现并不是确定性（deterministic）的，但比一些标准的 malloc实现更有效。</li>
+<li><strong>heap_3.c</strong>：malloc和free的包装器，使其线程安全。这种实现也不是确定性的，而且需要编译库（例如libc）的支持，也可能增加内核代码的大小。</li>
+<li><strong>heap_4.c</strong>：使用<strong>first fit算法</strong>，而且它会自动将紧邻的空闲区进行合并（使用一些合并算法。）适用于重复性生成和释放对象的应用，与<code>heap_2.c</code>中的实现相比，内存分配大小比较随机时，它的内存碎片化问题大大改善。它也不是确定性的，但比一些标准的 malloc 实现更有效。</li>
+<li><strong>heap_5.c</strong>：使用<strong>first fit算法</strong>和<strong>合并算法</strong>，但允许堆分配在不连续的内存区域。</li>
+</ul>
+<h3 id="栈使用以及内存溢出检测"><a href="#栈使用以及内存溢出检测" class="headerlink" title="栈使用以及内存溢出检测"></a>栈使用以及内存溢出检测</h3><p>&emsp;&emsp;每个任务的栈可以动态分配或者静态分配。内存溢出检测可以在开发与测试阶段使用。方法：</p>
+<ul>
+<li>由内核在上下文切换的时候检测任务的栈指针是否在合法的栈空间。如果超出了合法空间，一个回调函数将被调用。这种方法不保证可以捕获所有的栈溢出。</li>
+<li>使用已知的值初始化栈，并且在上下文切换的时候检测栈空间的最后16个字节是否被重写，如果被重写，一个回调函数会被调用。这种方法类似于 <strong>金丝雀法</strong>。这种方法同样不保证可以捕获所有的栈溢出。</li>
+</ul>
+<h3 id="SMP支持"><a href="#SMP支持" class="headerlink" title="SMP支持"></a>SMP支持</h3><p>&emsp;&emsp;FreeRTOS API在单核和SMP下基本上是相同的，除了在SMP下增加了对core亲和性及抢占使能的API。在单核和SMP下编程，有些微妙的不同，例如在单核下可以通过设置不同的优先级来完成互斥访问，而在SMP下就不能成立了，因为不同优先级的任务可以并行运行，对共享资源的访问不再是互斥的。在这种情况下，用户可以采取的方法：一是使用同步原语进行互斥访问；二是强制相关任务不能并行，即让它们在同一个core上运行；三是配置FreeRTOS，使得只有相同优先级的任务才能并行，这样做或许使得某些core空闲而降低系统整体吞吐率。另外在SMP下，多个ISR或者ISR与任务间也可能并行，因此需要确保互斥访问。</p>
+<h3 id="内存保护"><a href="#内存保护" class="headerlink" title="内存保护"></a>内存保护</h3><p>FreeRTOS为下面的架构提供官方的MPU单元：</p>
+<ul>
+<li>ARMv7-M (Cortex-M3，Cortex-M4 和 Cortex-M7 微控制器)</li>
+<li>ARMv8-M (Cortex-M23 and Cortex-M33 microcontroller) 核</li>
+</ul>
+<p>MPU的使用可以使系统获得更多安全特性，但也使得系统设计变得复杂。使用MPU可以将信任的代码与不信任的第三方代码分别运行在不同的内存空间。FreeRTOS的MPU模块支持将任务分为特权任务和非特权任务，特权任务可以访问整个内存空间，而非特权任务只能访问自己的栈空间和用户指定的其他有限的空间</p>
+<h3 id="线程本地存储（TLS）"><a href="#线程本地存储（TLS）" class="headerlink" title="线程本地存储（TLS）"></a>线程本地存储（TLS）</h3><p>&emsp;&emsp;在单线程应用中，使用全局变量是方便的，但在多线程应用中，使用全局环境在很多时候是不适合的，每个线程都可能需要有自己独有的变量，这些变量可以存放在线程的控制块内。FreeRTOS使用线程本地存储指针数组来实现TLS。</p>
+<h3 id="延迟中断处理"><a href="#延迟中断处理" class="headerlink" title="延迟中断处理"></a>延迟中断处理</h3><p>&emsp;&emsp;延迟中断处理大都适用于大数据传输的场景，这种场景下，如果所有的数据传输均在ISR中完成，则会使得系统实时性变差，也会使得系统变得脆弱。延迟中断处理是指ISR会唤醒一个任务，并让该任务去执行繁重的工作，自己可以很快退出。这种机制类似于Linux中断处理的 <em>top half</em> 和  <em>bottom half</em> 之分。</p>
+<p>&emsp;&emsp; 延迟中断处理可以通过二进制信号量或者计数信号量等同步原语来实现。延迟中断处理可以使用单独的一个task或者使用 daemon task（使用 <em>xTimerPendFunctionCallFromISR</em>  API）。<strong>注意如果要使用队列，则必须视情况而定，如果数据接收频率很快，则队列不太适用，此时应使用DMA或者RAM buffer来提高效率和性能。</strong></p>
+<p>&emsp;&emsp;*<em>特别注意：在ISR中调用 <em>_FromISR 函数可能会使得某个高优先级任务退出阻塞状态，这要不要进行上下文切换要视情况而定。注意使用 xHigherPriorityTaskWoken 参数。调用portYIELD_FROM_ISR 或者 portEND_SWITCHING_ISR函数，根据xHigherPriorityTaskWoken参数的值决定是否切换。</em></em></p>
+<h3 id="事件组-Event-Groups"><a href="#事件组-Event-Groups" class="headerlink" title="事件组(Event Groups)"></a>事件组(Event Groups)</h3><p>&emsp;&emsp;<strong>Event Groups</strong> 有着和queue与信号量不同的特性:</p>
+<ul>
+<li>允许阻塞任务等待一个或者多个事件的发生</li>
+<li>允许同时对多个任务解除阻塞，当这些任务正在等待同一个事件或者同一组事件</li>
+</ul>
+<p>这些特性对于<strong>多对多</strong>的模型很有用。另外，事件组可以减少内存消耗，比多个二进制信号量可以完全由一个事件组来替代。</p>
+<h3 id="QEMU-模拟器"><a href="#QEMU-模拟器" class="headerlink" title="QEMU 模拟器"></a>QEMU 模拟器</h3><p>以MPS2为例，参考下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ qemu-system-arm -machine mps2-an385 -cpu cortex-m3 -kernel [path-to]/RTOSDemo.out -monitor none -nographic -serial stdio -s -S</span><br></pre></td></tr></table></figure>
+<p>其中<code>[path-to]RTOSDemo.out</code>为编译 demo 生成的固件；<code>-s</code> 选项用于 gdb 调试，是选项<code>-gdb tcp:1234</code>的缩写形式。</p>
+<p>然后安装  <strong>gdb-multiarch</strong> 包，安装后调用<code>gdb-multiarch</code> 打开新的会话：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ gdb-multiarch</span><br><span class="line">gdb&gt; set architecture armv5te</span><br><span class="line">gdb&gt; target remote localhost:1234</span><br><span class="line">gdb&gt; continue</span><br></pre></td></tr></table></figure>
+
+
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
@@ -1276,8 +1683,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="第17章-可移植性"><a href="#第17章-可移植性" class="headerlink" title="第17章 可移植性"></a>第17章 可移植性</h3><h3 id="第18章-文档-向网络世界阐释代码"><a href="#第18章-文档-向网络世界阐释代码" class="headerlink" title="第18章 文档:向网络世界阐释代码"></a>第18章 文档:向网络世界阐释代码</h3><p>&emsp;&emsp; <code>troff</code>和<code>TEX</code>排版工具; <code>Textinfo</code>、<code>HTML</code>、<code>DocBook</code></p>
 <h3 id="第19章-开放源码：在Unix社区中编程"><a href="#第19章-开放源码：在Unix社区中编程" class="headerlink" title="第19章 开放源码：在Unix社区中编程"></a>第19章 开放源码：在Unix社区中编程</h3>]]></content>
       <categories>
+        <category>GNU/Linux操作系统</category>
         <category>计算机科学</category>
-        <category>GNU/Linux 操作系统</category>
         <category>读书笔记</category>
       </categories>
   </entry>
