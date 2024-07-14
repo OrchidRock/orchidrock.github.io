@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python3某些强大的特性与Lisp的关系">
+<meta property="og:url" content="https://orchidrock.github.io/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garba">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-17T04:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-14T15:23:23.862Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/","path":"2021/02/17/Python3某些强大的特性与Lisp的关系/","title":"Python3某些强大的特性与Lisp的关系"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python3某些强大的特性与Lisp的关系 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85%EF%BC%88closure%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">闭包（closure）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%EF%BC%88decorator%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">装饰器（decorator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">高阶函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9D%97"><span class="nav-number">5.</span> <span class="nav-text">函数式编程模块</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python3某些强大的特性与Lisp的关系 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python3某些强大的特性与Lisp的关系
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-17 12:50:00" itemprop="dateCreated datePublished" datetime="2021-02-17T12:50:00+08:00">2021-02-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-14 23:23:23" itemprop="dateModified" datetime="2024-07-14T23:23:23+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。<br>&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、<br>面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garbage-collected）等。其中包括对Lisp语言函数式编程的传统，python提供map、filter、和reduce等函数；提供列表解析（list comprehensions）、字典（dictionaries）、集合（set）和生成器（generator）表达式等；同时在标准库中提供functools和itertools模块，这两个模块的特性来源于函数式编程语言Haskell和Standard ML。<br>&emsp;&emsp;这些特性不仅赋予了语言强大的抽象能力，而且反映了一些关于计算科学的本质问题。</p>
+<span id="more"></span>
+
+<h3 id="闭包（closure）"><a href="#闭包（closure）" class="headerlink" title="闭包（closure）"></a>闭包（closure）</h3><p>&emsp;&emsp;在数学中，closure一般是指域的封闭性，比如整数域在加法运算下是封闭的。在数系发展的历史上，先出现的是非零自然数域，即1,2,3,4,…，负数是不存在也是不可理解和忽视的，这种情况下，我们说非零自然数域在减法上是不封闭的。后来一方面人们逐渐在生活中不自觉的使用负数，比如某个人的欠款，另一方面则来自数学本身内在的发展要求，促使人们扩展数系，引入零和负数。数学的内在动力就是呼吁这种内在逻辑的自洽性，而不关心现实世界是否可以找到对应的概念。后来数系逐渐扩展到整数域、有理数域、实数域以及复数域，数学的抽象能力逐渐增强。<br>&emsp;&emsp;在计算机编程语言领域，closure有两种含义：一种是和数学中类似，即一个数据结构中可以包含它自身的嵌套结构，一个运算的结果可以作为它自己操作的参数；另外一种是指在lambda表达式中实现自由变量（free variables）的技术。<br>&emsp;&emsp;python的基本数据结构和类型，如list，tuple，set, dict, str都支持闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; a_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line">&gt;&gt; a_tuple = (<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), <span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">&gt;&gt; a_dict = [<span class="string">&#x27;a&#x27;</span>:<span class="number">123</span>, <span class="string">&#x27;b&#x27;</span>:[<span class="string">&#x27;c&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;d&#x27;</span>:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+<p>另外在这种数据结构上的运算也满足闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; added_list = a_list + a_list</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在Lisp中，只有一种组合数据的胶水（glue），即序对（pair）。由序对构造的数据对象称为表结构（list-structured）数据。这种结构当然也是满足闭包特性的，例如：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> c (<span class="name"><span class="built_in">list</span></span> a b))</span><br><span class="line">=&gt; c</span><br><span class="line">(( <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)(<span class="name">1</span> (<span class="name">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>Lisp中所有的表达式也都可以看作表结构数据。list数据结构也是一种序对，或者说是序对的链，其中链的结尾使用约定的标记’()。例如：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">3</span> <span class="number">4</span>) <span class="number">5</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">cons</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">2</span> (<span class="name"><span class="built_in">cons</span></span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">3</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">4</span> &#x27;())) (<span class="name"><span class="built_in">cons</span></span> <span class="number">5</span> &#x27;())))))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">equal?</span></span> a b)</span><br><span class="line">#t <span class="comment">;; a 与 b的值是相等的</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;那么到目前为止，这种闭包特性带给了我们什么重要的东西呢？我们可以看到，在Lisp中，我们所知道的更为复杂的数据结构，例如链表、栈、队列、树、堆等都可以使用通用的pair来构造，闭包特性赋予了pair表达层次性数据的能力。另外，这种特性非常适合递归算法，例如对树的几乎所有遍历、查找、替换和映射的操作，都可以使用递归算法简单而优雅的解决。Lisp拥有非常简单的语法，或者说程序员几乎不需要考虑语法的问题，从而获得了在语义上的强大抽象能力。<br>&emsp;&emsp;在python中，也可以基于通用的tuple或者list来构造复杂的数据结构，但python的做法则尽量是使用标准库来解决，在那里可以专心解决性能和效率的问题。这是一种小而强大、简单而强大的理念，python具有很强的可扩展性，且避免过早优化，其语言核心尽量保持小、整洁和简单，然后将大量功能放入标准库中，这种做法鼓励了模块化的设计。</p>
+<h3 id="装饰器（decorator）"><a href="#装饰器（decorator）" class="headerlink" title="装饰器（decorator）"></a>装饰器（decorator）</h3><p>&emsp;&emsp;关于这个主题，可以参考链接 <a target="_blank" rel="noopener" href="https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html">Python3 Decorators</a>。装饰器的特性类似于宏（macro），基于该特性使得python可以获得动态获取、修改函数（functions）内部状态的强大能力。<br>&emsp;&emsp;在Lisp中，函数具有第一级状态（first-class functions）,即函数本身可以作为返回值，可以作为函数的参数，可以用变量命名，可以包含在数据结构中。我们也可以说，函数本身满足闭包性质。首先我们以<a target="_blank" rel="noopener" href="https://www.mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-12.html#%25_sec_1.3.4">SICP Exercise 1.41</a>来表现这种特性:</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">double</span> f) (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name">f</span> (<span class="name">f</span> x))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">inc</span> x) (<span class="name"><span class="built_in">+</span></span> x <span class="number">1</span>))</span><br><span class="line">(((<span class="name">double</span> (<span class="name">double</span> double)) inc) <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>过程double以过程f作为参数,并返回一个过程（以lambda表达式的形式），该过程将f执行两次。所以，最后一行表达式的值是21，f被执行了16次。python中可以使用装饰器实现类似的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">f</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">my_double</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> f(f(x))</span><br><span class="line">    <span class="keyword">return</span> my_double</span><br><span class="line"></span><br><span class="line"><span class="meta">@double</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;Lisp中的这种特性可以非常方便地建立更一般的抽象，比如说高阶函数，它可以增加代码的重用性以及程序的模块化。而python的装饰器特性主要还是获得开始时所说得那种动态修改函数性质的能力，它不需要修改原来函数的代码却可以获得额外的功能，使得程序更加清晰和简洁，比如，定义property等。当然它也可以用来进行定义高阶抽象，比如表格化或者记忆化（Memoized），这种方法可以大大提高某些算法（动态规划、树形递归等）的效率，它针对一类问题而不是某个特定的问题。在 <a target="_blank" rel="noopener" href="https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">PythonDecoratorLibrary Memorized</a> 例子中使用Memoized装饰器可以在不改动原有算法代码的基础上提高算法的效率。</p>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>&emsp;&emsp;在Lisp中过程与数据可以相互转换，过程本身也可以成为对象。python中可以将函数本身看成对象，不同的变量可以引用（reference）同一个函数对象，一个函数也就可以作为另一个函数的参数。我们以map为例来表现这种特性的威力，假设我们要将一列数加倍，我们可以写下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br></pre></td></tr></table></figure>
+<p>那么如果需要将一列字母全部变为大写，我们可以写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [a.upper() <span class="keyword">for</span> a <span class="keyword">in</span> char_list]</span><br></pre></td></tr></table></figure>
+<p>我们还可以给出大量这样的例子，那么这些例子中是否包含共同的、一般性的概念呢？是否可以用一种统一的方式解决一类的问题呢？如果我们抽象的看待这类问题，将对list中数据的操作函数作为参数由用户定义，就是说map是一种对list数据的映射，这种映射本身由用户自己定义。我们的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">map</span>(<span class="params">f, a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [f(i) <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="built_in">str</span>.upper, char_list)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*<span class="number">2</span>, a_list)</span><br></pre></td></tr></table></figure>
+<p>capitalize和double函数都可以基于map来定义，我们说map有更高的抽象能力。<br>&emsp;&emsp;python中的map、filter、sorted和reduce函数都是基于上诉的思想，这种高阶函数的使用使得程序简单、清晰和模块化，更重要的是它们可以协作组合完成更加复杂的功能。</p>
+<h3 id="函数式编程模块"><a href="#函数式编程模块" class="headerlink" title="函数式编程模块"></a>函数式编程模块</h3><p>&emsp;&emsp;functools库中主要的工具是partial类，它可以使用默认参数来包装（wrap）一个可调用的对象（callable object）,结果对象可以看作原来的那个对象。这里的可调用对象既可以是单独的函数（standalone function）也可以是类（class）。在某些场景，对象会作为某些方法的参数，但该对象不能带有自己的默认参数，而partial通过wrap原有的对象和其默认参数获得一个新的对象，该对象可以作为无参对象传入其他方法。<br>total_ordering装饰器可以自动增加类的比较方法（ rich comparison methods）。<br>&emsp;&emsp;itertools库中的函数可以实现惰性求值（lazy evaluation），数据只有等到它被需要的时候才会产生，这样可以更有效率的使用存储资源，而且可以用来表达更加复杂的算法。<br>其中itertools.map和python内置的map函数有些不同，前者返回的是iterator，对输入数据的操作还没有进行，它只在需要的时候产生数据；而后者返回的就是映射后的最终数据。<br>&emsp;&emsp;operator提供函数式的运算操作符。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/" rel="next" title="Python3异步编程与Twisted框架介绍">
+                  Python3异步编程与Twisted框架介绍 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

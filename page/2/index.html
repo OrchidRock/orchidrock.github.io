@@ -149,13 +149,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -862,7 +862,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -880,7 +880,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">DroidCam 工具使用</a>
+          <a href="/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">CPython Internals 0: 配置和构建</a>
         </h2>
 
         <div class="post-meta-container">
@@ -891,14 +891,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-21 09:50:00" itemprop="dateCreated datePublished" datetime="2022-07-21T09:50:00+08:00">2022-07-21</time>
+      <time title="创建时间：2022-11-27 21:04:00" itemprop="dateCreated datePublished" datetime="2022-11-27T21:04:00+08:00">2022-11-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-14 14:48:46" itemprop="dateModified" datetime="2024-07-14T14:48:46+08:00">2024-07-14</time>
+      <time title="修改时间：2024-07-14 23:10:18" itemprop="dateModified" datetime="2024-07-14T23:10:18+08:00">2024-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -906,7 +906,11 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/CPython/" itemprop="url" rel="index"><span itemprop="name">CPython</span></a>
         </span>
     </span>
 
@@ -917,7 +921,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>818</span>
+      <span>572</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -935,10 +939,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a target="_blank" rel="noopener" href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a target="_blank" rel="noopener" href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a target="_blank" rel="noopener" href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              <a class="btn" href="/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -969,7 +976,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -987,7 +994,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">FreeRTOS+TCP介绍</a>
+          <a href="/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Python描述器介绍</a>
         </h2>
 
         <div class="post-meta-container">
@@ -998,14 +1005,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-11 15:40:00" itemprop="dateCreated datePublished" datetime="2022-07-11T15:40:00+08:00">2022-07-11</time>
+      <time title="创建时间：2022-11-27 09:35:00" itemprop="dateCreated datePublished" datetime="2022-11-27T09:35:00+08:00">2022-11-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-14 22:55:10" itemprop="dateModified" datetime="2024-07-14T22:55:10+08:00">2024-07-14</time>
+      <time title="修改时间：2024-07-14 23:19:28" itemprop="dateModified" datetime="2024-07-14T23:19:28+08:00">2024-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1013,7 +1020,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
         </span>
     </span>
 
@@ -1024,14 +1031,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>5.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>9 分钟</span>
     </span>
 </div>
 
@@ -1042,17 +1049,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
-<ul>
-<li><strong>Berkeley 套接字API</strong></li>
-<li>可选支持TCP滑动窗口</li>
-<li>API完全可重入和线程安全</li>
-<li>包括 ARP, DHCP, DNS, LLMNR, NBNS等协议</li>
-<li>免费ARP（Gratuitous ARP）</li>
-</ul>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 描述器(Descriptor) 是一个具有”绑定行为”的对象属性，它的访问控制（读、写和删除）可以由描述器协议(Descriptor Protocol)重写。一个实现 <code>__set__</code>、<code>__get__</code>和<code>__del__</code>方法中的任意一个的对象就称为描述符。</p>
+<blockquote>
+<p>主要翻译自 <a target="_blank" rel="noopener" href="https://realpython.com/python-descriptors/">Python Descriptors: An Introduction</a> by Davide Mastromatteo.</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1083,7 +1086,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/20/Python-%E5%85%83%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1101,7 +1104,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">FreeRTOS 介绍</a>
+          <a href="/2022/11/20/Python-%E5%85%83%E7%B1%BB/" class="post-title-link" itemprop="url">Python 元类</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1112,14 +1115,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-06-01 16:56:00" itemprop="dateCreated datePublished" datetime="2022-06-01T16:56:00+08:00">2022-06-01</time>
+      <time title="创建时间：2022-11-20 11:15:00" itemprop="dateCreated datePublished" datetime="2022-11-20T11:15:00+08:00">2022-11-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-14 22:51:25" itemprop="dateModified" datetime="2024-07-14T22:51:25+08:00">2024-07-14</time>
+      <time title="修改时间：2024-07-14 23:16:03" itemprop="dateModified" datetime="2024-07-14T23:16:03+08:00">2024-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1127,7 +1130,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
         </span>
     </span>
 
@@ -1138,14 +1141,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.9k</span>
+      <span>4.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -1156,10 +1159,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<a target="_blank" rel="noopener" href="https://www.freertos.org/zh-cn-cmn-s/">FreeRTOS</a> 是<code>实时操作系统(RTOS)</code>的一种，它非常小巧，被专门设计运行在 MCU 上。<code>FreeRTOS (kernel)</code> 只提供核心的<strong>实时调度</strong>、<strong>内部任务通信</strong>、<strong>定时器</strong>和<strong>同步原语</strong>，所以更准确地说它是一个实时内核。它的一些特性包括：</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，<strong>everything is a object</strong>，类也不例外。当把类看作对象时，类也是可以是被<code>动态创建</code>的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。<code>type</code> 是 python 内置的元类，用户也可以创建自己的元类。</p>
+<blockquote>
+<p>本文主要翻译自 <a target="_blank" rel="noopener" href="https://realpython.com/python-metaclasses/">Python Metaclass</a> by John Sturtz 。</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/2022/11/20/Python-%E5%85%83%E7%B1%BB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1190,7 +1196,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1208,7 +1214,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/" class="post-title-link" itemprop="url">GNU编译调试工具链手册</a>
+          <a href="/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/" class="post-title-link" itemprop="url">Python 装饰器</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1219,14 +1225,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-29 20:54:00" itemprop="dateCreated datePublished" datetime="2022-04-29T20:54:00+08:00">2022-04-29</time>
+      <time title="创建时间：2022-10-23 13:43:00" itemprop="dateCreated datePublished" datetime="2022-10-23T13:43:00+08:00">2022-10-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-14 22:58:45" itemprop="dateModified" datetime="2024-07-14T22:58:45+08:00">2024-07-14</time>
+      <time title="修改时间：2024-07-14 23:13:28" itemprop="dateModified" datetime="2024-07-14T23:13:28+08:00">2024-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1234,7 +1240,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
         </span>
     </span>
 
@@ -1245,14 +1251,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -1263,10 +1269,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a target="_blank" rel="noopener" href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
+<blockquote>
+<p>主要翻译自：<a target="_blank" rel="noopener" href="https://realpython.com/primer-on-python-decorators/">Primer on Python Decorators</a> by <em>Geir Arne Hjelle</em>。</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/#more" rel="contents">
+              <a class="btn" href="/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1312,13 +1321,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">101k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:49</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; Python 描述器(Descriptor) 是一个具有”绑定行为”的对象属性，它的访问控制（读、写和删除）可以由描述器协议(Descriptor Protocol)重写。一个实现 __set__、__get__和__del__方法中的任意一个的对象就称为描述符。  主要翻译自 Python Descriptors: An Introduction by Davide">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python描述器介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; Python 描述器(Descriptor) 是一个具有”绑定行为”的对象属性，它的访问控制（读、写和删除）可以由描述器协议(Descriptor Protocol)重写。一个实现 __set__、__get__和__del__方法中的任意一个的对象就称为描述符。  主要翻译自 Python Descriptors: An Introduction by Davide">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-27T01:35:00.000Z">
+<meta property="article:modified_time" content="2024-07-14T15:19:28.654Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/","path":"2022/11/27/Python描述器介绍/","title":"Python描述器介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python描述器介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">描述器定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E7%BB%86%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">内部工作细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Property-%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Property 中的描述器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%92%8C%E5%87%BD%E6%95%B0%E4%B8%AD%E7%9A%84%E6%8F%8F%E8%BF%B0%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">方法和函数中的描述器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9F%A5%E6%89%BE%E9%93%BE%E8%BF%9B%E8%A1%8C%E5%B1%9E%E6%80%A7%E8%AE%BF%E9%97%AE"><span class="nav-number">4.</span> <span class="nav-text">如何使用查找链进行属性访问?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E5%9C%B0%E4%BD%BF%E7%94%A8-Python-%E6%8F%8F%E8%BF%B0%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">如何正确地使用 Python 描述器?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8-Python-%E6%8F%8F%E8%BF%B0%E5%99%A8%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">为什么使用 Python 描述器？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python描述器介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python描述器介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-27 09:35:00" itemprop="dateCreated datePublished" datetime="2022-11-27T09:35:00+08:00">2022-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-14 23:19:28" itemprop="dateModified" datetime="2024-07-14T23:19:28+08:00">2024-07-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 描述器(Descriptor) 是一个具有”绑定行为”的对象属性，它的访问控制（读、写和删除）可以由描述器协议(Descriptor Protocol)重写。一个实现 <code>__set__</code>、<code>__get__</code>和<code>__del__</code>方法中的任意一个的对象就称为描述符。</p>
+<blockquote>
+<p>主要翻译自 <a target="_blank" rel="noopener" href="https://realpython.com/python-descriptors/">Python Descriptors: An Introduction</a> by Davide Mastromatteo.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="描述器定义"><a href="#描述器定义" class="headerlink" title="描述器定义"></a>描述器定义</h2><p>&emsp;&emsp;描述器是一个实现描述器协议中方法的 Python 对象，描述器协议定义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__get__(<span class="variable language_">self</span>, obj, <span class="built_in">type</span>=<span class="literal">None</span>) -&gt; <span class="built_in">object</span></span><br><span class="line">__set__(<span class="variable language_">self</span>, obj, value) -&gt; <span class="literal">None</span></span><br><span class="line">__delete__(<span class="variable language_">self</span>, obj) -&gt; <span class="literal">None</span></span><br><span class="line">__set_name__(<span class="variable language_">self</span>, owner, name)</span><br></pre></td></tr></table></figure>
+<p>如果描述器仅仅实现了 <code>__get__()</code> 方法，则称它为非数据描述器(non-data descriptor)；如果它实现了 <code>__set__()</code> 或 <code>__del__()</code> 方法，则称它为数据描述器(data-decriptor)；两者不仅在名字上，在行为上也有差别，数据描述器在属性遍历中有更高的优先级。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># descriptors.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Verbose_attribute</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, <span class="built_in">type</span>=<span class="literal">None</span></span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to get the value&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, obj, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to set the value&quot;</span>)</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;Cannot change the value&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    attribute1 = Verbose_attribute()</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">x = my_foo_object.attribute1</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
+<p>上述例子中，Verbose_attribute 实现了描述器协议，并被示例化为 Foo 的属性，因此它可以被认为是一个描述器。</p>
+<p>作为描述器，当它被访问时（使用符号 <code>.</code>）会做出自己的绑定行为(binding behavior)。在上面的例子中，当 Verbose_attribute 描述器被访问时，它就会向终端打印日志信息。</p>
+<p>运行上面的例子，将会得到下面的输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">python descriptors.py</span></span><br><span class="line">accessing the attribute to get the value</span><br><span class="line">42</span><br></pre></td></tr></table></figure>
+
+<h2 id="内部工作细节"><a href="#内部工作细节" class="headerlink" title="内部工作细节"></a>内部工作细节</h2><p>熟悉 Python 面向对象的用户会认为上面的例子完全可以使用 <code>properties</code> 来达到同样的效果。尽管这是对的，但实际上，<code>properties</code> 在 python 中就是描述器。</p>
+<h3 id="Property-中的描述器"><a href="#Property-中的描述器" class="headerlink" title="Property 中的描述器"></a>Property 中的描述器</h3><p>对于第2节的例子，如果不想显式地使用描述器，直接使用 <code>property</code> 也可以达到同样的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># property_decorator.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">attribute1</span>(<span class="params">self</span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to get the value&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @attribute1.setter</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">attribute1</span>(<span class="params">self, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to set the value&quot;</span>)</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;Cannot change the value&quot;</span>)</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">x = my_foo_object.attribute1</span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上面的例子使用了修饰符(<code>decorators</code>)来定义 property，但 decorators 是一种语法糖。实际上，它可以被重写成下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># property_function.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getter</span>(<span class="params">self</span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to get the value&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">setter</span>(<span class="params">self, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;accessing the attribute to set the value&quot;</span>)</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;Cannot change the value&quot;</span>)</span><br><span class="line"></span><br><span class="line">    attribute1 = <span class="built_in">property</span>(getter, setter)</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">x = my_foo_object.attribute1</span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>property()</code> 返回一个实现了描述器协议的 <code>property</code> 对象，它使用参数 fget、fset 和 fdel 作为描述器协议中三个方法的具体实现。</p>
+<h3 id="方法和函数中的描述器"><a href="#方法和函数中的描述器" class="headerlink" title="方法和函数中的描述器"></a>方法和函数中的描述器</h3><p><code>Function</code> 类、<code>ClassMethod</code>类和<code>StaticMethod</code>类实际上都实现了 <code>__get__()</code> 方法，因此可以认为它们是非数据描述器。其中<code>ClassMethod</code>描述器的实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ClassMethod</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;Emulate PyClassMethod_Type() in Objects/funcobject.c&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, f</span>):</span><br><span class="line">        <span class="variable language_">self</span>.f = f</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, klass=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">if</span> klass <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            klass = <span class="built_in">type</span>(obj)</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">newfunc</span>(<span class="params">*args</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.f(klass, *args)</span><br><span class="line">        <span class="keyword">return</span> newfunc</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当一个对象调用类方法(method)时，<code>obj.method(*args)</code> 就会被转换为 <code>method(type(obj), *args)</code></p>
+<p>对于静态方法，则更简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StaticMethod</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;Emulate PyStaticMethod_Type() in Objects/funcobject.c&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, f</span>):</span><br><span class="line">        <span class="variable language_">self</span>.f = f</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, objtype=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.f</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当一个对象调用静态方法时，<code>obj.method(*args)</code> 会被转换为 <code>method(*args)</code> 。</p>
+<h2 id="如何使用查找链进行属性访问"><a href="#如何使用查找链进行属性访问" class="headerlink" title="如何使用查找链进行属性访问?"></a>如何使用查找链进行属性访问?</h2><p>在 Python 中，任何对象都有一个内值的 <code>__dict__</code> 属性，它是一个包含了在该对象中定义的所有属性的字典。<br>对象所属的类(Class)也是一个对象，因此它也有 <code>__dict__</code> 属性，它包含了该类的属性和方法。</p>
+<p>当我们在 Python 中访问一个属性时，在底层到底发生了什么呢？解释器是如何直到你想要什么呢？这些问题可以通过查找链（Lookup chain）的概念来回答：</p>
+<ul>
+<li>首先，如果你要查找的属性是一个数据描述器，该描述器的 <code>__get__</code>方法会被调用，其返回结果作为属性的值。</li>
+<li>如果失败，则会在对象的<code>__dict__</code> 中查找，该属性作为查找时使用的 key。</li>
+<li>如果失败，如果你要查找的属性是一个非数据描述器，该描述器的 <code>__get__</code>方法会被调用，其返回结果作为属性的值。</li>
+<li>如果失败，则会在对象所属类的<code>__dict__</code> 中查找，该属性作为查找时使用的 key。</li>
+<li>如果失败，则会在对象所属类的父类的<code>__dict__</code> 中查找，该属性作为查找时使用的 key。</li>
+<li>如果失败，重复上一步，直到遍历所有父类。</li>
+<li>如果都失败了，则返回 <code>AttributeError</code> 异常。</li>
+</ul>
+<h2 id="如何正确地使用-Python-描述器"><a href="#如何正确地使用-Python-描述器" class="headerlink" title="如何正确地使用 Python 描述器?"></a>如何正确地使用 Python 描述器?</h2><p>仅仅需要实现<strong>描述符协议</strong>，其中最重要的是 <code>__get__</code> 和 <code>__set__</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__get__(<span class="variable language_">self</span>, obj, <span class="built_in">type</span>=<span class="literal">None</span>) -&gt; <span class="built_in">object</span></span><br><span class="line">__set__(<span class="variable language_">self</span>, obj, value) -&gt; <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另外，一定要注意：</p>
+<ul>
+<li><strong>self</strong> 代表描述符实例。</li>
+<li><strong>obj</strong> 代表描述符所属的对象的实例。</li>
+<li><strong>type</strong> 代表描述符所属对象的类型。</li>
+</ul>
+<p>在 <code>__set__()</code> 中，不需要 <code>type</code> 变量，因为只有对象才能调用 <code>__set__()</code>，而<code>__get__()</code>可以被对象或类调用。</p>
+<p>另外，描述器只会被实例化一次，即每一个类的所有实例共享该类中描述器的实例。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># descriptors2.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OneDigitNumericValue</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.value = <span class="number">0</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, <span class="built_in">type</span>=<span class="literal">None</span></span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.value</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, obj, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">9</span> <span class="keyword">or</span> value &lt; <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">int</span>(value) != value:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">&quot;The value is invalid&quot;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.value = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    number = OneDigitNumericValue()</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">my_second_foo_object = Foo()</span><br><span class="line"></span><br><span class="line">my_foo_object.number = <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(my_foo_object.number)</span><br><span class="line"><span class="built_in">print</span>(my_second_foo_object.number)</span><br><span class="line"></span><br><span class="line">my_third_foo_object = Foo()</span><br><span class="line"><span class="built_in">print</span>(my_third_foo_object.number)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上例的运行结果是所有 <code>Foo</code> 的实例的 <code>number</code> 属性有着相同的值。number描述器实际上仅仅是一个类属性（class-level attribute）。</p>
+<p>如何解决这个问题呢？如果在描述器 <code>OneDigitNumericValue</code>中为所有 Foo 的对象建立字典，保存其 <code>value</code> 值，可以吗？这样做会造成对 Foo 对象的强引用（<strong>strong reference</strong>），影响 gc 释放 Foo 对象所占的内存。</p>
+<p>正确的做法应该是将 <em>value</em> 存贮在 Foo 对象的 <code>__dict__</code> 属性中，因为每个对象都有自己单独的 <code>__dict__</code> 属性。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># descriptors4.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OneDigitNumericValue</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set_name__</span>(<span class="params">self, owner, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, <span class="built_in">type</span>=<span class="literal">None</span></span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="keyword">return</span> obj.__dict__.get(<span class="variable language_">self</span>.name) <span class="keyword">or</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, obj, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        obj.__dict__[<span class="variable language_">self</span>.name] = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    number = OneDigitNumericValue()</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">my_second_foo_object = Foo()</span><br><span class="line"></span><br><span class="line">my_foo_object.number = <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(my_foo_object.number)</span><br><span class="line"><span class="built_in">print</span>(my_second_foo_object.number)</span><br><span class="line"></span><br><span class="line">my_third_foo_object = Foo()</span><br><span class="line"><span class="built_in">print</span>(my_third_foo_object.number)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其中 <code>__set_name__()</code> 方法在描述符实例化时会被默认调用，并且 <code>name</code> 参数会被默认设置。</p>
+<h2 id="为什么使用-Python-描述器？"><a href="#为什么使用-Python-描述器？" class="headerlink" title="为什么使用 Python 描述器？"></a>为什么使用 Python 描述器？</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/20/Python-%E5%85%83%E7%B1%BB/" rel="prev" title="Python 元类">
+                  <i class="fa fa-angle-left"></i> Python 元类
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/" rel="next" title="CPython Internals 0: 配置和构建">
+                  CPython Internals 0: 配置和构建 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
