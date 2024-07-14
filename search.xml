@@ -1,6 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CMake 构建工具介绍</title>
+    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
+<span id="more"></span>
+
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<ul>
+<li>可复用性强</li>
+<li>简单性</li>
+</ul>
+<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
+<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>库</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
+<td><code>add_library(mylib mylib.cxx)</code></td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
+<td><code>add_executable(demo2 demo2.c)</code></td>
+</tr>
+<tr>
+<td>自定义目标</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
+<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
+</ul>
+<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
+<p>相关命令表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
+<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
+<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left">set_property()</td>
+<td align="left">None</td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
+<p>命令模式：</p>
+<ul>
+<li><code>PUBLIC</code>：</li>
+<li><code>PRIVATE</code>：</li>
+<li><code>INTERFACE</code>：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
+
+<p>使用要求的传播（Transitive Usage Requirements）：</p>
+<ul>
+<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
+</ul>
+<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
+<ul>
+<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
+</ul>
+<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">set</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">option (ccmake)</td>
+<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
+</tr>
+<tr>
+<td align="left">list</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">target_compile_options()</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">set_target_properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configure_file</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">add_subdirectory</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
+<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
+<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_PREFIX_PATH</strong></td>
+<td>依赖包路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td>CMake扩展模块所在路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>当执行<strong>install</strong> 目标时的安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
+</tr>
+<tr>
+<td><strong>BUILD_SHARED_LIBS</strong></td>
+<td>指定<code>add_library()</code>生成静态库还是动态库</td>
+</tr>
+</tbody></table>
+<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
+<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>构建工具</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TestPost</title>
+    <url>/2024/07/14/TestPost/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2024/07/10/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
