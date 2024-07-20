@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp;vim是著名编辑器vi的变种，相比vi而言，提供了更多扩展，包括插件结构等。vim可以打造成IDE前端，但在Unix&#x2F;Linux环境中，标准的IDE并不是开发人员的首选；而可以灵活整合各种语言和工具的vim与emacs则是Unix&#x2F;Linux下开发人员的主要选择。&emsp;&emsp;下文中的快捷键都可以重新绑定，但默认的绑定设置大部分都是最方便的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim配置及命令手册">
+<meta property="og:url" content="https://orchidrock.github.io/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp;vim是著名编辑器vi的变种，相比vi而言，提供了更多扩展，包括插件结构等。vim可以打造成IDE前端，但在Unix&#x2F;Linux环境中，标准的IDE并不是开发人员的首选；而可以灵活整合各种语言和工具的vim与emacs则是Unix&#x2F;Linux下开发人员的主要选择。&emsp;&emsp;下文中的快捷键都可以重新绑定，但默认的绑定设置大部分都是最方便的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-29T13:30:00.000Z">
+<meta property="article:modified_time" content="2024-07-20T14:30:42.183Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/","path":"2022/04/29/vim配置及命令手册/","title":"vim配置及命令手册"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vim配置及命令手册 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">一般模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">插入模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%97%E9%80%89%E6%8B%A9%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">块选择模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%AA%97%E5%8F%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">多窗口模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%A1%A3%E6%A1%88%E7%BC%96%E8%BE%91"><span class="nav-number">6.</span> <span class="nav-text">多档案编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tags"><span class="nav-number">7.</span> <span class="nav-text">tags</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vim配置及命令手册 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vim配置及命令手册
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 21:30:00" itemprop="dateCreated datePublished" datetime="2022-04-29T21:30:00+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-20 22:30:42" itemprop="dateModified" datetime="2024-07-20T22:30:42+08:00">2024-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;vim是著名编辑器<code>vi</code>的变种，相比<code>vi</code>而言，提供了更多扩展，包括插件结构等。vim可以打造成IDE前端，但在Unix&#x2F;Linux环境中，标准的IDE并不是开发人员的首选；而可以灵活整合各种语言和工具的vim与<code>emacs</code>则是Unix&#x2F;Linux下开发人员的主要选择。<br>&emsp;&emsp;下文中的快捷键都可以重新绑定，但默认的绑定设置大部分都是最方便的选择，遵循传统可以有利于协作开发。<br>&emsp;&emsp;<strong>下文中快捷键中带<code>+</code>号的组合键代表同时按下，不带<code>+</code>号的顺序按下。组合键有些会用空格分隔，这样做是为了使得描述更清晰直接，此时空格并不是组合键的一部分；如果有些快捷键中包含空格，下文会以<code>&lt;Space&gt;</code>来表示。另外，<code>（n）</code>表示实际的按键是整数数字，而不是字母<code>n</code>。</strong></p>
+<span id="more"></span>
+
+
+<h3 id="一般模式"><a href="#一般模式" class="headerlink" title="一般模式"></a>一般模式</h3><ul>
+<li><p><strong>光标移动：</strong></p>
+<p><code>h</code>或<code>&lt;Left&gt;</code> ：向左移动一个字符<br><code>j</code>或<code>&lt;Down&gt;</code> ：向下移动一行<br><code>k</code>或<code>&lt;Up&gt;</code> ：向上移动一行<br><code>l</code>或<code>&lt;Right&gt;</code> ：向右移动一个字符<br><code>(n) &lt;方向键&gt;</code>：（顺序按下）多字符（行）移动<br><code>(n) &lt;Space&gt;</code> ：光标向右移动n个字符<br><code>(n) &lt;Enter&gt;</code> ：向下移动 n 行<br><code>0</code>或<code>&lt;Home&gt;</code>：移动到行首<br><code>$</code>或<code>&lt;End&gt;</code>：移动到行尾<br><code>&lt;Ctrl&gt;</code> + <code>f</code>：屏幕向下移动一页，相当于<code>&lt;Page Down&gt;</code><br><code>&lt;Ctrl&gt;</code> + <code>b</code>：屏幕向上移动一页，相当于<code>&lt;Page Up&gt;</code><br><code>&lt;Ctrl&gt;</code> + <code>d</code>：屏幕向下移动半页<code> </code><Ctrl><code>+</code>o<code>：屏幕向上移动半页</code><br><code>&lt;CTRL&gt;</code> + <code>O</code>：调整到上一次光标所在的行号上，即往后跳转<br><code>&lt;CTRL&gt;</code> + <code>i</code>：调整到jump list中当前记录的下一个记录的行号上，即往前调整<br><code>(n) &lt;Space&gt;</code> ：光标向右移动n个字符<br><code>H</code>：移动到屏幕最上方行的行首<br><code>M</code>：移动到屏幕中央行的行首<br><code>L</code>：移动到屏幕最下方行的行首<br><code>G</code>：移动到文档的最后一行<br><code>(n) G</code>：移动到文档的第 n 行<br><code>gg</code>或<code>1G</code>：移动到档案的第 1 行</p>
+</li>
+<li><p><strong>搜寻与替代：</strong></p>
+<p><code>/word</code> ： 向光标之下搜寻匹配 word 的字符串<br><code>? word</code>： 向光标之上搜寻匹配 word 的字符串<br><code>n</code>：在上次的搜寻结果中跳到下一个匹配的字符串<br><code>N</code>：在上次的搜寻结果中跳到前一个匹配的字符串，与<code>n</code>相反<br><code>:[n1],[n2]s/word1/word2/[g][c]</code>：替换从n1行到n2行之间所有行的第一个word1匹配为word2（如果替换命令的最后部分选择 <code>g</code>，则替换该行所有的匹配），如果没有指定n1，n2，则作用于当前行，如果n2为<code>$</code>，则代表最后一行。<br><code>:%s/word1/word2/[g][c]</code>：对每一行的word1匹配进行替换<br><code>:s#word1/#word2/#</code>：<code>#</code>为命令的分隔符，<code>\</code>会被解析为关键词的一部分</p>
+</li>
+<li><p><strong>删除、粘贴与复制</strong></p>
+<p><code>x</code>，<code>X</code>：在当前行中，<code>x</code>为向后删除一个字符，<code>X</code>为向前删除一个字符<br><code>(n) x</code>：连续向后删除 n 个字符<br><code>(n) X</code>：连续向前删除 n 个字符<br><code>dd</code>：删除当前行<br><code>(n) dd</code>：删除从当前行往下的n行（包括当前行）<br><code>d1G</code>或<code>d gg</code>：删除从当前行向上到第一行的所有数据<br><code>dG</code>：删除从当前行向下到最后一行的所有数据<br><code>d$</code>：删除当前行从光标所在处到行尾的所有字符<br><code>d0</code>：删除当前行从光标到行首的所有字符<br><code>:reg</code> 查看当前寄存器的内容<br><code>yy</code>：复制当前行存储到<code>&quot;</code>和<code>0</code>号寄存器（）<br><code>&quot;+yy</code>：<strong>复制当前行存储到<code>+</code>号寄存器（对应于系统粘贴板）</strong><br><code>&quot;+p</code>：<strong>粘贴系统粘贴板的内容</strong><br><code>(n) yy</code>：复制往下多行<br><code>y1G</code>，<code>yG</code>，<code>y0</code>，<code>y$</code>：分别与<code>d</code>开头的组合键意义相对<br><code>p</code>，<code>P</code>：<code>p</code>为将<code>reg &quot;</code>或<code>reg 0</code>的数据复制到当前行的下一行，而<code>P</code>则复制到当前行的上一行<br><code>J</code>：将当前行与下一行连接为一行<br><code>u</code>：递归撤回前一个动作<br><code>&lt;Ctrl&gt;</code>+<code>r</code>：与<code>u</code>相反，重新执行前一个动作<br><code>.</code>：重新执行前一个动作</p>
+</li>
+<li><p><strong>指令列</strong>：<br><code>:w</code> ：写入<br><code>:w!</code>：强制写入<br><code>:q</code>：退出<br><code>:q!</code>：强制退出，不保存<br><code>:wq</code>：保存后退出<br><code>ZZ</code>：若文档没有修改，则不保存退出，否则，保存后退出<br><code>:w [filename]</code>：另存为其他文件<br><code>:n1,n2 w [filename]</code>：将n1行到n2行之间的所有内容写入到另一个文件中<br><code>:r [filename]</code>：从当前行的下一行处插入另一个文件的内容<br><code>:! (Command)</code>：执行shell命令</p>
+</li>
+<li><p><strong>格式化:</strong></p>
+<p><code>gg=G</code>：全文格式化<br><code>(n)g=(m)G</code>：格式化第n行到第m行</p>
+</li>
+</ul>
+<h3 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h3><ul>
+<li><strong>切换到插入模式</strong>：<br><code>i</code>，<code>I</code>：<code>i</code>从光标所在处插入，<code>I</code>从当前行第一个非空格符开始插入<br><code>a</code>，<code>A</code>：<code>a</code>从光标所在处的下一个字符处插入，<code>A</code>从当前行的行尾开始插入<br><code>o</code>，<code>O</code>：<code>o</code>从当前行的下一行插入新行，<code>O</code>从当前行的上一行处插入新行<br><code>R</code>: 进入取代模式，直到按下<code>&lt;Esc&gt;</code><br><code>&lt;Esc&gt;</code>或<code>&lt;Ctrl&gt;</code>+<code>c</code>：退出编辑模式</li>
+<li><strong>编辑过程</strong>：<br><code>&lt;Alt&gt;</code> + <code>i</code>：光标向左移动一个字符</li>
+</ul>
+<h3 id="块选择模式"><a href="#块选择模式" class="headerlink" title="块选择模式"></a>块选择模式</h3><p><code>v</code>：字符选择，将光标所经过的地方反白选择<br><code>V</code>：行选择<br><code>&lt;Ctrl&gt;</code>+<code>v</code>：区块选择<br><code>y</code>，<code>d</code>：对反白的地方进行复制或者删除</p>
+<ul>
+<li><strong>批量注释:</strong> 首先<code>&lt;Ctrl&gt;</code>+<code>v</code>进入区块选择模式，然后移动光标选择要注释的行，再按<code>I</code>进入行首插入模式，输入注释符，完成后按<code>&lt;Esc&gt;</code>退出。</li>
+</ul>
+<h3 id="多窗口模式"><a href="#多窗口模式" class="headerlink" title="多窗口模式"></a>多窗口模式</h3><p><code>:sp [filename]</code>：水平开启新窗口<br><code>:vsp [filename]</code>：垂直开启新窗口<br><code>[Ctrl]</code>+<code>w</code> <code>j</code> ：切换窗口<br><code>[Ctrl]</code>+<code>w</code> <code>k</code> ：切换窗口</p>
+<h3 id="多档案编辑"><a href="#多档案编辑" class="headerlink" title="多档案编辑"></a>多档案编辑</h3><p><code>:n</code>： 切换到下一个文档<br><code>:N</code>：切换到上一个文档<br><code>:buffers</code>：查看当前打开buffer<br><code>:badd [filename]</code>：打开新文件到buffer<br><code>:bdelete</code>：删除buffer，关闭打开文件<br><code>:bnext</code>：切换到下一个buffer</p>
+<h3 id="tags"><a href="#tags" class="headerlink" title="tags"></a>tags</h3><p>配置:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set tags=tags;</span><br><span class="line">set autochdir</span><br></pre></td></tr></table></figure>
+<p>命令:<br><code>[Ctrl]</code> + <code>]</code>：跳转<br><code>[Ctrl]</code> + <code>T</code>：回跳</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/" rel="prev" title="Git版本控制系统结构和命令手册">
+                  <i class="fa fa-angle-left"></i> Git版本控制系统结构和命令手册
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/" rel="next" title="TM4C123G H6PIM微控制器开发板">
+                  TM4C123G H6PIM微控制器开发板 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:37</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

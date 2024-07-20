@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述 &emsp;&emsp;Shell的最佳之处在于书写小型脚本非常自然快捷，而复杂的shell脚本经常出现可移植问题，因其依赖大量可能不具有跨平台性的辅助命令。现在，负责的胶合层程序几乎都由Perl和Python来完成，shell只是为最简单的包装器和系统初始化脚本而保留。—— 《Unix编程艺术》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bash 使用简明笔记">
+<meta property="og:url" content="https://orchidrock.github.io/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述 &emsp;&emsp;Shell的最佳之处在于书写小型脚本非常自然快捷，而复杂的shell脚本经常出现可移植问题，因其依赖大量可能不具有跨平台性的辅助命令。现在，负责的胶合层程序几乎都由Perl和Python来完成，shell只是为最简单的包装器和系统初始化脚本而保留。—— 《Unix编程艺术》">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-14T03:25:00.000Z">
+<meta property="article:modified_time" content="2024-07-20T15:01:31.260Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/","path":"2022/04/14/Bash-使用简明笔记/","title":"Bash 使用简明笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Bash 使用简明笔记 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bash%E7%9A%84%E6%89%A7%E8%A1%8C%E5%BE%AA%E7%8E%AF"><span class="nav-number">2.</span> <span class="nav-text">bash的执行循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%95%E7%94%A8%EF%BC%88quoting%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">字符串引用（quoting）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">Shell命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">Shell参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell%E5%B1%95%E5%BC%80"><span class="nav-number">6.</span> <span class="nav-text">Shell展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">7.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-number">8.</span> <span class="nav-text">执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">内置命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">10.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bash%E7%89%B9%E6%80%A7"><span class="nav-number">11.</span> <span class="nav-text">Bash特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E6%8E%A7%E5%88%B6"><span class="nav-number">12.</span> <span class="nav-text">作业控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="nav-number">13.</span> <span class="nav-text">历史记录</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Bash 使用简明笔记 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bash 使用简明笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 11:25:00" itemprop="dateCreated datePublished" datetime="2022-04-14T11:25:00+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-20 23:01:31" itemprop="dateModified" datetime="2024-07-20T23:01:31+08:00">2024-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>&emsp;&emsp;Shell的最佳之处在于书写小型脚本非常自然快捷，而复杂的shell脚本经常出现可移植问题，因其依赖大量可能不具有跨平台性的辅助命令。现在，负责的胶合层程序几乎都由Perl和Python来完成，shell只是为最简单的包装器和系统初始化脚本而保留。—— 《Unix编程艺术》</p>
+</blockquote>
+<span id="more"></span>
+<h3 id="bash的执行循环"><a href="#bash的执行循环" class="headerlink" title="bash的执行循环"></a>bash的执行循环</h3><ul>
+<li>a. 获得输入：文件、命令行或者shell终端</li>
+<li>b. 词法解析：获得操作符和单词，解析引用和别名</li>
+<li>c. 命令解析：将b中token解析为单个或者组合命令</li>
+<li>d. 执行shell扩展</li>
+<li>e. 处理必要的重定向</li>
+<li>f. 执行命令</li>
+<li>g. 可选地等待命令完成并获得其退出状态</li>
+</ul>
+<p><strong>login shell读取的配置文件：</strong></p>
+<ul>
+<li>a. <code>/etc/profile</code> 全局配置，它会读入<code>/etc/bash.bashrc</code></li>
+<li>b. <code>~/.bash_profile</code>或<code>~/.bash_rc</code>或<code>~/.bash_login</code> 个人设定</li>
+<li>c. <code>/etc/inputrc</code> bash的热键设定，比如[tab]键禁止Beep.</li>
+<li>d. <code>/etc/profile.d/*.sh</code> 规范了bash操作接口的补全、颜色、语系，一些命令的别名等</li>
+</ul>
+<h3 id="字符串引用（quoting）"><a href="#字符串引用（quoting）" class="headerlink" title="字符串引用（quoting）"></a>字符串引用（quoting）</h3><ul>
+<li>转义字符：</li>
+<li>单引号：保留字符值</li>
+<li>双引号：保留字符值，除了 ‘$’、‘&#96;’、‘\‘，！（历史扩展功能被打开后）</li>
+<li>ANSI-C引用：\a、\b、\e、\n、\r、\t、&#39;、&quot;、\?、\nnn（八进制）、\xHH、\uHHHH（Unicode16）、\uHHHHHHHH（Unicode32）、\cx（控制x字符）</li>
+</ul>
+<h3 id="Shell命令"><a href="#Shell命令" class="headerlink" title="Shell命令"></a>Shell命令</h3><p><strong>简单命令</strong></p>
+<ul>
+<li>管道： | 或者 |&amp; , “|&amp;” 等价于 “2&gt;&amp;1 |”，将标准错误重定向到标准输出并一起通过管道连接到下一条命令的标准输入。管道里的所有命令都会在单独进程中运行，最后一条命令的退出状态作为整个pipeline的退出状态。</li>
+<li>time 保留字</li>
+<li>命令序列：&amp;&amp;、||、；、&amp;、newline  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">newcomand || newcommand2 &amp;&amp; newcommand3</span><br><span class="line">newcomand ; newcomand2 ; newcomand3</span><br><span class="line"># 注意控制结构中‘;’分割符的使用，使用该分隔符可以获得更紧凑的代码，</span><br><span class="line"># 不需要分行编写代码</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>控制结构和复杂命令</strong></p>
+<ul>
+<li>until循环  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">until test-commands; do consequent-commands; done</span><br></pre></td></tr></table></figure></li>
+<li>while循环  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while test-commands; do consequent-commands; done</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">while IFS= read -r x; do</span><br><span class="line">    do-something1 &quot;$x&quot; &quot;config-$x&quot;</span><br><span class="line">    do-something2 &lt; &quot;$x&quot;</span><br><span class="line">done &lt; file | process-output</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>for 循环  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for [ [in [words …] ] ; ] do commands; done</span><br><span class="line">#  words或被扩展</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 类似于C语言</span><br><span class="line">for (( expr1 ; expr2 ; expr3 )) ; do commands ; done</span><br></pre></td></tr></table></figure></li>
+<li>if 语句  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if test-commands; then</span><br><span class="line">  consequent-commands;</span><br><span class="line">[elif more-test-commands; then</span><br><span class="line">  more-consequents;]</span><br><span class="line">[else alternate-consequents;]</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
+<li>case 语句  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">case word in</span><br><span class="line">    [ [(] pattern [| pattern]…) command-list ;;]…</span><br><span class="line">esac</span><br><span class="line"># * 类似与else，如果前面所有的case项没有选中，则选中该项</span><br><span class="line"># ;; 会终止执行匹配项后剩余的待匹配项</span><br><span class="line"># ;&amp; 会继续执行下一个(如果有的话)case项的命令</span><br><span class="line"># ;;&amp; 会继续匹配剩下的case项</span><br></pre></td></tr></table></figure></li>
+<li>select 语句  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 生成选择菜单</span><br><span class="line">select name [in words …]; do commands; done</span><br></pre></td></tr></table></figure></li>
+<li>((expression)) 语句</li>
+</ul>
+<p>&emsp;&emsp;执行算术表达式，等价于 let “expression”，如果表达式非0，退出状态为0；否则，退出状态为1。</p>
+<ul>
+<li>[[expression]] 语句</li>
+</ul>
+<p>&emsp;&emsp;如果条件表达式非0，退出状态为0；否则，退出状态为1。<strong>该语句与((…))都可以作为if结构的谓词判断部分。</strong>不支持字符分列和文件名扩展，支持 <code>~</code> 扩展、参数和变量扩展、算术扩展、命令扩展、过程扩展、去除引用。&#x3D;&#x3D;、!&#x3D;使用时右边的操作元为模式（pattern），<strong>pattern的任何部分都可能加引号。</strong> &#x3D;~ 操作符可以用于扩展正则表达式的模式匹配。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[ $line =~ [[:space:]]*(a)?b ]]</span><br><span class="line"></span><br><span class="line">    pattern=&#x27;[[:space:]]*(a)?b&#x27;</span><br><span class="line">    [[ $line =~ $pattern ]]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>( list ) 命令组语句<br>&emsp;&emsp; 将一组命令在一个子shell环境中执行，这与管道组成的pipeline不同。重定向会应用到该组所有的命令，输出也会重定向到一个流中去。特别注意的是，在括号中的变量赋值是没有意义的，因为子shell完成退出后，其中所有的变量都不会保留。</p>
+</li>
+<li><p>{ list; } 命令组语句<br>&emsp;&emsp; 与（）不同的是，该组命令会在当前shell环境中执行，而不是在新建的子shell环境中。 <strong>{}为保留字，所以其必须与命令用元符号（如空格）分开；（）为操作符，其不必要与命令分开。</strong></p>
+</li>
+<li><p>coprocess 语句</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coproc [NAME] command [redirections]</span><br></pre></td></tr></table></figure></li>
+<li><p>并发语句<br>&emsp;&emsp;并发特性不是bash内部的特性，而是依靠外部工具来实现。GNU Parallel提供了这样的特性。parallel可用于替代xargs。</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find . -type f -name &#x27;*.html&#x27; -print | parallel gzip    </span><br><span class="line">parallel -j 10 &lt; file</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>function 函数语句</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fname () compound-command [ redirections ]</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function fname [()] compound-command [ redirections ]</span><br></pre></td></tr></table></figure>
+<p>‘#’ 变量被用来存放参数的个数；‘0’ 变量存放第一个参数即函数名，后面的数字变量依次存放剩余的参数（大于10的参数应使用{}）。local参数设置局部变量，变量的作用域是定义它的代码块以及被该代码块调用的子函数。unset可以取消变量定义。declare或者typeset列出当前环境所有变量名，-f参数只列出函数名。（参考SICP中的环境模型）</p>
+</li>
+</ul>
+<h3 id="Shell参数"><a href="#Shell参数" class="headerlink" title="Shell参数"></a>Shell参数</h3><p>&emsp;&emsp;变量赋值：<code>name=[value]</code> 注意：<strong>变量不但有值而且有0或多个属性。</strong> 赋值语句可以作为 declare、typeset、alias、export、readonly和local的参数。<br>+&#x3D; 操作符 可以扩充变量。<code>name+=[value]</code>,例如对PATH环境变量经常会如此操作。<br><strong>名字引用</strong>：<code>declare -n ref=$1</code> 出现对ref操作的任何地方都会实际操作$1。<br><strong>位置参数</strong>： $N 或 ${N}（当N大于10时）<br><strong>特殊参数</strong>：<br>* : 被展开为参数列表，从1开始；<br>@ ：被展开为参数列表，从1开始；<br># ：参数个数；<br>? ：最近执行的前端pipeline的退出状态<br>$ ：当前进程ID，在（）子shell中，它展开为调用shell的ID，而不是子shell的ID。<br>! ：最近放入后端执行的进程ID。<br>0 ：shell或者shell脚本的名字。<br>_ ：shell执行外部命令时的命令全名。</p>
+<h3 id="Shell展开"><a href="#Shell展开" class="headerlink" title="Shell展开"></a>Shell展开</h3><p>&emsp;&emsp;参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/alongdidi/p/bash_parameter_expansion.html?msclkid=5a4c1d10bbd311ec956a01a248c11a83">Shell参数展开-博客园</a></p>
+<ul>
+<li><p>{}展开：<code>mkdir /usr/local/src/bash/&#123;old,new,dist,bugs&#125;</code></p>
+</li>
+<li><p>~展开：~：HOME； ~+ ：PWD，~- ：OLDPWD ； ~N：被替换为‘dirs +N’</p>
+</li>
+<li><p><strong>参数展开</strong>：<br>基本格式：<code>$&#123;parameters&#125;</code><br>其他格式：</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:-word&#125;</span><br><span class="line">$&#123;paramater:=word&#125;</span><br><span class="line">$&#123;paramater:?word&#125;</span><br><span class="line">$&#123;paramater:+word&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>索引子字符串展开</strong>: <code>$&#123;paramater:offset:length&#125;</code></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ string=01234567890abcdefgh </span><br><span class="line">$ echo $&#123;string:7&#125;</span><br><span class="line">7890abcdefgh</span><br><span class="line">$ echo $&#123;string:7:2&#125;</span><br><span class="line">78</span><br><span class="line">$ array[0]=01234567890abcdefgh</span><br><span class="line">$ echo $&#123;array[0]:7&#125;</span><br><span class="line">7890abcdefgh</span><br><span class="line">$ set -- 1 2 3 4 5 6 7 8 9 0 a b c d e f g h</span><br><span class="line">$ echo $&#123;@:7&#125;</span><br><span class="line">7 8 9 0 a b c d e f g h</span><br><span class="line">$ array=(0 1 2 3 4 5 6 7 8 9 0 a b c d e f g h)</span><br><span class="line">$ echo $&#123;array[@]:7&#125;</span><br><span class="line">7 8 9 0 a b c d e f g h</span><br></pre></td></tr></table></figure>
+<p><strong>模式匹配子字符串展开</strong>:<br><code>$&#123;变量#关键词&#125;</code> 若变量从头开始的数据匹配关键词，则将匹配的最 <strong>短</strong> 数据删除<br><code>$&#123;变量##关键词&#125;</code> 若变量从头开始的数据匹配关键词，则将匹配的最 <strong>长</strong> 数据删除<br><code>$&#123;变量%关键词&#125;</code> 若变量从尾向头开始的数据匹配关键词，则将匹配的最 <strong>短</strong> 数据删除<br><code>$&#123;变量%%关键词&#125;</code> 若变量从尾向头开始的数据匹配关键词，则将匹配的最 <strong>长</strong> 数据删除</p>
+<p><strong>查找替换展开</strong>:<br><code>$&#123;变量/旧字符串/新字符串&#125;</code> 若变量内容匹配旧字符串，则<strong>第一个匹配</strong>的旧字符串会被新字符串取代。<br><code>$&#123;变量//旧字符串/新字符串&#125;</code>  若变量内容匹配旧字符串，则<strong>全部</strong>旧字符串会被新字符串取代。</p>
+</li>
+<li><p><strong>命令展开</strong>：<code>$(command)</code>或者 <code>&quot;``command``&quot;</code></p>
+</li>
+<li><p><strong>算术展开</strong>：<code>$(( expression ))</code></p>
+</li>
+<li><p><strong>进程替换</strong>： <code>&lt;(list)</code>或者<code>&gt;(list)</code>，(list)执行的结果会存到一个文件中，该文件然后被作为重定向的目标。</p>
+</li>
+<li><p><strong>字符分列</strong>：将<code>IFS</code>设置为分隔符号，参考 <a target="_blank" rel="noopener" href="https://www.w3cschool.cn/bashshell/bashshell-ws3n37lg.html?msclkid=bb6af889bbd611ec9dce49c765f91cf2">Bash拆分字符串</a></p>
+</li>
+<li><p><strong>文件名展开</strong>：模式匹配</p>
+</li>
+<li><p>Quote Removal</p>
+</li>
+</ul>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><ul>
+<li><code>&lt;&lt;&lt;</code> 从字符串重定向</li>
+</ul>
+<h3 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h3><p>&emsp;&emsp;任何命令的执行都必须有上下文<strong>环境</strong>。环境中主要是key-value对，包括变量、打开文件描述符、重定向描述符等。内部命令、函数执行时不会生成子shell环境，而其他命令的执行会生成子shell环境。子shell环境继承了部分或者全部父环境的内容，在子shell环境中的操作不会影响父环境。<br>&emsp;&emsp;退出状态：命令如果终止于一个信号N，退出状态会被shell设置为128+N。127表示命令没找到，126表示命令找到但没有执行，1表示一般性错误，2表示错误的shell命令。<br>&emsp;&emsp;信号</p>
+<h3 id="内置命令"><a href="#内置命令" class="headerlink" title="内置命令"></a>内置命令</h3><ul>
+<li><code>: [arguments]</code> 参数扩展和重定向</li>
+<li><code>. filename [arguments]</code> 执行命令  基本上和source命令等价</li>
+<li><code>break[n]</code>、<code>cd </code>、<code>continue [n]</code></li>
+<li><code>eval [arguments]</code> 参数被合并成命令，然后载入执行。</li>
+<li><code>exec [-cl] [-a name] [command [arguments]]</code> 如果支持command命令，则代替shell执行，而不是在创建的新的进程中执行，这与普通命令不同。</li>
+<li><code>exit [n]</code> 以状态码n退出。</li>
+<li><code>export [-fn] [-p] [name[=value]]</code> 标记name可以在子进程环境中可见。-f选项表示name是函数，否则name表示变量。</li>
+<li><code>getopts optstring name [arg...]</code></li>
+<li><code>hash [-r] [-p filename] [-dt] [name]</code> 建立命令路径的hash映射，加快搜索效率。</li>
+<li><code>pwd [-LP]</code> 、<code>return [n]</code></li>
+<li><code>readonly [-aAf] [-p] [name[=value]]</code> 标记name只读</li>
+<li><code>shift [n]</code> 对位置参数的编码向左移位n位</li>
+<li><code>test expr</code> 或 <code>[ expr</code>  执行条件表达式expr；当使用<code>[</code>格式时，命令的最后一个参数必须是<code>]</code>。表达式可以使用操作符进行组合，这些操作符包括<code>!</code>、<code>()</code>、<code>expr1 -a expr2</code>(<code>逻辑与</code>)、<code>expr1 -o expr2</code>(<code>逻辑或</code>)</li>
+<li><code>times</code></li>
+<li><code>trap [-lp] [arg] [sigspec...]</code> 绑定信号处理函数</li>
+<li><code>umask [-p] [-S] mode</code> 设置文件创建掩码</li>
+<li><code>unset [-fnv] [name]</code> 从环境中去除name符号</li>
+<li><code>alias [-p] [name[=value] ...]</code> 设置别名</li>
+<li><code>bind [-m keymap] ...</code> Readline绑定（bash专用）</li>
+<li><code>builtin [shell-builtin [args]]</code> 运行shell-builtin命令，在定义与内置命令有着相同名字的函数中，该命令可以重新获得原来内置命令的功能。</li>
+<li><code>caller [expr]</code> 返回当前激活的子程序调用的内容。</li>
+<li><code>command [-pVv] command [arguments …]</code> 执行非函数类命令</li>
+<li><code>declare [-aAfFgiIlnrtux] [-p] [name[=value] …]</code>声明变量和设置变量属性，例如只读、调试跟踪、名字引用、大小写转换、整数、数组。</li>
+<li><code>echo [-neE] [arg ...]</code></li>
+<li><code>enable [-a] [-dnps] [-f filename] [name ...]</code>enable或者disable内置shell命令，使用-n选项代表disable。</li>
+<li><code>help [-dms] [pattern]</code>获取内置命令帮助信息</li>
+<li><code>let expression [expression …]</code>使表达式可以进行算术运算</li>
+<li><code>local [option] name[=value] …</code></li>
+<li><code>logout [n]</code></li>
+<li><code>mapfile</code> 从标准输入或者文件描述符生成索引数组</li>
+<li><code>printf [-v var] format [arguments]</code>格式化输出</li>
+<li><code>read -ers] [-a aname] [-d delim] [-i text] [-n nchars] [-N nchars] [-p prompt] [-t timeout] [-u fd] [name …]</code> 从标准输入或者文件描述符读入一行</li>
+<li><code>readarray -d delim] [-n count] [-O origin] [-s count] [-t] [-u fd] [-C callback] [-c quantum] [array]</code> 从标准输入或者文件描述符读入一行到索引数组</li>
+<li><code>source filename</code></li>
+<li><code>type [-afptP] [name …]</code> 输出命令的类型</li>
+<li><code>typeset</code> 兼容Korn Shell，等价于<code>declare</code></li>
+<li><code>ulimit</code> 设置资源限制</li>
+<li><code>unalias [-a] [name … ]</code> 去除别名</li>
+<li><code>set</code></li>
+<li><code>shopt</code></li>
+</ul>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><ul>
+<li><code>CDPATH</code>、<code>HOME</code>、<code>IFS</code>、<code>MAIL</code>、<code>MAILPATH</code>、<code>PATH</code>、<code>PS1</code>、<code>PS2</code>、<code>BASH*</code>、<code>BASH_*</code>、<code>COMP_*</code>、<code>EUID</code>、<code>HIST*</code>(<code>与历史记录有关</code>)</li>
+<li><code>PS1</code>的设定：<code>\d</code>(日期)、<code>\H</code>(主机名)、<code>\h</code>(反取主机名在第一个小数点之前的名字)、<code>\t</code>(显示24小时格式时间)、<code>\T</code>或<code>\A</code>或<code>\@</code>(显示12小时格式的时间)、<code>\u</code>(当前用户名称)、<code>\v</code>(Bash版本号)、<code>\w</code>(完整工作目录名称)、<code>\W</code>(显示最后一个目录名)、<code>\#</code>(下达的第n个指令)、<code>\$</code>(提示字符)</li>
+</ul>
+<h3 id="Bash特性"><a href="#Bash特性" class="headerlink" title="Bash特性"></a>Bash特性</h3><p><strong>条件表达式:</strong></p>
+<ul>
+<li><code>-a|-b|-c|-d|-e|-f|-g|-h|-k|-p|-r|-s|-t|-u|-w|-x|-G|-L|-N|-O|-S| file</code> 文件判断单元操作符</li>
+<li><code>file1 -ef file2</code> file2和file1是否引用相同的节点</li>
+<li><code>file1 -nt file2</code> file1的修改时间更新或者file1存在,file2不存在。</li>
+<li><code>file1 -ot file2</code> file1的修改时间更旧或者file2存在,file1不存在。</li>
+<li><code>-v varname</code> 变量varname是否被设置</li>
+<li><code>-z string</code> 字符串长度是否为0</li>
+<li><code>-n string</code>或<code>string</code> 字符串长度是否非0</li>
+<li><code>string1 == string2</code> 或 <code>string1=string2</code> 或 <code>string1 != string2</code></li>
+<li><code>string1 &gt; string2</code> 或 <code>string1 &lt; string2</code></li>
+<li><code>arg1 Op arg2</code> : <code>Op</code>可以是 <code>-eq</code>、<code>-ne</code>、<code>-lt</code>、<code>-le</code>、<code>-gt</code>、<code>-ge</code>算法比较<br><strong>算术：</strong>使用<code>let</code>或者<code>(())</code>或者<code>declare -i</code></li>
+<li><code>id++</code>、<code>id--</code>、<code>++id</code>、<code>--id</code>、<code>+ - ! ~ ** * / % &gt;&gt; &lt;&lt; &lt;= &gt;= &lt; &gt; == !=  &amp; ^ | &amp;&amp; || expr1?expr2:expr3  </code><br><strong>数组</strong>：</li>
+<li><code>name[subscript]=value</code> 自动生成索引数组，subscript可以是数字或表达式</li>
+<li><code>declare -a name</code></li>
+<li><code>name=(value1 value2 … )</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name=&quot;ds,fds,fd,wq,daw&quot;</span><br><span class="line">IFS=&quot;,&quot;</span><br><span class="line">array=($name) # 自动将name根据&#x27;,&#x27;号进行分列。</span><br></pre></td></tr></table></figure>
+<strong>目录栈</strong>：</li>
+<li><code>dirs [-clpv] [+N | -N]</code></li>
+<li><code>pushd [-n] [+N | -N | dir]</code></li>
+<li><code>popd [-n] [+N | -N]</code><br><strong>提示符设置：</strong></li>
+<li><code>\a</code> Bell、<code>\d</code> date、<code>\h</code>或<code>\H </code>主机名、<code>请输入代码</code><br><strong>各种其他模式</strong>：</li>
+<li><code>rbash</code> 严格模式</li>
+<li><code>bash --posix</code> posix模式</li>
+<li>兼容模式</li>
+</ul>
+<h3 id="作业控制"><a href="#作业控制" class="headerlink" title="作业控制"></a>作业控制</h3><p>&emsp;&emsp;作业控制与操作系统的进程控制有关。操作系统会引入终端组进程ID的概念，组ID为当前终端进程ID的组可以接收终端信号；而后端运行的组则会对信号免疫。<code>Ctrl-z</code>会导致当前前端运行的进程停止并将控制返回给bash；</p>
+<ul>
+<li><code>bg [jobspec...]</code></li>
+<li><code>fg [jobspec ...]</code></li>
+<li><code>jobs [-lnprs] [jobspec] 或 jobs -x command [arguments]</code></li>
+<li><code>kill</code></li>
+<li><code>wait [-fn] [-p varname] [jobspec or pid …]</code></li>
+<li><code>disown [-ar] [-h] [jobspec … | pid … ]</code></li>
+<li><code>suspend [-f]</code></li>
+</ul>
+<h3 id="历史记录"><a href="#历史记录" class="headerlink" title="历史记录"></a>历史记录</h3><ul>
+<li><p><code>fc</code></p>
+</li>
+<li><p><code>history</code></p>
+</li>
+<li><p><code>!!</code>重复执行前个命令</p>
+</li>
+<li><p><code>!n</code> 执行第n个命令</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/" rel="prev" title="Unix编程艺术笔记">
+                  <i class="fa fa-angle-left"></i> Unix编程艺术笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/" rel="next" title="Lex结构及简明参考手册">
+                  Lex结构及简明参考手册 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:37</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
