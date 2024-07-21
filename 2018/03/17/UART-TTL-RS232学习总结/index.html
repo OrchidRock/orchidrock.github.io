@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于RS232与TTL间的转换特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UART&#x2F;TTL&#x2F;RS232学习总结">
+<meta property="og:url" content="https://orchidrock.github.io/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="关于RS232与TTL间的转换特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-17T06:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-21T13:16:32.183Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/","path":"2018/03/17/UART-TTL-RS232学习总结/","title":"UART/TTL/RS232学习总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UART/TTL/RS232学习总结 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ERS232%E4%B8%8ETTL%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">关于RS232与TTL间的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ELinux%E7%BB%88%E7%AB%AF%E2%91%A0"><span class="nav-number">2.</span> <span class="nav-text">关于Linux终端①</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#termios%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">termios结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.1.</span> <span class="nav-text">本地模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.2.</span> <span class="nav-text">输入模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.3.</span> <span class="nav-text">输出模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.4.</span> <span class="nav-text">控制模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%8E%A7%E5%88%B6%E5%AD%97%E7%AC%A6"><span class="nav-number">2.1.5.</span> <span class="nav-text">特殊控制字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E9%80%9F%E5%BA%A6"><span class="nav-number">2.1.6.</span> <span class="nav-text">终端速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.7.</span> <span class="nav-text">其他函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E7%BB%88%E7%AB%AF"><span class="nav-number">2.3.</span> <span class="nav-text">伪终端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UART/TTL/RS232学习总结 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UART/TTL/RS232学习总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-17 14:00:00" itemprop="dateCreated datePublished" datetime="2018-03-17T14:00:00+08:00">2018-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-21 21:16:32" itemprop="dateModified" datetime="2024-07-21T21:16:32+08:00">2024-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
+<span id="more"></span>
+
+
+<h2 id="关于Linux终端①"><a href="#关于Linux终端①" class="headerlink" title="关于Linux终端①"></a>关于Linux终端①</h2><p>&emsp;&emsp;Linux在为用户提供对终端设备简洁的读写接口之外，还提供了一组编程接口来对终端进行更精细的控制。下面是用户能够控制的主要功能：</p>
+<p><code>行编辑</code>： 是否允许使用退格键来编辑。</p>
+<p><code>缓存</code>：是立即读取字符，还是等待一段可配置的延迟之后再读取它们。</p>
+<p><code>回显</code>：允许控制字符的回显，例如读取密码时。</p>
+<p><code>回车/换行（CR/LF）</code>：定义如何在输入&#x2F;输出时映射回车&#x2F;换行符，比如打印\n字符时应该如何处理。</p>
+<p><code>线速</code>：这种功能很少用于PC控制台，但对调制解调器或通过串行线连接的终端就很重要。</p>
+<p><code>标准模式</code>：所有的操作都基于行进行处理，在一个输入行完成前（通常是用户按下回车键之前），终端接口负责管理所有的键盘输入，包括退格键（Backspace）和删除键（Del），应用程序读不到用户的任何输入。这样做是有益的，因为允许用户来纠正输入中的错误直到满意为止。</p>
+<h3 id="termios结构"><a href="#termios结构" class="headerlink" title="termios结构"></a>termios结构</h3><p>&emsp;&emsp;可以分为以下几个模式：输入模式，输出模式，控制模式，本地模式，特殊控制字符模式。</p>
+<p>函数接口原型：②</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;termios.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">termios</span>&#123;</span></span><br><span class="line">    <span class="type">tcflag_t</span> c_iflag;</span><br><span class="line">    <span class="type">tcflag_t</span> c_oflag;</span><br><span class="line">    <span class="type">tcflag_t</span> c_cflag;</span><br><span class="line">    <span class="type">tcflag_t</span> c_lflag;</span><br><span class="line">    <span class="type">tcflag_t</span> c_cc[NCCS];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">tcgetattr</span><span class="params">(<span class="type">int</span> fd,<span class="keyword">struct</span> termios* termios_p)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">tcsetattr</span><span class="params">(<span class="type">int</span> fd, <span class="type">int</span> ations,<span class="type">const</span> <span class="keyword">struct</span> trmios* termios_p)</span>; </span><br></pre></td></tr></table></figure>
+<p>参数action控制修改方式，共有三种修改方式：</p>
+<p><code>TCSANOW</code>：立即对值进行修改。</p>
+<p><code>TCSADRAIN</code>：等当前的值输出完成后再对值进行修改。</p>
+<p><code>TCSAFLUSH</code>：等当前的值输出完成后再对值进行修改，但丢弃还未从read调用返回的当前可用的任何输入。</p>
+<p>&emsp;&emsp;特别注意，程序有责任将终端设置恢复到程序开始运行之前的状态，这一点是非常重要的。在kydevmonit的devicesManagerd中该如何做呢？</p>
+<h4 id="本地模式"><a href="#本地模式" class="headerlink" title="本地模式"></a>本地模式</h4><p>&emsp;&emsp;通过设置termios中的c_lflag成员的标志来对本地模式进行设置。可用于c_lflag成员的宏如下：</p>
+<p><code>ECHO</code>：启用输入字符的本地回显功能。</p>
+<p><code>ECHONL</code>：回显新行符。</p>
+<p><code>ICANON</code>：启用标准输入处理，否则就启用非标准模式。</p>
+<p><code>ISIG</code>：启用信号。</p>
+<p><code>NOFLUSH</code>：禁止清空队列。</p>
+<p><code>TOSTOP</code>：在试图进行写操作之前给后台进程发送一个信号。</p>
+<p><code>ECHOE/ECHOK/IEXTEN</code>：略</p>
+<h4 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h4><p>&emsp;&emsp;输入模式控制输入数据（终端驱动程序从串行口或键盘接收到的字符）在被传递给程序之前的处理方式。设置c_iflag。成员宏如下：</p>
+<p><code>BRKINT</code>：当在输入行中检测到一个终止状态（连接丢失）时，产生一个中断。</p>
+<p><code>IGNBRK</code>：忽略输入行中的终止状态。</p>
+<p><code>ICRNL</code>：将接收到的回车符转换为新行符。</p>
+<p><code>INLCR</code>：将接收到的新行符转换为回车符。</p>
+<p><code>IGNCR</code>：忽略接收到的回车符。</p>
+<p><code>IGNPAP</code>：忽略奇偶校验错误的字符。</p>
+<p><code>INPCK</code>：对接收到的字符进行奇偶校验。</p>
+<p><code>ISTRIP</code>：将所有接收到的字符裁剪为7bit。</p>
+<p><code>IXOFF/IXON</code>：关闭&#x2F;打开软件流控。</p>
+<h4 id="输出模式"><a href="#输出模式" class="headerlink" title="输出模式"></a>输出模式</h4><p>&emsp;&emsp;输出模式控制输出字符的处理方式，即由程序发送出去的字符在传递到串行口或屏幕之前是如何处理的。设置c_oflag。成员宏如下：</p>
+<p><code>OPOST</code>：打开输出处理功能。如果没有设置该标志，则所有其他标志则被忽略。</p>
+<p><code>OCRNL</code>：将输出的回车符转换为新行符。</p>
+<p><code>ONLCR</code>：将输出到的新行符转换为回车符。</p>
+<p><code>ONLRET</code>：不输出回车符。</p>
+<p>其他略</p>
+<h4 id="控制模式"><a href="#控制模式" class="headerlink" title="控制模式"></a>控制模式</h4><p>&emsp;&emsp;控制模式控制终端的硬件特性。你通过设置c_cflag成员的标志来对控制模式进行配置。成员宏如下：</p>
+<p><code>CLOCAL</code>：忽略所有调试解调器的状态行。</p>
+<p><code>CREAD</code>：启用字符接收器。</p>
+<p><code>CS5</code>：发送或接收时使用5bit。</p>
+<p><code>CS6</code>：发送或接收时使用6bit。</p>
+<p><code>CS7</code>：发送或接收时使用7bit。</p>
+<p><code>CS8</code>：发送或接收时使用8bit。</p>
+<p><code>CSTOP</code>：每个字符使用两个停止位而不是一个。</p>
+<p><code>CSIZE</code>：对数据的bit位使用掩码。注意，在设置CS数据位时要先屏蔽其他位。c_cflag &amp;&#x3D; ~CSIZE;</p>
+<p><code>HUPCL</code>：关闭时挂断调制解调器。</p>
+<p><code>PARENB</code>：启用就校验码的生成和检测功能。</p>
+<p><code>PARODD</code>：使用奇校验而不是偶检验。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c_flag &amp;= ~PARENB; // 无校验</span><br><span class="line">c_flag |=（PARODD | PARENB）;//奇校验</span><br><span class="line">c_falg &amp;= ~PARENB;c_falg &amp;= ~PARODD;//偶校验</span><br></pre></td></tr></table></figure>
+<h4 id="特殊控制字符"><a href="#特殊控制字符" class="headerlink" title="特殊控制字符"></a>特殊控制字符</h4><p>这里只说明TIME与MIN值。用于是作为c_cc数组的index：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int TIME,MIN;</span><br><span class="line">c_cc[VTIME] = TIME;</span><br><span class="line">c_cc[VMIN] =MIN;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;TIME与MIN只能用于非标准模式（禁用ICANON标志），两者结合起来共同控制对输入的读取。</p>
+<p>&emsp;&emsp;两者的结合分为如下四种情况：</p>
+<p>&emsp;&emsp;MIN&#x3D;0和TIME&#x3D;0：在这种情况下，read调用总是立即返回，如果有等待处理的字符，它们就会被返回；如果没有字符等待处理，read调用返回0，并且不读取任何字符。</p>
+<p>&emsp;&emsp;MIN&#x3D;0和TIME&gt;1：这种情况下，只要有字符可以处理或者是经过TIME个0.1秒的时间间隔，read调用会返回。如果因为超时而未读到任何字符，read返回0，否则read返回读取的字符数目。</p>
+<p>&emsp;&emsp;MIN&gt;0和TIME&#x3D;0：这种情况下，read调用会一直等待，直到有MIN个字符可以读取时才返回，返回值是读取的字符数量，但文件尾时返回0。</p>
+<p>&emsp;&emsp;MIN&gt;0和TIME&gt;0：这种情况下，当read被调用时，它会等待接收一个字符。在接收到第一个字符及后续的每个字符后，一个字符间隔定时器被启动。当有MIN个字符可读或者两个字符的时间间隔超过TIME个0.1秒时，read调用返回。这个功能可用于区分是单独按下了Escape键还是按下了以Escape键开始的功能组合键。但要注意的是，网络通信或处理器的高负载使得类似这样的定时器失去作用。</p>
+<p>&emsp;&emsp;通过设置非标准模式与使用MIN和TIME值，程序可以逐个字符地处理输入</p>
+<h4 id="终端速度"><a href="#终端速度" class="headerlink" title="终端速度"></a>终端速度</h4><p>&emsp;&emsp;设置终端速度直接作用于termios结构，因此要设置新的终端速度，你必须使用tcgetattr获取当前配置，最后使用tcsetattr写回。只有写回后，终端速度才会改变。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">speed_t cfgetispeed(const struct termios*);</span><br><span class="line">speed_t cfgetospeed(const struct termios*);</span><br><span class="line">int cfsetispeed(struct termios*,speed_t speed);</span><br><span class="line">intccfsetospeed(struct termios*,speed_t speed);</span><br></pre></td></tr></table></figure>
+<p>speed的值可设置如下：</p>
+<p>B0：挂起终端。</p>
+<p>B9600：9600波特率。</p>
+<p>B115200：115200波特率。</p>
+<p>其他波特率包括B1200，B2400，B19200，B38400等。</p>
+<h4 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int tcdrain(int fd); //让调用程序一直等待，直到所有排队的输出都已发送完毕。</span><br><span class="line">int tcflow(int fd, int flowtype);//用于暂停或重新开始输出。</span><br><span class="line">int tcflush(int fd,int in_out_selector);//用于清空输入、输出或者两者都输出。</span><br></pre></td></tr></table></figure>
+<p>使用shell命令<code>stty -F &lt;DEVICE&gt; -a</code>可以查看某个设备当前的termios值。</p>
+<h3 id="虚拟控制台"><a href="#虚拟控制台" class="headerlink" title="虚拟控制台"></a>虚拟控制台</h3><p>&emsp;&emsp;Linux提供一组终端设备来共享PC电脑的屏幕、键盘和鼠标。虚拟控制台通过字符设备文件&#x2F;dev&#x2F;ttyN来使用。</p>
+<p>&emsp;&emsp;使用命令who或者ps -e你可以查看目前登录进系统的用户，以及在这个虚拟控制台上运行的shell和执行的程序。</p>
+<p>&emsp;&emsp;Linux系统通常会在前6个虚拟台上运行一个getty进程，这样用户既可用同一个屏幕、键盘和鼠标在6个不同的虚拟控制台上登录。</p>
+<h3 id="伪终端"><a href="#伪终端" class="headerlink" title="伪终端"></a>伪终端</h3><p>PTY与pts</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>① Linux程序设计：第4版&#x2F;（英）马修（Mattew,N.），（英）斯通斯（Stones,R.）著；陈健，宋健健译.——北京：人民邮电出版社,2010.6</p>
+<p>② manpage for tcgetattr&#x2F;tcsetattr</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/13/%E3%80%8A%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7%E3%80%8B%E6%91%98%E6%8A%84/" rel="prev" title="《提问的智慧》摘抄">
+                  <i class="fa fa-angle-left"></i> 《提问的智慧》摘抄
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/02/%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E7%9A%84%E6%80%BB%E7%BB%93/" rel="next" title="关于计算机操作系统启动引导的总结">
+                  关于计算机操作系统启动引导的总结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">240k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:39</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

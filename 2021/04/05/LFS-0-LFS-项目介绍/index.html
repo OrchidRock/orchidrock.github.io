@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp;LFS（Linux From Scratch）项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LFS 0: LFS 项目介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp;LFS（Linux From Scratch）项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-05T06:18:00.000Z">
+<meta property="article:modified_time" content="2024-07-21T13:24:19.470Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/","path":"2021/04/05/LFS-0-LFS-项目介绍/","title":"LFS 0: LFS 项目介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LFS 0: LFS 项目介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86"><span class="nav-number">2.</span> <span class="nav-text">标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91"><span class="nav-number">3.</span> <span class="nav-text">交叉编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%8C%BA"><span class="nav-number">4.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">4.2.</span> <span class="nav-text">获取软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.3.</span> <span class="nav-text">最后的准备工作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E9%93%BE%E5%92%8C%E4%B8%B4%E6%97%B6%E5%B7%A5%E5%85%B7"><span class="nav-number">5.</span> <span class="nav-text">构建工具链和临时工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E4%BA%A4%E5%8F%89%E5%B7%A5%E5%85%B7%E9%93%BE-Pass-1"><span class="nav-number">5.1.</span> <span class="nav-text">编译交叉工具链 Pass 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E4%B8%B4%E6%97%B6%E5%B7%A5%E5%85%B7%E5%92%8C-Pass-2"><span class="nav-number">5.2.</span> <span class="nav-text">交叉编译临时工具和 Pass 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5-chroot-%E7%8E%AF%E5%A2%83%E5%8E%9F%E7%94%9F%E7%BC%96%E8%AF%91%E5%85%B6%E4%BB%96%E4%B8%B4%E6%97%B6%E5%B7%A5%E5%85%B7"><span class="nav-number">5.3.</span> <span class="nav-text">进入 chroot 环境原生编译其他临时工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA-LFS-%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">构建 LFS 的基本系统软件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">系统配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC"><span class="nav-number">8.</span> <span class="nav-text">启动引导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#etc-fstab%E6%96%87%E4%BB%B6"><span class="nav-number">8.1.</span> <span class="nav-text">&#x2F;etc&#x2F;fstab文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8"><span class="nav-number">8.2.</span> <span class="nav-text">编译内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-GRUB-%E5%BC%95%E5%AF%BC"><span class="nav-number">8.3.</span> <span class="nav-text">设置 GRUB 引导</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LFS 0: LFS 项目介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LFS 0: LFS 项目介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-05 14:18:00" itemprop="dateCreated datePublished" datetime="2021-04-05T14:18:00+08:00">2021-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-21 21:24:19" itemprop="dateModified" datetime="2024-07-21T21:24:19+08:00">2024-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LFS-Project/" itemprop="url" rel="index"><span itemprop="name">LFS Project</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<a target="_blank" rel="noopener" href="https://www.linuxfromscratch.org/">LFS（Linux From Scratch）</a>项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;在 LFS 的作者看来，充分理解 Linux 系统的内部的各个组件以及它们的相互关系，可以使用户获得能力来定制化自己的操作系统；用户可以不依赖于一些现成的Linux 系统，自己可以更加灵活地掌握控制系统的各个层面。另外，用户可以获得更加小巧紧凑的系统，不用安装一些不需要或者不理解的软件，这样可以节省资源，特别对于一些资源敏感的嵌入式系统。最后，这样构建的系统更加安全，用户可以随时从源代码编译、测试和安装安全补丁，而不是依赖他人。</p>
+<p>&emsp;&emsp;LFS 项目的主体是一份手册，现在最新版本是11.3（2023年3月1日），任何人都可以从官方网站 <a target="_blank" rel="noopener" href="http://www.linuxfromscratch.org/">LinuxFromScratch</a> 获得，另外注意下载软件包时选择合适的镜像可以缩短下载时间。<br>&emsp;&emsp;BLFS、CLFS 和 ALFS 项目是由 LFS 项目扩展衍生出来的。</p>
+<h2 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h2><p>&emsp;&emsp;LFS <strong>尽可能</strong>遵循下面的标准（但软件包的最终选择还是由用户决定）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pubs.opengroup.org/onlinepubs/9699919799/">POSIX.1-2008</a></li>
+<li><a target="_blank" rel="noopener" href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html">Filesystem Hierarchy Standard (FHS) Version 3.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://refspecs.linuxfoundation.org/lsb.shtml">Linux Standard Base (LSB) Version 5.0 (2015)</a></li>
+</ul>
+<p>&emsp;&emsp;LFS 中包含的属于 LSB 的软件包：</p>
+<ul>
+<li><strong>LSB Core</strong>: <code>Bash</code>, <code>BC</code>, <code>Binutils</code>,<code>Coreutils</code>,<code>Diffutils</code>,<code>File</code>,<code>Findutils</code>,<code>Gawk</code>,<code>Grep</code>,<code>Gzip</code>,<code>M4</code>, <code>Man-DB</code>,<code>Ncureses</code>,<code>Procps</code>,<code>Psmisc</code>,<code>Sed</code>,<code>Shasow</code>,<code>Tar</code>,<code>Util-Linux</code>,<code>Zlib</code></li>
+<li><strong>LSB Runtime Languages</strong>: <code>Perl</code>,<code>Python</code></li>
+</ul>
+<h2 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h2><p>&emsp;&emsp;一个系统可以复制它自己，这如何做到呢？对于操作系统来说，如果它拥有关于自己的所有源代码，它如何一步步构建可以移植到不同处理器架构的机器上的自己呢？</p>
+<p>&emsp;&emsp;Linux 系统与 Unix 传统相同，它的内核及大部分组件（一些来源于 GNU 项目）由 C 语言编写（ Linux  内核中会部分包含一些汇编代码），即它可以通过 C 编译器移植到任何硬件平台上。</p>
+<p>&emsp;&emsp;交叉编译（Cross Compilation）是指我们在一个系统平台上（如 x86 ）编译可以在其他系统平台（如 ARM ）上运行的可执行代码，那么它在什么情况下最经常使用呢？</p>
+<p>&emsp;&emsp;首先，在很多情况下，目标平台由于资源限制，没有现成的编译器及开发测试环境，甚至没有操作系统，而用于开发的系统要使用更快速性能更高的完全不同的平台。</p>
+<p>&emsp;&emsp;另外，交叉编译可以使用一个编译环境来生成针对不同目标平台的系统，（例如 <a target="_blank" rel="noopener" href="https://launchpad.net/">Launchpad平台</a> 就提供了帮助开发者交叉编译、打包和发布的功能）。</p>
+<p>&emsp;&emsp;最后，交叉编译可以针对系统模拟器生成可执行代码，这些模拟器所模拟的硬件平台可能是非常老的系统，原来的编译环境（native compiler）已经很难搭建。</p>
+<p>&emsp;&emsp;LFS Book 中介绍了 Canadian Cross 交叉编译模式，它假设了三个机器A，B 和 C。慢机器 A 安装有 ccA 原生编译器，快机器 B 没有编译器，目标是生成在慢机器 C 上运行的软件。</p>
+<p>第一步：使用 ccA 生成目标 (Target) 为机器 B 的交叉编译器 cc1，注意 cc1 运行在(Host)机器 A 上，但它生成的是针对机器 B 的可执行代码。</p>
+<p>第二步：使用 cc1 生成目标为机器 C 的交叉编译器 cc2，注意 cc2 运行在(Host)在机器 B上，但它生成的是针对机器 C 的可执行代码。</p>
+<p>第三步：在机器 B 上运行 cc2，使用它来生成 ccC 原生编译器，它将运行在(Host)机器 C上，机器 C 上的其他程序也可以在机器 B 上通过 cc2 编译生成。</p>
+<p>&emsp;&emsp;LFS Book 中使用伪交叉编译(Fake Cross Compilation)，因为对于大多数读者来说，构建LFS的系统和运行LFS的是同一系统。LFS首先使用原生编译器 cc-pc 构建交叉编译器 cc1，cc1 的 Host 系统为 pc，Target 系统是 lfs ；第二步是使用 cc1 生成原生编译器 cc-lfs，cc-lfs 则用在 chroot 环境构建整个 lfs 系统。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><p><strong>a. 创建新分区</strong></p>
+<p>&emsp;&emsp;将 LFS 安装到单独的分区是一种良好的实践，我们可以简单使用 <code>fdisk</code>或<code>parted</code> 分配一个10G-30G（根据需要增加）容量的新分区。除了主分区，其他分区（如<code>swap分区</code>）可以简单使用 Host 上已经有的分区。关于分区的具体知识，参考 <a target="_blank" rel="noopener" href="http://1.117.83.246/index.php/archives/28/">关于计算机操作系统启动引导的总结</a>。</p>
+<p><strong>b. 格式化文件系统</strong></p>
+<p><code>mkfs -v -t ext4 /dev/xxx</code></p>
+<p>**c. 设置 <code>$LFS</code> 环境变量 **</p>
+<p><code>export LFS=/mnt/lfs</code><br>另外也可以将上述命令写入 <code>~/.bash_profile</code> 或 <code>~/.bashrc</code> 文件。</p>
+<p><strong>d. 挂载分区</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv $LFS</span><br><span class="line">mount -v -t ext4 /dev/xxx $LFS</span><br></pre></td></tr></table></figure>
+<p>如果有其他新建分区，也要在 $LFS 中创建挂载点并进行挂载。<br>为了在系统重启后不需要再次手动执行挂载，可以在 <code>/etc/fstab</code> 中添加：</p>
+<p><code>/dev/xxx     /mnt/lfs     ext4    default</code></p>
+<p>如果使用 <code>swap</code> 分区，请确定它已经激活：<br><code>/sbin/swapon -v /dev/zzz</code></p>
+<h3 id="获取软件包"><a href="#获取软件包" class="headerlink" title="获取软件包"></a>获取软件包</h3><p>下载软件包：<a target="_blank" rel="noopener" href="https://mirrors.ustc.edu.cn/lfs/lfs-packages/">中国境内的镜像地址</a></p>
+<p>解压到 <code>$LFS/source</code>目录， 并设置 <code>sticky</code> 标志：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -v $LFS/source</span><br><span class="line">chmod -v a+wt $LFS/source </span><br></pre></td></tr></table></figure>
+<p>如果上诉步骤使用非 root 用户操作，则所有文件的 UID 和 GID 都是该用户的 UID 和 GID。当后面 <code>chroot</code> 进入没有创建该用户的 lfs 系统，GID 和 UID就无效了，所以我们提前将所有文件的 owner 和 group 设置为 <code>root</code>:</p>
+<p><code>chown root:root $LFS/source/*</code></p>
+<h3 id="最后的准备工作"><a href="#最后的准备工作" class="headerlink" title="最后的准备工作"></a>最后的准备工作</h3><p><strong>a. 以 <code>root</code> 用户创建根目录结构</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv $LFS/&#123;etc,var&#125; $LFS/usr/&#123;bin,lib,sbin&#125;</span><br><span class="line">for i in bin lib sbin; do</span><br><span class="line">    ln -sv usr/$i $LFS/$i</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">case $(uname -m) in</span><br><span class="line">x86_64) mkdir -pv $LFS/lib64 ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+<p>中间过程会生成一些交互编译工具链，这些工具应该与最后的根目录中的程序隔离，因此创建 <code>tool</code> 目录：<br><code>mkdir -pv $LFS/tool</code></p>
+<p>**b.创建 <code>lfs</code> 用户和 <code>lfs</code>用户组 **<br>为了获得更加干净的工作环境，建议新建 lfs 用户和用户组：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd lfs</span><br><span class="line">useradd -s /bin/bash -g lfs -m -k /dev/null lfs</span><br></pre></td></tr></table></figure>
+<p>设置口令（可选）：<br><code>passwd lfs</code></p>
+<p><strong>c. 将<code>lfs</code>设置为 $LFS 根目录的 owner:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chown -v lfs $LFS/&#123;usr&#123;,/*&#125;,lib,var,etc,bin,sbin,tools&#125;</span><br><span class="line"></span><br><span class="line">case $(uname -m) in</span><br><span class="line">x86_64) chown -v lfs $LFS/lib64 ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+<p>注意不包括 <code>$LFS/source</code></p>
+<p><strong>d. 切换到 <code>lfs</code> 用户：</strong><br><code>su - lfs</code></p>
+<p><strong>e. 设置环境</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; ~/.bash_profile &lt;&lt; &quot;EOF&quot;</span><br><span class="line">exec env -i HOME=$HOME TERM=$TERM PS1=&#x27;\u:\w\$ &#x27; /bin/bash</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>注意目前的 <code>~</code> 现在代表 lfs 的<code>home</code> 目录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; ~/.bashrc &lt;&lt; &quot;EOF&quot;</span><br><span class="line">set +h         ## 关闭 bash 的 Hash 功能</span><br><span class="line">umask 022</span><br><span class="line">LFS=/mnt/lfs   ## 重要!!!</span><br><span class="line">LC_ALL=POSIX</span><br><span class="line">LFS_TGT=$(uname -m)-lfs-linux-gnu   ## 重要!!!</span><br><span class="line">PATH=/usr/bin</span><br><span class="line">if [ ! -L /bin ]; then PATH=/bin:$PATH; fi</span><br><span class="line">PATH=$LFS/tools/bin:$PATH           ## 重要 !!!</span><br><span class="line">CONFIG_SITE=$LFS/usr/share/config.site</span><br><span class="line">export LFS LC_ALL LFS_TGT PATH CONFIG_SITE</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>生效：<br><code>source ~/.bash_profile</code></p>
+<h2 id="构建工具链和临时工具"><a href="#构建工具链和临时工具" class="headerlink" title="构建工具链和临时工具"></a>构建工具链和临时工具</h2><h3 id="编译交叉工具链-Pass-1"><a href="#编译交叉工具链-Pass-1" class="headerlink" title="编译交叉工具链 Pass 1"></a>编译交叉工具链 Pass 1</h3><p>&emsp;&emsp;该节所生成的程序和库都会安装到特定的目录<code>$LFS/tool</code>中，以便将交叉编译工具与其他程序分开。</p>
+<p>&emsp;&emsp;首先是 Binutils 包的第一次编译(Pass1)，它会生成交叉汇编器 (cross-as)、交叉链接器(cross-ld)等，这些工具在对 gcc 和 glibc 编译时使用。</p>
+<p>&emsp;&emsp;然后是 gcc 包的第一次编译(Pass1)，特别注意 configure 脚本的配置选项。因为 GCC 依赖一个内部库 libgcc，它需要链接 glibc 才能具有全部的功能，而此时我们还没有 glibc，另外 C++ 库(libstdc++)也依赖 glibc。对这个“蛋-&gt;鸡-&gt;蛋”问题的解决方法是生成退化的(degraded) libgcc（当然此时生成的 <code>cc1</code> 也是退化的），它缺少一些功能（例如线程和异常处理）。然后使用 <code>cc1</code> 编译 glibc（glibc 不是退化的）。接着编译libstdc++（缺少一些 libgcc 的功能）。最后当我们获得 cc-lfs 后再生成完全的 libstdc++ 库（<code>Pass 2</code>）。这个阶段的配置选项要避免对 libc 和 libstdc++ 的依赖，以及避免编译一些不需要的组件。</p>
+<p>&emsp;&emsp;安装Linux API 头文件，它们在编译 glibc 时会使用。</p>
+<p>&emsp;&emsp;编译 glibc，configure 脚本中的 –host 和 –build 选项要特别注意：要保证使用我们上述生成的交叉工具链而不是 Host 系统中的工具。注意 glibc 库不是交叉工具链，所以其安装目录是 <code>/usr</code>，通过 <code>--prefix=/usr</code> 设置。另外，这里的 <code>/usr</code> 是相对路径。（因为 <code>make DESTDIR=$LFS install</code>，glibc 被安装到 <code>$LFS/usr</code>。）</p>
+<p>&emsp;&emsp;libstdc++ 第一次编译(Pass1)，生成 C++ 库。安装路径同样是 <code>$LFS/usr</code>。</p>
+<h3 id="交叉编译临时工具和-Pass-2"><a href="#交叉编译临时工具和-Pass-2" class="headerlink" title="交叉编译临时工具和 Pass 2"></a>交叉编译临时工具和 Pass 2</h3><p>&emsp;&emsp;这些临时工具安装到最后的位置，但还不能使用，因为它们还依赖于 Host 系统上的一些工具，但它们可以链接已经安装的库，比如 glibc。</p>
+<p>&emsp;&emsp;在进入 chroot 环境时，这些临时工具是必要的，而不是在 chroot 之后再编译它们，比如 bash。它们的依赖关系是怎样的以及为什么选择它们呢？</p>
+<p>&emsp;&emsp;M4 包被用于编译工具，Ncurses 包被 Bash 包依赖，Bash 包是进入 chroot 的必要工具。Coreutils 包含一些基本工具，例如操作文件和获得系统基本特性的工具。Diffutils、File、Findutils、Gawk、Grep、Gzip、Make、Patch、Sed、Tar、Xz包提供另外的常用基本工具。</p>
+<p>&emsp;&emsp;Binutils包第二次编译(Pass2)，这次编译生成原生汇编器、原生链接器等，它们被原生编译器 <code>cc-lfs</code> 所依赖。注意在 <code>configure</code> 配置选项上和 Pass1 的区别，此时我们不需要设置 <code>--target</code>，因为我们要获得的是原生工具链，只需要设置 <code>--host=$LFS_TGT</code>。</p>
+<p>&emsp;&emsp; gcc 包第二次编译(Pass2)，这次编译生成 <code>cc-lfs</code>。注意<code>--with-build-sysroot=$LFS</code>选项；<code>--target=$LFS_TGT</code>选项确保此次构建使用 Pass1 中的库（如 glibc），因此生成的 libgcc 库也不再是退化的。<code>LDFLAGS_FOR_TARGET=-L$PWD/$LFS_TGT/libgcc</code>选项允许 libstdc++ 使用此次构建的（共享的） libgcc 而不是 Pass1 中静态的（退化的） <code>libgcc</code>。</p>
+<h3 id="进入-chroot-环境原生编译其他临时工具"><a href="#进入-chroot-环境原生编译其他临时工具" class="headerlink" title="进入 chroot 环境原生编译其他临时工具"></a>进入 chroot 环境原生编译其他临时工具</h3><p>&emsp;&emsp;在进入 chroot 环境前要更改整个 LFS 文件目录的权限：设置为 root。然后，挂载虚拟内核文件系统(Virtual Kernel File System)，包括&#x2F;dev、&#x2F;proc、&#x2F;run、&#x2F;sys。内核文件系统不占用任何磁盘空间，它可以使得用户空间与内核空间通信以及用于内核自身的通信。在进入 chroot 环境前为什么要这么做呢？以 procps 包为例，它包含获取当前运行进程信息的工具，如果没有挂载 &#x2F;proc 这些工具就无法测试和使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">chown -R root:root $LFS/&#123;usr,lib,var,etc,bin,sbin,tools&#125;</span><br><span class="line">case $(uname -m) in</span><br><span class="line">x86_64) chown -R root:root $LFS/lib64 ;;</span><br><span class="line">esac</span><br><span class="line"></span><br><span class="line">mkdir -pv $LFS/&#123;dev,proc,sys,run&#125;</span><br><span class="line">mount -v --bind /dev $LFS/dev</span><br><span class="line">mount -v --bind /dev/pts $LFS/dev/pts</span><br><span class="line">mount -vt proc proc $LFS/proc</span><br><span class="line">mount -vt sysfs sysfs $LFS/sys</span><br><span class="line">mount -vt tmpfs tmpfs $LFS/run</span><br></pre></td></tr></table></figure>
+
+<p>进入 <code>chroot</code> 环境：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">chroot &quot;$LFS&quot; /usr/bin/env -i \</span><br><span class="line">HOME=/root \</span><br><span class="line">TERM=&quot;$TERM&quot; \</span><br><span class="line">PS1=&#x27;(lfs chroot) \u:\w\$ &#x27; \</span><br><span class="line">PATH=/usr/bin:/usr/sbin \</span><br><span class="line">/bin/bash --login</span><br></pre></td></tr></table></figure>
+
+<p>进入 chroot 环境后，生成一些目录和文件，例如&#x2F;boot、&#x2F;home、&#x2F;mnt、&#x2F;opt和&#x2F;srv等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv /&#123;boot,home,mnt,opt,srv&#125;</span><br></pre></td></tr></table></figure>
+<p>新建基本的配置文件（如<code>/etc/passwd</code>、<code>/etc/group</code>、 <code>/etc/mtab</code>和<code>/etc.host</code>等）和文件符号链接。</p>
+<p>&emsp;&emsp;libstdc++ 第二次编译(Pass2)，此次编译将生成完全的 libstdc++ 库，从而可以编译使用 C++ 编写或者部分编写的软件。(<code>11.3版本中无此步骤，10.1版本中包括该步骤</code>。)</p>
+<p>&emsp;&emsp;对 <code>gettext</code>,<code>bison</code>,<code>perl</code>,<code>python</code>,<code>texinfo</code>,<code>util-linux</code>包的编译。</p>
+<h2 id="构建-LFS-的基本系统软件"><a href="#构建-LFS-的基本系统软件" class="headerlink" title="构建 LFS 的基本系统软件"></a>构建 LFS 的基本系统软件</h2><p>&emsp;&emsp;我们已经有了编译环境和足够的临时工具，因此可以开始构建LFS系统。<br>&emsp;&emsp;前面的一些临时工具也会被重新编译并被覆盖(override)，这些系统软件会被测试，然后安装，并且兼容 FHS 和 LSB 标准。每一个系统软件都值得去亲自编译、测试和安装：<em>The key to learning what makes a Linux system work is to know what each package is used for and why you (or the system) may need it.</em></p>
+<p>&emsp;&emsp;Bash、Python 等包的编译和第一次编译有些不同，这次编译会设置一些依赖，这些依赖的包已经安装到系统上，而不是像第一次编译那样使用自己内部的包。</p>
+<h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><h2 id="启动引导"><a href="#启动引导" class="headerlink" title="启动引导"></a>启动引导</h2><h3 id="etc-fstab文件"><a href="#etc-fstab文件" class="headerlink" title="/etc/fstab文件"></a><code>/etc/fstab</code>文件</h3><h3 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h3><p>&emsp;&emsp;内核编译命令比想象的要简单一些，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ make mrproper          # Clean the kernel tree</span><br><span class="line">$ make menuconfig        # Configure kernel options </span><br><span class="line">$ make                   # Compile kernel image and modules</span><br><span class="line">$ make modules_install   # install modules</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;编译内核需要一些软件工具，这些工具前面几节已经安装到指定的最后位置，但弄清楚需要依赖哪些软件包可以帮助我们在其他平台构造编译环境。</p>
+<p>&emsp;&emsp;除了 make、gcc，还主要包括bash、coreutils、diffutils、e2fsprogs、findutils、grep、gzip、hostname、glibc、ncurses、perl、sed、sysvinit、tar和 util-linux。在 Ubuntu 平台这些软件包和工具列表由 build-essential 包维护。另外，Ubuntu 使用 Debian 包管理系统，因此它会使用一些额外的包，如 kernel-package、fakeroot、initramfs-tools和 module-init-tools。</p>
+<h3 id="设置-GRUB-引导"><a href="#设置-GRUB-引导" class="headerlink" title="设置 GRUB 引导"></a>设置 <code>GRUB</code> 引导</h3><p>##过程记录<br><strong>对于多次编译的包,一定要重新解压源码包,然后进入新解压的包目录进入编译,不要在先前编译的基础上重新配置、编译和安装。</strong></p>
+<p>M4编译错误?为什么在chroot环境下会由getopt中的变量名冲突?</p>
+<p>为什么没有自动创建$LFS&#x2F;usr&#x2F;lib目录?</p>
+<p>为什么出现””Assumed value of MB_LEN_MAX wrong”错误? Answer: 修改tools&#x2F;gcc&#x2F;x86_64-lfs-linux-gnu&#x2F;10.2.0&#x2F;include-fixed&#x2F;limits.h 中的MB_LEN_MAX</p>
+<p>Patch包中PATH_MAX变量<br>无法进入chroot的问题,bash无法找到libncursesw.so.6? Answer: 将libncursesw.so.6复制到lib64。对于libopcodes.so、libbfd.so、libctf.so也是同样的解决方法。</p>
+<p>编辑&#x2F;etc&#x2F;ld.so.conf</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/27/%E9%BB%91%E5%AE%A2%E6%96%87%E5%8C%96/" rel="prev" title="黑客文化">
+                  <i class="fa fa-angle-left"></i> 黑客文化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="Linux Kernel  LKD3 阅读笔记">
+                  Linux Kernel  LKD3 阅读笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">240k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:39</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
