@@ -198,6 +198,28 @@
       </categories>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CMake 构建工具介绍</title>
     <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
@@ -390,28 +412,6 @@
       <tags>
         <tag>微型语言</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
   </entry>
   <entry>
     <title>CUDA Tutorial</title>
@@ -737,140 +737,6 @@
       </categories>
   </entry>
   <entry>
-    <title>GNU编译调试工具链手册</title>
-    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
-<span id="more"></span>
-
-
-<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
-<blockquote>
-<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
-</blockquote>
-<ul>
-<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
-</li>
-<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
-</li>
-<li><p><strong>递归</strong>：</p>
-</li>
-<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
-</li>
-</ul>
-<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
-<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
-<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
-<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
-<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
-<li><p><strong>开始和停止</strong></p>
-<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
-</li>
-<li><p><strong>断点</strong></p>
-<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
-</li>
-<li><p><strong>执行</strong></p>
-<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
-</li>
-<li><p><strong>检查代码</strong></p>
-<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
-</li>
-<li><p><strong>检查数据</strong></p>
-<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
-</li>
-<li><p><strong>信息</strong></p>
-<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
-</li>
-</ul>
-<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
-<li>gprof</li>
-<li>valgrind</li>
-</ul>
-<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Flask网络框架介绍</title>
-    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
-<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
-<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
-<li>Git</li>
-</ul>
-<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
-<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Web 应用</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git版本控制系统结构和命令手册</title>
-    <url>/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Git作为一个强大的开源的分布式版本控制系统，在设计开发时为自己提出了一些目标：效率、简单设计、支持非线性开发、完全的分布式和高效地处理大型项目（如Linux内核），Git的最终实现完成了大部分目标。</p>
-<span id="more"></span>
-
-<h3 id="核心模型"><a href="#核心模型" class="headerlink" title="核心模型"></a>核心模型</h3><p>&emsp;&emsp; Git是完全的<strong>分布式版本控制</strong>，即每一个客户端都保存项目的全部文件以及历史，即使服务器崩溃，它也可以从任何一个客户端那里获得镜像进行恢复。<br>&emsp;&emsp; Git将所有数据都抽象为 <strong>快照流</strong> （<code>Streams of Snapshots</code>）。</p>
-<p><img src="/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/git_data_model.png"></p>
-<p>&emsp;&emsp;Git保证 <strong>文件完整性</strong>，它对每个文件会生成签名校验。<br>&emsp;&emsp;Git将文件的状态分为三种：<code>Modified</code> -&gt; <code>Staged</code> -&gt; <code>Commited</code></p>
-<h3 id="分支功能"><a href="#分支功能" class="headerlink" title="分支功能"></a>分支功能</h3><p>&emsp;&emsp; Git的杀手级特性是它的分支功能。</p>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
-<li><p><strong>配置工具</strong></p>
-<p><code>git config --global user.name &quot;[name]&quot;</code><br><code>git config --global user.email &quot;[email address]&quot;</code><br><code>git config --global color.ui auto</code><br><code>git config --global core.editor &quot;[vim|emacs]&quot;</code></p>
-</li>
-<li><p><strong>分支</strong></p>
-<p><code>git branch [branch-name]</code> 创建新分支<br><code>git switch -c [branch-name]</code> 切换到指定分支并更新工作目录<br><code>git merge [branch-name]</code> 将指定分支的历史合并到当前分支，git会处理过程中可能会出现的冲突问题。<br><code>git branch -d [branch-name]</code> 删除指定分支<br><code>git stash</code> 储藏当前脏工作目录下的修改；该命令经常用于下面的场景：当想切换到另一个分支修复Bug，但又不想提交当前分支下的修改，这时候可以使用 <code>git stash</code> 来储存当前修改，后面可以使用<code>git stash pop</code> 恢复；另外其储存内容<strong>不会</strong> <code>git push</code> 到服务器。</p>
-</li>
-<li><p><strong>进行更改</strong></p>
-<p><code>git log</code> 当前分支的历史<br><code>git log --follow [file]</code> 列出文件的版本历史，包括重命名<br><code>git diff [first-branch]...[second-branch]</code> 两个分支的内容差异<br><code>git show [commit]</code> 显示指定commit的元数据和内容变化<br><code>git add [file]</code> 将文件进行快照处理，即进入staged域<br><code>git commit -m &quot;[descriptive message]&quot;</code>将文件快照永久地记录在版本历史中</p>
-</li>
-<li><p><strong>重做提交</strong></p>
-<p><code>git reset  [commit]</code> 撤销所有commit后的提交，在本地保存更改<br><code>git reset --soft [commit]</code> 保留历史，改回指定提交<br><code>git reset --hard [commit]</code> 放弃所有历史，改回指定提交<br><code>git commit --amend </code>对commit的反悔<br><code>git reset HEAD &lt;file&gt;...</code> 对add命令的撤回<br><code>git checkout -- &lt;file&gt;</code> 对一个Modified的文件撤回修改</p>
-</li>
-<li><p><strong>创建仓库</strong></p>
-<p><code>git init</code> 创建新的仓库<br><code>git remote add origin [url]</code> 将本地仓库与远程仓库连接起来<br><code>git remote show [remote-name]</code><br><code>git remote rename</code> 改变远程仓库的名字<br><code>git clone [url]</code> 镜像远程仓库到本地</p>
-</li>
-<li><p><strong>标签tag</strong></p>
-<p><code>git tag</code> 列出标签<br><code>git tag -a [tag-name]</code> 创建annotated类型的标签，该类型标签比较正式，它指向所有信息<br><code>git tag [tag-name]</code> 创建lightweight类型的标签，不正式，临时指向小部分信息<br><code>git show [tag-name]</code> 显示标签信息<br><code>git tag -a [tag-name] [commit-checksum]</code> 给某次提交添加tag</p>
-</li>
-<li><p><strong>同步更改</strong><br><code>git fetch</code> 下载远程跟踪分支的全部历史，它只获取本地没有的那部分数据，clone命令封装了fetch命令<br><code>git push</code> 将所有本地分支上传到远程服务器<br><code>git merge</code> 将远端跟踪分支合并到当前本地分支<br><code>git pull</code> 使用来自对应远端分支的所有新提交更新你当前的本地工作分支。git pull是 git fetch 和 git merge 的结合。</p>
-</li>
-<li><p><strong>子模块</strong> ：</p>
-<blockquote>
-<p>子模块允许用户将一个git仓库作为另一个git仓库的子目录。它能让你将另一个仓库克隆到自己的项目中，同时还保持提交的独立。</p>
-</blockquote>
-<p>  <code>git submodule add [url]</code><br>  <code>git submodule init</code> 初始化本地配置文件<br>  <code>git submodule update</code> 该项目中抓取所有数据并检出父项目中列出的合适的提交<br>  <code>git clone --recurse-submodules [url]</code> 自动初始化并更新仓库中的每一个子模块， 包括可能存在的嵌套子模块。<br>  <code>git submodule update --remote --init</code></p>
-</li>
-<li><p><strong>Patching:</strong><br><code>git apply --stat xxxx.patch</code> 检查 patch 文件<br><code>git apply --check xxxx.patch</code> 检查能否应用成功<br><code>git am --signoff &lt; xxxx.patch</code> 应用补丁</p>
-</li>
-<li><p><strong>调试:</strong><br><code>git blame</code>: 追溯一个文件的历史修改记录。</p>
-</li>
-</ul>
-<h3 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h3><p>参考<a href="https://git-scm.com/docs/gitignore">gitignore文件指导</a></p>
-<h3 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h3><ul>
-<li><strong>commit 提交</strong>: 一个 Git 对象，是你整个仓库的快照的哈希值</li>
-<li><strong>branch 分支</strong>: 一个轻型可移动的 commit 指针</li>
-<li><strong>clone</strong>: 一个仓库的本地版本，包含所有提交和分支</li>
-<li><strong>remote 远端</strong>: 一个 GitHub 上的公共仓库，所有小组成员通过它来交换修改</li>
-<li><strong>fork</strong>: 一个属于另一用户的 GitHub 上的仓库的副本</li>
-<li><strong>pull request 拉取请求</strong>: 一处用于比较和讨论分支上引入的差异，且具有评审、评论、集成测试等功能的地方</li>
-<li><strong>HEAD</strong>: 代表你当前的工作目录。使用git checkout 可移动 HEAD 指针到不同的分支、标记(tags)或提交。</li>
-</ul>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://git-scm.com/docs">Git 参考手册</a><br><a href="https://git-scm.com/docs/giteveryday">Everyday Git</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>GNU Unix/Linux下 常用工具</title>
     <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
@@ -949,6 +815,140 @@
 <li><code>foremost</code>: 基于文件magic指纹进行修复，可自定义文件格式。</li>
 <li><code>fsck &amp; e2fsck</code> : 检查和修复文件系统，<code>e2fsck</code>专门针对ext文件系统。在某些情况下，fsck相比前面的工具可以更有效地解决因文件系统损坏导致的重要文件无法访问的问题。</li>
 </ul>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GNU编译调试工具链手册</title>
+    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
+<span id="more"></span>
+
+
+<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
+<blockquote>
+<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
+</li>
+<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
+</li>
+<li><p><strong>递归</strong>：</p>
+</li>
+<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
+</li>
+</ul>
+<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
+<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
+<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
+<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
+<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
+<li><p><strong>开始和停止</strong></p>
+<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
+</li>
+<li><p><strong>断点</strong></p>
+<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
+</li>
+<li><p><strong>执行</strong></p>
+<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
+</li>
+<li><p><strong>检查代码</strong></p>
+<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
+</li>
+<li><p><strong>检查数据</strong></p>
+<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
+</li>
+<li><p><strong>信息</strong></p>
+<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
+</li>
+</ul>
+<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
+<li>gprof</li>
+<li>valgrind</li>
+</ul>
+<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hexo 简介和使用手册</title>
+    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
+<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
+<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
+<li>Git</li>
+</ul>
+<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
+<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Web 应用</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git版本控制系统结构和命令手册</title>
+    <url>/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Git作为一个强大的开源的分布式版本控制系统，在设计开发时为自己提出了一些目标：效率、简单设计、支持非线性开发、完全的分布式和高效地处理大型项目（如Linux内核），Git的最终实现完成了大部分目标。</p>
+<span id="more"></span>
+
+<h3 id="核心模型"><a href="#核心模型" class="headerlink" title="核心模型"></a>核心模型</h3><p>&emsp;&emsp; Git是完全的<strong>分布式版本控制</strong>，即每一个客户端都保存项目的全部文件以及历史，即使服务器崩溃，它也可以从任何一个客户端那里获得镜像进行恢复。<br>&emsp;&emsp; Git将所有数据都抽象为 <strong>快照流</strong> （<code>Streams of Snapshots</code>）。</p>
+<p><img src="/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/git_data_model.png"></p>
+<p>&emsp;&emsp;Git保证 <strong>文件完整性</strong>，它对每个文件会生成签名校验。<br>&emsp;&emsp;Git将文件的状态分为三种：<code>Modified</code> -&gt; <code>Staged</code> -&gt; <code>Commited</code></p>
+<h3 id="分支功能"><a href="#分支功能" class="headerlink" title="分支功能"></a>分支功能</h3><p>&emsp;&emsp; Git的杀手级特性是它的分支功能。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li><p><strong>配置工具</strong></p>
+<p><code>git config --global user.name &quot;[name]&quot;</code><br><code>git config --global user.email &quot;[email address]&quot;</code><br><code>git config --global color.ui auto</code><br><code>git config --global core.editor &quot;[vim|emacs]&quot;</code></p>
+</li>
+<li><p><strong>分支</strong></p>
+<p><code>git branch [branch-name]</code> 创建新分支<br><code>git switch -c [branch-name]</code> 切换到指定分支并更新工作目录<br><code>git merge [branch-name]</code> 将指定分支的历史合并到当前分支，git会处理过程中可能会出现的冲突问题。<br><code>git branch -d [branch-name]</code> 删除指定分支<br><code>git stash</code> 储藏当前脏工作目录下的修改；该命令经常用于下面的场景：当想切换到另一个分支修复Bug，但又不想提交当前分支下的修改，这时候可以使用 <code>git stash</code> 来储存当前修改，后面可以使用<code>git stash pop</code> 恢复；另外其储存内容<strong>不会</strong> <code>git push</code> 到服务器。</p>
+</li>
+<li><p><strong>进行更改</strong></p>
+<p><code>git log</code> 当前分支的历史<br><code>git log --follow [file]</code> 列出文件的版本历史，包括重命名<br><code>git diff [first-branch]...[second-branch]</code> 两个分支的内容差异<br><code>git show [commit]</code> 显示指定commit的元数据和内容变化<br><code>git add [file]</code> 将文件进行快照处理，即进入staged域<br><code>git commit -m &quot;[descriptive message]&quot;</code>将文件快照永久地记录在版本历史中</p>
+</li>
+<li><p><strong>重做提交</strong></p>
+<p><code>git reset  [commit]</code> 撤销所有commit后的提交，在本地保存更改<br><code>git reset --soft [commit]</code> 保留历史，改回指定提交<br><code>git reset --hard [commit]</code> 放弃所有历史，改回指定提交<br><code>git commit --amend </code>对commit的反悔<br><code>git reset HEAD &lt;file&gt;...</code> 对add命令的撤回<br><code>git checkout -- &lt;file&gt;</code> 对一个Modified的文件撤回修改</p>
+</li>
+<li><p><strong>创建仓库</strong></p>
+<p><code>git init</code> 创建新的仓库<br><code>git remote add origin [url]</code> 将本地仓库与远程仓库连接起来<br><code>git remote show [remote-name]</code><br><code>git remote rename</code> 改变远程仓库的名字<br><code>git clone [url]</code> 镜像远程仓库到本地</p>
+</li>
+<li><p><strong>标签tag</strong></p>
+<p><code>git tag</code> 列出标签<br><code>git tag -a [tag-name]</code> 创建annotated类型的标签，该类型标签比较正式，它指向所有信息<br><code>git tag [tag-name]</code> 创建lightweight类型的标签，不正式，临时指向小部分信息<br><code>git show [tag-name]</code> 显示标签信息<br><code>git tag -a [tag-name] [commit-checksum]</code> 给某次提交添加tag</p>
+</li>
+<li><p><strong>同步更改</strong><br><code>git fetch</code> 下载远程跟踪分支的全部历史，它只获取本地没有的那部分数据，clone命令封装了fetch命令<br><code>git push</code> 将所有本地分支上传到远程服务器<br><code>git merge</code> 将远端跟踪分支合并到当前本地分支<br><code>git pull</code> 使用来自对应远端分支的所有新提交更新你当前的本地工作分支。git pull是 git fetch 和 git merge 的结合。</p>
+</li>
+<li><p><strong>子模块</strong> ：</p>
+<blockquote>
+<p>子模块允许用户将一个git仓库作为另一个git仓库的子目录。它能让你将另一个仓库克隆到自己的项目中，同时还保持提交的独立。</p>
+</blockquote>
+<p>  <code>git submodule add [url]</code><br>  <code>git submodule init</code> 初始化本地配置文件<br>  <code>git submodule update</code> 该项目中抓取所有数据并检出父项目中列出的合适的提交<br>  <code>git clone --recurse-submodules [url]</code> 自动初始化并更新仓库中的每一个子模块， 包括可能存在的嵌套子模块。<br>  <code>git submodule update --remote --init</code></p>
+</li>
+<li><p><strong>Patching:</strong><br><code>git apply --stat xxxx.patch</code> 检查 patch 文件<br><code>git apply --check xxxx.patch</code> 检查能否应用成功<br><code>git am --signoff &lt; xxxx.patch</code> 应用补丁</p>
+</li>
+<li><p><strong>调试:</strong><br><code>git blame</code>: 追溯一个文件的历史修改记录。</p>
+</li>
+</ul>
+<h3 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h3><p>参考<a href="https://git-scm.com/docs/gitignore">gitignore文件指导</a></p>
+<h3 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h3><ul>
+<li><strong>commit 提交</strong>: 一个 Git 对象，是你整个仓库的快照的哈希值</li>
+<li><strong>branch 分支</strong>: 一个轻型可移动的 commit 指针</li>
+<li><strong>clone</strong>: 一个仓库的本地版本，包含所有提交和分支</li>
+<li><strong>remote 远端</strong>: 一个 GitHub 上的公共仓库，所有小组成员通过它来交换修改</li>
+<li><strong>fork</strong>: 一个属于另一用户的 GitHub 上的仓库的副本</li>
+<li><strong>pull request 拉取请求</strong>: 一处用于比较和讨论分支上引入的差异，且具有评审、评论、集成测试等功能的地方</li>
+<li><strong>HEAD</strong>: 代表你当前的工作目录。使用git checkout 可移动 HEAD 指针到不同的分支、标记(tags)或提交。</li>
+</ul>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://git-scm.com/docs">Git 参考手册</a><br><a href="https://git-scm.com/docs/giteveryday">Everyday Git</a></p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1179,6 +1179,83 @@
       </categories>
   </entry>
   <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LLVM 2: Backend</title>
     <url>/2023/02/24/LLVM-2-Backend/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
@@ -1289,83 +1366,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-        <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Lex结构及简明参考手册</title>
     <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
@@ -1379,90 +1379,6 @@
       <tags>
         <tag>微型语言</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Linux Kernel  LKD3 阅读笔记</title>
-    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
-<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
-<span id="more"></span>
-<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
-<ul>
-<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
-<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
-</ul>
-<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
-<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
-<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
-<p>Q2: Is the system call portable?</p>
-<p><strong><code>Provide mechanism, not policy.</code></strong></p>
-<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
-<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux Kernel: 内核数据结构</title>
-    <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 《Linux Kernel Development, Third Edition》 By Robert Love.</p>
-</blockquote>
-<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>双向链表<code>list_head</code> 在头文件<code>include/linux/types.h</code> 中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>基本的处理函数和宏在头文件<code>include/linux/list.h</code> 中定义。</p>
-<h3 id="初始化链表"><a href="#初始化链表" class="headerlink" title="初始化链表"></a>初始化链表</h3><p>初始化链表 <code>LIST_HEAD_INIT</code> 和 <code>LIST_HEAD</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct list_head name = LIST_HEAD_INIT(name)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询操作最重要的不是获取<code>list_head</code>类型的指针，而是获得<code>list_head</code>所在的结构体的基地址。例如我们定义下面的结构体：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">person</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>我们如何根据一个<code>struct list_head *</code>指针类型获取其所在<code>struct person</code>结构体的基地址呢？<code>container_of</code>宏主要通过指针偏移运算来完成这个工作（<code>include/linux/kernel.h</code>）。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> container_of(ptr, type, member) (&#123;				\</span></span><br><span class="line"><span class="meta">	void *__mptr = (void *)(ptr);					\</span></span><br><span class="line"><span class="meta">	BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)-&gt;member) &amp;&amp;	\</span></span><br><span class="line"><span class="meta">			 !__same_type(*(ptr), void),			\</span></span><br><span class="line"><span class="meta">			 <span class="string">&quot;pointer type mismatch in container_of()&quot;</span>);	\</span></span><br><span class="line"><span class="meta">	((type *)(__mptr - offsetof(type, member))); &#125;)</span></span><br></pre></td></tr></table></figure>
-<p>其中，<code>offsetof</code> 在<code>include/linux/stddef.h</code>中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;NUMBER)</span></span><br></pre></td></tr></table></figure>
-<p>注意这里使用<code>TYPE*</code>类型的 <code>NULL(0)</code>指针并不会导致运行时错误，因为在编译阶段，编译器会将上诉代码翻译为<code>0+OFFSET</code>，其中<code>OFFSET</code>为<code>NUMBER</code>在类型<code>TYPE</code>中的偏移量。然后我们在<code>container_of</code>宏中将<code>struct list_head ptr</code>的地址减去该偏移量就可以获得其所在<code>TYPE</code>结构体的地址。</p>
-<p>然后可以定义<code>list_entry</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	container_of(ptr, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_first_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;next, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_last_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;prev, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_next_entry - get the next element in list</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to cursor</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_next_entry(pos, member) \</span></span><br><span class="line"><span class="meta">	list_entry((pos)-&gt;member.next, typeof(*(pos)), member)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>直接遍历<code>struct list_head</code> 节点：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each	-	iterate over a list</span></span><br><span class="line"><span class="comment"> * @pos:	the &amp;struct list_head to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each(pos, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @n: another &amp;struct list_head to use as temporary storage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_safe(pos, n, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</span></span><br><span class="line"><span class="meta">		pos = n, n = pos-&gt;next)</span></span><br></pre></td></tr></table></figure>
-<p>注意，<code>list_for_each_safe</code>可以用在遍历链表的过程中执行删除节点操作，它是通过增加一个额外的临时<code>hlist_node</code>指针<code>n</code>来实现的。</p>
-<p>遍历 <strong>entry</strong> :</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each_entry	-	iterate over list of given type</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_entry(pos, head, member)				\</span></span><br><span class="line"><span class="meta">	for (pos = list_first_entry(head, typeof(*pos), member);	\</span></span><br><span class="line"><span class="meta">	     &amp;pos-&gt;member != (head);					\</span></span><br><span class="line"><span class="meta">	     pos = list_next_entry(pos, member))</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="边界检查"><a href="#边界检查" class="headerlink" title="边界检查"></a>边界检查</h3><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>进程链表是运用链表最重要的例子之一。在结构体<code>task_struct</code>中包含字段<code>struct list_head tasks</code>。</p>
-<p>另外一个例子是<strong>等待队列</strong>。</p>
-<h2 id="哈希链表"><a href="#哈希链表" class="headerlink" title="哈希链表"></a>哈希链表</h2><p>哈希链表由于自身特点的考虑，不使用双向链表。</p>
-<p>定义如下（<code>include/linux/types.h</code>）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>为什么头节点(<code>struct hlist_head</code>)不直接使用<code>struct hlist_node</code>，而是要重新定义一个结构体呢？<strong>答案是为了节省空间</strong>。</p>
-<p>另外，使用二级指针<code>**pprev</code>在删除节点上的处理非常简单，无需关心是否是 head 节点。而使用单链表或双向链表时需要单独判断是否是 head 节点。</p>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD_INIT &#123; .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD(name) struct hlist_head name = &#123;  .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_HLIST_HEAD(ptr) ((ptr)-&gt;first = NULL)</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">INIT_HLIST_NODE</span><span class="params">(<span class="keyword">struct</span> hlist_node *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	h-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	h-&gt;pprev = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><p>向<code>hlist</code>链表添加节点时，可以直接添加到链表头部，也可以插入到中间位置。操作函数和宏在<code>include/linux/list.h</code>中定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_add_head</span><span class="params">(<span class="keyword">struct</span> hlist_node *n, <span class="keyword">struct</span> hlist_head *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span> =</span> h-&gt;first;</span><br><span class="line">	n-&gt;next = first;</span><br><span class="line">	<span class="keyword">if</span> (first)</span><br><span class="line">		first-&gt;pprev = &amp;n-&gt;next;</span><br><span class="line">	WRITE_ONCE(h-&gt;first, n);</span><br><span class="line">	n-&gt;pprev = &amp;h-&gt;first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __hlist_del(<span class="keyword">struct</span> hlist_node *n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span> =</span> n-&gt;next;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> **<span class="title">pprev</span> =</span> n-&gt;pprev;</span><br><span class="line"></span><br><span class="line">	WRITE_ONCE(*pprev, next);</span><br><span class="line">	<span class="keyword">if</span> (next)</span><br><span class="line">		next-&gt;pprev = pprev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_del</span><span class="params">(<span class="keyword">struct</span> hlist_node *n)</span></span><br><span class="line">&#123;</span><br><span class="line">	__hlist_del(n);</span><br><span class="line">	n-&gt;next = LIST_POISON1;</span><br><span class="line">	n-&gt;pprev = LIST_POISON2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h3><h2 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h2><p>等待队列使用双向链表实现（<code>include/linux/wait.h</code>）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_entry</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		flags;</span><br><span class="line">	<span class="type">void</span>			*private;</span><br><span class="line">	<span class="type">wait_queue_func_t</span>	func;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> &#123;</span></span><br><span class="line">	<span class="type">spinlock_t</span>		lock;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">head</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> <span class="title">wait_queue_head_t</span>;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
-<p>动态分配节点的初始化：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
   </entry>
   <entry>
     <title>Linux Kernel Introduction</title>
@@ -1615,6 +1531,90 @@
 <li>文件系统</li>
 <li>设备驱动</li>
 </ul>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel: 内核数据结构</title>
+    <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 《Linux Kernel Development, Third Edition》 By Robert Love.</p>
+</blockquote>
+<h2 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h2><p>双向链表<code>list_head</code> 在头文件<code>include/linux/types.h</code> 中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>基本的处理函数和宏在头文件<code>include/linux/list.h</code> 中定义。</p>
+<h3 id="初始化链表"><a href="#初始化链表" class="headerlink" title="初始化链表"></a>初始化链表</h3><p>初始化链表 <code>LIST_HEAD_INIT</code> 和 <code>LIST_HEAD</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct list_head name = LIST_HEAD_INIT(name)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询操作最重要的不是获取<code>list_head</code>类型的指针，而是获得<code>list_head</code>所在的结构体的基地址。例如我们定义下面的结构体：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">person</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们如何根据一个<code>struct list_head *</code>指针类型获取其所在<code>struct person</code>结构体的基地址呢？<code>container_of</code>宏主要通过指针偏移运算来完成这个工作（<code>include/linux/kernel.h</code>）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> container_of(ptr, type, member) (&#123;				\</span></span><br><span class="line"><span class="meta">	void *__mptr = (void *)(ptr);					\</span></span><br><span class="line"><span class="meta">	BUILD_BUG_ON_MSG(!__same_type(*(ptr), ((type *)0)-&gt;member) &amp;&amp;	\</span></span><br><span class="line"><span class="meta">			 !__same_type(*(ptr), void),			\</span></span><br><span class="line"><span class="meta">			 <span class="string">&quot;pointer type mismatch in container_of()&quot;</span>);	\</span></span><br><span class="line"><span class="meta">	((type *)(__mptr - offsetof(type, member))); &#125;)</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>offsetof</code> 在<code>include/linux/stddef.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;NUMBER)</span></span><br></pre></td></tr></table></figure>
+<p>注意这里使用<code>TYPE*</code>类型的 <code>NULL(0)</code>指针并不会导致运行时错误，因为在编译阶段，编译器会将上诉代码翻译为<code>0+OFFSET</code>，其中<code>OFFSET</code>为<code>NUMBER</code>在类型<code>TYPE</code>中的偏移量。然后我们在<code>container_of</code>宏中将<code>struct list_head ptr</code>的地址减去该偏移量就可以获得其所在<code>TYPE</code>结构体的地址。</p>
+<p>然后可以定义<code>list_entry</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	container_of(ptr, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_first_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;next, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @ptr : the list head to take the element from.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_last_entry(ptr, type, member) \</span></span><br><span class="line"><span class="meta">	list_entry((ptr)-&gt;prev, type, member)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_next_entry - get the next element in list</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to cursor</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_next_entry(pos, member) \</span></span><br><span class="line"><span class="meta">	list_entry((pos)-&gt;member.next, typeof(*(pos)), member)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><p>直接遍历<code>struct list_head</code> 节点：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each	-	iterate over a list</span></span><br><span class="line"><span class="comment"> * @pos:	the &amp;struct list_head to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each(pos, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// @n: another &amp;struct list_head to use as temporary storage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_safe(pos, n, head) \</span></span><br><span class="line"><span class="meta">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</span></span><br><span class="line"><span class="meta">		pos = n, n = pos-&gt;next)</span></span><br></pre></td></tr></table></figure>
+<p>注意，<code>list_for_each_safe</code>可以用在遍历链表的过程中执行删除节点操作，它是通过增加一个额外的临时<code>hlist_node</code>指针<code>n</code>来实现的。</p>
+<p>遍历 <strong>entry</strong> :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * list_for_each_entry	-	iterate over list of given type</span></span><br><span class="line"><span class="comment"> * @pos:	the type * to use as a loop cursor.</span></span><br><span class="line"><span class="comment"> * @head:	the head for your list.</span></span><br><span class="line"><span class="comment"> * @member:	the name of the list_head within the struct.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> list_for_each_entry(pos, head, member)				\</span></span><br><span class="line"><span class="meta">	for (pos = list_first_entry(head, typeof(*pos), member);	\</span></span><br><span class="line"><span class="meta">	     &amp;pos-&gt;member != (head);					\</span></span><br><span class="line"><span class="meta">	     pos = list_next_entry(pos, member))</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="边界检查"><a href="#边界检查" class="headerlink" title="边界检查"></a>边界检查</h3><h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>进程链表是运用链表最重要的例子之一。在结构体<code>task_struct</code>中包含字段<code>struct list_head tasks</code>。</p>
+<p>另外一个例子是<strong>等待队列</strong>。</p>
+<h2 id="哈希链表"><a href="#哈希链表" class="headerlink" title="哈希链表"></a>哈希链表</h2><p>哈希链表由于自身特点的考虑，不使用双向链表。</p>
+<p>定义如下（<code>include/linux/types.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">​</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>为什么头节点(<code>struct hlist_head</code>)不直接使用<code>struct hlist_node</code>，而是要重新定义一个结构体呢？<strong>答案是为了节省空间</strong>。</p>
+<p>另外，使用二级指针<code>**pprev</code>在删除节点上的处理非常简单，无需关心是否是 head 节点。而使用单链表或双向链表时需要单独判断是否是 head 节点。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD_INIT &#123; .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HLIST_HEAD(name) struct hlist_head name = &#123;  .first = NULL &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_HLIST_HEAD(ptr) ((ptr)-&gt;first = NULL)</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">INIT_HLIST_NODE</span><span class="params">(<span class="keyword">struct</span> hlist_node *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	h-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">	h-&gt;pprev = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><p>向<code>hlist</code>链表添加节点时，可以直接添加到链表头部，也可以插入到中间位置。操作函数和宏在<code>include/linux/list.h</code>中定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_add_head</span><span class="params">(<span class="keyword">struct</span> hlist_node *n, <span class="keyword">struct</span> hlist_head *h)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span> =</span> h-&gt;first;</span><br><span class="line">	n-&gt;next = first;</span><br><span class="line">	<span class="keyword">if</span> (first)</span><br><span class="line">		first-&gt;pprev = &amp;n-&gt;next;</span><br><span class="line">	WRITE_ONCE(h-&gt;first, n);</span><br><span class="line">	n-&gt;pprev = &amp;h-&gt;first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __hlist_del(<span class="keyword">struct</span> hlist_node *n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span> =</span> n-&gt;next;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> **<span class="title">pprev</span> =</span> n-&gt;pprev;</span><br><span class="line"></span><br><span class="line">	WRITE_ONCE(*pprev, next);</span><br><span class="line">	<span class="keyword">if</span> (next)</span><br><span class="line">		next-&gt;pprev = pprev;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">hlist_del</span><span class="params">(<span class="keyword">struct</span> hlist_node *n)</span></span><br><span class="line">&#123;</span><br><span class="line">	__hlist_del(n);</span><br><span class="line">	n-&gt;next = LIST_POISON1;</span><br><span class="line">	n-&gt;pprev = LIST_POISON2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询-1"><a href="#查询-1" class="headerlink" title="查询"></a>查询</h3><h2 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h2><p>等待队列使用双向链表实现（<code>include/linux/wait.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_entry</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		flags;</span><br><span class="line">	<span class="type">void</span>			*private;</span><br><span class="line">	<span class="type">wait_queue_func_t</span>	func;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> &#123;</span></span><br><span class="line">	<span class="type">spinlock_t</span>		lock;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">head</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">wait_queue_head</span> <span class="title">wait_queue_head_t</span>;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
+<p>动态分配节点的初始化：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel  LKD3 阅读笔记</title>
+    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
+<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
+<span id="more"></span>
+<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
+<ul>
+<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
+<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+</ul>
+<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
+<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
+<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
+<p>Q2: Is the system call portable?</p>
+<p><strong><code>Provide mechanism, not policy.</code></strong></p>
+<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
+<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1956,60 +1956,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Python 装饰器</title>
-    <url>/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
-<blockquote>
-<p>主要翻译自：<a href="https://realpython.com/primer-on-python-decorators/">Primer on Python Decorators</a> by <em>Geir Arne Hjelle</em>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><strong>注意</strong>： Python 尽管不是纯粹的函数式编程语言（如与 Lisp 相比），但仍然支持许多函数式编程的概念，包括函数作为第一级状态对象（first-class objects）。（这与 python 的 <code>everything is a object</code> 也是保持一致的。）</p>
-<p>###1.1 First-Class Objects<br>函数作为第一级对象意味着 <strong>函数可以被作为参数传递</strong>，就如其他对象（如 <code>string</code>，<code>float</code>, <code>list</code>等）一样。示例如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">be_awesome</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Yo <span class="subst">&#123;name&#125;</span>, together we are the awesomest!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet_bob</span>(<span class="params">greeter_func</span>):</span><br><span class="line">    <span class="keyword">return</span> greeter_func(<span class="string">&quot;Bob&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><code>say_hello()</code> 和 <code>be_awesome</code> 是普通的函数，而<code>greet_bob()</code> 函数将一个函数作为它的参数，例如我们可以将 <code>say_hello</code> 的引用传递给它：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet_bob(say_hello)</span></span><br><span class="line">&#x27;Hello Bob&#x27;</span><br></pre></td></tr></table></figure>
-<p>在 Python 中，<strong>函数的参数都是引用</strong>（具体实现可参考 <a href="https://stonetough.com/index.php/archives/244/">Python Internals</a>），<code>say_hello</code> 作为<code>greet_bob</code>的参数时不会被执行，它只会在 <code>greet_bob</code> 的函数体中被执行。</p>
-<h3 id="Inner-函数"><a href="#Inner-函数" class="headerlink" title="Inner 函数"></a>Inner 函数</h3><p><code>Inner函数</code>是定义在函数中的函数，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printing from the parent() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the first_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the second_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    second_child()</span><br><span class="line">    first_child()</span><br></pre></td></tr></table></figure>
-
-<p><code>first_child()</code> 和 <code>second_child()</code> 作为 <code>parent()</code> 的内部函数，它们存在于<code>parent()</code>函数的内部域中，也就是说，如果在<code>parent()</code>外调用它们则会失败：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">NameError: name &#x27;first_child&#x27; is not defined</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="函数作为返回值"><a href="#函数作为返回值" class="headerlink" title="函数作为返回值"></a>函数作为返回值</h3><p>函数可以作为返回值，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hi, I am Emma&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Call me Liam&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> first_child</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> second_child</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>parent()</code> 函数返回的是<code>first_child()</code>和<code>second_child()</code>函数的引用，如果要调用它们，需要加’()’，如下所示：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first = parent(1)</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second = parent(2)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.first_child at 0x7f599f1e2e18&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.second_child at 0x7f599dad5268&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first()</span></span><br><span class="line">&#x27;Hi, I am Emma&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second()</span></span><br><span class="line">&#x27;Call me Liam&#x27;</span><br></pre></td></tr></table></figure>
-
-<h2 id="简单的装饰器"><a href="#简单的装饰器" class="headerlink" title="简单的装饰器"></a>简单的装饰器</h2><p>先看一个简单的例子：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_whee = my_decorator(say_whee)</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Something is happening before the function is called.</span><br><span class="line">Whee!</span><br><span class="line">Something is happening after the function is called.</span><br></pre></td></tr></table></figure>
-
-<p><code>say_whee()</code> 函数的引用作为 <code>my_decorator()</code> 参数传入，<code>my_decorator()</code>函数返回其内部函数 <code>wrapper()</code> 的引用，并赋值给 <code>say_whee</code>。因此，在全局环境中，<code>say_whee</code>标识符不再绑定为 <code>say_whee()</code> 函数，而是绑定为 <code>wrapper()</code>函数。然而，<code>wrapper()</code> 函数在它的上下文环境中保存了原来的 <code>say_whee()</code> 函数的引用。（在这里，过程和数据的概念不再是完全对立的，过程可以是数据，数据也可以是过程。）</p>
-<p>简单来说，<strong>装饰器包装了一个函数，修改了它的行为。</strong></p>
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><p>上述装饰 <code>say_whee()</code> 函数的做法是有些繁琐的，所以在 Python 中允许使用 <code>@</code>符号来简单地使用装饰器，下面的例子做了同样的事情，但更加简洁：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="重用装饰器"><a href="#重用装饰器" class="headerlink" title="重用装饰器"></a>重用装饰器</h3><p>装饰器函数可以单独定义在一个模块中，其他模块可以通过 <code>import</code> 导入它。</p>
-<h3 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h3><p>在内部包装函数中使用 ** *args ** 和 ** *kwargs **作为形参，使得它可以接受任意的位置参数和关键字参数，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>测试：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Whee!</span><br><span class="line">Whee!</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet(<span class="string">&quot;World&quot;</span>)</span></span><br><span class="line">Hello World</span><br><span class="line">Hello World</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="从装饰器函数中返回值"><a href="#从装饰器函数中返回值" class="headerlink" title="从装饰器函数中返回值"></a>从装饰器函数中返回值</h3><p>如果被装饰的函数有返回值，我们只需要在包装函数中返回这个返回值即可。如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">return_greeting</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hi <span class="subst">&#123;name&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; return_greeting(<span class="string">&quot;Adam&quot;</span>)</span></span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line">&#x27;Hi Adam&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用-functools-wraps"><a href="#使用-functools-wraps" class="headerlink" title="使用 @functools.wraps()"></a>使用 @functools.wraps()</h3><h2 id="更有用的例子"><a href="#更有用的例子" class="headerlink" title="更有用的例子"></a>更有用的例子</h2>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Python 元类</title>
     <url>/2022/11/20/Python-%E5%85%83%E7%B1%BB/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，<strong>everything is a object</strong>，类也不例外。当把类看作对象时，类也是可以是被<code>动态创建</code>的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。<code>type</code> 是 python 内置的元类，用户也可以创建自己的元类。</p>
@@ -2083,6 +2029,60 @@
 <h2 id="是否真的必要？"><a href="#是否真的必要？" class="headerlink" title="是否真的必要？"></a>是否真的必要？</h2><p>实际上，第4节中的实现可以采用其他方案，例如类继承和类修饰符。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通常情况下，创建自定义元类都是不必要的。如果对于当前问题存在更简单的解决方式，那么很可能就应该使用这种方式。但理解元类仍然是有利于你去理解python的类机制，并可以判断什么时候元类可以作为一个真正合适的工具来使用。</p>
 ]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Python 装饰器</title>
+    <url>/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
+<blockquote>
+<p>主要翻译自：<a href="https://realpython.com/primer-on-python-decorators/">Primer on Python Decorators</a> by <em>Geir Arne Hjelle</em>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><strong>注意</strong>： Python 尽管不是纯粹的函数式编程语言（如与 Lisp 相比），但仍然支持许多函数式编程的概念，包括函数作为第一级状态对象（first-class objects）。（这与 python 的 <code>everything is a object</code> 也是保持一致的。）</p>
+<p>###1.1 First-Class Objects<br>函数作为第一级对象意味着 <strong>函数可以被作为参数传递</strong>，就如其他对象（如 <code>string</code>，<code>float</code>, <code>list</code>等）一样。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">be_awesome</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Yo <span class="subst">&#123;name&#125;</span>, together we are the awesomest!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet_bob</span>(<span class="params">greeter_func</span>):</span><br><span class="line">    <span class="keyword">return</span> greeter_func(<span class="string">&quot;Bob&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>say_hello()</code> 和 <code>be_awesome</code> 是普通的函数，而<code>greet_bob()</code> 函数将一个函数作为它的参数，例如我们可以将 <code>say_hello</code> 的引用传递给它：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet_bob(say_hello)</span></span><br><span class="line">&#x27;Hello Bob&#x27;</span><br></pre></td></tr></table></figure>
+<p>在 Python 中，<strong>函数的参数都是引用</strong>（具体实现可参考 <a href="https://stonetough.com/index.php/archives/244/">Python Internals</a>），<code>say_hello</code> 作为<code>greet_bob</code>的参数时不会被执行，它只会在 <code>greet_bob</code> 的函数体中被执行。</p>
+<h3 id="Inner-函数"><a href="#Inner-函数" class="headerlink" title="Inner 函数"></a>Inner 函数</h3><p><code>Inner函数</code>是定义在函数中的函数，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printing from the parent() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the first_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the second_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    second_child()</span><br><span class="line">    first_child()</span><br></pre></td></tr></table></figure>
+
+<p><code>first_child()</code> 和 <code>second_child()</code> 作为 <code>parent()</code> 的内部函数，它们存在于<code>parent()</code>函数的内部域中，也就是说，如果在<code>parent()</code>外调用它们则会失败：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">NameError: name &#x27;first_child&#x27; is not defined</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数作为返回值"><a href="#函数作为返回值" class="headerlink" title="函数作为返回值"></a>函数作为返回值</h3><p>函数可以作为返回值，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hi, I am Emma&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Call me Liam&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> first_child</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> second_child</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>parent()</code> 函数返回的是<code>first_child()</code>和<code>second_child()</code>函数的引用，如果要调用它们，需要加’()’，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first = parent(1)</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second = parent(2)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.first_child at 0x7f599f1e2e18&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.second_child at 0x7f599dad5268&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first()</span></span><br><span class="line">&#x27;Hi, I am Emma&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second()</span></span><br><span class="line">&#x27;Call me Liam&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单的装饰器"><a href="#简单的装饰器" class="headerlink" title="简单的装饰器"></a>简单的装饰器</h2><p>先看一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_whee = my_decorator(say_whee)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Something is happening before the function is called.</span><br><span class="line">Whee!</span><br><span class="line">Something is happening after the function is called.</span><br></pre></td></tr></table></figure>
+
+<p><code>say_whee()</code> 函数的引用作为 <code>my_decorator()</code> 参数传入，<code>my_decorator()</code>函数返回其内部函数 <code>wrapper()</code> 的引用，并赋值给 <code>say_whee</code>。因此，在全局环境中，<code>say_whee</code>标识符不再绑定为 <code>say_whee()</code> 函数，而是绑定为 <code>wrapper()</code>函数。然而，<code>wrapper()</code> 函数在它的上下文环境中保存了原来的 <code>say_whee()</code> 函数的引用。（在这里，过程和数据的概念不再是完全对立的，过程可以是数据，数据也可以是过程。）</p>
+<p>简单来说，<strong>装饰器包装了一个函数，修改了它的行为。</strong></p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><p>上述装饰 <code>say_whee()</code> 函数的做法是有些繁琐的，所以在 Python 中允许使用 <code>@</code>符号来简单地使用装饰器，下面的例子做了同样的事情，但更加简洁：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="重用装饰器"><a href="#重用装饰器" class="headerlink" title="重用装饰器"></a>重用装饰器</h3><p>装饰器函数可以单独定义在一个模块中，其他模块可以通过 <code>import</code> 导入它。</p>
+<h3 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h3><p>在内部包装函数中使用 ** *args ** 和 ** *kwargs **作为形参，使得它可以接受任意的位置参数和关键字参数，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Whee!</span><br><span class="line">Whee!</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet(<span class="string">&quot;World&quot;</span>)</span></span><br><span class="line">Hello World</span><br><span class="line">Hello World</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="从装饰器函数中返回值"><a href="#从装饰器函数中返回值" class="headerlink" title="从装饰器函数中返回值"></a>从装饰器函数中返回值</h3><p>如果被装饰的函数有返回值，我们只需要在包装函数中返回这个返回值即可。如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">return_greeting</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hi <span class="subst">&#123;name&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; return_greeting(<span class="string">&quot;Adam&quot;</span>)</span></span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line">&#x27;Hi Adam&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-functools-wraps"><a href="#使用-functools-wraps" class="headerlink" title="使用 @functools.wraps()"></a>使用 @functools.wraps()</h3><h2 id="更有用的例子"><a href="#更有用的例子" class="headerlink" title="更有用的例子"></a>更有用的例子</h2>]]></content>
       <categories>
         <category>Python</category>
       </categories>
@@ -2319,6 +2319,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -2407,26 +2429,22 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+    <title>flex 规范参考</title>
+    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
 <span id="more"></span>
 
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
 
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+
 ]]></content>
       <categories>
-        <category>GNU/Linux操作系统</category>
+        <category>编译器</category>
       </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>vim配置及命令手册</title>
@@ -2470,24 +2488,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>flex 规范参考</title>
-    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
-<span id="more"></span>
-
-<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《古今数学思想I》读书笔记</title>
     <url>/2019/09/11/%E3%80%8A%E5%8F%A4%E4%BB%8A%E6%95%B0%E5%AD%A6%E6%80%9D%E6%83%B3I%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><em>本文主要是早期阅读时的摘抄笔记，只可见该著作之冰山一角。</em></p>
@@ -2504,6 +2504,29 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>数学</category>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>《麦田里的守望者》读书笔记</title>
+    <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
+<p>&emsp;&emsp;一个不成熟男子的标志是他愿意为某种事业英勇地死去，一个成熟男子的标志是他愿意为某种事业卑贱地活着。</p>
+<span id="more"></span>
+
+
+<p>&emsp;&emsp;我想象你这样骑马瞎跑。将来要是摔下来，可不是玩儿的——那是很特殊、很可怕的一跤。摔下来的人，都感觉不到也听不见自己着地。只是一个劲儿往下摔。这整个安排是为哪种人作出的呢？只是为某一类人，他们在一生中这一时期或那一时期，想要寻找某种他们自己的环境无法提供的东西。或者寻找只是他们认为自己的环境无法提供的东西。于是他们停止寻找。他们甚至在还未真正开始寻找之前就已停止寻找。</p>
+<p>&emsp;&emsp;你一旦经受了所有的文孙先生的考验，你就可以学到越来越多的知识——那是说，只要你想学，肯学，有耐心学——你就可以学到一些你最最心爱的知识。其中的一门知识就是，你将发现对人类的行为感到惶惑、恐惧、甚至恶心的，你并不是第一个。在这方面你倒是一点也不孤独，你知道后一定会觉得兴奋，一定会受到鼓励。历史上有许许多多人都象你现在这样，在道德上和精神上都有过访捏的时期。幸而，他们中间有几个将自己彷徨的经过记录下来了。你可以向他们学习——只要你愿意。正如你有朝一日如果有什么贡献，别人也可以向你学习。这真是个极妙的轮回安排。而且这不是教育。这是历史。这是诗。</p>
+<p>&emsp;&emsp;只有受过教育的和有学问的人才能够对这世界作出伟大的贡献。这样说当然不对。不过我的确要说，受过教育的和有学问的人如果有聪明才智和创造能力——不幸的是，这样的情况并不多——他们留给后世的记录比起那般光有聪明才智和创造能力的人来，确实要宝贵得多。他们表达自己的思想更清楚，他们通常还有热情把自己的思想贯彻到底。而且——最最重要的一点——他们十有九个要比那种没有学问的思想家谦恭得多。</p>
+<p>&emsp;&emsp;学校教育还能给你带来别的好处。你受这种教育到了一定程度，就会发现自己脑子的尺寸，以及什么对它合适，什么对它不合适。过了一个时期，你就会心里有数，知道象你这样尺寸的头脑应该具有什么类型的思想。主要是，这可以让你节省不少时间，免得你去瞎试一些对你不合适、不贴切的思想。你惺僵就会知道你自己的正确尺寸，恰如其分地把你的头脑武装起来。</p>
+<p>&emsp;&emsp;“不管怎样，我老是在想象，有那么一群小孩子在一大块麦田里做游戏。几千几万个小孩子，附近没有一个人——没有一个大人，我是说——除了我。我呢，就站在那混帐的悬崖边。我的职务是在那儿守望，要是有哪个孩子往悬崖边奔来，我就把他捉住——我是说孩子们都在狂奔，也不知道自己是在往哪儿跑，我得从什么地方出来，把他们捉住。我整天就干这样的事。我只想当个麦田里的守望者。我知道这有点异想天开，可我真正喜欢干的就是这个。我知道这不象话。”</p>
+<p>&emsp;&emsp;最后，我打定主意，决计远走高飞。我决意不再回家，也不再到另一个混帐学校里去念书了。我决定再见老菲芘一面，向她告别，把她过圣诞节的钱还她，随后我一路搭人家的车到西部去。我想先到荷兰隧道不花钱搭一辆车，然后再搭一辆，然后再一辆、再一辆，这样不多几天我就可以到达西部，那儿阳光明媚，景色美丽；那儿没有人认识我，我可以随便找个工作做。我揣摩自己可以在一个加油站里找个工作，给人家的汽车加油什么的。不过我并不在乎找到的是什么样的工作，反正只要人家不认识我、我也不认识人家就成。我又想起了一个主意，打算到了那儿，就装作一个又袭又哑的人。这样我就可以不必跟任何人讲任何混帐废话了。要是有人想跟我说什么，他们就得写在纸上递给我。用这种方法交谈，过不多久他们就会腻烦得要命，这样我的下半辈子就再也用不着跟人谈话了。人人都会认为我是个可怜的又聋又哑的杂种，谁都不会来打扰我。他们会让我把汽油灌进他们的混帐汽车，他们会给我一份工资，我用自己挣来的钱造一座小屋，终身住在里面。我准备把小屋造在树林旁边，而不是造在树林里面，因为我喜欢屋里一天到晚都有充足的阳光。一日三餐我可以自己做了吃，以后我如果想结婚什么的，可以找一个同我一样又聋又哑的美丽姑娘。我们结婚以后，她就搬来跟我一起佐在我的小屋里，她如果想跟我说什么话，也得写在一张混帐纸上，象别人一样。</p>
+<p>&emsp;&emsp;我们如果生了孩子，就把他们送到什么地方藏起来。我们可以给他们买许许多多书，亲自教他们读书写字。</p>
+<p>&emsp;&emsp;我要定出这么个规则，凡是来看我的人，都不准在我家里做任何假模假式的事。谁要是想在我家里作假，就马上请他上路。</p>
+<p>&emsp;&emsp;嘿，雨开始下大了。是倾盆大雨，我可以对天发誓。所有做父母的、做母亲的和其他人等，全都奔过去躲到转台的屋檐下，免得被雨淋湿，可我依旧在长椅上坐了好一会儿。我身上都湿透了，尤其是我的脖子上和裤子上。我那顶猎人帽在某些部分的确给我挡住了不少雨，可我依旧淋得象只落汤鸡。不过我并不在乎。突然间我变得他妈的那么快乐，眼看着老菲芘那么一圈圈转个不停。我险些儿他妈的大叫大嚷起来，我心里实在快乐极了，我老实告诉你说。我不知道什么缘故。她穿着那么件蓝大衣，老那么转个不停，看去真他妈的好看极了。</p>
+<p>&emsp;&emsp;老天爷，我真希望你当时也在场——</p>
+]]></content>
+      <categories>
         <category>读书笔记</category>
       </categories>
   </entry>
@@ -2530,31 +2553,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
 ]]></content>
       <categories>
+        <category>读书笔记</category>
         <category>软件工程</category>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>《麦田里的守望者》读书笔记</title>
-    <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
-<p>&emsp;&emsp;一个不成熟男子的标志是他愿意为某种事业英勇地死去，一个成熟男子的标志是他愿意为某种事业卑贱地活着。</p>
-<span id="more"></span>
-
-
-<p>&emsp;&emsp;我想象你这样骑马瞎跑。将来要是摔下来，可不是玩儿的——那是很特殊、很可怕的一跤。摔下来的人，都感觉不到也听不见自己着地。只是一个劲儿往下摔。这整个安排是为哪种人作出的呢？只是为某一类人，他们在一生中这一时期或那一时期，想要寻找某种他们自己的环境无法提供的东西。或者寻找只是他们认为自己的环境无法提供的东西。于是他们停止寻找。他们甚至在还未真正开始寻找之前就已停止寻找。</p>
-<p>&emsp;&emsp;你一旦经受了所有的文孙先生的考验，你就可以学到越来越多的知识——那是说，只要你想学，肯学，有耐心学——你就可以学到一些你最最心爱的知识。其中的一门知识就是，你将发现对人类的行为感到惶惑、恐惧、甚至恶心的，你并不是第一个。在这方面你倒是一点也不孤独，你知道后一定会觉得兴奋，一定会受到鼓励。历史上有许许多多人都象你现在这样，在道德上和精神上都有过访捏的时期。幸而，他们中间有几个将自己彷徨的经过记录下来了。你可以向他们学习——只要你愿意。正如你有朝一日如果有什么贡献，别人也可以向你学习。这真是个极妙的轮回安排。而且这不是教育。这是历史。这是诗。</p>
-<p>&emsp;&emsp;只有受过教育的和有学问的人才能够对这世界作出伟大的贡献。这样说当然不对。不过我的确要说，受过教育的和有学问的人如果有聪明才智和创造能力——不幸的是，这样的情况并不多——他们留给后世的记录比起那般光有聪明才智和创造能力的人来，确实要宝贵得多。他们表达自己的思想更清楚，他们通常还有热情把自己的思想贯彻到底。而且——最最重要的一点——他们十有九个要比那种没有学问的思想家谦恭得多。</p>
-<p>&emsp;&emsp;学校教育还能给你带来别的好处。你受这种教育到了一定程度，就会发现自己脑子的尺寸，以及什么对它合适，什么对它不合适。过了一个时期，你就会心里有数，知道象你这样尺寸的头脑应该具有什么类型的思想。主要是，这可以让你节省不少时间，免得你去瞎试一些对你不合适、不贴切的思想。你惺僵就会知道你自己的正确尺寸，恰如其分地把你的头脑武装起来。</p>
-<p>&emsp;&emsp;“不管怎样，我老是在想象，有那么一群小孩子在一大块麦田里做游戏。几千几万个小孩子，附近没有一个人——没有一个大人，我是说——除了我。我呢，就站在那混帐的悬崖边。我的职务是在那儿守望，要是有哪个孩子往悬崖边奔来，我就把他捉住——我是说孩子们都在狂奔，也不知道自己是在往哪儿跑，我得从什么地方出来，把他们捉住。我整天就干这样的事。我只想当个麦田里的守望者。我知道这有点异想天开，可我真正喜欢干的就是这个。我知道这不象话。”</p>
-<p>&emsp;&emsp;最后，我打定主意，决计远走高飞。我决意不再回家，也不再到另一个混帐学校里去念书了。我决定再见老菲芘一面，向她告别，把她过圣诞节的钱还她，随后我一路搭人家的车到西部去。我想先到荷兰隧道不花钱搭一辆车，然后再搭一辆，然后再一辆、再一辆，这样不多几天我就可以到达西部，那儿阳光明媚，景色美丽；那儿没有人认识我，我可以随便找个工作做。我揣摩自己可以在一个加油站里找个工作，给人家的汽车加油什么的。不过我并不在乎找到的是什么样的工作，反正只要人家不认识我、我也不认识人家就成。我又想起了一个主意，打算到了那儿，就装作一个又袭又哑的人。这样我就可以不必跟任何人讲任何混帐废话了。要是有人想跟我说什么，他们就得写在纸上递给我。用这种方法交谈，过不多久他们就会腻烦得要命，这样我的下半辈子就再也用不着跟人谈话了。人人都会认为我是个可怜的又聋又哑的杂种，谁都不会来打扰我。他们会让我把汽油灌进他们的混帐汽车，他们会给我一份工资，我用自己挣来的钱造一座小屋，终身住在里面。我准备把小屋造在树林旁边，而不是造在树林里面，因为我喜欢屋里一天到晚都有充足的阳光。一日三餐我可以自己做了吃，以后我如果想结婚什么的，可以找一个同我一样又聋又哑的美丽姑娘。我们结婚以后，她就搬来跟我一起佐在我的小屋里，她如果想跟我说什么话，也得写在一张混帐纸上，象别人一样。</p>
-<p>&emsp;&emsp;我们如果生了孩子，就把他们送到什么地方藏起来。我们可以给他们买许许多多书，亲自教他们读书写字。</p>
-<p>&emsp;&emsp;我要定出这么个规则，凡是来看我的人，都不准在我家里做任何假模假式的事。谁要是想在我家里作假，就马上请他上路。</p>
-<p>&emsp;&emsp;嘿，雨开始下大了。是倾盆大雨，我可以对天发誓。所有做父母的、做母亲的和其他人等，全都奔过去躲到转台的屋檐下，免得被雨淋湿，可我依旧在长椅上坐了好一会儿。我身上都湿透了，尤其是我的脖子上和裤子上。我那顶猎人帽在某些部分的确给我挡住了不少雨，可我依旧淋得象只落汤鸡。不过我并不在乎。突然间我变得他妈的那么快乐，眼看着老菲芘那么一圈圈转个不停。我险些儿他妈的大叫大嚷起来，我心里实在快乐极了，我老实告诉你说。我不知道什么缘故。她穿着那么件蓝大衣，老那么转个不停，看去真他妈的好看极了。</p>
-<p>&emsp;&emsp;老天爷，我真希望你当时也在场——</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -2739,6 +2739,36 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>嵌入式系统介绍</title>
+    <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
+<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
+<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
+<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
+<ol>
+<li>并行接口（Parallel Interface）</li>
+<li>串行接口（Serial Interface）</li>
+<li>模拟接口（Analog Interface）</li>
+<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
+</ol>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
+<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
+<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
+<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
+<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
+<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
+<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
+<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>嵌入式系统中的WatchDog</title>
     <url>/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
@@ -2779,33 +2809,19 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>嵌入式系统介绍</title>
-    <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
-<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
+    <title>我们的村庄和传统</title>
+    <url>/2021/01/22/%E6%88%91%E4%BB%AC%E7%9A%84%E6%9D%91%E5%BA%84%E5%92%8C%E4%BC%A0%E7%BB%9F/</url>
+    <content><![CDATA[<p>&emsp;&emsp;对于我们每个人来说，如何去认识、感受和思考自己过去、现在和将来生活的环境是非常重要的问题。人的心灵很容易受环境的影响，或者说它也是环境的产物，认识我们的环境的根本目的是认识我们自己，也就是在内容上去认识我们的习惯、思想、观念和情感是如何形成的。在充分的自我认识基础上我们才能去认识他人，和他人的关系的互动又反过来促进对自我的认识。除了这个根本目的外，还有一个实用目的就是对美好、快乐事物消失的一种反抗，并有可能去创造、改变我们的环境。</p>
 <span id="more"></span>
 
-<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
-<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
-<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
-<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
-<ol>
-<li>并行接口（Parallel Interface）</li>
-<li>串行接口（Serial Interface）</li>
-<li>模拟接口（Analog Interface）</li>
-<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
-</ol>
-<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
-<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
-<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
-<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
-<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
-<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
-<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
-<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
-<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>]]></content>
+
+<p>&emsp;&emsp;一直以来，我们的家庭、村庄和传统发生了什么样的变化？我们对这样的变化抱有什么样的情感？是激动？失望？还是无动于衷漠然视之？我们处在什么样的时代环境？从总体上看，是各种各样的局部的单一的传统环境正在被解体而开始从属于以现代城市为中心的新环境，而在这种解体中最严重的就是文化的解体。我们是否想过我们的村庄是如何形成的？我们应该建设什么样的村子？在目前的时代环境下，当一个地方的政治、经济处于附属地位时，它的文化就会面临解体的危险，不管这种文化曾经是怎么样的、不管它现在看来显得多么落后与过时。我们可能已经感觉到过去的文化、传统正在不断消失，而新的称之为‘文化’的东西只不过是经济的奴隶。这种现象小到一个村子，大到一个国家。在一个文化处于附属地位或者被解体的环境中，人与人之间关系也会解体，因为文化本身是一种凝聚的力量。伴随而来的就是人与人之间的不信任，以及更严重的导致创造力的普遍缺失。对于这种环境下的儿童，就很难培养自信和创造力，热情和勇气也会随之缺失。</p>
+<p>&emsp;&emsp;现代城市又如何呢？现代城市中的文化本身几乎也都是外来强势文化和本地弱势传统文化的一种不和谐的融合，处于一种“隔”的状态。再加上我们越来越多的人处于‘解体移民’的大潮中，向现代城市转移，那我们是否还有心去创造自己的文化？城市的经济几乎都是非自然的经济。越是原始的经济结构就越能产生原始的群体部落;反之，越是结构化、协议化的经济就越能产生非自然的社会组织。而任何文化的构建，在我看来，都与自然有着紧密的联系，自然的心灵是一种‘不隔。协调‘隔’与‘不隔’是现代城市生活中的每一个人必须面对的问题。</p>
+<p>&emsp;&emsp;我们如何看待自己的过去呢？如果我们认为过去儿时的某种快乐、幸福正在消失，不要轻易把它归结为进入成年后的正常现象。对这种‘正常现象’一旦习以为常，我们自身心灵的文化主体意识就会不断衰退。<br>&emsp;&emsp;我们为什么要建立自己的文化主体意识呢？什么是文化主体意识呢？在我看来，人类一切实践活动和创造活动并经过传承的精神性或物质性的东西都可以称之为文化。在现实世界，甚至虚拟世界中都包含着许许多多的文化部落，在社会的各个领域，几乎都是如此。在人类世界，文化促成凝聚，进而产生力量，而这种力量创造了我们今天的文明。我们每个人都可以成为文化的主体，但它绝不是单纯精神或者艺术性的东西，它同样包含切实的实践，种上一棵树、栽上一颗花、拍一张照片、写上一些字，甚至做一件勇敢的小事件等等，这些我们都可以称之为文化主体意识。在一些精神性、智力要求更高的领域，比如数学等，它的文化是人们获取该领域的创造力不可或却的来源。</p>
+<p>&emsp;&emsp;所以，不管城市或者乡村，我们都不应该是一种附庸或者旁观的地位或态度。不管我们‘移’到那里，都要试着把根深深扎到那里的土地，而终有一天可成为参天大树。而那些将自己的双脚远离大地的人，就再也不能仰望星空了，而且或许会迷失在宇宙的黑暗中去了。</p>
+]]></content>
       <categories>
-        <category>嵌入式系统和IOT</category>
+        <category>散文创作</category>
       </categories>
   </entry>
   <entry>
@@ -2833,22 +2849,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>我们的村庄和传统</title>
-    <url>/2021/01/22/%E6%88%91%E4%BB%AC%E7%9A%84%E6%9D%91%E5%BA%84%E5%92%8C%E4%BC%A0%E7%BB%9F/</url>
-    <content><![CDATA[<p>&emsp;&emsp;对于我们每个人来说，如何去认识、感受和思考自己过去、现在和将来生活的环境是非常重要的问题。人的心灵很容易受环境的影响，或者说它也是环境的产物，认识我们的环境的根本目的是认识我们自己，也就是在内容上去认识我们的习惯、思想、观念和情感是如何形成的。在充分的自我认识基础上我们才能去认识他人，和他人的关系的互动又反过来促进对自我的认识。除了这个根本目的外，还有一个实用目的就是对美好、快乐事物消失的一种反抗，并有可能去创造、改变我们的环境。</p>
-<span id="more"></span>
-
-
-<p>&emsp;&emsp;一直以来，我们的家庭、村庄和传统发生了什么样的变化？我们对这样的变化抱有什么样的情感？是激动？失望？还是无动于衷漠然视之？我们处在什么样的时代环境？从总体上看，是各种各样的局部的单一的传统环境正在被解体而开始从属于以现代城市为中心的新环境，而在这种解体中最严重的就是文化的解体。我们是否想过我们的村庄是如何形成的？我们应该建设什么样的村子？在目前的时代环境下，当一个地方的政治、经济处于附属地位时，它的文化就会面临解体的危险，不管这种文化曾经是怎么样的、不管它现在看来显得多么落后与过时。我们可能已经感觉到过去的文化、传统正在不断消失，而新的称之为‘文化’的东西只不过是经济的奴隶。这种现象小到一个村子，大到一个国家。在一个文化处于附属地位或者被解体的环境中，人与人之间关系也会解体，因为文化本身是一种凝聚的力量。伴随而来的就是人与人之间的不信任，以及更严重的导致创造力的普遍缺失。对于这种环境下的儿童，就很难培养自信和创造力，热情和勇气也会随之缺失。</p>
-<p>&emsp;&emsp;现代城市又如何呢？现代城市中的文化本身几乎也都是外来强势文化和本地弱势传统文化的一种不和谐的融合，处于一种“隔”的状态。再加上我们越来越多的人处于‘解体移民’的大潮中，向现代城市转移，那我们是否还有心去创造自己的文化？城市的经济几乎都是非自然的经济。越是原始的经济结构就越能产生原始的群体部落;反之，越是结构化、协议化的经济就越能产生非自然的社会组织。而任何文化的构建，在我看来，都与自然有着紧密的联系，自然的心灵是一种‘不隔。协调‘隔’与‘不隔’是现代城市生活中的每一个人必须面对的问题。</p>
-<p>&emsp;&emsp;我们如何看待自己的过去呢？如果我们认为过去儿时的某种快乐、幸福正在消失，不要轻易把它归结为进入成年后的正常现象。对这种‘正常现象’一旦习以为常，我们自身心灵的文化主体意识就会不断衰退。<br>&emsp;&emsp;我们为什么要建立自己的文化主体意识呢？什么是文化主体意识呢？在我看来，人类一切实践活动和创造活动并经过传承的精神性或物质性的东西都可以称之为文化。在现实世界，甚至虚拟世界中都包含着许许多多的文化部落，在社会的各个领域，几乎都是如此。在人类世界，文化促成凝聚，进而产生力量，而这种力量创造了我们今天的文明。我们每个人都可以成为文化的主体，但它绝不是单纯精神或者艺术性的东西，它同样包含切实的实践，种上一棵树、栽上一颗花、拍一张照片、写上一些字，甚至做一件勇敢的小事件等等，这些我们都可以称之为文化主体意识。在一些精神性、智力要求更高的领域，比如数学等，它的文化是人们获取该领域的创造力不可或却的来源。</p>
-<p>&emsp;&emsp;所以，不管城市或者乡村，我们都不应该是一种附庸或者旁观的地位或态度。不管我们‘移’到那里，都要试着把根深深扎到那里的土地，而终有一天可成为参天大树。而那些将自己的双脚远离大地的人，就再也不能仰望星空了，而且或许会迷失在宇宙的黑暗中去了。</p>
-]]></content>
-      <categories>
-        <category>散文创作</category>
-      </categories>
-  </entry>
-  <entry>
     <title>求知之心</title>
     <url>/2020/04/18/%E6%B1%82%E7%9F%A5%E4%B9%8B%E5%BF%83/</url>
     <content><![CDATA[<p>&emsp;&emsp;我们是否还有求知之心？</p>
@@ -2859,18 +2859,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>&emsp;&emsp;我们如何培养求知之心？<br>&emsp;&emsp;审美之心。在我看来，审美之心是最重要和最基础的东西。这里所说的审美绝不是肤浅地停留在表象的东西，而是包括创造美和对美的强烈感受力以及不懈追求。在现代科学文明的思想根源——古希腊的哲学家那里，美一直占有极其重要的地位。他们认为，宇宙的设计是严格遵循几何原理的，是由最简单的几何对象构造而成的，那是美的。他们又说，万物皆数，这种设计是最美的。后来的数学家说，丑陋在数学中没有栖身之地。虽然从历史的角度看，过度追求美学在很多情况下成为思想家认识世界的一种局限，但它仍然赋予了不同时代大量的哲学家、数学家、科学家和艺术家直观的创造力。在工程设计中，优雅和美也几乎被普遍认为是评价设计优劣的最高标准，其次才是是否满足需求。美同样是一种联结力量。在我看来，人与人之间以及人与外在世界之间情感联系的核心就是美，但这种美绝不仅仅是表象的东西，品格之美、精神之美始终是人与人之间美的核心。爱只是美的表现形式。<br>&emsp;&emsp;好奇与探索之心。学习应该就是发现未知的新的东西。我们越是自己去追问、去探索、去实践，我们就越能获得快乐。那些教条式的学习其实是在剥夺我们的快乐。很多时候，对万事万物的好奇心都离不开我们对自己的好奇心，所以，摧毁一个人的好奇心只要使他（她）不再对自己感兴趣就可以了。而上面的众多不可求知之心其实都在起着这个作用。我们对任何我们不熟悉的或者未知的领域都可以提出核心的、基本的问题，而并不需要急于解答。这些核心问题并没有锁在政客的保险箱或埋在学者的浩繁纸堆中。<br>&emsp;&emsp;勇敢与不屈服之心。我们几乎都体验过有一个学习的竞争对手实际上是多么快乐的事情。竞争在个人学习和成长中实际上发挥着巨大作用，我们可以寻找现实世界或者虚拟世界的对手，并向其发起一次次挑战或者抛出一系列问题来让自己回答，如此往复，就可以激发个人的潜能，增强面对困难的勇气和信心。即使多次失败，仍然不气馁，继续努力。擅于提出问题来找出对方思维方式或者行为做法上的‘漏洞’或者弱点。古人说，虽千万人吾往矣！坚持自己的观点就是一种勇敢。<br>&emsp;&emsp;快乐与乐观之心。快乐是很重要的，但并不代表在不快乐时表现的那种无法面对困难的脆弱。乐观使得我们面对困难不但不会退缩，反而会变得兴奋。<br>&emsp;&emsp;责任之心。将责任放在最后，是因为它有着更突出的两面性。因为责任产生的往往不是内在的发自我们真实情感的行为，而是外在环境作用下的行为。特别是责任越大，越容易使人在思想和行为上落入虚荣的陷阱。某种程度上来说，一个人越是想要承担更大的责任，就越想要建立自己的权威，而权威很容易使人腐化和虚荣。我们不止一次听过那种以‘救世主’自居的论调吧！但无论怎样，对于古往今来大多数卓越的有识之士来说，我们都可以相信他（她）们抱有对某种东西有着不可推卸的责任，这种东西是某个家庭或者群体的利益也好，某种信念也好，某种思想也好。这种责任发自我们内心真实的情感，也就是包含了上面所说的几种品质，所以持久、自然和充满力量。</p>
 <p>&emsp;&emsp;读书与求知的关系。<br>&emsp;&emsp;读书是求知很重要的方式，但不是它的全部内容。我们很多时候会陷入对书籍的贪欲之中，这很容易成为一种依赖方式，或者说一种自我安慰的方式。有多少读书人、学者皓首穷经，埋头纸堆呢？然后却没有提出任何新的有普遍价值的东西。近代科学的诞生其实就伴随着对这种求知方式的反叛，它注重实践和从实际经验中总结普遍规律，并不断在实践中加以验证和完善。</p>
 <p>—— 顽石 2020.04.18</p>
-]]></content>
-      <categories>
-        <category>散文创作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>隔与不隔</title>
-    <url>/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/</url>
-    <content><![CDATA[<p>&emsp;&emsp;什么是隔？什么是不隔？<br>&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。</p>
-<span id="more"></span>
-<p>&emsp;&emsp;我们为什么要去理解隔与不隔？<br>&emsp;&emsp;凡是人所创造的东西都反映着人的心灵，而人的心灵，在我看来，就是隔与不隔的一种混合。<br>&emsp;&emsp;在现代商业环境下诞生的东西很多都摆脱不了“隔”的命运，这种产品强调排它性来建立自己的优越感，优越是一种“隔”。这种“隔”被包装以后很容易演变成“精致”，而“精致”从来都不等于美，在我看来，美是隔与不隔的自然协调，它需要时间、耐心和痛苦的追寻。我们很多时候意识不到精致和美的区别，一味追求精致只会使心灵趋向“隔”的境地，远离自然，远离美。<br>&emsp;&emsp;不隔如水，隔如土，只有水土融合才有创造的力量。隔促进结构化，不隔反结构化。水具有融合的力量，更重要的是，它代表着在古人看来心灵的最高境界;但水的反结构化力量却象征着一种社会的变革，这种变革的隐喻在一些宗教神话里强化到了“末日预言”的地步，这种预言说世界将被大水淹没，所有的土地房屋被摧毁，然后大水退去，世界重新开始。这种预言其实是在表明对社会结构化（往往被说成是人的罪恶）的一种排斥和反抗。<br>&emsp;&emsp;现代城市几乎很难处理隔与不隔的协调，生活在其中的人更难使得自己的心灵宁静。我们是否思考过自己对城市的看法？我们是否思考过对城市是否有感情？我们为什么要建造城市？我们为什么对自己的家乡有很深的感情？家乡是否代表着我们心灵中不隔的重要部分。我们如何在城市的生活中不隔呢？我们是否走过城市的每一条街道，每一座桥，记住它们的名字？我们是否看过城市中每一个人他（她）们的面容？我们是否想象过自己是服务生、快递员、店铺小商人、保安、交警、保洁员、流浪汉甚至乞讨者？我们是否观察过路边的树、落叶、飞鸟、河流和墙边的小虫？<br>&emsp;&emsp;当我们开始思考这些问题的时候实际上我们的心灵就在“不隔”，而这种隔与不隔的协调对于我们任何人来说都不应该是被忽略的事情，我们越早去发现它，它就越早对我们产生重要的意义。</p>
-<p>—— 顽石 2020.07.17</p>
 ]]></content>
       <categories>
         <category>散文创作</category>
@@ -2888,6 +2876,18 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>隔与不隔</title>
+    <url>/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/</url>
+    <content><![CDATA[<p>&emsp;&emsp;什么是隔？什么是不隔？<br>&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。</p>
+<span id="more"></span>
+<p>&emsp;&emsp;我们为什么要去理解隔与不隔？<br>&emsp;&emsp;凡是人所创造的东西都反映着人的心灵，而人的心灵，在我看来，就是隔与不隔的一种混合。<br>&emsp;&emsp;在现代商业环境下诞生的东西很多都摆脱不了“隔”的命运，这种产品强调排它性来建立自己的优越感，优越是一种“隔”。这种“隔”被包装以后很容易演变成“精致”，而“精致”从来都不等于美，在我看来，美是隔与不隔的自然协调，它需要时间、耐心和痛苦的追寻。我们很多时候意识不到精致和美的区别，一味追求精致只会使心灵趋向“隔”的境地，远离自然，远离美。<br>&emsp;&emsp;不隔如水，隔如土，只有水土融合才有创造的力量。隔促进结构化，不隔反结构化。水具有融合的力量，更重要的是，它代表着在古人看来心灵的最高境界;但水的反结构化力量却象征着一种社会的变革，这种变革的隐喻在一些宗教神话里强化到了“末日预言”的地步，这种预言说世界将被大水淹没，所有的土地房屋被摧毁，然后大水退去，世界重新开始。这种预言其实是在表明对社会结构化（往往被说成是人的罪恶）的一种排斥和反抗。<br>&emsp;&emsp;现代城市几乎很难处理隔与不隔的协调，生活在其中的人更难使得自己的心灵宁静。我们是否思考过自己对城市的看法？我们是否思考过对城市是否有感情？我们为什么要建造城市？我们为什么对自己的家乡有很深的感情？家乡是否代表着我们心灵中不隔的重要部分。我们如何在城市的生活中不隔呢？我们是否走过城市的每一条街道，每一座桥，记住它们的名字？我们是否看过城市中每一个人他（她）们的面容？我们是否想象过自己是服务生、快递员、店铺小商人、保安、交警、保洁员、流浪汉甚至乞讨者？我们是否观察过路边的树、落叶、飞鸟、河流和墙边的小虫？<br>&emsp;&emsp;当我们开始思考这些问题的时候实际上我们的心灵就在“不隔”，而这种隔与不隔的协调对于我们任何人来说都不应该是被忽略的事情，我们越早去发现它，它就越早对我们产生重要的意义。</p>
+<p>—— 顽石 2020.07.17</p>
+]]></content>
+      <categories>
+        <category>散文创作</category>
       </categories>
   </entry>
   <entry>
