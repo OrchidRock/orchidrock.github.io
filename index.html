@@ -206,7 +206,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial-md/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -224,7 +224,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial-md/" class="post-title-link" itemprop="url">RaspberryPi5 And AI Hailo8L Tutorial.md</a>
+          <a href="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/" class="post-title-link" itemprop="url">RaspberryPi5 And AI Hailo8L Tutorial</a>
         </h2>
 
         <div class="post-meta-container">
@@ -234,9 +234,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2024-11-12 21:20:20 / 修改时间：21:31:01" itemprop="dateCreated datePublished" datetime="2024-11-12T21:20:20+08:00">2024-11-12</time>
+      <time title="创建时间：2024-11-12 21:20:20" itemprop="dateCreated datePublished" datetime="2024-11-12T21:20:20+08:00">2024-11-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-11-14 21:29:53" itemprop="dateModified" datetime="2024-11-14T21:29:53+08:00">2024-11-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -255,7 +261,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>280</span>
+      <span>527</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -274,10 +280,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="">Raspberry Pi 5</a> 树莓派 AI 套件将树莓派 M.2 HAT+ 与 Hailo AI 加速模块捆绑在一起，用于树莓派 5。</p>
-<h3 id="温度传感器"><a href="#温度传感器" class="headerlink" title="温度传感器"></a>温度传感器</h3><p>获取当前温度：<br><code>$ vcgencmd measure_temp</code></p>
-<p>可以使用 stress 命令来手动增加 CPU 负载，观察 CPU 温度变化。<br><code>$ stress --cpu 4</code></p>
-<p>Raspberry 的 Active Cooler 主动冷却器由固件主动控制：在 60°C 时，鼓风机风扇将打开，在 67.5°C 时风扇速度将增加，最后在 75°C 时风扇增加到全速。<br>当温度回落到这些限制以下时，鼓风机的风扇将自动停止旋转。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -339,7 +349,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-12 20:28:19" itemprop="dateModified" datetime="2024-11-12T20:28:19+08:00">2024-11-12</time>
+      <time title="修改时间：2024-11-12 22:15:33" itemprop="dateModified" datetime="2024-11-12T22:15:33+08:00">2024-11-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -377,18 +387,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
-<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
-<li><a target="_blank" rel="noopener" href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
-<li>Git</li>
-</ul>
-<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
-<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1290,13 +1296,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">240k</span>
+    <span title="站点总字数">241k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:40</span>
+    <span title="站点阅读时长">6:41</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
