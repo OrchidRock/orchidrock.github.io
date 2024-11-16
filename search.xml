@@ -198,28 +198,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CMake 构建工具介绍</title>
     <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
@@ -414,6 +392,28 @@
       </tags>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -499,6 +499,19 @@
       </categories>
   </entry>
   <entry>
+    <title>ESP32 模组</title>
+    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>开源硬件</category>
+      </categories>
+  </entry>
+  <entry>
     <title>ESP8266 NodeMCU 介绍</title>
     <url>/2022/05/20/ESP8266-NodeMCU-%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<code>ESP8266 NodeMCU Kit</code> 开发板使用 <code>ESP8266 WIFI 模组</code>，再加上一些外部电路，可方便用于学习、测试和原型开发。其开源的可用固件除了<a href="https://github.com/espressif/">官方固件</a>外，还包括 <a href="https://www.nodemcu.com/index_cn.html">NodeMCU</a> 和 <a href="https://micropython.org/">MicroPython</a>。<br>&emsp;&emsp; 其中 <a href="https://nodemcu.readthedocs.io/en/release/">NodeMCU</a> 是基于 <code>Lua</code> 的开源固件。它使用基于模块（<code>on-module</code>）闪存的<code>SPIFFS</code>文件系统 。</p>
@@ -548,19 +561,6 @@
 <li><a href="https://nodemcu.readthedocs.io/en/release/">NodeMCU 官方文档</a></li>
 <li><a href="https://github.com/nodemcu">NodeMCU Github</a></li>
 </ul>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-        <category>开源硬件</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ESP32 模组</title>
-    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
-<blockquote>
-<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
-</blockquote>
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
@@ -935,6 +935,28 @@
       </categories>
   </entry>
   <entry>
+    <title>Hexo 简介和使用手册</title>
+    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
+<span id="more"></span>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
+<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
+<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
+<li>Git</li>
+</ul>
+<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
+<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Web 应用</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LFS 0: LFS 项目介绍</title>
     <url>/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<a href="https://www.linuxfromscratch.org/">LFS（Linux From Scratch）</a>项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。</p>
@@ -1033,28 +1055,6 @@
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>LFS Project</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Hexo 简介和使用手册</title>
-    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
-<span id="more"></span>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
-<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
-<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
-<li>Git</li>
-</ul>
-<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
-<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Web 应用</category>
       </categories>
   </entry>
   <entry>
@@ -1181,83 +1181,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-        <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LLVM 2: Backend</title>
     <url>/2023/02/24/LLVM-2-Backend/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
@@ -1362,6 +1285,83 @@
 <p>其中，<code>IssueWidth</code>定义了同时发射指令的个数，<code>LoadLatency</code>定义了<code>load</code>指令的延迟，<code>MispredictPenalty</code>定义了分支预测失败的代价。</p>
 <h2 id="实现-DAG-指令选择类"><a href="#实现-DAG-指令选择类" class="headerlink" title="实现 DAG 指令选择类"></a>实现 DAG 指令选择类</h2><p>&emsp;&emsp; DAG 指令选择的大部分代码都可以使用<code>tblgen</code>工具生成，但目前仍需要使用手写代码创建类，并将所有内容放在一起。</p>
 <h3 id="初始化目标机器"><a href="#初始化目标机器" class="headerlink" title="初始化目标机器"></a>初始化目标机器</h3><h3 id="添加-SelectionDAG-的实现"><a href="#添加-SelectionDAG-的实现" class="headerlink" title="添加 SelectionDAG 的实现"></a>添加 SelectionDAG 的实现</h3><h3 id="目标-Lowering"><a href="#目标-Lowering" class="headerlink" title="目标 Lowering"></a>目标 Lowering</h3>]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+]]></content>
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
@@ -1624,32 +1624,6 @@
       </categories>
   </entry>
   <entry>
-    <title>N-Body问题的数值模拟</title>
-    <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
-<span id="more"></span>
-
-<p>&emsp;&emsp;从历史上看，第一个特殊研究的三体问题是<strong>太阳</strong>、<strong>地球</strong>和<strong>月亮</strong>间的运动。从现代意义上说，它可以指经典力学或量子力学中三个粒子运动的任何问题。</p>
-<blockquote>
-<p>参考 <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题 - wikipedia</a> 。<br>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
-</blockquote>
-<h2 id="数学建模"><a href="#数学建模" class="headerlink" title="数学建模"></a>数学建模</h2><h3 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h3><p>假设在时刻 <code>t</code> ，行星 <strong>q</strong>  的位置为 $ s_q(t) $，行星 <strong>k</strong> 的位置为 $ s_k(t) $，则根据牛顿定律，行星 k 作用于行星 q 上的引力为：<br>$$ f_{qk}(t) &#x3D; -\frac {Gm_qm_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } ( s_q(t) - s_k(t) ) $$</p>
-<p>其中， <strong>G</strong> 为 万有引力常量（$ 6.673<em>10^{-11} m^3&#x2F;(kg</em>s^2) $），m 为 行星质量，<strong>s</strong> 和 <strong>f</strong> 均为带方向的<strong>向量</strong>。</p>
-<p>进一步，我们可以计算所有其他行星作用于行星 q 上的引力和（向量和）：<br>$$ F_q(t) &#x3D; \sum_{k&#x3D;0,k\neq q}^{n-1}f_{qk} &#x3D; -Gm_q \sum_{k&#x3D;0,k \neq q} ^ {n-1} \frac {m_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } [s_q(t) - s_k(t)] $$</p>
-<p>最后，我们可以计算行星 q 在时刻 t 时的加速度：<br>$$ a_q(t) &#x3D; -G \sum_{j&#x3D;0,j \neq q}^{n-1} \frac {m_j} { { ( s_q(t) - s_j(t) ) } ^ 3 } [s_q(t) - s_j(t)] $$</p>
-<p>实际上，也可以用下面的等式表示：<br>$$ a_q(t) &#x3D; {s_q}’’(t) &#x3D; \frac {F_q(t)} {m_q} $$</p>
-<h3 id="数值模拟"><a href="#数值模拟" class="headerlink" title="数值模拟"></a>数值模拟</h3><p>如果要求 $ s_q(t) $，直接求解上节最后的<strong>微分公式</strong>是困难的，但是可以使用数值模拟方法来求得其近似值。我们使用最简单的<strong>欧拉方法</strong>，作为数值模拟方法。对于在定义域内连续的函数 $ g(t) $，在其曲线上有点$ (t_0, g(t_0)) $，那么当 $ t &#x3D; t_0 + \Delta{t} $时，<br>$$ y &#x3D; g(t_0) + g’(t_0)(\Delta{t}) $$</p>
-<p>且当 $ \Delta{t} $足够小时：<br>$$ g(t_0 + \Delta(t)) \approx g(t_0) + g’(t_0)(\Delta{t}) $$</p>
-<p>以此，我们可以模拟 $ s_q(t) $和$ v_q(t) $的值。假设，在时刻 0，行星 q 的位置和速度为 $ s_q(0) $ 和 $ v_q(0) $，那么，在时刻 $ \Delta{t} $，其位置和速度为：<br>$$ s_q(\Delta{t}) \approx s_q(0) + \Delta{t}s_q’(0) &#x3D; s_q(0) + \Delta{t}v_q(0) $$</p>
-<p>$$ v_q(\Delta{t}) \approx v_q(0) + \Delta{t}v_q’(0) &#x3D; v_q(0) + \Delta{t}a_q(0) &#x3D; v_q(0) + \Delta{t}\frac{1}{m_q}F_q(0) $$</p>
-<p>当我们求得$s_q(\Delta{t})$ 和 $v_q(\Delta{t})$后，我们可以使用相同的公式计算 $s_q(2\Delta{t})$ 和 $v_q(2\Delta{t})$，以此类推。</p>
-<h2 id="OpenMP"><a href="#OpenMP" class="headerlink" title="OpenMP"></a>OpenMP</h2><h2 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h2><h2 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h2>]]></content>
-      <categories>
-        <category>高性能计算</category>
-        <category>算法</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Linux kernel User Guide</title>
     <url>/2023/03/09/Linux-kernel-User-Guide/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
@@ -1752,12 +1726,66 @@
       </categories>
   </entry>
   <entry>
+    <title>N-Body问题的数值模拟</title>
+    <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;从历史上看，第一个特殊研究的三体问题是<strong>太阳</strong>、<strong>地球</strong>和<strong>月亮</strong>间的运动。从现代意义上说，它可以指经典力学或量子力学中三个粒子运动的任何问题。</p>
+<blockquote>
+<p>参考 <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题 - wikipedia</a> 。<br>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<h2 id="数学建模"><a href="#数学建模" class="headerlink" title="数学建模"></a>数学建模</h2><h3 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h3><p>假设在时刻 <code>t</code> ，行星 <strong>q</strong>  的位置为 $ s_q(t) $，行星 <strong>k</strong> 的位置为 $ s_k(t) $，则根据牛顿定律，行星 k 作用于行星 q 上的引力为：<br>$$ f_{qk}(t) &#x3D; -\frac {Gm_qm_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } ( s_q(t) - s_k(t) ) $$</p>
+<p>其中， <strong>G</strong> 为 万有引力常量（$ 6.673<em>10^{-11} m^3&#x2F;(kg</em>s^2) $），m 为 行星质量，<strong>s</strong> 和 <strong>f</strong> 均为带方向的<strong>向量</strong>。</p>
+<p>进一步，我们可以计算所有其他行星作用于行星 q 上的引力和（向量和）：<br>$$ F_q(t) &#x3D; \sum_{k&#x3D;0,k\neq q}^{n-1}f_{qk} &#x3D; -Gm_q \sum_{k&#x3D;0,k \neq q} ^ {n-1} \frac {m_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } [s_q(t) - s_k(t)] $$</p>
+<p>最后，我们可以计算行星 q 在时刻 t 时的加速度：<br>$$ a_q(t) &#x3D; -G \sum_{j&#x3D;0,j \neq q}^{n-1} \frac {m_j} { { ( s_q(t) - s_j(t) ) } ^ 3 } [s_q(t) - s_j(t)] $$</p>
+<p>实际上，也可以用下面的等式表示：<br>$$ a_q(t) &#x3D; {s_q}’’(t) &#x3D; \frac {F_q(t)} {m_q} $$</p>
+<h3 id="数值模拟"><a href="#数值模拟" class="headerlink" title="数值模拟"></a>数值模拟</h3><p>如果要求 $ s_q(t) $，直接求解上节最后的<strong>微分公式</strong>是困难的，但是可以使用数值模拟方法来求得其近似值。我们使用最简单的<strong>欧拉方法</strong>，作为数值模拟方法。对于在定义域内连续的函数 $ g(t) $，在其曲线上有点$ (t_0, g(t_0)) $，那么当 $ t &#x3D; t_0 + \Delta{t} $时，<br>$$ y &#x3D; g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>且当 $ \Delta{t} $足够小时：<br>$$ g(t_0 + \Delta(t)) \approx g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>以此，我们可以模拟 $ s_q(t) $和$ v_q(t) $的值。假设，在时刻 0，行星 q 的位置和速度为 $ s_q(0) $ 和 $ v_q(0) $，那么，在时刻 $ \Delta{t} $，其位置和速度为：<br>$$ s_q(\Delta{t}) \approx s_q(0) + \Delta{t}s_q’(0) &#x3D; s_q(0) + \Delta{t}v_q(0) $$</p>
+<p>$$ v_q(\Delta{t}) \approx v_q(0) + \Delta{t}v_q’(0) &#x3D; v_q(0) + \Delta{t}a_q(0) &#x3D; v_q(0) + \Delta{t}\frac{1}{m_q}F_q(0) $$</p>
+<p>当我们求得$s_q(\Delta{t})$ 和 $v_q(\Delta{t})$后，我们可以使用相同的公式计算 $s_q(2\Delta{t})$ 和 $v_q(2\Delta{t})$，以此类推。</p>
+<h2 id="OpenMP"><a href="#OpenMP" class="headerlink" title="OpenMP"></a>OpenMP</h2><h2 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h2><h2 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h2>]]></content>
+      <categories>
+        <category>高性能计算</category>
+        <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>OpenGL 工具库</title>
     <url>/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; OpenGL(OpenGL Utility Toolkit)  。<code>freeglut</code> 是 <code>GLUT</code> 的一个完全开源替代库。</p>
 ]]></content>
       <categories>
         <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -1865,34 +1893,6 @@
 <h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>]]></content>
       <categories>
         <category>高性能计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2110,6 +2110,39 @@
       </categories>
   </entry>
   <entry>
+    <title>Python3某些强大的特性与Lisp的关系</title>
+    <url>/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。<br>&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、<br>面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garbage-collected）等。其中包括对Lisp语言函数式编程的传统，python提供map、filter、和reduce等函数；提供列表解析（list comprehensions）、字典（dictionaries）、集合（set）和生成器（generator）表达式等；同时在标准库中提供functools和itertools模块，这两个模块的特性来源于函数式编程语言Haskell和Standard ML。<br>&emsp;&emsp;这些特性不仅赋予了语言强大的抽象能力，而且反映了一些关于计算科学的本质问题。</p>
+<span id="more"></span>
+
+<h3 id="闭包（closure）"><a href="#闭包（closure）" class="headerlink" title="闭包（closure）"></a>闭包（closure）</h3><p>&emsp;&emsp;在数学中，closure一般是指域的封闭性，比如整数域在加法运算下是封闭的。在数系发展的历史上，先出现的是非零自然数域，即1,2,3,4,…，负数是不存在也是不可理解和忽视的，这种情况下，我们说非零自然数域在减法上是不封闭的。后来一方面人们逐渐在生活中不自觉的使用负数，比如某个人的欠款，另一方面则来自数学本身内在的发展要求，促使人们扩展数系，引入零和负数。数学的内在动力就是呼吁这种内在逻辑的自洽性，而不关心现实世界是否可以找到对应的概念。后来数系逐渐扩展到整数域、有理数域、实数域以及复数域，数学的抽象能力逐渐增强。<br>&emsp;&emsp;在计算机编程语言领域，closure有两种含义：一种是和数学中类似，即一个数据结构中可以包含它自身的嵌套结构，一个运算的结果可以作为它自己操作的参数；另外一种是指在lambda表达式中实现自由变量（free variables）的技术。<br>&emsp;&emsp;python的基本数据结构和类型，如list，tuple，set, dict, str都支持闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; a_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line">&gt;&gt; a_tuple = (<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), <span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">&gt;&gt; a_dict = [<span class="string">&#x27;a&#x27;</span>:<span class="number">123</span>, <span class="string">&#x27;b&#x27;</span>:[<span class="string">&#x27;c&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;d&#x27;</span>:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+<p>另外在这种数据结构上的运算也满足闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; added_list = a_list + a_list</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在Lisp中，只有一种组合数据的胶水（glue），即序对（pair）。由序对构造的数据对象称为表结构（list-structured）数据。这种结构当然也是满足闭包特性的，例如：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> c (<span class="name"><span class="built_in">list</span></span> a b))</span><br><span class="line">=&gt; c</span><br><span class="line">(( <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)(<span class="name">1</span> (<span class="name">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>Lisp中所有的表达式也都可以看作表结构数据。list数据结构也是一种序对，或者说是序对的链，其中链的结尾使用约定的标记’()。例如：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">3</span> <span class="number">4</span>) <span class="number">5</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">cons</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">2</span> (<span class="name"><span class="built_in">cons</span></span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">3</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">4</span> &#x27;())) (<span class="name"><span class="built_in">cons</span></span> <span class="number">5</span> &#x27;())))))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">equal?</span></span> a b)</span><br><span class="line">#t <span class="comment">;; a 与 b的值是相等的</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;那么到目前为止，这种闭包特性带给了我们什么重要的东西呢？我们可以看到，在Lisp中，我们所知道的更为复杂的数据结构，例如链表、栈、队列、树、堆等都可以使用通用的pair来构造，闭包特性赋予了pair表达层次性数据的能力。另外，这种特性非常适合递归算法，例如对树的几乎所有遍历、查找、替换和映射的操作，都可以使用递归算法简单而优雅的解决。Lisp拥有非常简单的语法，或者说程序员几乎不需要考虑语法的问题，从而获得了在语义上的强大抽象能力。<br>&emsp;&emsp;在python中，也可以基于通用的tuple或者list来构造复杂的数据结构，但python的做法则尽量是使用标准库来解决，在那里可以专心解决性能和效率的问题。这是一种小而强大、简单而强大的理念，python具有很强的可扩展性，且避免过早优化，其语言核心尽量保持小、整洁和简单，然后将大量功能放入标准库中，这种做法鼓励了模块化的设计。</p>
+<h3 id="装饰器（decorator）"><a href="#装饰器（decorator）" class="headerlink" title="装饰器（decorator）"></a>装饰器（decorator）</h3><p>&emsp;&emsp;关于这个主题，可以参考链接 <a href="https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html">Python3 Decorators</a>。装饰器的特性类似于宏（macro），基于该特性使得python可以获得动态获取、修改函数（functions）内部状态的强大能力。<br>&emsp;&emsp;在Lisp中，函数具有第一级状态（first-class functions）,即函数本身可以作为返回值，可以作为函数的参数，可以用变量命名，可以包含在数据结构中。我们也可以说，函数本身满足闭包性质。首先我们以<a href="https://www.mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-12.html#%25_sec_1.3.4">SICP Exercise 1.41</a>来表现这种特性:</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">double</span> f) (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name">f</span> (<span class="name">f</span> x))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">inc</span> x) (<span class="name"><span class="built_in">+</span></span> x <span class="number">1</span>))</span><br><span class="line">(((<span class="name">double</span> (<span class="name">double</span> double)) inc) <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>过程double以过程f作为参数,并返回一个过程（以lambda表达式的形式），该过程将f执行两次。所以，最后一行表达式的值是21，f被执行了16次。python中可以使用装饰器实现类似的函数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">f</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">my_double</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> f(f(x))</span><br><span class="line">    <span class="keyword">return</span> my_double</span><br><span class="line"></span><br><span class="line"><span class="meta">@double</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;Lisp中的这种特性可以非常方便地建立更一般的抽象，比如说高阶函数，它可以增加代码的重用性以及程序的模块化。而python的装饰器特性主要还是获得开始时所说得那种动态修改函数性质的能力，它不需要修改原来函数的代码却可以获得额外的功能，使得程序更加清晰和简洁，比如，定义property等。当然它也可以用来进行定义高阶抽象，比如表格化或者记忆化（Memoized），这种方法可以大大提高某些算法（动态规划、树形递归等）的效率，它针对一类问题而不是某个特定的问题。在 <a href="https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">PythonDecoratorLibrary Memorized</a> 例子中使用Memoized装饰器可以在不改动原有算法代码的基础上提高算法的效率。</p>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>&emsp;&emsp;在Lisp中过程与数据可以相互转换，过程本身也可以成为对象。python中可以将函数本身看成对象，不同的变量可以引用（reference）同一个函数对象，一个函数也就可以作为另一个函数的参数。我们以map为例来表现这种特性的威力，假设我们要将一列数加倍，我们可以写下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br></pre></td></tr></table></figure>
+<p>那么如果需要将一列字母全部变为大写，我们可以写：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [a.upper() <span class="keyword">for</span> a <span class="keyword">in</span> char_list]</span><br></pre></td></tr></table></figure>
+<p>我们还可以给出大量这样的例子，那么这些例子中是否包含共同的、一般性的概念呢？是否可以用一种统一的方式解决一类的问题呢？如果我们抽象的看待这类问题，将对list中数据的操作函数作为参数由用户定义，就是说map是一种对list数据的映射，这种映射本身由用户自己定义。我们的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">map</span>(<span class="params">f, a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [f(i) <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="built_in">str</span>.upper, char_list)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*<span class="number">2</span>, a_list)</span><br></pre></td></tr></table></figure>
+<p>capitalize和double函数都可以基于map来定义，我们说map有更高的抽象能力。<br>&emsp;&emsp;python中的map、filter、sorted和reduce函数都是基于上诉的思想，这种高阶函数的使用使得程序简单、清晰和模块化，更重要的是它们可以协作组合完成更加复杂的功能。</p>
+<h3 id="函数式编程模块"><a href="#函数式编程模块" class="headerlink" title="函数式编程模块"></a>函数式编程模块</h3><p>&emsp;&emsp;functools库中主要的工具是partial类，它可以使用默认参数来包装（wrap）一个可调用的对象（callable object）,结果对象可以看作原来的那个对象。这里的可调用对象既可以是单独的函数（standalone function）也可以是类（class）。在某些场景，对象会作为某些方法的参数，但该对象不能带有自己的默认参数，而partial通过wrap原有的对象和其默认参数获得一个新的对象，该对象可以作为无参对象传入其他方法。<br>total_ordering装饰器可以自动增加类的比较方法（ rich comparison methods）。<br>&emsp;&emsp;itertools库中的函数可以实现惰性求值（lazy evaluation），数据只有等到它被需要的时候才会产生，这样可以更有效率的使用存储资源，而且可以用来表达更加复杂的算法。<br>其中itertools.map和python内置的map函数有些不同，前者返回的是iterator，对输入数据的操作还没有进行，它只在需要的时候产生数据；而后者返回的就是映射后的最终数据。<br>&emsp;&emsp;operator提供函数式的运算操作符。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Python描述器介绍</title>
     <url>/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 描述器(Descriptor) 是一个具有”绑定行为”的对象属性，它的访问控制（读、写和删除）可以由描述器协议(Descriptor Protocol)重写。一个实现 <code>__set__</code>、<code>__get__</code>和<code>__del__</code>方法中的任意一个的对象就称为描述符。</p>
@@ -2170,39 +2203,6 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># descriptors4.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OneDigitNumericValue</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set_name__</span>(<span class="params">self, owner, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, <span class="built_in">type</span>=<span class="literal">None</span></span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="keyword">return</span> obj.__dict__.get(<span class="variable language_">self</span>.name) <span class="keyword">or</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, obj, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        obj.__dict__[<span class="variable language_">self</span>.name] = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    number = OneDigitNumericValue()</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">my_second_foo_object = Foo()</span><br><span class="line"></span><br><span class="line">my_foo_object.number = <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(my_foo_object.number)</span><br><span class="line"><span class="built_in">print</span>(my_second_foo_object.number)</span><br><span class="line"></span><br><span class="line">my_third_foo_object = Foo()</span><br><span class="line"><span class="built_in">print</span>(my_third_foo_object.number)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>其中 <code>__set_name__()</code> 方法在描述符实例化时会被默认调用，并且 <code>name</code> 参数会被默认设置。</p>
 <h2 id="为什么使用-Python-描述器？"><a href="#为什么使用-Python-描述器？" class="headerlink" title="为什么使用 Python 描述器？"></a>为什么使用 Python 描述器？</h2>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Python3某些强大的特性与Lisp的关系</title>
-    <url>/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。<br>&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、<br>面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garbage-collected）等。其中包括对Lisp语言函数式编程的传统，python提供map、filter、和reduce等函数；提供列表解析（list comprehensions）、字典（dictionaries）、集合（set）和生成器（generator）表达式等；同时在标准库中提供functools和itertools模块，这两个模块的特性来源于函数式编程语言Haskell和Standard ML。<br>&emsp;&emsp;这些特性不仅赋予了语言强大的抽象能力，而且反映了一些关于计算科学的本质问题。</p>
-<span id="more"></span>
-
-<h3 id="闭包（closure）"><a href="#闭包（closure）" class="headerlink" title="闭包（closure）"></a>闭包（closure）</h3><p>&emsp;&emsp;在数学中，closure一般是指域的封闭性，比如整数域在加法运算下是封闭的。在数系发展的历史上，先出现的是非零自然数域，即1,2,3,4,…，负数是不存在也是不可理解和忽视的，这种情况下，我们说非零自然数域在减法上是不封闭的。后来一方面人们逐渐在生活中不自觉的使用负数，比如某个人的欠款，另一方面则来自数学本身内在的发展要求，促使人们扩展数系，引入零和负数。数学的内在动力就是呼吁这种内在逻辑的自洽性，而不关心现实世界是否可以找到对应的概念。后来数系逐渐扩展到整数域、有理数域、实数域以及复数域，数学的抽象能力逐渐增强。<br>&emsp;&emsp;在计算机编程语言领域，closure有两种含义：一种是和数学中类似，即一个数据结构中可以包含它自身的嵌套结构，一个运算的结果可以作为它自己操作的参数；另外一种是指在lambda表达式中实现自由变量（free variables）的技术。<br>&emsp;&emsp;python的基本数据结构和类型，如list，tuple，set, dict, str都支持闭包，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; a_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line">&gt;&gt; a_tuple = (<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), <span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">&gt;&gt; a_dict = [<span class="string">&#x27;a&#x27;</span>:<span class="number">123</span>, <span class="string">&#x27;b&#x27;</span>:[<span class="string">&#x27;c&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;d&#x27;</span>:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
-<p>另外在这种数据结构上的运算也满足闭包，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; added_list = a_list + a_list</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;在Lisp中，只有一种组合数据的胶水（glue），即序对（pair）。由序对构造的数据对象称为表结构（list-structured）数据。这种结构当然也是满足闭包特性的，例如：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> c (<span class="name"><span class="built_in">list</span></span> a b))</span><br><span class="line">=&gt; c</span><br><span class="line">(( <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)(<span class="name">1</span> (<span class="name">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-<p>Lisp中所有的表达式也都可以看作表结构数据。list数据结构也是一种序对，或者说是序对的链，其中链的结尾使用约定的标记’()。例如：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">3</span> <span class="number">4</span>) <span class="number">5</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">cons</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">2</span> (<span class="name"><span class="built_in">cons</span></span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">3</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">4</span> &#x27;())) (<span class="name"><span class="built_in">cons</span></span> <span class="number">5</span> &#x27;())))))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">equal?</span></span> a b)</span><br><span class="line">#t <span class="comment">;; a 与 b的值是相等的</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;那么到目前为止，这种闭包特性带给了我们什么重要的东西呢？我们可以看到，在Lisp中，我们所知道的更为复杂的数据结构，例如链表、栈、队列、树、堆等都可以使用通用的pair来构造，闭包特性赋予了pair表达层次性数据的能力。另外，这种特性非常适合递归算法，例如对树的几乎所有遍历、查找、替换和映射的操作，都可以使用递归算法简单而优雅的解决。Lisp拥有非常简单的语法，或者说程序员几乎不需要考虑语法的问题，从而获得了在语义上的强大抽象能力。<br>&emsp;&emsp;在python中，也可以基于通用的tuple或者list来构造复杂的数据结构，但python的做法则尽量是使用标准库来解决，在那里可以专心解决性能和效率的问题。这是一种小而强大、简单而强大的理念，python具有很强的可扩展性，且避免过早优化，其语言核心尽量保持小、整洁和简单，然后将大量功能放入标准库中，这种做法鼓励了模块化的设计。</p>
-<h3 id="装饰器（decorator）"><a href="#装饰器（decorator）" class="headerlink" title="装饰器（decorator）"></a>装饰器（decorator）</h3><p>&emsp;&emsp;关于这个主题，可以参考链接 <a href="https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html">Python3 Decorators</a>。装饰器的特性类似于宏（macro），基于该特性使得python可以获得动态获取、修改函数（functions）内部状态的强大能力。<br>&emsp;&emsp;在Lisp中，函数具有第一级状态（first-class functions）,即函数本身可以作为返回值，可以作为函数的参数，可以用变量命名，可以包含在数据结构中。我们也可以说，函数本身满足闭包性质。首先我们以<a href="https://www.mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-12.html#%25_sec_1.3.4">SICP Exercise 1.41</a>来表现这种特性:</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">double</span> f) (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name">f</span> (<span class="name">f</span> x))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">inc</span> x) (<span class="name"><span class="built_in">+</span></span> x <span class="number">1</span>))</span><br><span class="line">(((<span class="name">double</span> (<span class="name">double</span> double)) inc) <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
-<p>过程double以过程f作为参数,并返回一个过程（以lambda表达式的形式），该过程将f执行两次。所以，最后一行表达式的值是21，f被执行了16次。python中可以使用装饰器实现类似的函数：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">f</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">my_double</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> f(f(x))</span><br><span class="line">    <span class="keyword">return</span> my_double</span><br><span class="line"></span><br><span class="line"><span class="meta">@double</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;Lisp中的这种特性可以非常方便地建立更一般的抽象，比如说高阶函数，它可以增加代码的重用性以及程序的模块化。而python的装饰器特性主要还是获得开始时所说得那种动态修改函数性质的能力，它不需要修改原来函数的代码却可以获得额外的功能，使得程序更加清晰和简洁，比如，定义property等。当然它也可以用来进行定义高阶抽象，比如表格化或者记忆化（Memoized），这种方法可以大大提高某些算法（动态规划、树形递归等）的效率，它针对一类问题而不是某个特定的问题。在 <a href="https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">PythonDecoratorLibrary Memorized</a> 例子中使用Memoized装饰器可以在不改动原有算法代码的基础上提高算法的效率。</p>
-<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>&emsp;&emsp;在Lisp中过程与数据可以相互转换，过程本身也可以成为对象。python中可以将函数本身看成对象，不同的变量可以引用（reference）同一个函数对象，一个函数也就可以作为另一个函数的参数。我们以map为例来表现这种特性的威力，假设我们要将一列数加倍，我们可以写下面的代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br></pre></td></tr></table></figure>
-<p>那么如果需要将一列字母全部变为大写，我们可以写：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [a.upper() <span class="keyword">for</span> a <span class="keyword">in</span> char_list]</span><br></pre></td></tr></table></figure>
-<p>我们还可以给出大量这样的例子，那么这些例子中是否包含共同的、一般性的概念呢？是否可以用一种统一的方式解决一类的问题呢？如果我们抽象的看待这类问题，将对list中数据的操作函数作为参数由用户定义，就是说map是一种对list数据的映射，这种映射本身由用户自己定义。我们的代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">map</span>(<span class="params">f, a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [f(i) <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="built_in">str</span>.upper, char_list)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*<span class="number">2</span>, a_list)</span><br></pre></td></tr></table></figure>
-<p>capitalize和double函数都可以基于map来定义，我们说map有更高的抽象能力。<br>&emsp;&emsp;python中的map、filter、sorted和reduce函数都是基于上诉的思想，这种高阶函数的使用使得程序简单、清晰和模块化，更重要的是它们可以协作组合完成更加复杂的功能。</p>
-<h3 id="函数式编程模块"><a href="#函数式编程模块" class="headerlink" title="函数式编程模块"></a>函数式编程模块</h3><p>&emsp;&emsp;functools库中主要的工具是partial类，它可以使用默认参数来包装（wrap）一个可调用的对象（callable object）,结果对象可以看作原来的那个对象。这里的可调用对象既可以是单独的函数（standalone function）也可以是类（class）。在某些场景，对象会作为某些方法的参数，但该对象不能带有自己的默认参数，而partial通过wrap原有的对象和其默认参数获得一个新的对象，该对象可以作为无参对象传入其他方法。<br>total_ordering装饰器可以自动增加类的比较方法（ rich comparison methods）。<br>&emsp;&emsp;itertools库中的函数可以实现惰性求值（lazy evaluation），数据只有等到它被需要的时候才会产生，这样可以更有效率的使用存储资源，而且可以用来表达更加复杂的算法。<br>其中itertools.map和python内置的map函数有些不同，前者返回的是iterator，对输入数据的操作还没有进行，它只在需要的时候产生数据；而后者返回的就是映射后的最终数据。<br>&emsp;&emsp;operator提供函数式的运算操作符。</p>
-]]></content>
       <categories>
         <category>Python</category>
       </categories>
@@ -2277,6 +2277,28 @@
       </categories>
   </entry>
   <entry>
+    <title>TM4C123G H6PIM微控制器开发板</title>
+    <url>/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <code>TM4c123Gh6pm</code> 是嵌入ARM Cortex-M4F处理器的开发板，处理器频率为80MHZ（通过PLL配置后），配有256k flash ROM，32k RAM，2k EEPROM，还包括USB主机，OTG连接，睡眠模块、PWM和其他外围设备。</p>
+<span id="more"></span>
+
+<p>硬件架构：<br><img src="/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/tm4c_arch.png"></p>
+<h3 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h3><h4 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h4><ul>
+<li>供电：在<code>USB Device</code>和<code>ICDI/DEBUG USB</code>间切换</li>
+<li>休眠：TIVA C系列的Launchpad提供频率为 32.768khz 的外部晶振（Y1），它为休眠模块提供时钟源。</li>
+</ul>
+<h4 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h4><p>&emsp;&emsp;主控制器的内部时钟由频率为 16Mhz 的晶振（Y2）提供。内部PLL可以通过软件配置来产生更高频率的时钟。</p>
+<h3 id="软件开发环境"><a href="#软件开发环境" class="headerlink" title="软件开发环境"></a>软件开发环境</h3><h4 id="ICDI驱动"><a href="#ICDI驱动" class="headerlink" title="ICDI驱动"></a>ICDI驱动</h4><p>&emsp;&emsp;  <a href="https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS?keyMatch=ICDI&tisearch=Search-EN-everything&usecase=part-number">TI官网下载</a><br>&emsp;&emsp; <code>ICDI</code>（In-Circuit Debug Interface）是一个电路调试接口，它可以允许使用<code>LM Flash Programmer</code>或者其他支持的工具对板子进行编程或者调试。ICDI只支持JTAG调试。当设备连接到PC后，设备枚举器会生成虚拟COM端口。</p>
+<h4 id="Windows-下开发环境"><a href="#Windows-下开发环境" class="headerlink" title="Windows 下开发环境"></a>Windows 下开发环境</h4><p>&emsp;&emsp; 在windows下开发可以使用IDE，例如TI支持的CCS，或者第三方的Keil等，开发前要首先安装ICDI驱动。接下来如果使用Keil v5集成开发环境，要下载相应的PACK（<code>Keil:TM4C_DFP</code>），然后可以下载<code>TivaWare SDK</code>，里面包含很多示例项目以及驱动库（USB库、图形库等）。Keil已经集成了烧录工具，可以直接使用，但也可以使用TI官方提供的<code>LM Flash Programmer</code>工具。Keil集成了编译器和链接器，但也可以从官网下载独立的工具链  <a href="https://www.ti.com/tool/TI-CGT">TI_CGT</a>。</p>
+<h4 id="Linux-下开发环境"><a href="#Linux-下开发环境" class="headerlink" title="Linux 下开发环境"></a>Linux 下开发环境</h4><p>参考 <a href="https://jachinshen.github.io/environment/2018/02/01/%E7%BF%BB%E8%AF%91-%E5%9C%A8Linux%E4%B8%8A%E5%BC%80%E5%8F%91TivaC.html">在 Linux 上开发 TivaC </a></p>
+<h4 id="片上调试"><a href="#片上调试" class="headerlink" title="片上调试"></a>片上调试</h4><p>&emsp;&emsp; 使用OpenOCD</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><a href="http://users.ece.utexas.edu/~valvano/arm/">示例项目</a></p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>TSP问题的数值模拟</title>
     <url>/2023/03/13/TSP%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>旅行商问题（Traveling SalesPerson Program, TSP）</code>是一个经典的组合优化问题。给定一个城市列表以及各相邻城市间的<strong>旅行代价值</strong>（例如物理距离），一个商人从出发城市开始，需要<strong>访问并且只访问一次</strong>其他所有城市后返回出发地，并要求旅行代价值最小。<br>&emsp;&emsp; 从图论的角度上分析，TSP 问题是 <strong>NP 完全问题</strong>。实际上，从工程实践的角度上看，它意味着在任何情况下，没有已知算法可以比<strong>穷举法</strong>更好地解决该问题。但是对于穷举法，随着顶点数的增加，会产生组合爆炸问题。<br>&emsp;&emsp;虽然如此，目前仍然存在许多近似算法和启发式算法可以使用，例如遗传算法、模拟退火法、蚁群算法、禁忌搜索算法、贪婪算法和神经网络等。</p>
@@ -2299,28 +2321,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>高性能计算</category>
         <category>算法</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>TM4C123G H6PIM微控制器开发板</title>
-    <url>/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <code>TM4c123Gh6pm</code> 是嵌入ARM Cortex-M4F处理器的开发板，处理器频率为80MHZ（通过PLL配置后），配有256k flash ROM，32k RAM，2k EEPROM，还包括USB主机，OTG连接，睡眠模块、PWM和其他外围设备。</p>
-<span id="more"></span>
-
-<p>硬件架构：<br><img src="/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/tm4c_arch.png"></p>
-<h3 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h3><h4 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h4><ul>
-<li>供电：在<code>USB Device</code>和<code>ICDI/DEBUG USB</code>间切换</li>
-<li>休眠：TIVA C系列的Launchpad提供频率为 32.768khz 的外部晶振（Y1），它为休眠模块提供时钟源。</li>
-</ul>
-<h4 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h4><p>&emsp;&emsp;主控制器的内部时钟由频率为 16Mhz 的晶振（Y2）提供。内部PLL可以通过软件配置来产生更高频率的时钟。</p>
-<h3 id="软件开发环境"><a href="#软件开发环境" class="headerlink" title="软件开发环境"></a>软件开发环境</h3><h4 id="ICDI驱动"><a href="#ICDI驱动" class="headerlink" title="ICDI驱动"></a>ICDI驱动</h4><p>&emsp;&emsp;  <a href="https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS?keyMatch=ICDI&tisearch=Search-EN-everything&usecase=part-number">TI官网下载</a><br>&emsp;&emsp; <code>ICDI</code>（In-Circuit Debug Interface）是一个电路调试接口，它可以允许使用<code>LM Flash Programmer</code>或者其他支持的工具对板子进行编程或者调试。ICDI只支持JTAG调试。当设备连接到PC后，设备枚举器会生成虚拟COM端口。</p>
-<h4 id="Windows-下开发环境"><a href="#Windows-下开发环境" class="headerlink" title="Windows 下开发环境"></a>Windows 下开发环境</h4><p>&emsp;&emsp; 在windows下开发可以使用IDE，例如TI支持的CCS，或者第三方的Keil等，开发前要首先安装ICDI驱动。接下来如果使用Keil v5集成开发环境，要下载相应的PACK（<code>Keil:TM4C_DFP</code>），然后可以下载<code>TivaWare SDK</code>，里面包含很多示例项目以及驱动库（USB库、图形库等）。Keil已经集成了烧录工具，可以直接使用，但也可以使用TI官方提供的<code>LM Flash Programmer</code>工具。Keil集成了编译器和链接器，但也可以从官网下载独立的工具链  <a href="https://www.ti.com/tool/TI-CGT">TI_CGT</a>。</p>
-<h4 id="Linux-下开发环境"><a href="#Linux-下开发环境" class="headerlink" title="Linux 下开发环境"></a>Linux 下开发环境</h4><p>参考 <a href="https://jachinshen.github.io/environment/2018/02/01/%E7%BF%BB%E8%AF%91-%E5%9C%A8Linux%E4%B8%8A%E5%BC%80%E5%8F%91TivaC.html">在 Linux 上开发 TivaC </a></p>
-<h4 id="片上调试"><a href="#片上调试" class="headerlink" title="片上调试"></a>片上调试</h4><p>&emsp;&emsp; 使用OpenOCD</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><a href="http://users.ece.utexas.edu/~valvano/arm/">示例项目</a></p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -2474,26 +2474,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>《古今数学思想I》读书笔记</title>
-    <url>/2019/09/11/%E3%80%8A%E5%8F%A4%E4%BB%8A%E6%95%B0%E5%AD%A6%E6%80%9D%E6%83%B3I%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文主要是早期阅读时的摘抄笔记，只可见该著作之冰山一角。</em></p>
-<h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>&emsp;&emsp;历史告诉我们，一个科目的发展是由汇集不同方面的成果点滴积累而成的。我们也知道，常常需要几十年甚至是几百年的努力才能迈出有意义的几步。不仅这些学科并没有锤炼得天衣无缝，甚至是那些已经取得的成就，也常常只是个开始，许多缺陷有待填补，或者真正重要的扩展还有待创造。</p>
-<span id="more"></span>
-<p>&emsp;&emsp;课本中的斟字酌句的叙述，未能表现出创造过程中的斗争和挫折，以及在建立一个可观的结构前，数学家所经历的漫长艰苦的道路。学生一旦认识到这一点，他将不仅获得真知灼见，还将获得顽强地追究他所攻问题的勇气，并且不会因为自己的工作并非完美无缺而感到颓丧。</p>
-<h3 id="7-希腊人对自然形成理性观点的过程"><a href="#7-希腊人对自然形成理性观点的过程" class="headerlink" title="7.希腊人对自然形成理性观点的过程"></a>7.希腊人对自然形成理性观点的过程</h3><p>&emsp;&emsp;古希腊人产生了新的信念：认为自然界是有秩序的并始终按照一定的方案运行。更有甚者，他们深信人的智慧是强有力的甚至是至高无上的，人不仅可以探索自然界的道理甚至还能预知它将会出现的事态。<br>&emsp;&emsp;（爱奥尼亚学派）他们用合理化的解释来代替诗人的想象和不加分析的传说，并且他们用理性来辩护他们的主张。这些人至少敢于凭他们的理性来面对宇宙，而不肯依赖与神，灵，鬼，怪，天使及其他神秘的力量。</p>
-<h3 id="8-希腊世界的衰替"><a href="#8-希腊世界的衰替" class="headerlink" title="8. 希腊世界的衰替"></a>8. 希腊世界的衰替</h3><p>&emsp;&emsp;人们把数学成为抽象化科学归功于希腊人。希腊人坚持要演绎证明。……需要做演绎推理的决心是同人类在其他一切领域的习惯做法完全违背的；它实际上几乎像一件不合理的事情，因为人类凭经验，归纳，类比和实验已经获得了那么多可靠的知识。但希腊人需要真理，并觉得只有用毋庸置疑的演绎推理法才能获得真理。<br>&emsp;&emsp;……希腊人还表现出一种为创新者少见的细致精神。他们认识到概念必须彼此没有矛盾，以及不能用不存在的图形来搞出前和一致的逻辑结构，这一切显出他们几乎有超人的并且是空前的思想深度。<br>&emsp;&emsp;…….<br>&emsp;&emsp;希腊人把数学等同于物理世界的实质，并在数学里看到关于宇宙结构和设计的最终真理。他们建立了数学与研究自然真理之间的联盟，这在以后便成为现代科学基础本身。其次，他们对自然的合理化认识推进到足够深远的程度，使他们能够牢固树立一种信念，感到宇宙确实是按数学规律设计的，是有条理，有规律并且能被人所认识的。<br>&emsp;&emsp;…… 凡鄙视数学家以及科学家高度理论性工作并斥其为无用的人民，他们对重要实际成果如何产生是盲目无知的。</p>
-<h3 id="9-印度和阿拉伯的数学"><a href="#9-印度和阿拉伯的数学" class="headerlink" title="9. 印度和阿拉伯的数学"></a>9. 印度和阿拉伯的数学</h3><p>&emsp;&emsp;阿拉伯人钻研数学主要是为了推进他们所从事的几门重要的科学，而不是为了数学本身。他们也不搞为科学而研究科学的事。他们对希腊人为了弄懂自然界的数学设计或对中世界欧洲人为了领悟上帝之道这种目标是不感兴趣的……他们是为了要支配自然界而从事科学研究的。<br>&emsp;&emsp;…… （印度人和阿拉伯人）这两个民族所创造的文明总的来说都是缺乏批判精神的，尽管阿拉伯人对欧几里得著作曾写过评注。另外这两个文明都是偏重实际的，实际需要确乎要求提供数量结果，而这就得用算法和代数来求出。<br>&emsp;&emsp;新思想只有在自由和勇敢的直观启发下才能产生。</p>
-<h3 id="10-欧洲中世纪时期"><a href="#10-欧洲中世纪时期" class="headerlink" title="10. 欧洲中世纪时期"></a>10. 欧洲中世纪时期</h3><p>&emsp;&emsp;数学水平之所以底，主要原因是对物理世界缺乏兴趣。当时在欧洲占统治地位的基督教规定了它自身的目标，价值和生活方式。主要关心精神生活，因而认为出于好奇心或实用目的而探索自然的工作是浮薄不足道的。基督教乃至后期的希腊哲学界如斯多葛派，伊壁鸠鲁派和新柏拉图派都强调要把心灵提高到超越肉体和物质之上，并为灵魂做好准备，以便死后去过天国的生活。<br>&emsp;&emsp;奥古斯丁：”从圣经以外获得的任何知识，如果它是有害的，理应加以排斥；如果它是有益的，那它是会包含在圣经里的。” 这段话虽然不足以代表奥古斯丁，却足以代表中世纪早期的人对研究自然的态度。<br>&emsp;&emsp;直到1100年，中世纪时期没有在知识领域里产生任何大的文化。它的知识状态是思想一律，教条主义，神秘主义，信赖权威，不断向权威著作求教，进行分析和加以评述。倾向于神秘主义的结果使人把含糊其词的思想奉为现实甚至接受为宗教真理。仅存的那一点点科学是呆板无生气的。神学统辖了所有的学问，教会神甫能编造万有知识体系。但除了包含在基督教义中的以外，他们不去寻思或追求任何别的原理。<br>&emsp;&emsp;数学显然不能在一个只重世务或只信天国的文明中繁荣滋长，我们可以看到，数学在一个自由的学术氛围中最能获得成功，那里既能对物理世界产生的概念发生兴趣，又有人愿意从抽象方面去思考由这些问题所引起的概念，而不计其是否能获得眼前或者实际的利益。自然界是产生概念的温床，然后必须对概念本身进行研究。<br>&emsp;&emsp;反过来，能对自然获得新的观点，对它有更丰富，更广泛，更强有力的理解，而这又产生更深刻的数学工作。</p>
-<h3 id="文艺复兴"><a href="#文艺复兴" class="headerlink" title="文艺复兴"></a>文艺复兴</h3><p>&emsp;&emsp;革命的影响是十分广泛且连续不断的，几乎遍及欧洲每个国家每个城市的战争乃是政治变革的原因。…… 中世纪后期，意大利获得了大量的财富；…… 在15世纪，希腊的著作大量进入欧洲；……大约在1450年，古登堡发明了活版印刷，加速了知识传播；……罗盘和火药的引进是有重大意义的；……由于制造业，矿业，大规模的农业以及各种贸易的大量发展，一个新的经济时代开始了。…… 和埃及，希腊及罗马的奴隶社会以及中世纪的封建农奴制社会相比较，新社会拥有一个不断增大的自由手工业和自由劳动者阶级。……为了改进生产方法和材料的质量，资本主义经济竞争也促使人们去直接研究一些物理现象和因果关系。……..可以肯定，每当物理的解释被证明比神学的解释更为有用的时候，神学的解释就被人们抛弃了。…….. 通过地理勘察以及进一步的商业贸易，使得人们接触到了异地各种各样新的知识，这些知识对中世纪的教条提出了挑战并激发了想象力。…….也引起对教会的科学和宇宙学说的可靠性的怀疑，对教会压制实验和压制人们思考新秩序所产生的问题的反抗。</p>
-<h3 id="达芬奇"><a href="#达芬奇" class="headerlink" title="达芬奇"></a>达芬奇</h3><p>&emsp;&emsp;他对这些读书人是这样描写的：”他们高傲自大，卖弄学问，并非以自己的钻研所得而只是以背诵别人的成果来夸耀自己，他们只是别人学问的朗诵者和吹鼓手”。<br>“如果你不立足于大自然这个很好的基础，你的劳动将无裨于人，无益于己。”<br>“在以数学为依据的科学的研究中，如果有些人不直接向自然界请教而是向书本的作者请教，那么，他就不是自然界的儿子而是孙子了。”</p>
-<h3 id="弗郎西斯培根"><a href="#弗郎西斯培根" class="headerlink" title="弗郎西斯培根"></a>弗郎西斯培根</h3><p>&emsp;&emsp;所有的知识都是通过观察开始的。然后，他作出了非凡的贡献，就是坚持‘逐步和持续不断地归纳’以代替草率的一般结论。他说：“寻找和发现真理有两条路，也只有两条路。其一，通过感觉和特例飞跃到普遍的公理，然后通过这些原则和一劳永逸的真理发明和判断一些派生的公理。另一种方法是感觉和特例收集公理，不断地逐步上升，这样最后到达更普遍的公理；这后一种方法是真实的，但尚未有人试用过。”但它没有认识到科学必须通过测量才能得到定量的规律。弗朗西斯.培根虽然自己没有创造但却发出了关于实验方法的宣言。…… 让我们接近大自然并面对着它。我们不要搞杂乱的，偶然的试验，要让它成为系统的，彻底的和有一定方向的。数学应该是物理学的仆人。<br>&emsp;&emsp;他希望致知识与应用。他想以掌握自然来服务并造福于人类，而不是为博得学者的高兴和快乐。如他所说，科学应上升为公理然后又下降到应用。（促进理论与实践的结合）<br>&emsp;&emsp;对我们来说，现代科学开端之所以重要，当然在于它为数学的重大发展铺平了道路。它直接的效果是和具体问题相联系。<br>&emsp;&emsp;……长远的效果是现代数学在柏拉图“数学是现实的核心”的学说指引下，几乎完全是由具体的科学问题产生的（如微积分）。在研究自然并且得到包括观察和实验结果的规律这个新的方向的引导下，数学从哲学中分离出来并和物理科学联系在一起。对数学来说，进一步的后果是爆发了一个空前活跃和富有创造性的时期。</p>
-]]></content>
-      <categories>
-        <category>数学</category>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>vim配置及命令手册</title>
     <url>/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;vim是著名编辑器<code>vi</code>的变种，相比<code>vi</code>而言，提供了更多扩展，包括插件结构等。vim可以打造成IDE前端，但在Unix&#x2F;Linux环境中，标准的IDE并不是开发人员的首选；而可以灵活整合各种语言和工具的vim与<code>emacs</code>则是Unix&#x2F;Linux下开发人员的主要选择。<br>&emsp;&emsp;下文中的快捷键都可以重新绑定，但默认的绑定设置大部分都是最方便的选择，遵循传统可以有利于协作开发。<br>&emsp;&emsp;<strong>下文中快捷键中带<code>+</code>号的组合键代表同时按下，不带<code>+</code>号的顺序按下。组合键有些会用空格分隔，这样做是为了使得描述更清晰直接，此时空格并不是组合键的一部分；如果有些快捷键中包含空格，下文会以<code>&lt;Space&gt;</code>来表示。另外，<code>（n）</code>表示实际的按键是整数数字，而不是字母<code>n</code>。</strong></p>
@@ -2535,6 +2515,26 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>《古今数学思想I》读书笔记</title>
+    <url>/2019/09/11/%E3%80%8A%E5%8F%A4%E4%BB%8A%E6%95%B0%E5%AD%A6%E6%80%9D%E6%83%B3I%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文主要是早期阅读时的摘抄笔记，只可见该著作之冰山一角。</em></p>
+<h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>&emsp;&emsp;历史告诉我们，一个科目的发展是由汇集不同方面的成果点滴积累而成的。我们也知道，常常需要几十年甚至是几百年的努力才能迈出有意义的几步。不仅这些学科并没有锤炼得天衣无缝，甚至是那些已经取得的成就，也常常只是个开始，许多缺陷有待填补，或者真正重要的扩展还有待创造。</p>
+<span id="more"></span>
+<p>&emsp;&emsp;课本中的斟字酌句的叙述，未能表现出创造过程中的斗争和挫折，以及在建立一个可观的结构前，数学家所经历的漫长艰苦的道路。学生一旦认识到这一点，他将不仅获得真知灼见，还将获得顽强地追究他所攻问题的勇气，并且不会因为自己的工作并非完美无缺而感到颓丧。</p>
+<h3 id="7-希腊人对自然形成理性观点的过程"><a href="#7-希腊人对自然形成理性观点的过程" class="headerlink" title="7.希腊人对自然形成理性观点的过程"></a>7.希腊人对自然形成理性观点的过程</h3><p>&emsp;&emsp;古希腊人产生了新的信念：认为自然界是有秩序的并始终按照一定的方案运行。更有甚者，他们深信人的智慧是强有力的甚至是至高无上的，人不仅可以探索自然界的道理甚至还能预知它将会出现的事态。<br>&emsp;&emsp;（爱奥尼亚学派）他们用合理化的解释来代替诗人的想象和不加分析的传说，并且他们用理性来辩护他们的主张。这些人至少敢于凭他们的理性来面对宇宙，而不肯依赖与神，灵，鬼，怪，天使及其他神秘的力量。</p>
+<h3 id="8-希腊世界的衰替"><a href="#8-希腊世界的衰替" class="headerlink" title="8. 希腊世界的衰替"></a>8. 希腊世界的衰替</h3><p>&emsp;&emsp;人们把数学成为抽象化科学归功于希腊人。希腊人坚持要演绎证明。……需要做演绎推理的决心是同人类在其他一切领域的习惯做法完全违背的；它实际上几乎像一件不合理的事情，因为人类凭经验，归纳，类比和实验已经获得了那么多可靠的知识。但希腊人需要真理，并觉得只有用毋庸置疑的演绎推理法才能获得真理。<br>&emsp;&emsp;……希腊人还表现出一种为创新者少见的细致精神。他们认识到概念必须彼此没有矛盾，以及不能用不存在的图形来搞出前和一致的逻辑结构，这一切显出他们几乎有超人的并且是空前的思想深度。<br>&emsp;&emsp;…….<br>&emsp;&emsp;希腊人把数学等同于物理世界的实质，并在数学里看到关于宇宙结构和设计的最终真理。他们建立了数学与研究自然真理之间的联盟，这在以后便成为现代科学基础本身。其次，他们对自然的合理化认识推进到足够深远的程度，使他们能够牢固树立一种信念，感到宇宙确实是按数学规律设计的，是有条理，有规律并且能被人所认识的。<br>&emsp;&emsp;…… 凡鄙视数学家以及科学家高度理论性工作并斥其为无用的人民，他们对重要实际成果如何产生是盲目无知的。</p>
+<h3 id="9-印度和阿拉伯的数学"><a href="#9-印度和阿拉伯的数学" class="headerlink" title="9. 印度和阿拉伯的数学"></a>9. 印度和阿拉伯的数学</h3><p>&emsp;&emsp;阿拉伯人钻研数学主要是为了推进他们所从事的几门重要的科学，而不是为了数学本身。他们也不搞为科学而研究科学的事。他们对希腊人为了弄懂自然界的数学设计或对中世界欧洲人为了领悟上帝之道这种目标是不感兴趣的……他们是为了要支配自然界而从事科学研究的。<br>&emsp;&emsp;…… （印度人和阿拉伯人）这两个民族所创造的文明总的来说都是缺乏批判精神的，尽管阿拉伯人对欧几里得著作曾写过评注。另外这两个文明都是偏重实际的，实际需要确乎要求提供数量结果，而这就得用算法和代数来求出。<br>&emsp;&emsp;新思想只有在自由和勇敢的直观启发下才能产生。</p>
+<h3 id="10-欧洲中世纪时期"><a href="#10-欧洲中世纪时期" class="headerlink" title="10. 欧洲中世纪时期"></a>10. 欧洲中世纪时期</h3><p>&emsp;&emsp;数学水平之所以底，主要原因是对物理世界缺乏兴趣。当时在欧洲占统治地位的基督教规定了它自身的目标，价值和生活方式。主要关心精神生活，因而认为出于好奇心或实用目的而探索自然的工作是浮薄不足道的。基督教乃至后期的希腊哲学界如斯多葛派，伊壁鸠鲁派和新柏拉图派都强调要把心灵提高到超越肉体和物质之上，并为灵魂做好准备，以便死后去过天国的生活。<br>&emsp;&emsp;奥古斯丁：”从圣经以外获得的任何知识，如果它是有害的，理应加以排斥；如果它是有益的，那它是会包含在圣经里的。” 这段话虽然不足以代表奥古斯丁，却足以代表中世纪早期的人对研究自然的态度。<br>&emsp;&emsp;直到1100年，中世纪时期没有在知识领域里产生任何大的文化。它的知识状态是思想一律，教条主义，神秘主义，信赖权威，不断向权威著作求教，进行分析和加以评述。倾向于神秘主义的结果使人把含糊其词的思想奉为现实甚至接受为宗教真理。仅存的那一点点科学是呆板无生气的。神学统辖了所有的学问，教会神甫能编造万有知识体系。但除了包含在基督教义中的以外，他们不去寻思或追求任何别的原理。<br>&emsp;&emsp;数学显然不能在一个只重世务或只信天国的文明中繁荣滋长，我们可以看到，数学在一个自由的学术氛围中最能获得成功，那里既能对物理世界产生的概念发生兴趣，又有人愿意从抽象方面去思考由这些问题所引起的概念，而不计其是否能获得眼前或者实际的利益。自然界是产生概念的温床，然后必须对概念本身进行研究。<br>&emsp;&emsp;反过来，能对自然获得新的观点，对它有更丰富，更广泛，更强有力的理解，而这又产生更深刻的数学工作。</p>
+<h3 id="文艺复兴"><a href="#文艺复兴" class="headerlink" title="文艺复兴"></a>文艺复兴</h3><p>&emsp;&emsp;革命的影响是十分广泛且连续不断的，几乎遍及欧洲每个国家每个城市的战争乃是政治变革的原因。…… 中世纪后期，意大利获得了大量的财富；…… 在15世纪，希腊的著作大量进入欧洲；……大约在1450年，古登堡发明了活版印刷，加速了知识传播；……罗盘和火药的引进是有重大意义的；……由于制造业，矿业，大规模的农业以及各种贸易的大量发展，一个新的经济时代开始了。…… 和埃及，希腊及罗马的奴隶社会以及中世纪的封建农奴制社会相比较，新社会拥有一个不断增大的自由手工业和自由劳动者阶级。……为了改进生产方法和材料的质量，资本主义经济竞争也促使人们去直接研究一些物理现象和因果关系。……..可以肯定，每当物理的解释被证明比神学的解释更为有用的时候，神学的解释就被人们抛弃了。…….. 通过地理勘察以及进一步的商业贸易，使得人们接触到了异地各种各样新的知识，这些知识对中世纪的教条提出了挑战并激发了想象力。…….也引起对教会的科学和宇宙学说的可靠性的怀疑，对教会压制实验和压制人们思考新秩序所产生的问题的反抗。</p>
+<h3 id="达芬奇"><a href="#达芬奇" class="headerlink" title="达芬奇"></a>达芬奇</h3><p>&emsp;&emsp;他对这些读书人是这样描写的：”他们高傲自大，卖弄学问，并非以自己的钻研所得而只是以背诵别人的成果来夸耀自己，他们只是别人学问的朗诵者和吹鼓手”。<br>“如果你不立足于大自然这个很好的基础，你的劳动将无裨于人，无益于己。”<br>“在以数学为依据的科学的研究中，如果有些人不直接向自然界请教而是向书本的作者请教，那么，他就不是自然界的儿子而是孙子了。”</p>
+<h3 id="弗郎西斯培根"><a href="#弗郎西斯培根" class="headerlink" title="弗郎西斯培根"></a>弗郎西斯培根</h3><p>&emsp;&emsp;所有的知识都是通过观察开始的。然后，他作出了非凡的贡献，就是坚持‘逐步和持续不断地归纳’以代替草率的一般结论。他说：“寻找和发现真理有两条路，也只有两条路。其一，通过感觉和特例飞跃到普遍的公理，然后通过这些原则和一劳永逸的真理发明和判断一些派生的公理。另一种方法是感觉和特例收集公理，不断地逐步上升，这样最后到达更普遍的公理；这后一种方法是真实的，但尚未有人试用过。”但它没有认识到科学必须通过测量才能得到定量的规律。弗朗西斯.培根虽然自己没有创造但却发出了关于实验方法的宣言。…… 让我们接近大自然并面对着它。我们不要搞杂乱的，偶然的试验，要让它成为系统的，彻底的和有一定方向的。数学应该是物理学的仆人。<br>&emsp;&emsp;他希望致知识与应用。他想以掌握自然来服务并造福于人类，而不是为博得学者的高兴和快乐。如他所说，科学应上升为公理然后又下降到应用。（促进理论与实践的结合）<br>&emsp;&emsp;对我们来说，现代科学开端之所以重要，当然在于它为数学的重大发展铺平了道路。它直接的效果是和具体问题相联系。<br>&emsp;&emsp;……长远的效果是现代数学在柏拉图“数学是现实的核心”的学说指引下，几乎完全是由具体的科学问题产生的（如微积分）。在研究自然并且得到包括观察和实验结果的规律这个新的方向的引导下，数学从哲学中分离出来并和物理科学联系在一起。对数学来说，进一步的后果是爆发了一个空前活跃和富有创造性的时期。</p>
+]]></content>
+      <categories>
+        <category>数学</category>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
     <title>《麦田里的守望者》读书笔记</title>
     <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
@@ -2552,17 +2552,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>&emsp;&emsp;我要定出这么个规则，凡是来看我的人，都不准在我家里做任何假模假式的事。谁要是想在我家里作假，就马上请他上路。</p>
 <p>&emsp;&emsp;嘿，雨开始下大了。是倾盆大雨，我可以对天发誓。所有做父母的、做母亲的和其他人等，全都奔过去躲到转台的屋檐下，免得被雨淋湿，可我依旧在长椅上坐了好一会儿。我身上都湿透了，尤其是我的脖子上和裤子上。我那顶猎人帽在某些部分的确给我挡住了不少雨，可我依旧淋得象只落汤鸡。不过我并不在乎。突然间我变得他妈的那么快乐，眼看着老菲芘那么一圈圈转个不停。我险些儿他妈的大叫大嚷起来，我心里实在快乐极了，我老实告诉你说。我不知道什么缘故。她穿着那么件蓝大衣，老那么转个不停，看去真他妈的好看极了。</p>
 <p>&emsp;&emsp;老天爷，我真希望你当时也在场——</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>伯特兰罗素：《我为什么活着》摘抄</title>
-    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
-    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
-<span id="more"></span>
-<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
 ]]></content>
       <categories>
         <category>读书笔记</category>
@@ -2593,6 +2582,17 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>读书笔记</category>
         <category>软件工程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>伯特兰罗素：《我为什么活着》摘抄</title>
+    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
+    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
+<span id="more"></span>
+<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -2655,6 +2655,35 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
       </categories>
+  </entry>
+  <entry>
+    <title>可怜的伊壁鸠鲁</title>
+    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
+    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
+<span id="more"></span>
+
+
+<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
+<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
+<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
+<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>基于 4G 模组的 GPS 小型定位器</title>
+    <url>/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN<br>模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。</p>
+<span id="more"></span>
+
+
+
+]]></content>
+      <tags>
+        <tag>嵌入式系统和IOT</tag>
+      </tags>
   </entry>
   <entry>
     <title>基于流程的debian包管理体系快速命令参考手册</title>
@@ -2750,22 +2779,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>可怜的伊壁鸠鲁</title>
-    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
-    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
-<span id="more"></span>
-
-
-<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
-<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
-<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
-<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>嵌入式系统中的WatchDog</title>
     <url>/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
@@ -2806,22 +2819,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>我们的村庄和传统</title>
-    <url>/2021/01/22/%E6%88%91%E4%BB%AC%E7%9A%84%E6%9D%91%E5%BA%84%E5%92%8C%E4%BC%A0%E7%BB%9F/</url>
-    <content><![CDATA[<p>&emsp;&emsp;对于我们每个人来说，如何去认识、感受和思考自己过去、现在和将来生活的环境是非常重要的问题。人的心灵很容易受环境的影响，或者说它也是环境的产物，认识我们的环境的根本目的是认识我们自己，也就是在内容上去认识我们的习惯、思想、观念和情感是如何形成的。在充分的自我认识基础上我们才能去认识他人，和他人的关系的互动又反过来促进对自我的认识。除了这个根本目的外，还有一个实用目的就是对美好、快乐事物消失的一种反抗，并有可能去创造、改变我们的环境。</p>
-<span id="more"></span>
-
-
-<p>&emsp;&emsp;一直以来，我们的家庭、村庄和传统发生了什么样的变化？我们对这样的变化抱有什么样的情感？是激动？失望？还是无动于衷漠然视之？我们处在什么样的时代环境？从总体上看，是各种各样的局部的单一的传统环境正在被解体而开始从属于以现代城市为中心的新环境，而在这种解体中最严重的就是文化的解体。我们是否想过我们的村庄是如何形成的？我们应该建设什么样的村子？在目前的时代环境下，当一个地方的政治、经济处于附属地位时，它的文化就会面临解体的危险，不管这种文化曾经是怎么样的、不管它现在看来显得多么落后与过时。我们可能已经感觉到过去的文化、传统正在不断消失，而新的称之为‘文化’的东西只不过是经济的奴隶。这种现象小到一个村子，大到一个国家。在一个文化处于附属地位或者被解体的环境中，人与人之间关系也会解体，因为文化本身是一种凝聚的力量。伴随而来的就是人与人之间的不信任，以及更严重的导致创造力的普遍缺失。对于这种环境下的儿童，就很难培养自信和创造力，热情和勇气也会随之缺失。</p>
-<p>&emsp;&emsp;现代城市又如何呢？现代城市中的文化本身几乎也都是外来强势文化和本地弱势传统文化的一种不和谐的融合，处于一种“隔”的状态。再加上我们越来越多的人处于‘解体移民’的大潮中，向现代城市转移，那我们是否还有心去创造自己的文化？城市的经济几乎都是非自然的经济。越是原始的经济结构就越能产生原始的群体部落;反之，越是结构化、协议化的经济就越能产生非自然的社会组织。而任何文化的构建，在我看来，都与自然有着紧密的联系，自然的心灵是一种‘不隔。协调‘隔’与‘不隔’是现代城市生活中的每一个人必须面对的问题。</p>
-<p>&emsp;&emsp;我们如何看待自己的过去呢？如果我们认为过去儿时的某种快乐、幸福正在消失，不要轻易把它归结为进入成年后的正常现象。对这种‘正常现象’一旦习以为常，我们自身心灵的文化主体意识就会不断衰退。<br>&emsp;&emsp;我们为什么要建立自己的文化主体意识呢？什么是文化主体意识呢？在我看来，人类一切实践活动和创造活动并经过传承的精神性或物质性的东西都可以称之为文化。在现实世界，甚至虚拟世界中都包含着许许多多的文化部落，在社会的各个领域，几乎都是如此。在人类世界，文化促成凝聚，进而产生力量，而这种力量创造了我们今天的文明。我们每个人都可以成为文化的主体，但它绝不是单纯精神或者艺术性的东西，它同样包含切实的实践，种上一棵树、栽上一颗花、拍一张照片、写上一些字，甚至做一件勇敢的小事件等等，这些我们都可以称之为文化主体意识。在一些精神性、智力要求更高的领域，比如数学等，它的文化是人们获取该领域的创造力不可或却的来源。</p>
-<p>&emsp;&emsp;所以，不管城市或者乡村，我们都不应该是一种附庸或者旁观的地位或态度。不管我们‘移’到那里，都要试着把根深深扎到那里的土地，而终有一天可成为参天大树。而那些将自己的双脚远离大地的人，就再也不能仰望星空了，而且或许会迷失在宇宙的黑暗中去了。</p>
-]]></content>
-      <categories>
-        <category>散文创作</category>
-      </categories>
-  </entry>
-  <entry>
     <title>嵌入式系统介绍</title>
     <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
@@ -2852,33 +2849,19 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>求知之心</title>
-    <url>/2020/04/18/%E6%B1%82%E7%9F%A5%E4%B9%8B%E5%BF%83/</url>
-    <content><![CDATA[<p>&emsp;&emsp;我们是否还有求知之心？</p>
+    <title>我们的村庄和传统</title>
+    <url>/2021/01/22/%E6%88%91%E4%BB%AC%E7%9A%84%E6%9D%91%E5%BA%84%E5%92%8C%E4%BC%A0%E7%BB%9F/</url>
+    <content><![CDATA[<p>&emsp;&emsp;对于我们每个人来说，如何去认识、感受和思考自己过去、现在和将来生活的环境是非常重要的问题。人的心灵很容易受环境的影响，或者说它也是环境的产物，认识我们的环境的根本目的是认识我们自己，也就是在内容上去认识我们的习惯、思想、观念和情感是如何形成的。在充分的自我认识基础上我们才能去认识他人，和他人的关系的互动又反过来促进对自我的认识。除了这个根本目的外，还有一个实用目的就是对美好、快乐事物消失的一种反抗，并有可能去创造、改变我们的环境。</p>
 <span id="more"></span>
 
 
-<p>&emsp;&emsp;自卑之心不可求知。自卑者所寻求的只是让自己摆脱卑微的东西。自卑者极易产生对其他人或事物是否真诚的不信任，而陷入一种盲目的怀疑和排斥中。这种心境很容易产生将事物和自己对立起来的思维习惯，进而再也看不到事物的真实，这样的话又如何求知呢？这种心境也会助长恐惧，容易使人变得软弱。几乎对于所有人来说，自卑是缺乏自我认识的表现，而深刻的自我认识是学习的基础，而这种认识并不依托物质、财富和地位，也不依赖任何特定的知识。<br>&emsp;&emsp;恐惧之心不可求知。这里所说的主要是一种对自己所追求的是无价值的恐惧，或者说是一种因无用而觉得会被孤立的恐惧，它也是一种担心不被认可的恐惧。在我们今天看来很有价值的东西，在其出现的时代却被认定是‘异端邪说’或者‘毫无用处’的例子比比皆是。我们内在对自己的认可要远比外在的认可重要，但并不代表我们盲目否定外在的看法。我们喜欢的东西可能永远不能给我们带来半毛钱的利益，但那又如何呢！<br>&emsp;&emsp;依赖之心不可求知。依赖有很多形式，它绝不仅仅是指依赖权威等某种有形的东西，更多情况下它指得是某种传统的信仰、观念和道德等无形的东西。我们说，我们可以站在巨人的肩膀上继续前行，但那绝不是依赖，一旦我们发现这个巨人站在错误的地方，我们就决然地将它推倒。对于我们来说，几乎没有所谓的绝对的、一帆风顺的道路，我们可以也敢于去走一条属于我们自己的与众不同的道路。<br>&emsp;&emsp;忧虑之心不可求知。忧虑往往来源于责任，家庭责任也好，社会责任等也好。但忧虑并不能给我们掌握我们生活和工作的全部提供什么帮助，而掌握生活和工作的全部是我们追求现实幸福的主要方式。忧虑其实也是患得患失的表现，其实没有得失就没有事物的平衡，我们做的每一个选择几乎都是得失的选择。<br>&emsp;&emsp;功利之心不可求知。这里的功利不是指实用主义，实用主义者更多的是关注问题而不是利益，至少不是狭隘的个人利益，很多时候它表现为不断地解决问题而可以帮助其他人。无方向的功利之心很容易助长对权威的依赖之心，以及学习上的教条主义和盲目依赖记忆的学习方式，更不要说面对困难时的脆弱和忧虑。有方向的功利之心很容易形成对知识的贪欲。<br>&emsp;&emsp;贪欲之心不可求知。这里所说的对知识的贪欲有着两面性。一方面它可以催生一些创造性的成就；但另一方面它就像速成食品，以及和其他贪婪形式一样，很容易失去自我。这种心境远离自然、和谐与美。</p>
-<p>&emsp;&emsp;我们如何培养求知之心？<br>&emsp;&emsp;审美之心。在我看来，审美之心是最重要和最基础的东西。这里所说的审美绝不是肤浅地停留在表象的东西，而是包括创造美和对美的强烈感受力以及不懈追求。在现代科学文明的思想根源——古希腊的哲学家那里，美一直占有极其重要的地位。他们认为，宇宙的设计是严格遵循几何原理的，是由最简单的几何对象构造而成的，那是美的。他们又说，万物皆数，这种设计是最美的。后来的数学家说，丑陋在数学中没有栖身之地。虽然从历史的角度看，过度追求美学在很多情况下成为思想家认识世界的一种局限，但它仍然赋予了不同时代大量的哲学家、数学家、科学家和艺术家直观的创造力。在工程设计中，优雅和美也几乎被普遍认为是评价设计优劣的最高标准，其次才是是否满足需求。美同样是一种联结力量。在我看来，人与人之间以及人与外在世界之间情感联系的核心就是美，但这种美绝不仅仅是表象的东西，品格之美、精神之美始终是人与人之间美的核心。爱只是美的表现形式。<br>&emsp;&emsp;好奇与探索之心。学习应该就是发现未知的新的东西。我们越是自己去追问、去探索、去实践，我们就越能获得快乐。那些教条式的学习其实是在剥夺我们的快乐。很多时候，对万事万物的好奇心都离不开我们对自己的好奇心，所以，摧毁一个人的好奇心只要使他（她）不再对自己感兴趣就可以了。而上面的众多不可求知之心其实都在起着这个作用。我们对任何我们不熟悉的或者未知的领域都可以提出核心的、基本的问题，而并不需要急于解答。这些核心问题并没有锁在政客的保险箱或埋在学者的浩繁纸堆中。<br>&emsp;&emsp;勇敢与不屈服之心。我们几乎都体验过有一个学习的竞争对手实际上是多么快乐的事情。竞争在个人学习和成长中实际上发挥着巨大作用，我们可以寻找现实世界或者虚拟世界的对手，并向其发起一次次挑战或者抛出一系列问题来让自己回答，如此往复，就可以激发个人的潜能，增强面对困难的勇气和信心。即使多次失败，仍然不气馁，继续努力。擅于提出问题来找出对方思维方式或者行为做法上的‘漏洞’或者弱点。古人说，虽千万人吾往矣！坚持自己的观点就是一种勇敢。<br>&emsp;&emsp;快乐与乐观之心。快乐是很重要的，但并不代表在不快乐时表现的那种无法面对困难的脆弱。乐观使得我们面对困难不但不会退缩，反而会变得兴奋。<br>&emsp;&emsp;责任之心。将责任放在最后，是因为它有着更突出的两面性。因为责任产生的往往不是内在的发自我们真实情感的行为，而是外在环境作用下的行为。特别是责任越大，越容易使人在思想和行为上落入虚荣的陷阱。某种程度上来说，一个人越是想要承担更大的责任，就越想要建立自己的权威，而权威很容易使人腐化和虚荣。我们不止一次听过那种以‘救世主’自居的论调吧！但无论怎样，对于古往今来大多数卓越的有识之士来说，我们都可以相信他（她）们抱有对某种东西有着不可推卸的责任，这种东西是某个家庭或者群体的利益也好，某种信念也好，某种思想也好。这种责任发自我们内心真实的情感，也就是包含了上面所说的几种品质，所以持久、自然和充满力量。</p>
-<p>&emsp;&emsp;读书与求知的关系。<br>&emsp;&emsp;读书是求知很重要的方式，但不是它的全部内容。我们很多时候会陷入对书籍的贪欲之中，这很容易成为一种依赖方式，或者说一种自我安慰的方式。有多少读书人、学者皓首穷经，埋头纸堆呢？然后却没有提出任何新的有普遍价值的东西。近代科学的诞生其实就伴随着对这种求知方式的反叛，它注重实践和从实际经验中总结普遍规律，并不断在实践中加以验证和完善。</p>
-<p>—— 顽石 2020.04.18</p>
+<p>&emsp;&emsp;一直以来，我们的家庭、村庄和传统发生了什么样的变化？我们对这样的变化抱有什么样的情感？是激动？失望？还是无动于衷漠然视之？我们处在什么样的时代环境？从总体上看，是各种各样的局部的单一的传统环境正在被解体而开始从属于以现代城市为中心的新环境，而在这种解体中最严重的就是文化的解体。我们是否想过我们的村庄是如何形成的？我们应该建设什么样的村子？在目前的时代环境下，当一个地方的政治、经济处于附属地位时，它的文化就会面临解体的危险，不管这种文化曾经是怎么样的、不管它现在看来显得多么落后与过时。我们可能已经感觉到过去的文化、传统正在不断消失，而新的称之为‘文化’的东西只不过是经济的奴隶。这种现象小到一个村子，大到一个国家。在一个文化处于附属地位或者被解体的环境中，人与人之间关系也会解体，因为文化本身是一种凝聚的力量。伴随而来的就是人与人之间的不信任，以及更严重的导致创造力的普遍缺失。对于这种环境下的儿童，就很难培养自信和创造力，热情和勇气也会随之缺失。</p>
+<p>&emsp;&emsp;现代城市又如何呢？现代城市中的文化本身几乎也都是外来强势文化和本地弱势传统文化的一种不和谐的融合，处于一种“隔”的状态。再加上我们越来越多的人处于‘解体移民’的大潮中，向现代城市转移，那我们是否还有心去创造自己的文化？城市的经济几乎都是非自然的经济。越是原始的经济结构就越能产生原始的群体部落;反之，越是结构化、协议化的经济就越能产生非自然的社会组织。而任何文化的构建，在我看来，都与自然有着紧密的联系，自然的心灵是一种‘不隔。协调‘隔’与‘不隔’是现代城市生活中的每一个人必须面对的问题。</p>
+<p>&emsp;&emsp;我们如何看待自己的过去呢？如果我们认为过去儿时的某种快乐、幸福正在消失，不要轻易把它归结为进入成年后的正常现象。对这种‘正常现象’一旦习以为常，我们自身心灵的文化主体意识就会不断衰退。<br>&emsp;&emsp;我们为什么要建立自己的文化主体意识呢？什么是文化主体意识呢？在我看来，人类一切实践活动和创造活动并经过传承的精神性或物质性的东西都可以称之为文化。在现实世界，甚至虚拟世界中都包含着许许多多的文化部落，在社会的各个领域，几乎都是如此。在人类世界，文化促成凝聚，进而产生力量，而这种力量创造了我们今天的文明。我们每个人都可以成为文化的主体，但它绝不是单纯精神或者艺术性的东西，它同样包含切实的实践，种上一棵树、栽上一颗花、拍一张照片、写上一些字，甚至做一件勇敢的小事件等等，这些我们都可以称之为文化主体意识。在一些精神性、智力要求更高的领域，比如数学等，它的文化是人们获取该领域的创造力不可或却的来源。</p>
+<p>&emsp;&emsp;所以，不管城市或者乡村，我们都不应该是一种附庸或者旁观的地位或态度。不管我们‘移’到那里，都要试着把根深深扎到那里的土地，而终有一天可成为参天大树。而那些将自己的双脚远离大地的人，就再也不能仰望星空了，而且或许会迷失在宇宙的黑暗中去了。</p>
 ]]></content>
       <categories>
         <category>散文创作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>黑客文化</title>
-    <url>/2021/03/27/%E9%BB%91%E5%AE%A2%E6%96%87%E5%8C%96/</url>
-    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;最近重读《黑客：计算机革命的英雄》一书，仍然有不少收获。几年前第一次阅读时的那种非凡的知识、历史和思想感染仍记忆犹新。它完全没有那种普通人对黑客的一种片面和局限的理解，这种理解往往由网络入侵、信息窃取和犯罪等灰暗面组成，而其很大部分来自于新闻媒体的一种带有‘猎奇心理’的宣传。</p>
-<span id="more"></span>
-<p>&emsp;&emsp;相反，它描述了一些个性鲜明、具有强烈热情和探索精神的‘英雄’人物，他们代表了最传统、最纯粹的黑客精神，是一种带有强烈理想主义的计算机文化的重要组成部分，这种精神贯穿了整个计算机领域发展的历史，更重要的是它和其他任何一种文化形式相同，即它是一种发展的内在动力。<br>&emsp;&emsp;可以说，我们每一天都在使用着、领略着这些‘英雄’人物带给世界的变革所带来的新的思想、新的方法、新的作品。<br>&emsp;&emsp;&emsp;&emsp;</p>
-<h3 id="第一代真正的黑客"><a href="#第一代真正的黑客" class="headerlink" title="第一代真正的黑客"></a>第一代真正的黑客</h3><p>TMRC俱乐部<br>太空大战: <a href="https://www.masswerk.at/spacewar/">第一款Spacewar模拟网站</a><br><a href="https://www.spacewaronline.com/">SpacewarOnline</a><br><a href="https://spacewar.oversigma.com/">Spacewar模拟</a>包含源代码</p>
-<h3 id="第二代硬件黑客"><a href="#第二代硬件黑客" class="headerlink" title="第二代硬件黑客"></a>第二代硬件黑客</h3><h3 id="第三代游戏黑客"><a href="#第三代游戏黑客" class="headerlink" title="第三代游戏黑客"></a>第三代游戏黑客</h3><h3 id="黑客伦理"><a href="#黑客伦理" class="headerlink" title="黑客伦理"></a>黑客伦理</h3><p>I．对计算机的访问（以及任何可能帮助你认识我们这个世界的事物）应该是不受限制的、完全的。任何人都有动手尝试的权力。<br>II．所有的信息都应该可以自由获取。<br>III．不迷信权威－－促进分权。<br>IV．评判黑客的标准应该是他们的技术，而不是那些没有实际用途的指标，比如学位、年龄、种族和职位。<br>V．你可以在计算机上创造艺术和美。<br>VI．计算机可以让你的生活更美好。<br>VII．就像阿拉丁神灯，你可以让它听从你的召唤。</p>
-<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>1.<a href="http://www.dnbwg.com/">电脑古董室</a></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -2906,6 +2889,22 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>求知之心</title>
+    <url>/2020/04/18/%E6%B1%82%E7%9F%A5%E4%B9%8B%E5%BF%83/</url>
+    <content><![CDATA[<p>&emsp;&emsp;我们是否还有求知之心？</p>
+<span id="more"></span>
+
+
+<p>&emsp;&emsp;自卑之心不可求知。自卑者所寻求的只是让自己摆脱卑微的东西。自卑者极易产生对其他人或事物是否真诚的不信任，而陷入一种盲目的怀疑和排斥中。这种心境很容易产生将事物和自己对立起来的思维习惯，进而再也看不到事物的真实，这样的话又如何求知呢？这种心境也会助长恐惧，容易使人变得软弱。几乎对于所有人来说，自卑是缺乏自我认识的表现，而深刻的自我认识是学习的基础，而这种认识并不依托物质、财富和地位，也不依赖任何特定的知识。<br>&emsp;&emsp;恐惧之心不可求知。这里所说的主要是一种对自己所追求的是无价值的恐惧，或者说是一种因无用而觉得会被孤立的恐惧，它也是一种担心不被认可的恐惧。在我们今天看来很有价值的东西，在其出现的时代却被认定是‘异端邪说’或者‘毫无用处’的例子比比皆是。我们内在对自己的认可要远比外在的认可重要，但并不代表我们盲目否定外在的看法。我们喜欢的东西可能永远不能给我们带来半毛钱的利益，但那又如何呢！<br>&emsp;&emsp;依赖之心不可求知。依赖有很多形式，它绝不仅仅是指依赖权威等某种有形的东西，更多情况下它指得是某种传统的信仰、观念和道德等无形的东西。我们说，我们可以站在巨人的肩膀上继续前行，但那绝不是依赖，一旦我们发现这个巨人站在错误的地方，我们就决然地将它推倒。对于我们来说，几乎没有所谓的绝对的、一帆风顺的道路，我们可以也敢于去走一条属于我们自己的与众不同的道路。<br>&emsp;&emsp;忧虑之心不可求知。忧虑往往来源于责任，家庭责任也好，社会责任等也好。但忧虑并不能给我们掌握我们生活和工作的全部提供什么帮助，而掌握生活和工作的全部是我们追求现实幸福的主要方式。忧虑其实也是患得患失的表现，其实没有得失就没有事物的平衡，我们做的每一个选择几乎都是得失的选择。<br>&emsp;&emsp;功利之心不可求知。这里的功利不是指实用主义，实用主义者更多的是关注问题而不是利益，至少不是狭隘的个人利益，很多时候它表现为不断地解决问题而可以帮助其他人。无方向的功利之心很容易助长对权威的依赖之心，以及学习上的教条主义和盲目依赖记忆的学习方式，更不要说面对困难时的脆弱和忧虑。有方向的功利之心很容易形成对知识的贪欲。<br>&emsp;&emsp;贪欲之心不可求知。这里所说的对知识的贪欲有着两面性。一方面它可以催生一些创造性的成就；但另一方面它就像速成食品，以及和其他贪婪形式一样，很容易失去自我。这种心境远离自然、和谐与美。</p>
+<p>&emsp;&emsp;我们如何培养求知之心？<br>&emsp;&emsp;审美之心。在我看来，审美之心是最重要和最基础的东西。这里所说的审美绝不是肤浅地停留在表象的东西，而是包括创造美和对美的强烈感受力以及不懈追求。在现代科学文明的思想根源——古希腊的哲学家那里，美一直占有极其重要的地位。他们认为，宇宙的设计是严格遵循几何原理的，是由最简单的几何对象构造而成的，那是美的。他们又说，万物皆数，这种设计是最美的。后来的数学家说，丑陋在数学中没有栖身之地。虽然从历史的角度看，过度追求美学在很多情况下成为思想家认识世界的一种局限，但它仍然赋予了不同时代大量的哲学家、数学家、科学家和艺术家直观的创造力。在工程设计中，优雅和美也几乎被普遍认为是评价设计优劣的最高标准，其次才是是否满足需求。美同样是一种联结力量。在我看来，人与人之间以及人与外在世界之间情感联系的核心就是美，但这种美绝不仅仅是表象的东西，品格之美、精神之美始终是人与人之间美的核心。爱只是美的表现形式。<br>&emsp;&emsp;好奇与探索之心。学习应该就是发现未知的新的东西。我们越是自己去追问、去探索、去实践，我们就越能获得快乐。那些教条式的学习其实是在剥夺我们的快乐。很多时候，对万事万物的好奇心都离不开我们对自己的好奇心，所以，摧毁一个人的好奇心只要使他（她）不再对自己感兴趣就可以了。而上面的众多不可求知之心其实都在起着这个作用。我们对任何我们不熟悉的或者未知的领域都可以提出核心的、基本的问题，而并不需要急于解答。这些核心问题并没有锁在政客的保险箱或埋在学者的浩繁纸堆中。<br>&emsp;&emsp;勇敢与不屈服之心。我们几乎都体验过有一个学习的竞争对手实际上是多么快乐的事情。竞争在个人学习和成长中实际上发挥着巨大作用，我们可以寻找现实世界或者虚拟世界的对手，并向其发起一次次挑战或者抛出一系列问题来让自己回答，如此往复，就可以激发个人的潜能，增强面对困难的勇气和信心。即使多次失败，仍然不气馁，继续努力。擅于提出问题来找出对方思维方式或者行为做法上的‘漏洞’或者弱点。古人说，虽千万人吾往矣！坚持自己的观点就是一种勇敢。<br>&emsp;&emsp;快乐与乐观之心。快乐是很重要的，但并不代表在不快乐时表现的那种无法面对困难的脆弱。乐观使得我们面对困难不但不会退缩，反而会变得兴奋。<br>&emsp;&emsp;责任之心。将责任放在最后，是因为它有着更突出的两面性。因为责任产生的往往不是内在的发自我们真实情感的行为，而是外在环境作用下的行为。特别是责任越大，越容易使人在思想和行为上落入虚荣的陷阱。某种程度上来说，一个人越是想要承担更大的责任，就越想要建立自己的权威，而权威很容易使人腐化和虚荣。我们不止一次听过那种以‘救世主’自居的论调吧！但无论怎样，对于古往今来大多数卓越的有识之士来说，我们都可以相信他（她）们抱有对某种东西有着不可推卸的责任，这种东西是某个家庭或者群体的利益也好，某种信念也好，某种思想也好。这种责任发自我们内心真实的情感，也就是包含了上面所说的几种品质，所以持久、自然和充满力量。</p>
+<p>&emsp;&emsp;读书与求知的关系。<br>&emsp;&emsp;读书是求知很重要的方式，但不是它的全部内容。我们很多时候会陷入对书籍的贪欲之中，这很容易成为一种依赖方式，或者说一种自我安慰的方式。有多少读书人、学者皓首穷经，埋头纸堆呢？然后却没有提出任何新的有普遍价值的东西。近代科学的诞生其实就伴随着对这种求知方式的反叛，它注重实践和从实际经验中总结普遍规律，并不断在实践中加以验证和完善。</p>
+<p>—— 顽石 2020.04.18</p>
+]]></content>
+      <categories>
+        <category>散文创作</category>
+      </categories>
+  </entry>
+  <entry>
     <title>隔与不隔</title>
     <url>/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/</url>
     <content><![CDATA[<p>&emsp;&emsp;什么是隔？什么是不隔？<br>&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。</p>
@@ -2915,6 +2914,20 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>散文创作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>黑客文化</title>
+    <url>/2021/03/27/%E9%BB%91%E5%AE%A2%E6%96%87%E5%8C%96/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;最近重读《黑客：计算机革命的英雄》一书，仍然有不少收获。几年前第一次阅读时的那种非凡的知识、历史和思想感染仍记忆犹新。它完全没有那种普通人对黑客的一种片面和局限的理解，这种理解往往由网络入侵、信息窃取和犯罪等灰暗面组成，而其很大部分来自于新闻媒体的一种带有‘猎奇心理’的宣传。</p>
+<span id="more"></span>
+<p>&emsp;&emsp;相反，它描述了一些个性鲜明、具有强烈热情和探索精神的‘英雄’人物，他们代表了最传统、最纯粹的黑客精神，是一种带有强烈理想主义的计算机文化的重要组成部分，这种精神贯穿了整个计算机领域发展的历史，更重要的是它和其他任何一种文化形式相同，即它是一种发展的内在动力。<br>&emsp;&emsp;可以说，我们每一天都在使用着、领略着这些‘英雄’人物带给世界的变革所带来的新的思想、新的方法、新的作品。<br>&emsp;&emsp;&emsp;&emsp;</p>
+<h3 id="第一代真正的黑客"><a href="#第一代真正的黑客" class="headerlink" title="第一代真正的黑客"></a>第一代真正的黑客</h3><p>TMRC俱乐部<br>太空大战: <a href="https://www.masswerk.at/spacewar/">第一款Spacewar模拟网站</a><br><a href="https://www.spacewaronline.com/">SpacewarOnline</a><br><a href="https://spacewar.oversigma.com/">Spacewar模拟</a>包含源代码</p>
+<h3 id="第二代硬件黑客"><a href="#第二代硬件黑客" class="headerlink" title="第二代硬件黑客"></a>第二代硬件黑客</h3><h3 id="第三代游戏黑客"><a href="#第三代游戏黑客" class="headerlink" title="第三代游戏黑客"></a>第三代游戏黑客</h3><h3 id="黑客伦理"><a href="#黑客伦理" class="headerlink" title="黑客伦理"></a>黑客伦理</h3><p>I．对计算机的访问（以及任何可能帮助你认识我们这个世界的事物）应该是不受限制的、完全的。任何人都有动手尝试的权力。<br>II．所有的信息都应该可以自由获取。<br>III．不迷信权威－－促进分权。<br>IV．评判黑客的标准应该是他们的技术，而不是那些没有实际用途的指标，比如学位、年龄、种族和职位。<br>V．你可以在计算机上创造艺术和美。<br>VI．计算机可以让你的生活更美好。<br>VII．就像阿拉丁神灯，你可以让它听从你的召唤。</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>1.<a href="http://www.dnbwg.com/">电脑古董室</a></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -3469,103 +3482,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>SICP 笔记</title>
-    <url>/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h3 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h3><ul>
-<li><strong>程序设计基本元素：基本表达形式、组合的方法、抽象的方法。</strong></li>
-</ul>
-<span id="more"></span>
-
-<p>（在计算模型中，全局环境的概念非常重要，它代表着计算机可以维护某种存储能力。在图灵机模型和早期大型机中都将内部存储能力作为通用型计算机的核心特点。）</p>
-<ul>
-<li><p><strong>一般而言，我们应将递归看作一种处理层次型结构（像树这样的结构）极强有力的技术。</strong>事实上，“值向上穿行”形式的求值形式是一类更一般计算过程的一个例子。这种计算过程称为<strong>树形积累</strong>。</p>
-</li>
-<li><p>环境所扮演的角色就是用于确定表达式中符号的意义。<br>（在形式代数中，任何符号都没有绝对的意义，它也不代表真理，它只是逻辑的信徒。在Lisp中，任何符号在环境中都有值对应，只是有些符号的值是它本身，有些是内部提供的基本过程，而有些则是用户自定义的。）</p>
-</li>
-<li><p><strong>语法糖衣</strong>：Lisp的语法非常简单，也就是说，对各种表达式的求值规则都可以描述为一个简单的通用规则和一组针对不同的特殊形式（例如define）的专门规则。<strong>语法的糖衣会导致分号的癌症。</strong><br>（Lisp简单的语法使得它获得了强大的表达复杂语义的能力。）</p>
-</li>
-<li><p><strong>过程定义是一种强大的抽象技术。</strong>数学函数和计算机过程的重要差异是，计算机过程必须是有效可行的（即可以转换为递归模型）。通俗地讲，它要给出行动性的‘怎么做’的知识。<br>（在几乎所有的现代编程语言中，都包含过程定义的能力，或者称为函数定义。可以定义子过程使得计算机编程的抽象能力大大提高。但最早期的一些大型机，例如ENIAC，都不能调用子过程，只能顺序执行设定好的程序。而图灵在ACE的方案设计中就已经引入了子过程特性。）</p>
-</li>
-<li><p><strong>代换模型：正则序和应用序</strong><br>（<strong>归约</strong> 是一种通用的方法论，它体现了人类的认知规律。将复杂问题规约为简单问题的组合是计算机编程的核心思维模型。）</p>
-</li>
-<li><p><strong>条件表达式和谓词</strong><br>（条件分支的特性是计算机模拟人类智能必不可少的能力。人类的智能很大程序上体现在判断决策、自主控制、修改现有观念状态等思维方式上，条件分支可以使得计算机拥有判断决策和修改自身的能力。）</p>
-</li>
-<li><p><strong>过程作为黑箱抽象</strong>，使用者不需要关心过程内部的实现细节。过程所使用的形式参数是局部变量或者称为约束变量。一个过程的定义约束了它的所有形式参数。（形式参数的作用域是这个过程的体。作用域的概念在几乎所有现代编程语言中都是基础核心的概念。）</p>
-</li>
-<li><p><strong>内部定义和块结构</strong>。(块结构是构造大型复杂程序的基础)</p>
-</li>
-<li><p><strong>线性递归和线性迭代</strong>。（两者的区别可以看作是计算状态的保存位置不同；另外在硬件实现方式上，递归需要一种称为栈的辅助数据结构。）<strong>尾递归</strong>：对于一个使用递归过程描述的迭代计算过程，尾递归总能在常量空间中来完成它；相比而言，没有实现尾递归的编译器就只能在线性空间中完成它。有了尾递归的实现，我们可以利用常规的过程调用机制表述迭代，这会使得各种复杂的专用迭代结构（如while、for、until和do等）变成不过是一些语法糖衣了。<strong>树形递归</strong>：<br>（在自然界中，到处都可以看出类似递归的结构，如贝壳的纹路，树枝的形态，种子等。）</p>
-</li>
-<li><p><strong>高阶函数 Lambda表达式</strong>:高阶过程的重要性就在于使我们能显式地用程序设计语言的要素去描述这些抽象,使我们能像操作其他计算元素一样去操作它们。</p>
-</li>
-<li><p><strong>第一级状态</strong>：</p>
-<ul>
-<li>可以用变量命名；</li>
-<li>可以提供给过程作为参数；</li>
-<li>可以由过程作为参数返回；</li>
-<li>可以包含在数据结构中。<br>Lisp给予过程完全的第一级状态。<br>(Lambda表达式和闭包的概念有着紧密的联系。将过程作为参数或者过程的返回值，可以获得更强大的抽象能力。)</li>
-</ul>
-</li>
-</ul>
-<h3 id="第二章-构建数据抽象"><a href="#第二章-构建数据抽象" class="headerlink" title="第二章 构建数据抽象"></a>第二章 构建数据抽象</h3><ul>
-<li>复合数据的使用可以进一步提高程序的模块性。这种将程序中处理数据对象表示的部分与处理数据对象的使用部分相互隔离的技术非常具有一般性，形成了一种称为<strong>数据抽象</strong>的强有力的方法学。</li>
-<li>把对于具体表示方式的依赖性限制到少数几个界面（interface）过程，不但对修改程序有帮助，同时也有助于程序的设计。因为这种做法使我们能保留考虑不同实现方式的灵活性。……数据抽象方式使我们能够推迟决策（比如系统性能方面的优化）的时间，而不会阻碍系统其他部分的工作进程。</li>
-<li><strong>闭包</strong>：用于组合数据对象的黏合剂不但能用于组合基本的数据对象,同样也可以用于复合的数据对象。另一关键思想是，复合数据对象能够成为以混合与匹配的方式组合程序模块的方便界面（interface）。（Lisp中cons的闭包性质使得它可以用优雅简单的方式构造层次型数据。另外在自然界中都可以看到类似的结构。）<br>（对于编译器或者解释器来说，程序语言的任何语句都可以认为是符号表达式。）</li>
-<li><strong>序对</strong>的实现模糊了数据与过程的界限，也就是，这种基础数据结构的内部可以完全是过程的形式。（Lisp的过程具有第一级状态，过程体本身其实也是一种存储信息的结构，广泛地讲，任何一种过程都包含信息，而数据是信息的可存储并可访问的一种形式）。与Lisp及其序对不同，C&#x2F;Pascal&#x2F;Fortran&#x2F;Basic这些语言都没有内部的通用型粘接剂，因此无法以统一的方式去操作复合数据。（或许C&#x2F;Pascal的程序员会说，Lisp程序员是从来不考虑效率的理想主义者。）</li>
-<li>（丘奇计数中去除了整数一般所认为的现实意义，即单纯表示数据，而是将其抽象为一种计数的过程。）</li>
-<li><strong>序列（List）</strong></li>
-<li>对表的映射: map是一种很重要的结构，不仅因为它代表了一种公共模式，而且因为它建立了一种处理表的高层抽象。从作用上看，map帮我们建起了一层抽象屏障，将实现表变换的过程的实现，与如何提取表中元素以及组织结果的细节隔离开。</li>
-<li><strong>树</strong>：递归是处理树结构的一种很自然的工具。</li>
-<li><strong>List作为一种约定的接口</strong>：（流处理、枚举器、过滤器、累加器等）<strong>将程序表示为一些针对序列的操作，这样做的价值就在于能帮助我们得到模块化的程序设计，也就是说，得到由一些比较独立的片段的组合构成的设计。通过提供一个标准部件的库，并使这些部件都有着一些能以各种灵活方式相互连接的界面（接口），将进一步推动人们去做模块化的设计。在工程设计中，模块化结构是控制复杂性的一种威力强大的策略。</strong></li>
-<li>八皇后谜题（eight-queen-puzzle）</li>
-<li><strong>分层设计</strong>:一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言。构造各个层次的方式，就是设法组合起作为这一层次中部件的各种基本元素，而这样构造出来的部件又可以作为另一个层次里的基本元素。在分层设计中，每个层次上所用的语言都提供了一些基本元素、组合手段，还有对该层次中的适当细节作抽象的手段。</li>
-<li><strong>数据抽象屏障是控制复杂性的强有力工具。</strong></li>
-<li>数据导向和消息传递：消息传递设计的特点是将数据对象设想为一个实体（与面向对象的程序设计中的类class相似）</li>
-<li><strong>在大型系统中,处理好一大批相互有关的类型而同时又能保持模块性,这是非常困难的问题。</strong>（面向对象语言中的类与其相关的继承概念被用来描述不同类型的对象之间的关系，被用来建立抽象、代码重用和模块化设计。但正是这种对类型之间通用性的处理带来了面向对象语言的大部分复杂性，错综复杂的各种类之间的关系成为程序员的噩梦。或许，这种问题是无法仅仅通过计算机语言设计的方式合理处理的。）</li>
-</ul>
-<h3 id="第三章-模块化、对象和状态"><a href="#第三章-模块化、对象和状态" class="headerlink" title="第三章 模块化、对象和状态"></a>第三章 模块化、对象和状态</h3><ul>
-<li>(除了抽象的手段外，我们还需要帮助我们构造起模块化的大型系统的策略。)</li>
-<li><strong>对象与流</strong>：当我们对现实世界的系统进行模拟时，我们可以采取两种策略：第一种是以对象为中心，将大型系统看作一系列对象，特别重要的时，它们的状态会随着时间而变化；另一种则是将注意力集中在流过系统的信息流上。对象策略的实现需要与时间搏斗，它需要我们抛弃老旧的代换模型，而代之更机械式、理论上更难把握的<strong>环境模型</strong>；而流方式则能够用于<strong>松懈</strong>我们的模型中对时间的模拟与计算机求值过程中的各种事件发生的顺序。</li>
-<li><strong>局部状态变量和赋值运算符</strong>：由对象组成的系统中，各对象既独立又相互作用，对象的状态是模拟现实世界中&lt;本体&gt;存在的重要概念。（<strong>状态必须是有限的</strong>，且从某种角度来看，对象的同一性问题就和不同年龄的人是否是同一个人的问题一样难以解答。）set!赋值运算的环境模型解释</li>
-<li>赋值的利益：从rand过程（实现蒙特卡洛模拟）来看，从一个复杂计算过程中一部分的观点来看，其他部分都在随着时间变化，它们隐藏起自己的随时间变化的内部状态。通过局部状态变量模拟系统的状态，对变量的赋值模拟状态的变化。总结来看，与所有状态都必须显式地操作和传递额外参数的方式相比，通过引进赋值和将状态隐藏在局部变量中的技术，我们能够以一种更模块化的方式构造系统。（蒙特卡洛模拟的收敛效率很低）</li>
-<li>赋值的代价：不用任何赋值的程序设计称为<strong>函数式程序设计</strong>。变量所代表的不再是一个简单的名字，而是索引着一个位置，而这个位置所保存的值是可以改变的。<strong>同一和变化</strong>：赋值打破了<strong>引用透明性</strong>，使得同一的问题非常复杂。<strong>命令式程序设计</strong>带来的更困难的问题是它强迫人们去考虑赋值的相对顺序，特别在并发程序中，这个问题会更加得困难。</li>
-<li>环境模型：看作一系列frame连接组成的序对表。每个frame看作一系列约束的表格。</li>
-<li>用变动数据作模拟：可以大大增加序对的表达能力，使得我们可以构造出序列和树之外的其他数据结构（如队列、二维表和堆）。<strong>共享和相等</strong>：set-car!和set-cdr!可以修改序对所指向的数据对象，这些数据对象可以与其他序对共享，但赋值操作利用共享所带来的危险则是隐晦和难以跟踪。</li>
-<li>队列和表格</li>
-<li>数字电路模拟器、约束系统</li>
-<li>并发性、时间和通信：这里的基本现象是不同进程之间的同步，建立起共享状态，或迫使进程之间通信所产生的事件按照某种特定的顺序进行。从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。</li>
-<li><strong>流</strong>：使用时间函数来描述对象的状态随时间的变化，而函数本身是没有变化的。时间函数可以用一个（可能无穷的）序列去模拟。流，可以被看作一个序列，但不能简单用表来实现，我们需要引进延时求值的技术。流是一种非常巧妙的想法，使我们可能利用各种序列操作，但又不会带来序列作为表去操作而引起的代价。因为流的构造和使用能够交替进行，而这种交错又是完全透明的。作为一种数据抽象，流和表完全一样，它们的不同点就在于元素的求值时间。对于常规的表，其car和cdr都是在构造时求值；而对于流，其cdr则是在选取的时候才去求值。（延时求值的技术也被现代编程语言所采用，如python）。流的实现需要cons的特殊形式，这种特殊形式与常规过程不同，它不会立即求出所有参数的值。</li>
-<li>无穷流，隐式地定义流：流计算模式可以方便地解决数列、级数等问题。同时可以系统地将迭代操作过程表示为流过程。（累加型迭代就是根据初始猜测值不断迭代获得下一个猜测值，直到猜测值足够好，这个过程完全可以通过流才实现，而不使用赋值或者局部变量。）（相同的问题如果不采用流过程则难以解决，例如对无穷数列和无穷级数的操作。另外，在使用表作为通用接口时，表的传输和构造需要大量的空间，特别是当表非常大时，程序的计算效率也会大大降低，而使用流则可以根据需要生成数据，而不是一次性得到所有数据。）</li>
-<li>我们可以用一个<strong>序列加速器</strong>对流做一个变换，这种加速器可以将一个逼近序列变换为另一个新序列，该新序列也收敛到与原序列同样的值，只是收敛速度更快。<strong>如果不使用流，我们也可以实现这些加速技术，但流的描述方式特别优美和方便，因为整个状态序列就像一个数据结构一样，可以通过一集统一的操作直接地随意使用。</strong></li>
-<li>将流作为信号，可以方便地开发信号处理系统。</li>
-<li>函数式程序的模块化和对象的模块化：流模型可以提供等价的模块化，同时也不必使用赋值。流实现了一个具有良好定义的数学函数，其行为根本不会变化，但用户看到的却是在这里与一个改变着的状态交互。<strong>正是由于用户方的时态的存在，为这个系统赋予了状态特性。</strong>（<strong>但是，函数式程序在处理非确定性时有着本质的困难，而非确定性在处理并发方面是本质的。</strong>）</li>
-<li>我们将这一世界模拟为一集相互分离的、受时间约束的、具有状态的相互交流的对象，或者可以将它模拟为单一的、无时间也无状态的统一体。每种观点都有强有力的优势，但就其自身而言，又没有一种方式能够完全令人满意。我们还在等待一个大统一的出现。</li>
-<li>对象模型对世界的近似在于将其分割为独立的片段，函数式模型则不是沿着对象间的边界去做模块化。当“对象”间不共享的状态远远大于它们所共享的状态时，对象模型就特别好用。</li>
-</ul>
-<h3 id="第四章-元语言抽象"><a href="#第四章-元语言抽象" class="headerlink" title="第四章 元语言抽象"></a>第四章 元语言抽象</h3><ul>
-<li><strong>建立新语言是在工程设计中控制复杂性的一种威力强大的策略</strong>，我们常常能通过采用一种新语言而提升处理复杂问题的能力，因为新语言可能使我们以一种完全不同的方式，利用不同的原语，不同的组合方式和抽象方式去描述所面对的问题，而这些都是为了手头的问题而专门打造的。</li>
-<li><strong>求值器的作用：</strong>求值器的工作并不是去描述语言的基本过程，而是提供一套连接方式，提供一些组合手段和抽象手段，借助于它们将基本过程联系起来，形成一个语言：<ul>
-<li>帮助我们处理嵌套表达式</li>
-<li>使我们可以使用变量</li>
-<li>使我们可以定义复合过程、</li>
-<li>提供一些特殊形式，它们的求值方式与普通过程调用不同</li>
-</ul>
-</li>
-<li>我们把求值器看作是一部非常特殊的机器，它要求以一部机器的描述作为输入。给定了一个输入后，求值器就能够规划自己的行为，模拟被描述机器的执行过程。<strong>按照这一观点，我们的求值器可看作一种通用机器。</strong>（<strong>这其中反映了可计算性的概念，即任一个求值器都可以模拟其他的求值器，或者说只要一个求值器是图灵机等价的，它就可以作为通用机。</strong>）求值器本身可以很简单，但却可以模拟比自身还要复杂的各种程序。<strong>用户程序被看作是求值器的数据。</strong></li>
-<li><strong>图灵停机定理</strong>：给定一任意的图灵机程序P和一组任意的输入数据I，不存在单个的图灵机程序，它在有限多步后停机，并告诉我们P是否结束输入数据I的处理。</li>
-<li><strong>惰性求值</strong>: 如果在某个参数还没有完成求值之前就进入一个过程的体,我们就说这一过程相对于该参数是<strong>非严格</strong>的；如果在进入某个人过程体之前某个参数已经完成求值，我们就说该过程相对于这个参数是<strong>严格</strong>的。</li>
-<li>将流作为惰性表：利用惰性求值，表和流就完全一样了，所以也就需要任何特殊形式了，也不需要区分表操作或者流操作。将cons实现为非严格的过程即可。</li>
-<li><strong>非确定计算</strong>：非确定求值器支持一种假象：时间是有分支的，而我们的程序里保存着所有可能的不同执行历史。在遇到一个死胡同时，我们总可以回到以前的某个选择点，并沿着另一个分支继续下去。实现非确定程序设计的amb思想是John McCarthy在1961年第一次提出的。（这是一种将自动搜索策略结合进程序设计的方式。）</li>
-<li>逻辑谜题、自然语言分析</li>
-<li><strong>逻辑程序设计</strong>：将逻辑直接作为程序设计语言并将计算作为受控推理的一种程序设计技术。对于传统的程序设计来说，算法的逻辑意义往往被程序复杂的控制成分所掩盖，使程序的正确性难以得到证明。科瓦尔斯基对传统的算法或对用通常高级语言编写的程序提出了一个著名的分析公式，即算法&#x3D;逻辑+控制。其基本思想是要从根本上改变程序设计的方法：用户只需要编写程序的逻辑部分（逻辑程序设计之名由此而来），而系统中的解释程序则实施控制部分的职能。（参看Prolog语言）</li>
-</ul>
-<h3 id="第五章-寄存器机器里的计算"><a href="#第五章-寄存器机器里的计算" class="headerlink" title="第五章 寄存器机器里的计算"></a>第五章 寄存器机器里的计算</h3>]]></content>
-      <categories>
-        <category>计算机科学</category>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Unix编程艺术笔记</title>
     <url>/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="第1章-Unix-哲学"><a href="#第1章-Unix-哲学" class="headerlink" title="第1章 Unix 哲学"></a>第1章 Unix 哲学</h3><h4 id="emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid"><a href="#emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid" class="headerlink" title="&emsp;&emsp; K.I.S.S Keep It Simple, Stupid!"></a>&emsp;&emsp; <code>K.I.S.S</code> <code>Keep It Simple, Stupid!</code></h4><p>&emsp;&emsp;一个程序只做好一件事，并做好。程序要能够协作，要能够处理文本流，因为这是最通用的接口。<br>&emsp;&emsp; <em><code>不懂Unix的人最终还要发明一个蹩脚的Unix。</code></em></p>
@@ -3738,6 +3654,103 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="第19章-开放源码：在Unix社区中编程"><a href="#第19章-开放源码：在Unix社区中编程" class="headerlink" title="第19章 开放源码：在Unix社区中编程"></a>第19章 开放源码：在Unix社区中编程</h3>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+        <category>计算机科学</category>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SICP 笔记</title>
+    <url>/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h3 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h3><ul>
+<li><strong>程序设计基本元素：基本表达形式、组合的方法、抽象的方法。</strong></li>
+</ul>
+<span id="more"></span>
+
+<p>（在计算模型中，全局环境的概念非常重要，它代表着计算机可以维护某种存储能力。在图灵机模型和早期大型机中都将内部存储能力作为通用型计算机的核心特点。）</p>
+<ul>
+<li><p><strong>一般而言，我们应将递归看作一种处理层次型结构（像树这样的结构）极强有力的技术。</strong>事实上，“值向上穿行”形式的求值形式是一类更一般计算过程的一个例子。这种计算过程称为<strong>树形积累</strong>。</p>
+</li>
+<li><p>环境所扮演的角色就是用于确定表达式中符号的意义。<br>（在形式代数中，任何符号都没有绝对的意义，它也不代表真理，它只是逻辑的信徒。在Lisp中，任何符号在环境中都有值对应，只是有些符号的值是它本身，有些是内部提供的基本过程，而有些则是用户自定义的。）</p>
+</li>
+<li><p><strong>语法糖衣</strong>：Lisp的语法非常简单，也就是说，对各种表达式的求值规则都可以描述为一个简单的通用规则和一组针对不同的特殊形式（例如define）的专门规则。<strong>语法的糖衣会导致分号的癌症。</strong><br>（Lisp简单的语法使得它获得了强大的表达复杂语义的能力。）</p>
+</li>
+<li><p><strong>过程定义是一种强大的抽象技术。</strong>数学函数和计算机过程的重要差异是，计算机过程必须是有效可行的（即可以转换为递归模型）。通俗地讲，它要给出行动性的‘怎么做’的知识。<br>（在几乎所有的现代编程语言中，都包含过程定义的能力，或者称为函数定义。可以定义子过程使得计算机编程的抽象能力大大提高。但最早期的一些大型机，例如ENIAC，都不能调用子过程，只能顺序执行设定好的程序。而图灵在ACE的方案设计中就已经引入了子过程特性。）</p>
+</li>
+<li><p><strong>代换模型：正则序和应用序</strong><br>（<strong>归约</strong> 是一种通用的方法论，它体现了人类的认知规律。将复杂问题规约为简单问题的组合是计算机编程的核心思维模型。）</p>
+</li>
+<li><p><strong>条件表达式和谓词</strong><br>（条件分支的特性是计算机模拟人类智能必不可少的能力。人类的智能很大程序上体现在判断决策、自主控制、修改现有观念状态等思维方式上，条件分支可以使得计算机拥有判断决策和修改自身的能力。）</p>
+</li>
+<li><p><strong>过程作为黑箱抽象</strong>，使用者不需要关心过程内部的实现细节。过程所使用的形式参数是局部变量或者称为约束变量。一个过程的定义约束了它的所有形式参数。（形式参数的作用域是这个过程的体。作用域的概念在几乎所有现代编程语言中都是基础核心的概念。）</p>
+</li>
+<li><p><strong>内部定义和块结构</strong>。(块结构是构造大型复杂程序的基础)</p>
+</li>
+<li><p><strong>线性递归和线性迭代</strong>。（两者的区别可以看作是计算状态的保存位置不同；另外在硬件实现方式上，递归需要一种称为栈的辅助数据结构。）<strong>尾递归</strong>：对于一个使用递归过程描述的迭代计算过程，尾递归总能在常量空间中来完成它；相比而言，没有实现尾递归的编译器就只能在线性空间中完成它。有了尾递归的实现，我们可以利用常规的过程调用机制表述迭代，这会使得各种复杂的专用迭代结构（如while、for、until和do等）变成不过是一些语法糖衣了。<strong>树形递归</strong>：<br>（在自然界中，到处都可以看出类似递归的结构，如贝壳的纹路，树枝的形态，种子等。）</p>
+</li>
+<li><p><strong>高阶函数 Lambda表达式</strong>:高阶过程的重要性就在于使我们能显式地用程序设计语言的要素去描述这些抽象,使我们能像操作其他计算元素一样去操作它们。</p>
+</li>
+<li><p><strong>第一级状态</strong>：</p>
+<ul>
+<li>可以用变量命名；</li>
+<li>可以提供给过程作为参数；</li>
+<li>可以由过程作为参数返回；</li>
+<li>可以包含在数据结构中。<br>Lisp给予过程完全的第一级状态。<br>(Lambda表达式和闭包的概念有着紧密的联系。将过程作为参数或者过程的返回值，可以获得更强大的抽象能力。)</li>
+</ul>
+</li>
+</ul>
+<h3 id="第二章-构建数据抽象"><a href="#第二章-构建数据抽象" class="headerlink" title="第二章 构建数据抽象"></a>第二章 构建数据抽象</h3><ul>
+<li>复合数据的使用可以进一步提高程序的模块性。这种将程序中处理数据对象表示的部分与处理数据对象的使用部分相互隔离的技术非常具有一般性，形成了一种称为<strong>数据抽象</strong>的强有力的方法学。</li>
+<li>把对于具体表示方式的依赖性限制到少数几个界面（interface）过程，不但对修改程序有帮助，同时也有助于程序的设计。因为这种做法使我们能保留考虑不同实现方式的灵活性。……数据抽象方式使我们能够推迟决策（比如系统性能方面的优化）的时间，而不会阻碍系统其他部分的工作进程。</li>
+<li><strong>闭包</strong>：用于组合数据对象的黏合剂不但能用于组合基本的数据对象,同样也可以用于复合的数据对象。另一关键思想是，复合数据对象能够成为以混合与匹配的方式组合程序模块的方便界面（interface）。（Lisp中cons的闭包性质使得它可以用优雅简单的方式构造层次型数据。另外在自然界中都可以看到类似的结构。）<br>（对于编译器或者解释器来说，程序语言的任何语句都可以认为是符号表达式。）</li>
+<li><strong>序对</strong>的实现模糊了数据与过程的界限，也就是，这种基础数据结构的内部可以完全是过程的形式。（Lisp的过程具有第一级状态，过程体本身其实也是一种存储信息的结构，广泛地讲，任何一种过程都包含信息，而数据是信息的可存储并可访问的一种形式）。与Lisp及其序对不同，C&#x2F;Pascal&#x2F;Fortran&#x2F;Basic这些语言都没有内部的通用型粘接剂，因此无法以统一的方式去操作复合数据。（或许C&#x2F;Pascal的程序员会说，Lisp程序员是从来不考虑效率的理想主义者。）</li>
+<li>（丘奇计数中去除了整数一般所认为的现实意义，即单纯表示数据，而是将其抽象为一种计数的过程。）</li>
+<li><strong>序列（List）</strong></li>
+<li>对表的映射: map是一种很重要的结构，不仅因为它代表了一种公共模式，而且因为它建立了一种处理表的高层抽象。从作用上看，map帮我们建起了一层抽象屏障，将实现表变换的过程的实现，与如何提取表中元素以及组织结果的细节隔离开。</li>
+<li><strong>树</strong>：递归是处理树结构的一种很自然的工具。</li>
+<li><strong>List作为一种约定的接口</strong>：（流处理、枚举器、过滤器、累加器等）<strong>将程序表示为一些针对序列的操作，这样做的价值就在于能帮助我们得到模块化的程序设计，也就是说，得到由一些比较独立的片段的组合构成的设计。通过提供一个标准部件的库，并使这些部件都有着一些能以各种灵活方式相互连接的界面（接口），将进一步推动人们去做模块化的设计。在工程设计中，模块化结构是控制复杂性的一种威力强大的策略。</strong></li>
+<li>八皇后谜题（eight-queen-puzzle）</li>
+<li><strong>分层设计</strong>:一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言。构造各个层次的方式，就是设法组合起作为这一层次中部件的各种基本元素，而这样构造出来的部件又可以作为另一个层次里的基本元素。在分层设计中，每个层次上所用的语言都提供了一些基本元素、组合手段，还有对该层次中的适当细节作抽象的手段。</li>
+<li><strong>数据抽象屏障是控制复杂性的强有力工具。</strong></li>
+<li>数据导向和消息传递：消息传递设计的特点是将数据对象设想为一个实体（与面向对象的程序设计中的类class相似）</li>
+<li><strong>在大型系统中,处理好一大批相互有关的类型而同时又能保持模块性,这是非常困难的问题。</strong>（面向对象语言中的类与其相关的继承概念被用来描述不同类型的对象之间的关系，被用来建立抽象、代码重用和模块化设计。但正是这种对类型之间通用性的处理带来了面向对象语言的大部分复杂性，错综复杂的各种类之间的关系成为程序员的噩梦。或许，这种问题是无法仅仅通过计算机语言设计的方式合理处理的。）</li>
+</ul>
+<h3 id="第三章-模块化、对象和状态"><a href="#第三章-模块化、对象和状态" class="headerlink" title="第三章 模块化、对象和状态"></a>第三章 模块化、对象和状态</h3><ul>
+<li>(除了抽象的手段外，我们还需要帮助我们构造起模块化的大型系统的策略。)</li>
+<li><strong>对象与流</strong>：当我们对现实世界的系统进行模拟时，我们可以采取两种策略：第一种是以对象为中心，将大型系统看作一系列对象，特别重要的时，它们的状态会随着时间而变化；另一种则是将注意力集中在流过系统的信息流上。对象策略的实现需要与时间搏斗，它需要我们抛弃老旧的代换模型，而代之更机械式、理论上更难把握的<strong>环境模型</strong>；而流方式则能够用于<strong>松懈</strong>我们的模型中对时间的模拟与计算机求值过程中的各种事件发生的顺序。</li>
+<li><strong>局部状态变量和赋值运算符</strong>：由对象组成的系统中，各对象既独立又相互作用，对象的状态是模拟现实世界中&lt;本体&gt;存在的重要概念。（<strong>状态必须是有限的</strong>，且从某种角度来看，对象的同一性问题就和不同年龄的人是否是同一个人的问题一样难以解答。）set!赋值运算的环境模型解释</li>
+<li>赋值的利益：从rand过程（实现蒙特卡洛模拟）来看，从一个复杂计算过程中一部分的观点来看，其他部分都在随着时间变化，它们隐藏起自己的随时间变化的内部状态。通过局部状态变量模拟系统的状态，对变量的赋值模拟状态的变化。总结来看，与所有状态都必须显式地操作和传递额外参数的方式相比，通过引进赋值和将状态隐藏在局部变量中的技术，我们能够以一种更模块化的方式构造系统。（蒙特卡洛模拟的收敛效率很低）</li>
+<li>赋值的代价：不用任何赋值的程序设计称为<strong>函数式程序设计</strong>。变量所代表的不再是一个简单的名字，而是索引着一个位置，而这个位置所保存的值是可以改变的。<strong>同一和变化</strong>：赋值打破了<strong>引用透明性</strong>，使得同一的问题非常复杂。<strong>命令式程序设计</strong>带来的更困难的问题是它强迫人们去考虑赋值的相对顺序，特别在并发程序中，这个问题会更加得困难。</li>
+<li>环境模型：看作一系列frame连接组成的序对表。每个frame看作一系列约束的表格。</li>
+<li>用变动数据作模拟：可以大大增加序对的表达能力，使得我们可以构造出序列和树之外的其他数据结构（如队列、二维表和堆）。<strong>共享和相等</strong>：set-car!和set-cdr!可以修改序对所指向的数据对象，这些数据对象可以与其他序对共享，但赋值操作利用共享所带来的危险则是隐晦和难以跟踪。</li>
+<li>队列和表格</li>
+<li>数字电路模拟器、约束系统</li>
+<li>并发性、时间和通信：这里的基本现象是不同进程之间的同步，建立起共享状态，或迫使进程之间通信所产生的事件按照某种特定的顺序进行。从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。</li>
+<li><strong>流</strong>：使用时间函数来描述对象的状态随时间的变化，而函数本身是没有变化的。时间函数可以用一个（可能无穷的）序列去模拟。流，可以被看作一个序列，但不能简单用表来实现，我们需要引进延时求值的技术。流是一种非常巧妙的想法，使我们可能利用各种序列操作，但又不会带来序列作为表去操作而引起的代价。因为流的构造和使用能够交替进行，而这种交错又是完全透明的。作为一种数据抽象，流和表完全一样，它们的不同点就在于元素的求值时间。对于常规的表，其car和cdr都是在构造时求值；而对于流，其cdr则是在选取的时候才去求值。（延时求值的技术也被现代编程语言所采用，如python）。流的实现需要cons的特殊形式，这种特殊形式与常规过程不同，它不会立即求出所有参数的值。</li>
+<li>无穷流，隐式地定义流：流计算模式可以方便地解决数列、级数等问题。同时可以系统地将迭代操作过程表示为流过程。（累加型迭代就是根据初始猜测值不断迭代获得下一个猜测值，直到猜测值足够好，这个过程完全可以通过流才实现，而不使用赋值或者局部变量。）（相同的问题如果不采用流过程则难以解决，例如对无穷数列和无穷级数的操作。另外，在使用表作为通用接口时，表的传输和构造需要大量的空间，特别是当表非常大时，程序的计算效率也会大大降低，而使用流则可以根据需要生成数据，而不是一次性得到所有数据。）</li>
+<li>我们可以用一个<strong>序列加速器</strong>对流做一个变换，这种加速器可以将一个逼近序列变换为另一个新序列，该新序列也收敛到与原序列同样的值，只是收敛速度更快。<strong>如果不使用流，我们也可以实现这些加速技术，但流的描述方式特别优美和方便，因为整个状态序列就像一个数据结构一样，可以通过一集统一的操作直接地随意使用。</strong></li>
+<li>将流作为信号，可以方便地开发信号处理系统。</li>
+<li>函数式程序的模块化和对象的模块化：流模型可以提供等价的模块化，同时也不必使用赋值。流实现了一个具有良好定义的数学函数，其行为根本不会变化，但用户看到的却是在这里与一个改变着的状态交互。<strong>正是由于用户方的时态的存在，为这个系统赋予了状态特性。</strong>（<strong>但是，函数式程序在处理非确定性时有着本质的困难，而非确定性在处理并发方面是本质的。</strong>）</li>
+<li>我们将这一世界模拟为一集相互分离的、受时间约束的、具有状态的相互交流的对象，或者可以将它模拟为单一的、无时间也无状态的统一体。每种观点都有强有力的优势，但就其自身而言，又没有一种方式能够完全令人满意。我们还在等待一个大统一的出现。</li>
+<li>对象模型对世界的近似在于将其分割为独立的片段，函数式模型则不是沿着对象间的边界去做模块化。当“对象”间不共享的状态远远大于它们所共享的状态时，对象模型就特别好用。</li>
+</ul>
+<h3 id="第四章-元语言抽象"><a href="#第四章-元语言抽象" class="headerlink" title="第四章 元语言抽象"></a>第四章 元语言抽象</h3><ul>
+<li><strong>建立新语言是在工程设计中控制复杂性的一种威力强大的策略</strong>，我们常常能通过采用一种新语言而提升处理复杂问题的能力，因为新语言可能使我们以一种完全不同的方式，利用不同的原语，不同的组合方式和抽象方式去描述所面对的问题，而这些都是为了手头的问题而专门打造的。</li>
+<li><strong>求值器的作用：</strong>求值器的工作并不是去描述语言的基本过程，而是提供一套连接方式，提供一些组合手段和抽象手段，借助于它们将基本过程联系起来，形成一个语言：<ul>
+<li>帮助我们处理嵌套表达式</li>
+<li>使我们可以使用变量</li>
+<li>使我们可以定义复合过程、</li>
+<li>提供一些特殊形式，它们的求值方式与普通过程调用不同</li>
+</ul>
+</li>
+<li>我们把求值器看作是一部非常特殊的机器，它要求以一部机器的描述作为输入。给定了一个输入后，求值器就能够规划自己的行为，模拟被描述机器的执行过程。<strong>按照这一观点，我们的求值器可看作一种通用机器。</strong>（<strong>这其中反映了可计算性的概念，即任一个求值器都可以模拟其他的求值器，或者说只要一个求值器是图灵机等价的，它就可以作为通用机。</strong>）求值器本身可以很简单，但却可以模拟比自身还要复杂的各种程序。<strong>用户程序被看作是求值器的数据。</strong></li>
+<li><strong>图灵停机定理</strong>：给定一任意的图灵机程序P和一组任意的输入数据I，不存在单个的图灵机程序，它在有限多步后停机，并告诉我们P是否结束输入数据I的处理。</li>
+<li><strong>惰性求值</strong>: 如果在某个参数还没有完成求值之前就进入一个过程的体,我们就说这一过程相对于该参数是<strong>非严格</strong>的；如果在进入某个人过程体之前某个参数已经完成求值，我们就说该过程相对于这个参数是<strong>严格</strong>的。</li>
+<li>将流作为惰性表：利用惰性求值，表和流就完全一样了，所以也就需要任何特殊形式了，也不需要区分表操作或者流操作。将cons实现为非严格的过程即可。</li>
+<li><strong>非确定计算</strong>：非确定求值器支持一种假象：时间是有分支的，而我们的程序里保存着所有可能的不同执行历史。在遇到一个死胡同时，我们总可以回到以前的某个选择点，并沿着另一个分支继续下去。实现非确定程序设计的amb思想是John McCarthy在1961年第一次提出的。（这是一种将自动搜索策略结合进程序设计的方式。）</li>
+<li>逻辑谜题、自然语言分析</li>
+<li><strong>逻辑程序设计</strong>：将逻辑直接作为程序设计语言并将计算作为受控推理的一种程序设计技术。对于传统的程序设计来说，算法的逻辑意义往往被程序复杂的控制成分所掩盖，使程序的正确性难以得到证明。科瓦尔斯基对传统的算法或对用通常高级语言编写的程序提出了一个著名的分析公式，即算法&#x3D;逻辑+控制。其基本思想是要从根本上改变程序设计的方法：用户只需要编写程序的逻辑部分（逻辑程序设计之名由此而来），而系统中的解释程序则实施控制部分的职能。（参看Prolog语言）</li>
+</ul>
+<h3 id="第五章-寄存器机器里的计算"><a href="#第五章-寄存器机器里的计算" class="headerlink" title="第五章 寄存器机器里的计算"></a>第五章 寄存器机器里的计算</h3>]]></content>
+      <categories>
         <category>计算机科学</category>
         <category>读书笔记</category>
       </categories>
