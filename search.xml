@@ -392,6 +392,28 @@
       </tags>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -441,28 +463,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>DroidCam 工具使用</title>
     <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
@@ -496,6 +496,19 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ESP32 模组</title>
+    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>开源硬件</category>
       </categories>
   </entry>
   <entry>
@@ -548,19 +561,6 @@
 <li><a href="https://nodemcu.readthedocs.io/en/release/">NodeMCU 官方文档</a></li>
 <li><a href="https://github.com/nodemcu">NodeMCU Github</a></li>
 </ul>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-        <category>开源硬件</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ESP32 模组</title>
-    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
-<blockquote>
-<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
-</blockquote>
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
@@ -737,62 +737,6 @@
       </categories>
   </entry>
   <entry>
-    <title>GNU编译调试工具链手册</title>
-    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
-<span id="more"></span>
-
-
-<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
-<blockquote>
-<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
-</blockquote>
-<ul>
-<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
-</li>
-<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
-</li>
-<li><p><strong>递归</strong>：</p>
-</li>
-<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
-</li>
-</ul>
-<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
-<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
-<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
-<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
-<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
-<li><p><strong>开始和停止</strong></p>
-<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
-</li>
-<li><p><strong>断点</strong></p>
-<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
-</li>
-<li><p><strong>执行</strong></p>
-<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
-</li>
-<li><p><strong>检查代码</strong></p>
-<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
-</li>
-<li><p><strong>检查数据</strong></p>
-<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
-</li>
-<li><p><strong>信息</strong></p>
-<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
-</li>
-</ul>
-<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
-<li>gprof</li>
-<li>valgrind</li>
-</ul>
-<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>GNU Unix/Linux下 常用工具</title>
     <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
@@ -877,6 +821,62 @@
       </categories>
   </entry>
   <entry>
+    <title>GNU编译调试工具链手册</title>
+    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
+<span id="more"></span>
+
+
+<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
+<blockquote>
+<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
+</li>
+<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
+</li>
+<li><p><strong>递归</strong>：</p>
+</li>
+<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
+</li>
+</ul>
+<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
+<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
+<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
+<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
+<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
+<li><p><strong>开始和停止</strong></p>
+<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
+</li>
+<li><p><strong>断点</strong></p>
+<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
+</li>
+<li><p><strong>执行</strong></p>
+<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
+</li>
+<li><p><strong>检查代码</strong></p>
+<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
+</li>
+<li><p><strong>检查数据</strong></p>
+<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
+</li>
+<li><p><strong>信息</strong></p>
+<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
+</li>
+</ul>
+<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
+<li>gprof</li>
+<li>valgrind</li>
+</ul>
+<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Git版本控制系统结构和命令手册</title>
     <url>/2022/04/29/Git%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E5%92%8C%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Git作为一个强大的开源的分布式版本控制系统，在设计开发时为自己提出了一些目标：效率、简单设计、支持非线性开发、完全的分布式和高效地处理大型项目（如Linux内核），Git的最终实现完成了大部分目标。</p>
@@ -935,26 +935,25 @@
       </categories>
   </entry>
   <entry>
-    <title>LFS 1: 构建 BLFS 系统</title>
-    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
+    <title>Hexo 简介和使用手册</title>
+    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
 <span id="more"></span>
-<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
-<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
-<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
-<p><code>acpid</code> : 监控 acpi event。</p>
-<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
-<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
-<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
-<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
-<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
-<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
-<p><code>UPower</code> : 为访问电源设备提高接口。</p>
-<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
+<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
+<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
+<li>Git</li>
+</ul>
+<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
+<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
+        <category>Web 应用</category>
       </categories>
   </entry>
   <entry>
@@ -1052,6 +1051,29 @@
 <p>为什么出现””Assumed value of MB_LEN_MAX wrong”错误? Answer: 修改tools&#x2F;gcc&#x2F;x86_64-lfs-linux-gnu&#x2F;10.2.0&#x2F;include-fixed&#x2F;limits.h 中的MB_LEN_MAX</p>
 <p>Patch包中PATH_MAX变量<br>无法进入chroot的问题,bash无法找到libncursesw.so.6? Answer: 将libncursesw.so.6复制到lib64。对于libopcodes.so、libbfd.so、libctf.so也是同样的解决方法。</p>
 <p>编辑&#x2F;etc&#x2F;ld.so.conf</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LFS 1: 构建 BLFS 系统</title>
+    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
+<span id="more"></span>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
+<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
+<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
+<p><code>acpid</code> : 监控 acpi event。</p>
+<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
+<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
+<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
+<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
+<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
+<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
+<p><code>UPower</code> : 为访问电源设备提高接口。</p>
+<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1346,6 +1368,21 @@
       </categories>
   </entry>
   <entry>
+    <title>Lex结构及简明参考手册</title>
+    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
+<span id="more"></span>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux Kernel Introduction</title>
     <url>/2023/03/08/Linux-Kernel-Introduction/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.kernel.org/">Linux kernel</a> 是开源的<code>单内核</code>(Monolithic Kernel)、<code>模块化</code>和<code>多任务</code>的<code>类Unix</code>操作系统。</p>
@@ -1587,21 +1624,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Lex结构及简明参考手册</title>
-    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
-<span id="more"></span>
-
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux kernel User Guide</title>
     <url>/2023/03/09/Linux-kernel-User-Guide/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
@@ -1704,28 +1726,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Hexo 简介和使用手册</title>
-    <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
-<span id="more"></span>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>详细信息可另行参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方手册</a>。</p>
-<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><ul>
-<li><a href="http://nodejs.org/">NodeJS</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
-<li>Git</li>
-</ul>
-<h4 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h4><p><code>$ npm install -g hexo-cli</code></p>
-<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Web 应用</category>
-      </categories>
-  </entry>
-  <entry>
     <title>N-Body问题的数值模拟</title>
     <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
@@ -1749,6 +1749,15 @@
       <categories>
         <category>高性能计算</category>
         <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenGL 工具库</title>
+    <url>/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; OpenGL(OpenGL Utility Toolkit)  。<code>freeglut</code> 是 <code>GLUT</code> 的一个完全开源替代库。</p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
       </categories>
   </entry>
   <entry>
@@ -1859,12 +1868,93 @@
       </categories>
   </entry>
   <entry>
-    <title>OpenGL 工具库</title>
-    <url>/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; OpenGL(OpenGL Utility Toolkit)  。<code>freeglut</code> 是 <code>GLUT</code> 的一个完全开源替代库。</p>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
 ]]></content>
       <categories>
-        <category>高性能计算</category>
+        <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Perl简明手册</title>
+    <url>/2022/04/14/Perl%E7%AE%80%E6%98%8E%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>&emsp;&emsp;Perl最强大的功能是其内置的对文本、面向行的数据格式进行模式导向的处理功能。比起shell，Perl包含更加强大的数据结构，包括混合元素类型的动态数组和支持名-值对的、查找方便快捷的散列（字典）类型。Perl还包括一个完备的、经过深思熟虑的全套Unix API的内部支持，显著减少对C的需求。另外，Perl形成了一个强大的开源社区。<br>&emsp;&emsp; Perl的最佳之处是作为强有力工具以供大量设计正则表达式匹配的小型胶合脚本使用。最糟之处是当程序很大时Perl会变得非常丑陋、刻板和几乎无法维护。 —— 《Unix编程艺术》</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3>]]></content>
+      <categories>
+        <category>Perl</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenWRT for Raspberry Pi Model 3</title>
+    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
+<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
+<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
+<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
+<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
+<p>设置口令：<br><code>sudo passwd openwrt</code></p>
+<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
+<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
+<p>我们使用最新的 <code>22.03.3</code> 版本</p>
+<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
+<p>具体配置选项:</p>
+<ul>
+<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
+<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
+<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
+<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
+<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
+<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
+</ul>
+</li>
+<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
+<li><strong>Luci &gt; Application</strong>:<ul>
+<li>luci-app-dockerman 容器</li>
+<li>luci-app-frpc 内网穿透客户端</li>
+<li>luci-app-ddns 动态域名解析</li>
+<li>luci-app-mwan3  分流助手(多运营商网络)</li>
+<li>luci-app-samba4 SMB网络共享</li>
+<li>luci-app-ttyd 网页终端插件</li>
+<li>luci-app-wol 网络唤醒</li>
+</ul>
+</li>
+<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
+</ul>
+<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
+<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>开源硬件</category>
       </categories>
   </entry>
   <entry>
@@ -1946,83 +2036,6 @@
       </categories>
   </entry>
   <entry>
-    <title>OpenWRT for Raspberry Pi Model 3</title>
-    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
-<span id="more"></span>
-
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
-<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
-<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
-<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
-<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
-<p>设置口令：<br><code>sudo passwd openwrt</code></p>
-<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
-<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
-<p>我们使用最新的 <code>22.03.3</code> 版本</p>
-<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
-<p>具体配置选项:</p>
-<ul>
-<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
-<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
-<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
-<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
-<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
-<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
-</ul>
-</li>
-<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
-<li><strong>Luci &gt; Application</strong>:<ul>
-<li>luci-app-dockerman 容器</li>
-<li>luci-app-frpc 内网穿透客户端</li>
-<li>luci-app-ddns 动态域名解析</li>
-<li>luci-app-mwan3  分流助手(多运营商网络)</li>
-<li>luci-app-samba4 SMB网络共享</li>
-<li>luci-app-ttyd 网页终端插件</li>
-<li>luci-app-wol 网络唤醒</li>
-</ul>
-</li>
-<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
-</ul>
-<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
-<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>开源硬件</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Python 装饰器</title>
     <url>/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
@@ -2077,16 +2090,23 @@
       </categories>
   </entry>
   <entry>
-    <title>Perl简明手册</title>
-    <url>/2022/04/14/Perl%E7%AE%80%E6%98%8E%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
-<p>&emsp;&emsp;Perl最强大的功能是其内置的对文本、面向行的数据格式进行模式导向的处理功能。比起shell，Perl包含更加强大的数据结构，包括混合元素类型的动态数组和支持名-值对的、查找方便快捷的散列（字典）类型。Perl还包括一个完备的、经过深思熟虑的全套Unix API的内部支持，显著减少对C的需求。另外，Perl形成了一个强大的开源社区。<br>&emsp;&emsp; Perl的最佳之处是作为强有力工具以供大量设计正则表达式匹配的小型胶合脚本使用。最糟之处是当程序很大时Perl会变得非常丑陋、刻板和几乎无法维护。 —— 《Unix编程艺术》</p>
-</blockquote>
+    <title>Python3异步编程与Twisted框架介绍</title>
+    <url>/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><h3 id="异步编程模型"><a href="#异步编程模型" class="headerlink" title="异步编程模型"></a>异步编程模型</h3><p>&emsp;&emsp;在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计算机对现实世界的抽象也就无法回避现实世界存在的这样的基本问题。</p>
 <span id="more"></span>
 
-<h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3>]]></content>
+
+<p>&emsp;&emsp;计算机发展过程中引入了ECF（Exceptional Control Flow）机制，这种机制反映的是一种通用的思想，因此它存在于现代计算机内部的各个层次，比如：硬件层的中断信号、操作系统层的软中断信号、进程间信号通信和进程间切换等。C++&#x2F;Java&#x2F;Python 这些现代编程语言中tay&#x2F;exception&#x2F;catch机制也是同样思想的一种表现。ECF机制使得我们可以对现实世界更好的抽象与模拟，它反映了在计算机中引入我们对时间、空间、通信和事件的理解。</p>
+<p>&emsp;&emsp;异步模型同样也是基于同样的思想，发掘和利用程序的并行性，特别是I&#x2F;O类程序（I&#x2F;O bound program）。参考krondo的 <a href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction Part1</a> ,那里对该主题有更详细具体的描述。</p>
+<h3 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h3><p>&emsp;&emsp; python asyncio库是一种在单线程、单进程下的异步模型，它的用户可以显示控制（context switching）程序的工作流，特别是当有多个任务协作进行时。这种特性是指它可以停止程序某部分的执行（往往是该部分因等待I&#x2F;O事件而阻塞），但保存其调用时的状态信息，然后在未来需要的时候重新进入这个状态，在这之前，主程序可以切换到其他任务。而在多线程与多进程的模型下，任务的切换由操作系统控制，用户无法对何时切换、切换的顺序等作出预测，另外线程或者进程间的通信和同步也是不小的编程负担。</p>
+<p>&emsp;&emsp; 在使用asyncio库以前，要首先理解什么是事件循环（event loop），循环是我们将时间引入计算机后必然的产物。在现实世界中，我们看待对象的方式都是和时间有关的，在不同的时间有不同的状态，在计算机中，要表现对象的状态随时间的变化，就必须引入状态变量以及对状态变量的访问和修改机制。在一个并发的程序系统中，不同部分都有着自己的状态，而且它们之间会相互影响，通过事件循环的方式我们可以将逻辑上的并行工作流映射到对现实世界抽象的单一的时间流中。</p>
+<p>&emsp;&emsp; 任何一个asyncio程序都必须要生成一个event loop对象，每一个任务由coroutine对象表示。我们将coroutine对象想象‘挂在’（hook）或者说注册到（register）event loop上，如果某个coroutine 阻塞了，event loop就会跳过它执行其他任务，但event loop会监控它的状态，等到它从阻塞中唤醒时就从阻塞的地方重新执行它。</p>
+<p>&emsp;&emsp; coroutine之间可以形成链状结构，即某一个coroutine的数据依赖于另一个coroutine，这种结构可以使用await关键字实现。call_soon、call_at和call_later API可以在特定的时间执行某个callback函数，Future对象可以用来异步获取任务的执行结果，其本身可以注册一些回调函数，这些 回调函数会在Future对象的结果设置后被调用。在Twisted框架中，它也是有着非常重要的作用。关于event loop清晰详细的描述，krondo的文章<a href="https://wiki.jikexueyuan.com/project/twisted-intro/">Twisted Introduction</a> 可以作为很好的参考。</p>
+<p>&emsp;&emsp;asyncio虽然是单线程的应用，但它仍然是并发的程序，它同样要面对并发的同步问题。asyncio可以使用类似与线程和进程的同步原语（Synchronization Primitives），比如锁（Lock）、事件（Event）、条件变量（Condition）和安全队列（safed queueu）。</p>
+<h3 id="Twisted-框架"><a href="#Twisted-框架" class="headerlink" title="Twisted 框架"></a>Twisted 框架</h3><p>&emsp;&emsp;Twisted是事件驱动的网络框架，其实现了反映堆模式（reactor），并支持多种协议和服务。总结来说，Twisted是将程序构建在reactor驱动的一系列异步回调链上，所以可以认为reactor是最顶层的代码，而用户的代码却是最底层，这与同步程序正好相反。Twisted中异步函数通常会返回一个Deferred对象，它类似于python的coroutine与generator。一个Deferred对象代表了一个‘异步的结果’或者说‘结果还没有到来’，异步函数会负责（通过启动一系列事件）当结果到来时相应地激活（那些事件来激活Deferred）Deferred中的callback链或者errback链。和具体可参考<a href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction</a>。</p>
+]]></content>
       <categories>
-        <category>Perl</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -2120,34 +2140,6 @@
 ]]></content>
       <categories>
         <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Python3异步编程与Twisted框架介绍</title>
-    <url>/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><h3 id="异步编程模型"><a href="#异步编程模型" class="headerlink" title="异步编程模型"></a>异步编程模型</h3><p>&emsp;&emsp;在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计算机对现实世界的抽象也就无法回避现实世界存在的这样的基本问题。</p>
-<span id="more"></span>
-
-
-<p>&emsp;&emsp;计算机发展过程中引入了ECF（Exceptional Control Flow）机制，这种机制反映的是一种通用的思想，因此它存在于现代计算机内部的各个层次，比如：硬件层的中断信号、操作系统层的软中断信号、进程间信号通信和进程间切换等。C++&#x2F;Java&#x2F;Python 这些现代编程语言中tay&#x2F;exception&#x2F;catch机制也是同样思想的一种表现。ECF机制使得我们可以对现实世界更好的抽象与模拟，它反映了在计算机中引入我们对时间、空间、通信和事件的理解。</p>
-<p>&emsp;&emsp;异步模型同样也是基于同样的思想，发掘和利用程序的并行性，特别是I&#x2F;O类程序（I&#x2F;O bound program）。参考krondo的 <a href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction Part1</a> ,那里对该主题有更详细具体的描述。</p>
-<h3 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h3><p>&emsp;&emsp; python asyncio库是一种在单线程、单进程下的异步模型，它的用户可以显示控制（context switching）程序的工作流，特别是当有多个任务协作进行时。这种特性是指它可以停止程序某部分的执行（往往是该部分因等待I&#x2F;O事件而阻塞），但保存其调用时的状态信息，然后在未来需要的时候重新进入这个状态，在这之前，主程序可以切换到其他任务。而在多线程与多进程的模型下，任务的切换由操作系统控制，用户无法对何时切换、切换的顺序等作出预测，另外线程或者进程间的通信和同步也是不小的编程负担。</p>
-<p>&emsp;&emsp; 在使用asyncio库以前，要首先理解什么是事件循环（event loop），循环是我们将时间引入计算机后必然的产物。在现实世界中，我们看待对象的方式都是和时间有关的，在不同的时间有不同的状态，在计算机中，要表现对象的状态随时间的变化，就必须引入状态变量以及对状态变量的访问和修改机制。在一个并发的程序系统中，不同部分都有着自己的状态，而且它们之间会相互影响，通过事件循环的方式我们可以将逻辑上的并行工作流映射到对现实世界抽象的单一的时间流中。</p>
-<p>&emsp;&emsp; 任何一个asyncio程序都必须要生成一个event loop对象，每一个任务由coroutine对象表示。我们将coroutine对象想象‘挂在’（hook）或者说注册到（register）event loop上，如果某个coroutine 阻塞了，event loop就会跳过它执行其他任务，但event loop会监控它的状态，等到它从阻塞中唤醒时就从阻塞的地方重新执行它。</p>
-<p>&emsp;&emsp; coroutine之间可以形成链状结构，即某一个coroutine的数据依赖于另一个coroutine，这种结构可以使用await关键字实现。call_soon、call_at和call_later API可以在特定的时间执行某个callback函数，Future对象可以用来异步获取任务的执行结果，其本身可以注册一些回调函数，这些 回调函数会在Future对象的结果设置后被调用。在Twisted框架中，它也是有着非常重要的作用。关于event loop清晰详细的描述，krondo的文章<a href="https://wiki.jikexueyuan.com/project/twisted-intro/">Twisted Introduction</a> 可以作为很好的参考。</p>
-<p>&emsp;&emsp;asyncio虽然是单线程的应用，但它仍然是并发的程序，它同样要面对并发的同步问题。asyncio可以使用类似与线程和进程的同步原语（Synchronization Primitives），比如锁（Lock）、事件（Event）、条件变量（Condition）和安全队列（safed queueu）。</p>
-<h3 id="Twisted-框架"><a href="#Twisted-框架" class="headerlink" title="Twisted 框架"></a>Twisted 框架</h3><p>&emsp;&emsp;Twisted是事件驱动的网络框架，其实现了反映堆模式（reactor），并支持多种协议和服务。总结来说，Twisted是将程序构建在reactor驱动的一系列异步回调链上，所以可以认为reactor是最顶层的代码，而用户的代码却是最底层，这与同步程序正好相反。Twisted中异步函数通常会返回一个Deferred对象，它类似于python的coroutine与generator。一个Deferred对象代表了一个‘异步的结果’或者说‘结果还没有到来’，异步函数会负责（通过启动一系列事件）当结果到来时相应地激活（那些事件来激活Deferred）Deferred中的callback链或者errback链。和具体可参考<a href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction</a>。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>RISC-V 架构介绍</title>
-    <url>/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>计算机科学</category>
       </categories>
   </entry>
   <entry>
@@ -2216,6 +2208,14 @@
       </categories>
   </entry>
   <entry>
+    <title>RISC-V 架构介绍</title>
+    <url>/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>计算机科学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RaspberryPi5 And AI Hailo8L Tutorial</title>
     <url>/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="">Raspberry Pi 5</a> 树莓派 AI 套件将树莓派 M.2 HAT+ 与 Hailo AI 加速模块捆绑在一起，用于树莓派 5。</p>
@@ -2235,6 +2235,21 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install vlc</span></span><br><span class="line"><span class="meta prompt_">$ </span></span><br></pre></td></tr></table></figure>
 
 
+]]></content>
+      <categories>
+        <category>开源硬件</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Raspberrypi 3移植总结</title>
+    <url>/2020/06/25/Raspberrypi-3%E7%A7%BB%E6%A4%8D%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h3 id="github树莓派官方源码"><a href="#github树莓派官方源码" class="headerlink" title="github树莓派官方源码"></a>github树莓派官方源码</h3><p><a href="https://github.com/raspberrypi/firmware">https://github.com/raspberrypi/firmware</a><br>可使用aarch64-gnu-linux交叉编译器编译</p>
+<span id="more"></span>
+
+
+<h3 id="bamarni在rpi3上移植Debian-9-arm64版本"><a href="#bamarni在rpi3上移植Debian-9-arm64版本" class="headerlink" title="bamarni在rpi3上移植Debian 9 arm64版本"></a>bamarni在rpi3上移植Debian 9 arm64版本</h3><p><a href="https://github.com/bamarni/pi64">https://github.com/bamarni/pi64</a><br>源码非常有参考价值</p>
+<h3 id="个人移植Ubuntu-17-10-arm64版本"><a href="#个人移植Ubuntu-17-10-arm64版本" class="headerlink" title="个人移植Ubuntu 17.10 arm64版本"></a>个人移植Ubuntu 17.10 arm64版本</h3><p>大体上可参考bamarni的项目源码进行<br>后续开启VC4 3D加速，只需要在&#x2F;boot&#x2F;config.txt文件中设置有关设备树的参数即可<br>有关树莓派配置的相关细节可参考<br><a href="https://www.raspberrypi.org/documentation/configuration/">https://www.raspberrypi.org/documentation/configuration/</a></p>
+<h3 id="配置无线wifi热点"><a href="#配置无线wifi热点" class="headerlink" title="配置无线wifi热点"></a>配置无线wifi热点</h3><p>Phil Martin的个人博客 <a href="https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/">https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/</a></p>
 ]]></content>
       <categories>
         <category>开源硬件</category>
@@ -2262,18 +2277,25 @@
       </categories>
   </entry>
   <entry>
-    <title>Raspberrypi 3移植总结</title>
-    <url>/2020/06/25/Raspberrypi-3%E7%A7%BB%E6%A4%8D%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h3 id="github树莓派官方源码"><a href="#github树莓派官方源码" class="headerlink" title="github树莓派官方源码"></a>github树莓派官方源码</h3><p><a href="https://github.com/raspberrypi/firmware">https://github.com/raspberrypi/firmware</a><br>可使用aarch64-gnu-linux交叉编译器编译</p>
+    <title>TM4C123G H6PIM微控制器开发板</title>
+    <url>/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <code>TM4c123Gh6pm</code> 是嵌入ARM Cortex-M4F处理器的开发板，处理器频率为80MHZ（通过PLL配置后），配有256k flash ROM，32k RAM，2k EEPROM，还包括USB主机，OTG连接，睡眠模块、PWM和其他外围设备。</p>
 <span id="more"></span>
 
-
-<h3 id="bamarni在rpi3上移植Debian-9-arm64版本"><a href="#bamarni在rpi3上移植Debian-9-arm64版本" class="headerlink" title="bamarni在rpi3上移植Debian 9 arm64版本"></a>bamarni在rpi3上移植Debian 9 arm64版本</h3><p><a href="https://github.com/bamarni/pi64">https://github.com/bamarni/pi64</a><br>源码非常有参考价值</p>
-<h3 id="个人移植Ubuntu-17-10-arm64版本"><a href="#个人移植Ubuntu-17-10-arm64版本" class="headerlink" title="个人移植Ubuntu 17.10 arm64版本"></a>个人移植Ubuntu 17.10 arm64版本</h3><p>大体上可参考bamarni的项目源码进行<br>后续开启VC4 3D加速，只需要在&#x2F;boot&#x2F;config.txt文件中设置有关设备树的参数即可<br>有关树莓派配置的相关细节可参考<br><a href="https://www.raspberrypi.org/documentation/configuration/">https://www.raspberrypi.org/documentation/configuration/</a></p>
-<h3 id="配置无线wifi热点"><a href="#配置无线wifi热点" class="headerlink" title="配置无线wifi热点"></a>配置无线wifi热点</h3><p>Phil Martin的个人博客 <a href="https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/">https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/</a></p>
+<p>硬件架构：<br><img src="/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/tm4c_arch.png"></p>
+<h3 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h3><h4 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h4><ul>
+<li>供电：在<code>USB Device</code>和<code>ICDI/DEBUG USB</code>间切换</li>
+<li>休眠：TIVA C系列的Launchpad提供频率为 32.768khz 的外部晶振（Y1），它为休眠模块提供时钟源。</li>
+</ul>
+<h4 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h4><p>&emsp;&emsp;主控制器的内部时钟由频率为 16Mhz 的晶振（Y2）提供。内部PLL可以通过软件配置来产生更高频率的时钟。</p>
+<h3 id="软件开发环境"><a href="#软件开发环境" class="headerlink" title="软件开发环境"></a>软件开发环境</h3><h4 id="ICDI驱动"><a href="#ICDI驱动" class="headerlink" title="ICDI驱动"></a>ICDI驱动</h4><p>&emsp;&emsp;  <a href="https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS?keyMatch=ICDI&tisearch=Search-EN-everything&usecase=part-number">TI官网下载</a><br>&emsp;&emsp; <code>ICDI</code>（In-Circuit Debug Interface）是一个电路调试接口，它可以允许使用<code>LM Flash Programmer</code>或者其他支持的工具对板子进行编程或者调试。ICDI只支持JTAG调试。当设备连接到PC后，设备枚举器会生成虚拟COM端口。</p>
+<h4 id="Windows-下开发环境"><a href="#Windows-下开发环境" class="headerlink" title="Windows 下开发环境"></a>Windows 下开发环境</h4><p>&emsp;&emsp; 在windows下开发可以使用IDE，例如TI支持的CCS，或者第三方的Keil等，开发前要首先安装ICDI驱动。接下来如果使用Keil v5集成开发环境，要下载相应的PACK（<code>Keil:TM4C_DFP</code>），然后可以下载<code>TivaWare SDK</code>，里面包含很多示例项目以及驱动库（USB库、图形库等）。Keil已经集成了烧录工具，可以直接使用，但也可以使用TI官方提供的<code>LM Flash Programmer</code>工具。Keil集成了编译器和链接器，但也可以从官网下载独立的工具链  <a href="https://www.ti.com/tool/TI-CGT">TI_CGT</a>。</p>
+<h4 id="Linux-下开发环境"><a href="#Linux-下开发环境" class="headerlink" title="Linux 下开发环境"></a>Linux 下开发环境</h4><p>参考 <a href="https://jachinshen.github.io/environment/2018/02/01/%E7%BF%BB%E8%AF%91-%E5%9C%A8Linux%E4%B8%8A%E5%BC%80%E5%8F%91TivaC.html">在 Linux 上开发 TivaC </a></p>
+<h4 id="片上调试"><a href="#片上调试" class="headerlink" title="片上调试"></a>片上调试</h4><p>&emsp;&emsp; 使用OpenOCD</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><a href="http://users.ece.utexas.edu/~valvano/arm/">示例项目</a></p>
 ]]></content>
       <categories>
-        <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -2302,28 +2324,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>TM4C123G H6PIM微控制器开发板</title>
-    <url>/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <code>TM4c123Gh6pm</code> 是嵌入ARM Cortex-M4F处理器的开发板，处理器频率为80MHZ（通过PLL配置后），配有256k flash ROM，32k RAM，2k EEPROM，还包括USB主机，OTG连接，睡眠模块、PWM和其他外围设备。</p>
-<span id="more"></span>
-
-<p>硬件架构：<br><img src="/2022/05/03/TM4C123G-H6PIM%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E6%9D%BF/tm4c_arch.png"></p>
-<h3 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h3><h4 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h4><ul>
-<li>供电：在<code>USB Device</code>和<code>ICDI/DEBUG USB</code>间切换</li>
-<li>休眠：TIVA C系列的Launchpad提供频率为 32.768khz 的外部晶振（Y1），它为休眠模块提供时钟源。</li>
-</ul>
-<h4 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h4><p>&emsp;&emsp;主控制器的内部时钟由频率为 16Mhz 的晶振（Y2）提供。内部PLL可以通过软件配置来产生更高频率的时钟。</p>
-<h3 id="软件开发环境"><a href="#软件开发环境" class="headerlink" title="软件开发环境"></a>软件开发环境</h3><h4 id="ICDI驱动"><a href="#ICDI驱动" class="headerlink" title="ICDI驱动"></a>ICDI驱动</h4><p>&emsp;&emsp;  <a href="https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS?keyMatch=ICDI&tisearch=Search-EN-everything&usecase=part-number">TI官网下载</a><br>&emsp;&emsp; <code>ICDI</code>（In-Circuit Debug Interface）是一个电路调试接口，它可以允许使用<code>LM Flash Programmer</code>或者其他支持的工具对板子进行编程或者调试。ICDI只支持JTAG调试。当设备连接到PC后，设备枚举器会生成虚拟COM端口。</p>
-<h4 id="Windows-下开发环境"><a href="#Windows-下开发环境" class="headerlink" title="Windows 下开发环境"></a>Windows 下开发环境</h4><p>&emsp;&emsp; 在windows下开发可以使用IDE，例如TI支持的CCS，或者第三方的Keil等，开发前要首先安装ICDI驱动。接下来如果使用Keil v5集成开发环境，要下载相应的PACK（<code>Keil:TM4C_DFP</code>），然后可以下载<code>TivaWare SDK</code>，里面包含很多示例项目以及驱动库（USB库、图形库等）。Keil已经集成了烧录工具，可以直接使用，但也可以使用TI官方提供的<code>LM Flash Programmer</code>工具。Keil集成了编译器和链接器，但也可以从官网下载独立的工具链  <a href="https://www.ti.com/tool/TI-CGT">TI_CGT</a>。</p>
-<h4 id="Linux-下开发环境"><a href="#Linux-下开发环境" class="headerlink" title="Linux 下开发环境"></a>Linux 下开发环境</h4><p>参考 <a href="https://jachinshen.github.io/environment/2018/02/01/%E7%BF%BB%E8%AF%91-%E5%9C%A8Linux%E4%B8%8A%E5%BC%80%E5%8F%91TivaC.html">在 Linux 上开发 TivaC </a></p>
-<h4 id="片上调试"><a href="#片上调试" class="headerlink" title="片上调试"></a>片上调试</h4><p>&emsp;&emsp; 使用OpenOCD</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><a href="http://users.ece.utexas.edu/~valvano/arm/">示例项目</a></p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Tmux快捷键参考手册</title>
     <url>/2022/04/29/Tmux%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;tmux具有强大的终端复用功能，它可以实现编辑同步。tmux的命令模式、配置文件都与vim类似。tmux整体遵循CS设计，围绕window、session、pane等核心概念。详细手册参考man page或者项目github主页。</p>
@@ -2343,48 +2343,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
-<span id="more"></span>
-
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>《古今数学思想I》读书笔记</title>
-    <url>/2019/09/11/%E3%80%8A%E5%8F%A4%E4%BB%8A%E6%95%B0%E5%AD%A6%E6%80%9D%E6%83%B3I%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文主要是早期阅读时的摘抄笔记，只可见该著作之冰山一角。</em></p>
-<h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>&emsp;&emsp;历史告诉我们，一个科目的发展是由汇集不同方面的成果点滴积累而成的。我们也知道，常常需要几十年甚至是几百年的努力才能迈出有意义的几步。不仅这些学科并没有锤炼得天衣无缝，甚至是那些已经取得的成就，也常常只是个开始，许多缺陷有待填补，或者真正重要的扩展还有待创造。</p>
-<span id="more"></span>
-<p>&emsp;&emsp;课本中的斟字酌句的叙述，未能表现出创造过程中的斗争和挫折，以及在建立一个可观的结构前，数学家所经历的漫长艰苦的道路。学生一旦认识到这一点，他将不仅获得真知灼见，还将获得顽强地追究他所攻问题的勇气，并且不会因为自己的工作并非完美无缺而感到颓丧。</p>
-<h3 id="7-希腊人对自然形成理性观点的过程"><a href="#7-希腊人对自然形成理性观点的过程" class="headerlink" title="7.希腊人对自然形成理性观点的过程"></a>7.希腊人对自然形成理性观点的过程</h3><p>&emsp;&emsp;古希腊人产生了新的信念：认为自然界是有秩序的并始终按照一定的方案运行。更有甚者，他们深信人的智慧是强有力的甚至是至高无上的，人不仅可以探索自然界的道理甚至还能预知它将会出现的事态。<br>&emsp;&emsp;（爱奥尼亚学派）他们用合理化的解释来代替诗人的想象和不加分析的传说，并且他们用理性来辩护他们的主张。这些人至少敢于凭他们的理性来面对宇宙，而不肯依赖与神，灵，鬼，怪，天使及其他神秘的力量。</p>
-<h3 id="8-希腊世界的衰替"><a href="#8-希腊世界的衰替" class="headerlink" title="8. 希腊世界的衰替"></a>8. 希腊世界的衰替</h3><p>&emsp;&emsp;人们把数学成为抽象化科学归功于希腊人。希腊人坚持要演绎证明。……需要做演绎推理的决心是同人类在其他一切领域的习惯做法完全违背的；它实际上几乎像一件不合理的事情，因为人类凭经验，归纳，类比和实验已经获得了那么多可靠的知识。但希腊人需要真理，并觉得只有用毋庸置疑的演绎推理法才能获得真理。<br>&emsp;&emsp;……希腊人还表现出一种为创新者少见的细致精神。他们认识到概念必须彼此没有矛盾，以及不能用不存在的图形来搞出前和一致的逻辑结构，这一切显出他们几乎有超人的并且是空前的思想深度。<br>&emsp;&emsp;…….<br>&emsp;&emsp;希腊人把数学等同于物理世界的实质，并在数学里看到关于宇宙结构和设计的最终真理。他们建立了数学与研究自然真理之间的联盟，这在以后便成为现代科学基础本身。其次，他们对自然的合理化认识推进到足够深远的程度，使他们能够牢固树立一种信念，感到宇宙确实是按数学规律设计的，是有条理，有规律并且能被人所认识的。<br>&emsp;&emsp;…… 凡鄙视数学家以及科学家高度理论性工作并斥其为无用的人民，他们对重要实际成果如何产生是盲目无知的。</p>
-<h3 id="9-印度和阿拉伯的数学"><a href="#9-印度和阿拉伯的数学" class="headerlink" title="9. 印度和阿拉伯的数学"></a>9. 印度和阿拉伯的数学</h3><p>&emsp;&emsp;阿拉伯人钻研数学主要是为了推进他们所从事的几门重要的科学，而不是为了数学本身。他们也不搞为科学而研究科学的事。他们对希腊人为了弄懂自然界的数学设计或对中世界欧洲人为了领悟上帝之道这种目标是不感兴趣的……他们是为了要支配自然界而从事科学研究的。<br>&emsp;&emsp;…… （印度人和阿拉伯人）这两个民族所创造的文明总的来说都是缺乏批判精神的，尽管阿拉伯人对欧几里得著作曾写过评注。另外这两个文明都是偏重实际的，实际需要确乎要求提供数量结果，而这就得用算法和代数来求出。<br>&emsp;&emsp;新思想只有在自由和勇敢的直观启发下才能产生。</p>
-<h3 id="10-欧洲中世纪时期"><a href="#10-欧洲中世纪时期" class="headerlink" title="10. 欧洲中世纪时期"></a>10. 欧洲中世纪时期</h3><p>&emsp;&emsp;数学水平之所以底，主要原因是对物理世界缺乏兴趣。当时在欧洲占统治地位的基督教规定了它自身的目标，价值和生活方式。主要关心精神生活，因而认为出于好奇心或实用目的而探索自然的工作是浮薄不足道的。基督教乃至后期的希腊哲学界如斯多葛派，伊壁鸠鲁派和新柏拉图派都强调要把心灵提高到超越肉体和物质之上，并为灵魂做好准备，以便死后去过天国的生活。<br>&emsp;&emsp;奥古斯丁：”从圣经以外获得的任何知识，如果它是有害的，理应加以排斥；如果它是有益的，那它是会包含在圣经里的。” 这段话虽然不足以代表奥古斯丁，却足以代表中世纪早期的人对研究自然的态度。<br>&emsp;&emsp;直到1100年，中世纪时期没有在知识领域里产生任何大的文化。它的知识状态是思想一律，教条主义，神秘主义，信赖权威，不断向权威著作求教，进行分析和加以评述。倾向于神秘主义的结果使人把含糊其词的思想奉为现实甚至接受为宗教真理。仅存的那一点点科学是呆板无生气的。神学统辖了所有的学问，教会神甫能编造万有知识体系。但除了包含在基督教义中的以外，他们不去寻思或追求任何别的原理。<br>&emsp;&emsp;数学显然不能在一个只重世务或只信天国的文明中繁荣滋长，我们可以看到，数学在一个自由的学术氛围中最能获得成功，那里既能对物理世界产生的概念发生兴趣，又有人愿意从抽象方面去思考由这些问题所引起的概念，而不计其是否能获得眼前或者实际的利益。自然界是产生概念的温床，然后必须对概念本身进行研究。<br>&emsp;&emsp;反过来，能对自然获得新的观点，对它有更丰富，更广泛，更强有力的理解，而这又产生更深刻的数学工作。</p>
-<h3 id="文艺复兴"><a href="#文艺复兴" class="headerlink" title="文艺复兴"></a>文艺复兴</h3><p>&emsp;&emsp;革命的影响是十分广泛且连续不断的，几乎遍及欧洲每个国家每个城市的战争乃是政治变革的原因。…… 中世纪后期，意大利获得了大量的财富；…… 在15世纪，希腊的著作大量进入欧洲；……大约在1450年，古登堡发明了活版印刷，加速了知识传播；……罗盘和火药的引进是有重大意义的；……由于制造业，矿业，大规模的农业以及各种贸易的大量发展，一个新的经济时代开始了。…… 和埃及，希腊及罗马的奴隶社会以及中世纪的封建农奴制社会相比较，新社会拥有一个不断增大的自由手工业和自由劳动者阶级。……为了改进生产方法和材料的质量，资本主义经济竞争也促使人们去直接研究一些物理现象和因果关系。……..可以肯定，每当物理的解释被证明比神学的解释更为有用的时候，神学的解释就被人们抛弃了。…….. 通过地理勘察以及进一步的商业贸易，使得人们接触到了异地各种各样新的知识，这些知识对中世纪的教条提出了挑战并激发了想象力。…….也引起对教会的科学和宇宙学说的可靠性的怀疑，对教会压制实验和压制人们思考新秩序所产生的问题的反抗。</p>
-<h3 id="达芬奇"><a href="#达芬奇" class="headerlink" title="达芬奇"></a>达芬奇</h3><p>&emsp;&emsp;他对这些读书人是这样描写的：”他们高傲自大，卖弄学问，并非以自己的钻研所得而只是以背诵别人的成果来夸耀自己，他们只是别人学问的朗诵者和吹鼓手”。<br>“如果你不立足于大自然这个很好的基础，你的劳动将无裨于人，无益于己。”<br>“在以数学为依据的科学的研究中，如果有些人不直接向自然界请教而是向书本的作者请教，那么，他就不是自然界的儿子而是孙子了。”</p>
-<h3 id="弗郎西斯培根"><a href="#弗郎西斯培根" class="headerlink" title="弗郎西斯培根"></a>弗郎西斯培根</h3><p>&emsp;&emsp;所有的知识都是通过观察开始的。然后，他作出了非凡的贡献，就是坚持‘逐步和持续不断地归纳’以代替草率的一般结论。他说：“寻找和发现真理有两条路，也只有两条路。其一，通过感觉和特例飞跃到普遍的公理，然后通过这些原则和一劳永逸的真理发明和判断一些派生的公理。另一种方法是感觉和特例收集公理，不断地逐步上升，这样最后到达更普遍的公理；这后一种方法是真实的，但尚未有人试用过。”但它没有认识到科学必须通过测量才能得到定量的规律。弗朗西斯.培根虽然自己没有创造但却发出了关于实验方法的宣言。…… 让我们接近大自然并面对着它。我们不要搞杂乱的，偶然的试验，要让它成为系统的，彻底的和有一定方向的。数学应该是物理学的仆人。<br>&emsp;&emsp;他希望致知识与应用。他想以掌握自然来服务并造福于人类，而不是为博得学者的高兴和快乐。如他所说，科学应上升为公理然后又下降到应用。（促进理论与实践的结合）<br>&emsp;&emsp;对我们来说，现代科学开端之所以重要，当然在于它为数学的重大发展铺平了道路。它直接的效果是和具体问题相联系。<br>&emsp;&emsp;……长远的效果是现代数学在柏拉图“数学是现实的核心”的学说指引下，几乎完全是由具体的科学问题产生的（如微积分）。在研究自然并且得到包括观察和实验结果的规律这个新的方向的引导下，数学从哲学中分离出来并和物理科学联系在一起。对数学来说，进一步的后果是爆发了一个空前活跃和富有创造性的时期。</p>
-]]></content>
-      <categories>
-        <category>数学</category>
-        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -2476,6 +2434,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>flex 规范参考</title>
     <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
@@ -2535,29 +2515,22 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>《黑客与画家》读书笔记</title>
-    <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
-<h3 id="好设计是简单的设计"><a href="#好设计是简单的设计" class="headerlink" title="好设计是简单的设计"></a>好设计是简单的设计</h3><p>&emsp;&emsp;当你被迫把东西做的很简单时，你就被迫直接面对真正的问题。当你不能用表面的装饰交差时，你就不得不做好真正的本质部分。</p>
+    <title>《古今数学思想I》读书笔记</title>
+    <url>/2019/09/11/%E3%80%8A%E5%8F%A4%E4%BB%8A%E6%95%B0%E5%AD%A6%E6%80%9D%E6%83%B3I%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文主要是早期阅读时的摘抄笔记，只可见该著作之冰山一角。</em></p>
+<h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>&emsp;&emsp;历史告诉我们，一个科目的发展是由汇集不同方面的成果点滴积累而成的。我们也知道，常常需要几十年甚至是几百年的努力才能迈出有意义的几步。不仅这些学科并没有锤炼得天衣无缝，甚至是那些已经取得的成就，也常常只是个开始，许多缺陷有待填补，或者真正重要的扩展还有待创造。</p>
 <span id="more"></span>
-
-
-<h3 id="好设计是永不过时的设计"><a href="#好设计是永不过时的设计" class="headerlink" title="好设计是永不过时的设计"></a>好设计是永不过时的设计</h3><p>&emsp;&emsp;以永不过时作为目标是一种帮助自己找到最佳答案的方法:如果你不愿意别人的答案取代你的答案，你就只好自己做出最佳答案。<br>&emsp;&emsp;以永不过时作为目标也是一种避开时代风潮的方法。</p>
-<h3 id="好设计是解决主要问题的设计"><a href="#好设计是解决主要问题的设计" class="headerlink" title="好设计是解决主要问题的设计"></a>好设计是解决主要问题的设计</h3><p>&emsp;&emsp;答案可以不断改进，同样，问题本身也可以不断改进。</p>
-<h3 id="好设计是启发式的设计"><a href="#好设计是启发式的设计" class="headerlink" title="好设计是启发式的设计"></a>好设计是启发式的设计</h3><p>&emsp;&emsp;在建筑学和设计学中，这条原则意味着，一栋建筑或一个物品应该允许你按照自己的愿望来使用。在软件业中，这条原则意味着，你应该为用户提供一些基本模块，使得他们可以随心所欲自由组合，就像玩乐高积木那样。</p>
-<h3 id="好的设计通常是有点趣味性的设计"><a href="#好的设计通常是有点趣味性的设计" class="headerlink" title="好的设计通常是有点趣味性的设计"></a>好的设计通常是有点趣味性的设计</h3><p>&emsp;&emsp;好的设计并非一定有趣，但是很难想象完全无趣的设计会是好的设计。</p>
-<h3 id="好设计是艰苦的设计"><a href="#好设计是艰苦的设计" class="headerlink" title="好设计是艰苦的设计"></a>好设计是艰苦的设计</h3><p>&emsp;&emsp;在困难地点和预算不足的条件下，建筑师就只能做出很简练的设计。当解决难题成为压倒一切的任务时，那些流行样式和华丽装饰就被抛到一边去了。<br>&emsp;&emsp;你需要的是咬牙向前冲刺的痛苦，而不是脚被钉子扎破的痛苦。<br>&emsp;&emsp;功能应当决定形式。</p>
-<h3 id="好设计是看似容易的设计"><a href="#好设计是看似容易的设计" class="headerlink" title="好设计是看似容易的设计"></a>好设计是看似容易的设计</h3><p>&emsp;&emsp;但看似容易的设计，背后都需要大量的练习。</p>
-<h3 id="好设计是对称的设计"><a href="#好设计是对称的设计" class="headerlink" title="好设计是对称的设计"></a>好设计是对称的设计</h3><p>&emsp;&emsp;对称也许只是简洁性的一种体现，但是它十分重要。</p>
-<h3 id="好设计是模仿大自然的设计"><a href="#好设计是模仿大自然的设计" class="headerlink" title="好设计是模仿大自然的设计"></a>好设计是模仿大自然的设计</h3><p>&emsp;&emsp;并不是说模仿大自然这种行为本身有什么好，而是说大自然在长期的进化中已经解决了很多设计问题。所以，如果你的设计与大自然很接近，那基本上不会很差。</p>
-<h3 id="好设计是一种再设计"><a href="#好设计是一种再设计" class="headerlink" title="好设计是一种再设计"></a>好设计是一种再设计</h3><p>&emsp;&emsp;很少有人一次就可以把事情做对。专家的做法是先完成一个早期原型，然后提出修改计划，最后再把原型扔掉。<br>&emsp;&emsp;你应该培养对自己的不满。并且不要把犯错误看成灾难，要勇于承认、勇于改正。犯错误是很正常的事情。</p>
-<h3 id="好设计是能够复制的设计"><a href="#好设计是能够复制的设计" class="headerlink" title="好设计是能够复制的设计"></a>好设计是能够复制的设计</h3><p>&emsp;&emsp;有时候把事情做对，比原创更重要。<br>&emsp;&emsp;但也不要满足于一味的模仿。<br>&emsp;&emsp;最伟大的大师最终会达到一种超脱自我的境界。他们一心想找到正确答案，如果别人已经回答出了一部分，那就没理由不拿来用。他们足够自信地使用他人的成果，完全不担心因此丧失自己的特点。</p>
-<h3 id="好设计常常是奇特的设计"><a href="#好设计常常是奇特的设计" class="headerlink" title="好设计常常是奇特的设计"></a>好设计常常是奇特的设计</h3><p>&emsp;&emsp;如计算机中的Lisp语言。<br>&emsp;&emsp;但它是结果，而不是原因。爱因斯坦并不想让相对论变得很奇特，他只想找出真理，是真理本身显得很奇特。<br>&emsp;&emsp;你最后发展出来的风格是自然而然的结果。</p>
-<h3 id="好设计是成批出现的"><a href="#好设计是成批出现的" class="headerlink" title="好设计是成批出现的"></a>好设计是成批出现的</h3><p>&emsp;&emsp;推动人才成批出现的最大因素就是，让有天赋的人聚在一起，共同解决某个难题。<br>&emsp;&emsp;互相激励比天赋更重要。<br>&emsp;&emsp;在历史的任何时刻都有一些热点项目，一些团体在这些项目上做出了伟大的成绩。如果你远离这些中心，几乎不可能单靠自己取得伟大成果。在某种程度上，你个人最多可以对趋势产生一定的影响，但是你不可能决定趋势，实际上是趋势决定了你。（或许有人办得到，但是米兰的达芬奇显然没有办到。）</p>
-<h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
+<p>&emsp;&emsp;课本中的斟字酌句的叙述，未能表现出创造过程中的斗争和挫折，以及在建立一个可观的结构前，数学家所经历的漫长艰苦的道路。学生一旦认识到这一点，他将不仅获得真知灼见，还将获得顽强地追究他所攻问题的勇气，并且不会因为自己的工作并非完美无缺而感到颓丧。</p>
+<h3 id="7-希腊人对自然形成理性观点的过程"><a href="#7-希腊人对自然形成理性观点的过程" class="headerlink" title="7.希腊人对自然形成理性观点的过程"></a>7.希腊人对自然形成理性观点的过程</h3><p>&emsp;&emsp;古希腊人产生了新的信念：认为自然界是有秩序的并始终按照一定的方案运行。更有甚者，他们深信人的智慧是强有力的甚至是至高无上的，人不仅可以探索自然界的道理甚至还能预知它将会出现的事态。<br>&emsp;&emsp;（爱奥尼亚学派）他们用合理化的解释来代替诗人的想象和不加分析的传说，并且他们用理性来辩护他们的主张。这些人至少敢于凭他们的理性来面对宇宙，而不肯依赖与神，灵，鬼，怪，天使及其他神秘的力量。</p>
+<h3 id="8-希腊世界的衰替"><a href="#8-希腊世界的衰替" class="headerlink" title="8. 希腊世界的衰替"></a>8. 希腊世界的衰替</h3><p>&emsp;&emsp;人们把数学成为抽象化科学归功于希腊人。希腊人坚持要演绎证明。……需要做演绎推理的决心是同人类在其他一切领域的习惯做法完全违背的；它实际上几乎像一件不合理的事情，因为人类凭经验，归纳，类比和实验已经获得了那么多可靠的知识。但希腊人需要真理，并觉得只有用毋庸置疑的演绎推理法才能获得真理。<br>&emsp;&emsp;……希腊人还表现出一种为创新者少见的细致精神。他们认识到概念必须彼此没有矛盾，以及不能用不存在的图形来搞出前和一致的逻辑结构，这一切显出他们几乎有超人的并且是空前的思想深度。<br>&emsp;&emsp;…….<br>&emsp;&emsp;希腊人把数学等同于物理世界的实质，并在数学里看到关于宇宙结构和设计的最终真理。他们建立了数学与研究自然真理之间的联盟，这在以后便成为现代科学基础本身。其次，他们对自然的合理化认识推进到足够深远的程度，使他们能够牢固树立一种信念，感到宇宙确实是按数学规律设计的，是有条理，有规律并且能被人所认识的。<br>&emsp;&emsp;…… 凡鄙视数学家以及科学家高度理论性工作并斥其为无用的人民，他们对重要实际成果如何产生是盲目无知的。</p>
+<h3 id="9-印度和阿拉伯的数学"><a href="#9-印度和阿拉伯的数学" class="headerlink" title="9. 印度和阿拉伯的数学"></a>9. 印度和阿拉伯的数学</h3><p>&emsp;&emsp;阿拉伯人钻研数学主要是为了推进他们所从事的几门重要的科学，而不是为了数学本身。他们也不搞为科学而研究科学的事。他们对希腊人为了弄懂自然界的数学设计或对中世界欧洲人为了领悟上帝之道这种目标是不感兴趣的……他们是为了要支配自然界而从事科学研究的。<br>&emsp;&emsp;…… （印度人和阿拉伯人）这两个民族所创造的文明总的来说都是缺乏批判精神的，尽管阿拉伯人对欧几里得著作曾写过评注。另外这两个文明都是偏重实际的，实际需要确乎要求提供数量结果，而这就得用算法和代数来求出。<br>&emsp;&emsp;新思想只有在自由和勇敢的直观启发下才能产生。</p>
+<h3 id="10-欧洲中世纪时期"><a href="#10-欧洲中世纪时期" class="headerlink" title="10. 欧洲中世纪时期"></a>10. 欧洲中世纪时期</h3><p>&emsp;&emsp;数学水平之所以底，主要原因是对物理世界缺乏兴趣。当时在欧洲占统治地位的基督教规定了它自身的目标，价值和生活方式。主要关心精神生活，因而认为出于好奇心或实用目的而探索自然的工作是浮薄不足道的。基督教乃至后期的希腊哲学界如斯多葛派，伊壁鸠鲁派和新柏拉图派都强调要把心灵提高到超越肉体和物质之上，并为灵魂做好准备，以便死后去过天国的生活。<br>&emsp;&emsp;奥古斯丁：”从圣经以外获得的任何知识，如果它是有害的，理应加以排斥；如果它是有益的，那它是会包含在圣经里的。” 这段话虽然不足以代表奥古斯丁，却足以代表中世纪早期的人对研究自然的态度。<br>&emsp;&emsp;直到1100年，中世纪时期没有在知识领域里产生任何大的文化。它的知识状态是思想一律，教条主义，神秘主义，信赖权威，不断向权威著作求教，进行分析和加以评述。倾向于神秘主义的结果使人把含糊其词的思想奉为现实甚至接受为宗教真理。仅存的那一点点科学是呆板无生气的。神学统辖了所有的学问，教会神甫能编造万有知识体系。但除了包含在基督教义中的以外，他们不去寻思或追求任何别的原理。<br>&emsp;&emsp;数学显然不能在一个只重世务或只信天国的文明中繁荣滋长，我们可以看到，数学在一个自由的学术氛围中最能获得成功，那里既能对物理世界产生的概念发生兴趣，又有人愿意从抽象方面去思考由这些问题所引起的概念，而不计其是否能获得眼前或者实际的利益。自然界是产生概念的温床，然后必须对概念本身进行研究。<br>&emsp;&emsp;反过来，能对自然获得新的观点，对它有更丰富，更广泛，更强有力的理解，而这又产生更深刻的数学工作。</p>
+<h3 id="文艺复兴"><a href="#文艺复兴" class="headerlink" title="文艺复兴"></a>文艺复兴</h3><p>&emsp;&emsp;革命的影响是十分广泛且连续不断的，几乎遍及欧洲每个国家每个城市的战争乃是政治变革的原因。…… 中世纪后期，意大利获得了大量的财富；…… 在15世纪，希腊的著作大量进入欧洲；……大约在1450年，古登堡发明了活版印刷，加速了知识传播；……罗盘和火药的引进是有重大意义的；……由于制造业，矿业，大规模的农业以及各种贸易的大量发展，一个新的经济时代开始了。…… 和埃及，希腊及罗马的奴隶社会以及中世纪的封建农奴制社会相比较，新社会拥有一个不断增大的自由手工业和自由劳动者阶级。……为了改进生产方法和材料的质量，资本主义经济竞争也促使人们去直接研究一些物理现象和因果关系。……..可以肯定，每当物理的解释被证明比神学的解释更为有用的时候，神学的解释就被人们抛弃了。…….. 通过地理勘察以及进一步的商业贸易，使得人们接触到了异地各种各样新的知识，这些知识对中世纪的教条提出了挑战并激发了想象力。…….也引起对教会的科学和宇宙学说的可靠性的怀疑，对教会压制实验和压制人们思考新秩序所产生的问题的反抗。</p>
+<h3 id="达芬奇"><a href="#达芬奇" class="headerlink" title="达芬奇"></a>达芬奇</h3><p>&emsp;&emsp;他对这些读书人是这样描写的：”他们高傲自大，卖弄学问，并非以自己的钻研所得而只是以背诵别人的成果来夸耀自己，他们只是别人学问的朗诵者和吹鼓手”。<br>“如果你不立足于大自然这个很好的基础，你的劳动将无裨于人，无益于己。”<br>“在以数学为依据的科学的研究中，如果有些人不直接向自然界请教而是向书本的作者请教，那么，他就不是自然界的儿子而是孙子了。”</p>
+<h3 id="弗郎西斯培根"><a href="#弗郎西斯培根" class="headerlink" title="弗郎西斯培根"></a>弗郎西斯培根</h3><p>&emsp;&emsp;所有的知识都是通过观察开始的。然后，他作出了非凡的贡献，就是坚持‘逐步和持续不断地归纳’以代替草率的一般结论。他说：“寻找和发现真理有两条路，也只有两条路。其一，通过感觉和特例飞跃到普遍的公理，然后通过这些原则和一劳永逸的真理发明和判断一些派生的公理。另一种方法是感觉和特例收集公理，不断地逐步上升，这样最后到达更普遍的公理；这后一种方法是真实的，但尚未有人试用过。”但它没有认识到科学必须通过测量才能得到定量的规律。弗朗西斯.培根虽然自己没有创造但却发出了关于实验方法的宣言。…… 让我们接近大自然并面对着它。我们不要搞杂乱的，偶然的试验，要让它成为系统的，彻底的和有一定方向的。数学应该是物理学的仆人。<br>&emsp;&emsp;他希望致知识与应用。他想以掌握自然来服务并造福于人类，而不是为博得学者的高兴和快乐。如他所说，科学应上升为公理然后又下降到应用。（促进理论与实践的结合）<br>&emsp;&emsp;对我们来说，现代科学开端之所以重要，当然在于它为数学的重大发展铺平了道路。它直接的效果是和具体问题相联系。<br>&emsp;&emsp;……长远的效果是现代数学在柏拉图“数学是现实的核心”的学说指引下，几乎完全是由具体的科学问题产生的（如微积分）。在研究自然并且得到包括观察和实验结果的规律这个新的方向的引导下，数学从哲学中分离出来并和物理科学联系在一起。对数学来说，进一步的后果是爆发了一个空前活跃和富有创造性的时期。</p>
 ]]></content>
       <categories>
-        <category>软件工程</category>
+        <category>数学</category>
         <category>读书笔记</category>
       </categories>
   </entry>
@@ -2585,18 +2558,41 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>制作MultiBoot USB启动盘</title>
-    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+    <title>《黑客与画家》读书笔记</title>
+    <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
+<h3 id="好设计是简单的设计"><a href="#好设计是简单的设计" class="headerlink" title="好设计是简单的设计"></a>好设计是简单的设计</h3><p>&emsp;&emsp;当你被迫把东西做的很简单时，你就被迫直接面对真正的问题。当你不能用表面的装饰交差时，你就不得不做好真正的本质部分。</p>
 <span id="more"></span>
 
-<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
-<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
-<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
-<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
+
+<h3 id="好设计是永不过时的设计"><a href="#好设计是永不过时的设计" class="headerlink" title="好设计是永不过时的设计"></a>好设计是永不过时的设计</h3><p>&emsp;&emsp;以永不过时作为目标是一种帮助自己找到最佳答案的方法:如果你不愿意别人的答案取代你的答案，你就只好自己做出最佳答案。<br>&emsp;&emsp;以永不过时作为目标也是一种避开时代风潮的方法。</p>
+<h3 id="好设计是解决主要问题的设计"><a href="#好设计是解决主要问题的设计" class="headerlink" title="好设计是解决主要问题的设计"></a>好设计是解决主要问题的设计</h3><p>&emsp;&emsp;答案可以不断改进，同样，问题本身也可以不断改进。</p>
+<h3 id="好设计是启发式的设计"><a href="#好设计是启发式的设计" class="headerlink" title="好设计是启发式的设计"></a>好设计是启发式的设计</h3><p>&emsp;&emsp;在建筑学和设计学中，这条原则意味着，一栋建筑或一个物品应该允许你按照自己的愿望来使用。在软件业中，这条原则意味着，你应该为用户提供一些基本模块，使得他们可以随心所欲自由组合，就像玩乐高积木那样。</p>
+<h3 id="好的设计通常是有点趣味性的设计"><a href="#好的设计通常是有点趣味性的设计" class="headerlink" title="好的设计通常是有点趣味性的设计"></a>好的设计通常是有点趣味性的设计</h3><p>&emsp;&emsp;好的设计并非一定有趣，但是很难想象完全无趣的设计会是好的设计。</p>
+<h3 id="好设计是艰苦的设计"><a href="#好设计是艰苦的设计" class="headerlink" title="好设计是艰苦的设计"></a>好设计是艰苦的设计</h3><p>&emsp;&emsp;在困难地点和预算不足的条件下，建筑师就只能做出很简练的设计。当解决难题成为压倒一切的任务时，那些流行样式和华丽装饰就被抛到一边去了。<br>&emsp;&emsp;你需要的是咬牙向前冲刺的痛苦，而不是脚被钉子扎破的痛苦。<br>&emsp;&emsp;功能应当决定形式。</p>
+<h3 id="好设计是看似容易的设计"><a href="#好设计是看似容易的设计" class="headerlink" title="好设计是看似容易的设计"></a>好设计是看似容易的设计</h3><p>&emsp;&emsp;但看似容易的设计，背后都需要大量的练习。</p>
+<h3 id="好设计是对称的设计"><a href="#好设计是对称的设计" class="headerlink" title="好设计是对称的设计"></a>好设计是对称的设计</h3><p>&emsp;&emsp;对称也许只是简洁性的一种体现，但是它十分重要。</p>
+<h3 id="好设计是模仿大自然的设计"><a href="#好设计是模仿大自然的设计" class="headerlink" title="好设计是模仿大自然的设计"></a>好设计是模仿大自然的设计</h3><p>&emsp;&emsp;并不是说模仿大自然这种行为本身有什么好，而是说大自然在长期的进化中已经解决了很多设计问题。所以，如果你的设计与大自然很接近，那基本上不会很差。</p>
+<h3 id="好设计是一种再设计"><a href="#好设计是一种再设计" class="headerlink" title="好设计是一种再设计"></a>好设计是一种再设计</h3><p>&emsp;&emsp;很少有人一次就可以把事情做对。专家的做法是先完成一个早期原型，然后提出修改计划，最后再把原型扔掉。<br>&emsp;&emsp;你应该培养对自己的不满。并且不要把犯错误看成灾难，要勇于承认、勇于改正。犯错误是很正常的事情。</p>
+<h3 id="好设计是能够复制的设计"><a href="#好设计是能够复制的设计" class="headerlink" title="好设计是能够复制的设计"></a>好设计是能够复制的设计</h3><p>&emsp;&emsp;有时候把事情做对，比原创更重要。<br>&emsp;&emsp;但也不要满足于一味的模仿。<br>&emsp;&emsp;最伟大的大师最终会达到一种超脱自我的境界。他们一心想找到正确答案，如果别人已经回答出了一部分，那就没理由不拿来用。他们足够自信地使用他人的成果，完全不担心因此丧失自己的特点。</p>
+<h3 id="好设计常常是奇特的设计"><a href="#好设计常常是奇特的设计" class="headerlink" title="好设计常常是奇特的设计"></a>好设计常常是奇特的设计</h3><p>&emsp;&emsp;如计算机中的Lisp语言。<br>&emsp;&emsp;但它是结果，而不是原因。爱因斯坦并不想让相对论变得很奇特，他只想找出真理，是真理本身显得很奇特。<br>&emsp;&emsp;你最后发展出来的风格是自然而然的结果。</p>
+<h3 id="好设计是成批出现的"><a href="#好设计是成批出现的" class="headerlink" title="好设计是成批出现的"></a>好设计是成批出现的</h3><p>&emsp;&emsp;推动人才成批出现的最大因素就是，让有天赋的人聚在一起，共同解决某个难题。<br>&emsp;&emsp;互相激励比天赋更重要。<br>&emsp;&emsp;在历史的任何时刻都有一些热点项目，一些团体在这些项目上做出了伟大的成绩。如果你远离这些中心，几乎不可能单靠自己取得伟大成果。在某种程度上，你个人最多可以对趋势产生一定的影响，但是你不可能决定趋势，实际上是趋势决定了你。（或许有人办得到，但是米兰的达芬奇显然没有办到。）</p>
+<h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
 ]]></content>
       <categories>
-        <category>GNU/Linux操作系统</category>
+        <category>读书笔记</category>
+        <category>软件工程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>伯特兰罗素：《我为什么活着》摘抄</title>
+    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
+    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
+<span id="more"></span>
+<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -2646,6 +2642,37 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>制作MultiBoot USB启动盘</title>
+    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+<span id="more"></span>
+
+<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
+<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
+<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
+<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>可怜的伊壁鸠鲁</title>
+    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
+    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
+<span id="more"></span>
+
+
+<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
+<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
+<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
+<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
     <title>基于 4G 模组的 GPS 小型定位器</title>
     <url>/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN<br>模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。</p>
@@ -2674,108 +2701,14 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h4 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h4><p>测试 GPS</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ AT+QGPSCFG=&quot;outport&quot;, &quot;uartdebug&quot;     # 配置 NMEA 语句输出端口</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;gnssconfig&quot;,5             # 设置 GNSS 卫星导航系统</span><br><span class="line">OK</span><br><span class="line"># GPS + BDS + Galileo 混合定位</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;gnssconfig&quot;               # 查询支持的 GNSS 卫星导航系统</span><br><span class="line">+QGPSCFG: &quot;gnssconfig&quot;,5␍␊</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;autogps&quot;,1                # 设置模块启动时自动启动 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;nmeasrc&quot;                  # 用于启用或禁用通过 AT+QGPSGNMEA 获取 NMEA 语句</span><br><span class="line">+QGPSCFG: &quot;nmeasrc&quot;,1␍␊</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;apflash&quot;,0</span><br><span class="line"></span><br><span class="line">$ AT+QGPS=1                             # 打开 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSEND                            # 关闭 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSLOC=2                          # 获取定位信息</span><br><span class="line">+QGPSLOC: 141445.00,31.26329,121.68116,1.24,62.8,3,,0.184,0.101,251124,22␍</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
+<h3 id="创建云平台实例"><a href="#创建云平台实例" class="headerlink" title="创建云平台实例"></a>创建云平台实例</h3><p>在<a href="https://iot.console.aliyun.com/lk/summary/new">阿里云物联网平台</a> 开通公共实例，如下图所示：</p>
+<p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/aliiot.png"></p>
+<h4 id="创建产品"><a href="#创建产品" class="headerlink" title="创建产品"></a>创建产品</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createProduct.png"></p>
+<h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createdevice.png"></p>
 ]]></content>
       <tags>
         <tag>嵌入式系统和IOT</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>伯特兰罗素：《我为什么活着》摘抄</title>
-    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
-    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
-<span id="more"></span>
-<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>可怜的伊壁鸠鲁</title>
-    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
-    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
-<span id="more"></span>
-
-
-<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
-<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
-<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
-<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>嵌入式系统介绍</title>
-    <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
-<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
-<span id="more"></span>
-
-<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
-<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
-<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
-<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
-<ol>
-<li>并行接口（Parallel Interface）</li>
-<li>串行接口（Serial Interface）</li>
-<li>模拟接口（Analog Interface）</li>
-<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
-</ol>
-<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
-<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
-<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
-<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
-<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
-<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
-<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
-<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
-<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>嵌入式系统中的WatchDog</title>
-    <url>/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
-<span id="more"></span>
-
-<p>&emsp;&emsp; 对于一些特殊的硬件设备（例如远程空间探测器），如果系统出现故障，想要通过人工手动恢复几乎是不可能的，这时候设备需要“自力更生”，<code>WatchDog</code>定时器就可以派上用场了。另外，在运行不受信任的代码时，也可以使用 <code>WatchDog</code>，以限制该代码对 CPU 的使用时间，从而防止某些类型的<code>拒绝服务攻击（DOS Attack）</code>。</p>
-<blockquote>
-<p>参考 <a href="https://interrupt.memfault.com/blog/firmware-watchdog-best-practices">《A Guide to Watchdog Timers for Embedded Systems》</a> - By <strong>Chris Coleman</strong>.<br>参考  <a href="https://encyclopedia.thefreedictionary.com/Watchdog+timer">Wikipedia - WatchDog timer</a>.</p>
-</blockquote>
-<h2 id="硬件-WatchDog"><a href="#硬件-WatchDog" class="headerlink" title="硬件 WatchDog"></a>硬件 WatchDog</h2><p>&emsp;&emsp; 许多芯片厂商在他们的 MCU 中包含了一个分立的 RTL 模块，称为”WatchDog 定时器”。该外围设备（peripheral）由一个随时钟周期信号自动递减的计数器组成，当计数器到达零时，硬件将自动重置（Reset）设备。</p>
-<p>&emsp;&emsp; <code>WatchDog 定时器</code>通常在默认情况下是禁用的，程序员有责任对其进行配置并且在软件中对其使能（enable）。一旦使能后，软件需要周期性地重置计数器，以防止设备被重启（Reset）。这个操作通常被称为“喂（Feeding）”、 “踢（Kicking）” 或者 “拍（Patting）” 狗。这样做的理由是，如果软件不能够重置 WatchDog 定时器，表明系统没有处于预期的运行状态，这时就需要将系统重置到正常状态。</p>
-<h2 id="为什么需要-WatchDog-定时器"><a href="#为什么需要-WatchDog-定时器" class="headerlink" title="为什么需要 WatchDog 定时器"></a>为什么需要 WatchDog 定时器</h2><p>&emsp;&emsp; 嵌入式系统在很多情况下都会被挂起（Hang），最常见的情况列举如下：</p>
-<ul>
-<li>内存已损坏，代码陷于无限循环中（infinite loop）。</li>
-<li>一个硬件组件（例如 HRM、加速度计或者 NOR Flash芯片）被卡住（wedged），不能响应请求。</li>
-<li>一个或者多个任务进入死锁（互斥体被按照错误的顺序占用或者没有被释放）。</li>
-<li>一个高优先级的 RTOS 任务占用了太多 CPU 时间，导致低优先级任务饥饿。</li>
-</ul>
-<p>对于嵌入式系统，<strong>应该</strong>在适当的位置包含 WatchDog 定时器子系统。这是识别系统挂起并收集足够信息以从根本上解决潜在问题（issue）并提供修复的最佳方法。</p>
-<h2 id="配置-WatchDog"><a href="#配置-WatchDog" class="headerlink" title="配置 WatchDog"></a>配置 WatchDog</h2><h3 id="什么时候对-WatchDog-的配置进行重置"><a href="#什么时候对-WatchDog-的配置进行重置" class="headerlink" title="什么时候对 WatchDog 的配置进行重置?"></a>什么时候对 WatchDog 的配置进行重置?</h3><p>通过情况下，有下面两种选择：</p>
-<ul>
-<li>WatchDog 可以被 使能(enable) 或者禁用（disable）多次，并且在每次重启时<strong>必须</strong>被配置。</li>
-<li>WatchDog 只能被配置和使能一次。一旦被使能后，只有特定类型的重置才能禁用（disable）WatchDog.</li>
-</ul>
-<h3 id="WatchDog-超时后会发生什么"><a href="#WatchDog-超时后会发生什么" class="headerlink" title="WatchDog 超时后会发生什么?"></a>WatchDog 超时后会发生什么?</h3><p>通常的选择有下面几种：</p>
-<ul>
-<li>当 WatchDog 超时后，硬件将立即对系统进行重置（Reset）。</li>
-<li>可以使能中断，并且当 WatchDog <strong>接近超时时</strong>触发中断；在中断处理程序中，软件可以决定“喂狗”来防止系统被重置（Reset）。</li>
-<li>可以使能中断，并且当 WatchDog <strong>超时时</strong>触发中断；MCU 将分配软件额外的一些时钟周期来做一些清理，然后重置系统。但这种做法往往是令人失望的，除非软件<strong>非常小心地</strong>分配清理工作执行所需的时钟周期数，否则硬件很可能在清理工作未完成前重置系统。</li>
-</ul>
-<h2 id="WatchDog-类型"><a href="#WatchDog-类型" class="headerlink" title="WatchDog 类型"></a>WatchDog 类型</h2><h3 id="单级-WatchDog"><a href="#单级-WatchDog" class="headerlink" title="单级 WatchDog"></a>单级 WatchDog</h3><p>Watchdog 定时器可以有多种配置，而且许多允许修改其配置。MCU 通常有一个集成的 Watchdog 。在其他计算机设备中，Watchdog 可能直接位于在 CPU 附近且直接相连的芯片中，或者位于计算机机箱中的外部扩展卡中。Watchdog 可以和 CPU 共用同一个时钟信号，如下图所示，或者它们可以有独立的时钟信号。</p>
-<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png"></p>
-<h3 id="多级-WatchDog"><a href="#多级-WatchDog" class="headerlink" title="多级 WatchDog"></a>多级 WatchDog</h3><p>多级 Watchdog 计时器通常由多个计时器级联而成。</p>
-<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png"></p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-      </categories>
   </entry>
   <entry>
     <title>基于流程的debian包管理体系快速命令参考手册</title>
@@ -2871,6 +2804,76 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>嵌入式系统中的WatchDog</title>
+    <url>/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp; 对于一些特殊的硬件设备（例如远程空间探测器），如果系统出现故障，想要通过人工手动恢复几乎是不可能的，这时候设备需要“自力更生”，<code>WatchDog</code>定时器就可以派上用场了。另外，在运行不受信任的代码时，也可以使用 <code>WatchDog</code>，以限制该代码对 CPU 的使用时间，从而防止某些类型的<code>拒绝服务攻击（DOS Attack）</code>。</p>
+<blockquote>
+<p>参考 <a href="https://interrupt.memfault.com/blog/firmware-watchdog-best-practices">《A Guide to Watchdog Timers for Embedded Systems》</a> - By <strong>Chris Coleman</strong>.<br>参考  <a href="https://encyclopedia.thefreedictionary.com/Watchdog+timer">Wikipedia - WatchDog timer</a>.</p>
+</blockquote>
+<h2 id="硬件-WatchDog"><a href="#硬件-WatchDog" class="headerlink" title="硬件 WatchDog"></a>硬件 WatchDog</h2><p>&emsp;&emsp; 许多芯片厂商在他们的 MCU 中包含了一个分立的 RTL 模块，称为”WatchDog 定时器”。该外围设备（peripheral）由一个随时钟周期信号自动递减的计数器组成，当计数器到达零时，硬件将自动重置（Reset）设备。</p>
+<p>&emsp;&emsp; <code>WatchDog 定时器</code>通常在默认情况下是禁用的，程序员有责任对其进行配置并且在软件中对其使能（enable）。一旦使能后，软件需要周期性地重置计数器，以防止设备被重启（Reset）。这个操作通常被称为“喂（Feeding）”、 “踢（Kicking）” 或者 “拍（Patting）” 狗。这样做的理由是，如果软件不能够重置 WatchDog 定时器，表明系统没有处于预期的运行状态，这时就需要将系统重置到正常状态。</p>
+<h2 id="为什么需要-WatchDog-定时器"><a href="#为什么需要-WatchDog-定时器" class="headerlink" title="为什么需要 WatchDog 定时器"></a>为什么需要 WatchDog 定时器</h2><p>&emsp;&emsp; 嵌入式系统在很多情况下都会被挂起（Hang），最常见的情况列举如下：</p>
+<ul>
+<li>内存已损坏，代码陷于无限循环中（infinite loop）。</li>
+<li>一个硬件组件（例如 HRM、加速度计或者 NOR Flash芯片）被卡住（wedged），不能响应请求。</li>
+<li>一个或者多个任务进入死锁（互斥体被按照错误的顺序占用或者没有被释放）。</li>
+<li>一个高优先级的 RTOS 任务占用了太多 CPU 时间，导致低优先级任务饥饿。</li>
+</ul>
+<p>对于嵌入式系统，<strong>应该</strong>在适当的位置包含 WatchDog 定时器子系统。这是识别系统挂起并收集足够信息以从根本上解决潜在问题（issue）并提供修复的最佳方法。</p>
+<h2 id="配置-WatchDog"><a href="#配置-WatchDog" class="headerlink" title="配置 WatchDog"></a>配置 WatchDog</h2><h3 id="什么时候对-WatchDog-的配置进行重置"><a href="#什么时候对-WatchDog-的配置进行重置" class="headerlink" title="什么时候对 WatchDog 的配置进行重置?"></a>什么时候对 WatchDog 的配置进行重置?</h3><p>通过情况下，有下面两种选择：</p>
+<ul>
+<li>WatchDog 可以被 使能(enable) 或者禁用（disable）多次，并且在每次重启时<strong>必须</strong>被配置。</li>
+<li>WatchDog 只能被配置和使能一次。一旦被使能后，只有特定类型的重置才能禁用（disable）WatchDog.</li>
+</ul>
+<h3 id="WatchDog-超时后会发生什么"><a href="#WatchDog-超时后会发生什么" class="headerlink" title="WatchDog 超时后会发生什么?"></a>WatchDog 超时后会发生什么?</h3><p>通常的选择有下面几种：</p>
+<ul>
+<li>当 WatchDog 超时后，硬件将立即对系统进行重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>接近超时时</strong>触发中断；在中断处理程序中，软件可以决定“喂狗”来防止系统被重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>超时时</strong>触发中断；MCU 将分配软件额外的一些时钟周期来做一些清理，然后重置系统。但这种做法往往是令人失望的，除非软件<strong>非常小心地</strong>分配清理工作执行所需的时钟周期数，否则硬件很可能在清理工作未完成前重置系统。</li>
+</ul>
+<h2 id="WatchDog-类型"><a href="#WatchDog-类型" class="headerlink" title="WatchDog 类型"></a>WatchDog 类型</h2><h3 id="单级-WatchDog"><a href="#单级-WatchDog" class="headerlink" title="单级 WatchDog"></a>单级 WatchDog</h3><p>Watchdog 定时器可以有多种配置，而且许多允许修改其配置。MCU 通常有一个集成的 Watchdog 。在其他计算机设备中，Watchdog 可能直接位于在 CPU 附近且直接相连的芯片中，或者位于计算机机箱中的外部扩展卡中。Watchdog 可以和 CPU 共用同一个时钟信号，如下图所示，或者它们可以有独立的时钟信号。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png"></p>
+<h3 id="多级-WatchDog"><a href="#多级-WatchDog" class="headerlink" title="多级 WatchDog"></a>多级 WatchDog</h3><p>多级 Watchdog 计时器通常由多个计时器级联而成。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png"></p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>嵌入式系统介绍</title>
+    <url>/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<em>本系列文章主要是重新整理 <a href="http://users.ece.utexas.edu/%7Evalvano/Volume1/E-Book/">Embedded Systems-Shape The World</a> 课程的相关学习笔记，另外会增加一些延伸的知识点或者资源材料等。</em></p>
+<p>&emsp;&emsp;嵌入式系统和传统的计算机系统及其他复杂的大型系统相比，有很多不同的地方，至少在现代的电子系统爱好者看来，自己动手设计嵌入式系统要更加容易上手、更加富有乐趣，这也与嵌入式系统本身的特点有关。自底向上的学习方式有三个优势：首先是没有操作系统，因此几乎很容易理解所有的程序组件并且可以动手修改，相反，比如如果直接使用Linux内核，我们就不得不去理解复杂的进程管理、内存管理以及复杂的设备驱动框架等；第二，嵌入式系统包含真实世界环境的输入&#x2F;输出而不是构建在大量抽象概念的系统上（当然抽象方法是构建大型系统的基本方法）；最后，嵌入式系统遍布在各种产品中，我们随处可见也就随处可以学习。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp;嵌入式系统的基本结构主要包括微控制器（Microcontroller）和与其交互的外部设备:</p>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/emebdedsystem.png"></p>
+<p>嵌入式系统的一个重要的特点是实时性（Real Time），它是指输入-处理-输出流程的时间延迟存在一个上限，这种响应时间（response time）也称为接口延迟（interface latency）。特别对于一些周期性任务，嵌入式系统保证在一个小的上限时间误差内执行连续的两次周期性任务。<br>&emsp;&emsp;嵌入式系统大多数是解决某个特定的问题或者实现特定的功能，这与通用计算机不同。嵌入式系统的开发调试过程也有些不同，如今在模拟的软硬件仿真环境中进行开发，最后再下载到实际硬件上测试的流程越来越重要。</p>
+<h3 id="I-O接口（I-O-Interface）"><a href="#I-O接口（I-O-Interface）" class="headerlink" title="I&#x2F;O接口（I&#x2F;O Interface）"></a>I&#x2F;O接口（I&#x2F;O Interface）</h3><p>&emsp;&emsp;I&#x2F;O接口被定义为I&#x2F;O端口、外部电路、硬件设备和软件的集合，它们组合起来使得计算机可以与外部世界通信。一般来说，我们可以将I&#x2F;O接口分为四类：</p>
+<ol>
+<li>并行接口（Parallel Interface）</li>
+<li>串行接口（Serial Interface）</li>
+<li>模拟接口（Analog Interface）</li>
+<li>时钟接口（Time Interface）<br>如TM4C123G微控制器的架构如下：</li>
+</ol>
+<p><img src="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/tm4c123g_io.png"></p>
+<h3 id="设备驱动（Device-Driver）"><a href="#设备驱动（Device-Driver）" class="headerlink" title="设备驱动（Device Driver）"></a>设备驱动（Device Driver）</h3><p>&emsp;&emsp;设备驱动是一种中间层的角色，它对下直接与底层硬件通信，按照设备具体的工作方法，读写设备寄存器，处理轮询、中断和DMA，以及内存映射等；对上则提供更加抽象的API接口，使得上层软件开发者从过多的硬件细节中解脱出来，更重要的是，这也体现了一种分层设计的思想。设备驱动不依赖操作系统的存在，在某些应用场景可直接由应用层调用。</p>
+<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>&emsp;&emsp;嵌入式微处理器可以有更直接的的地址空间布局，相反，如果支持操作系统的MMU，这种布局相对来说就不那么直接了，如果再引入用户空间和内核空间的区分，那么它的结构就会变得更加复杂。</p>
+<h3 id="并行IO端口（GPIO）"><a href="#并行IO端口（GPIO）" class="headerlink" title="并行IO端口（GPIO）"></a>并行IO端口（GPIO）</h3><p>&emsp;&emsp;GPIO是最简单的IO端口，它可以分为输入端口和输出端口。在大多数微控制器上，每一个GPIO端口都可以被软件配置为输入和输出，这是通过组合触发器和三态门来实现的。对于大多数微控制器来说，都使用内存映射来访问IO端口，即通过一个内存地址来读或者写某个IO端口，但它和访问真正的内存并不完全相同。IO端口被映射的内存区域有着特殊的限制，有些bit位只能读或者只能写，或者不能被修改，或者只能被设置等。以TM4C123G为例，它提供方向寄存器（GPIO_PORTX_DIR_R）来设置端口是输入还是输出端口；提供数据寄存器（GPIO_PORTX_DATA_R）来进行实际的输入输出访问，而这些宏实际对应的都是一个特定的内存地址。另外，微控制器还会复用某些pin口来执行不同的功能，如支持串口、ADC等，这同样是通过设置特定的控制寄存器（对应一个内存地址）来完成的。<br>&emsp;&emsp;<strong>并口大都只适合近距离通信。</strong></p>
+<h3 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h3><p>&emsp;&emsp; UART是全双工串口通信，RXd&#x2F;TXd分别用来传输数据和接收数据。通信协议相对简单，在有效数据位上增加起始位、停止位以及可选的校验位，同时在结构上还包括FIFO和移位寄存器。UART之所以称为异步通信，是它的通信双方只需要保持波特率的一致，各自的时钟频率可以不同（但差异要保持在5%以内）。相对UART的异步特征，SSI（或SPI）则提供同步通信，即通信双方之间的连接线包括同步时钟线。<br>&emsp;&emsp; 异步通信:<br>&emsp;&emsp; 同步通信:</p>
+<h3 id="忙等、轮询和中断"><a href="#忙等、轮询和中断" class="headerlink" title="忙等、轮询和中断"></a>忙等、轮询和中断</h3><p>&emsp;&emsp;<strong>在不同的场景使用要不同的策略。</strong>中断策略适合与IO设备复杂多样、延迟时间不确定的场景；忙等（Busy-Wait）适合延时相对确定，IO设备简单的场景。</p>
+<h3 id="Systick定时器"><a href="#Systick定时器" class="headerlink" title="Systick定时器"></a>Systick定时器</h3><p>&emsp;&emsp;Systick是一个计数器可以实现定时延迟或者周期性的中断。在TM4C123G上，同样是通过访问特定寄存器来对其进行配置和控制。Systick还可以用来实现调试功能，测试代码执行时间等。<br>&emsp;&emsp;Systick周期性中断适合于无法直接生成中断请求的IO设备或者需要并发执行IO操作的设备。</p>
+<h3 id="Phase-Lock-Loop-PLL"><a href="#Phase-Lock-Loop-PLL" class="headerlink" title="Phase-Lock-Loop(PLL)"></a>Phase-Lock-Loop(PLL)</h3><p>&emsp;&emsp;PLL可以实现对系统运行时钟更好的控制，可以用来平衡<code>功耗和性能</code>；另外它也可以提供更精确的系统时间。PLL利用反馈原理，来实现<code>稳定的</code>高频信号。PLL通常由鉴相器（PD,Phase Detector）、环路滤波器（LF,Loop Filter）和压控振荡器（VCO,Voltage Controlled Oscillator）三部分组成。</p>
+<h3 id="数模转换（DAC）与模数转换（ADC）"><a href="#数模转换（DAC）与模数转换（ADC）" class="headerlink" title="数模转换（DAC）与模数转换（ADC）"></a>数模转换（DAC）与模数转换（ADC）</h3>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>我们的村庄和传统</title>
     <url>/2021/01/22/%E6%88%91%E4%BB%AC%E7%9A%84%E6%9D%91%E5%BA%84%E5%92%8C%E4%BC%A0%E7%BB%9F/</url>
     <content><![CDATA[<p>&emsp;&emsp;对于我们每个人来说，如何去认识、感受和思考自己过去、现在和将来生活的环境是非常重要的问题。人的心灵很容易受环境的影响，或者说它也是环境的产物，认识我们的环境的根本目的是认识我们自己，也就是在内容上去认识我们的习惯、思想、观念和情感是如何形成的。在充分的自我认识基础上我们才能去认识他人，和他人的关系的互动又反过来促进对自我的认识。除了这个根本目的外，还有一个实用目的就是对美好、快乐事物消失的一种反抗，并有可能去创造、改变我们的环境。</p>
@@ -2884,6 +2887,30 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>散文创作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>智能硬件设备固件提取和分析</title>
+    <url>/2022/02/18/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6%E8%AE%BE%E5%A4%87%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E5%92%8C%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 现代智能设备大都使用 Flash&#x2F;EEPROM 芯片来存储固件，这些芯片的容量已经足够大，甚至可以容纳小型的操作系统。固件提取和分析技术可以使我们有能力对系统作出更改或者调整，甚至将整个固件进行替换。但对于很多设备来说，其安全性要求较高，其采取的安全加密和校验手段对分析人员提出了很大的阻碍，所以这项任务充满了困难，但也可能是充满乐趣和挑战的过程。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://www.kancloud.cn/geiyu86/iot-security-wiki/1836200">物联网安全百科</a></p>
+</blockquote>
+<h2 id="物理提取"><a href="#物理提取" class="headerlink" title="物理提取"></a>物理提取</h2><p><strong>软&#x2F;硬工具</strong>：</p>
+<p>a. <code>CH341A</code> 微型编程器<br>b. <code>flashrom</code> 软件 ：<code>sudo apt-get install flashrom</code></p>
+<p><strong>命令：</strong></p>
+<ul>
+<li><code>flashrom --programmer=ch341a_spi</code> 探测设备</li>
+<li><code>flashrom --programmer=ch341a_spi -c &lt;设备类型&gt; --read &lt;file&gt;</code> 读取固件</li>
+<li><code>flashrom --programmer=ch341a_spi -c &lt;设备类型&gt; --write &lt;file&gt;</code> 烧录固件</li>
+</ul>
+<h2 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h2><p><code>binwalk</code> :  <code>binwalk -e xxxxx.bin</code></p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2912,30 +2939,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>散文创作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>智能硬件设备固件提取和分析</title>
-    <url>/2022/02/18/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6%E8%AE%BE%E5%A4%87%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E5%92%8C%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 现代智能设备大都使用 Flash&#x2F;EEPROM 芯片来存储固件，这些芯片的容量已经足够大，甚至可以容纳小型的操作系统。固件提取和分析技术可以使我们有能力对系统作出更改或者调整，甚至将整个固件进行替换。但对于很多设备来说，其安全性要求较高，其采取的安全加密和校验手段对分析人员提出了很大的阻碍，所以这项任务充满了困难，但也可能是充满乐趣和挑战的过程。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://www.kancloud.cn/geiyu86/iot-security-wiki/1836200">物联网安全百科</a></p>
-</blockquote>
-<h2 id="物理提取"><a href="#物理提取" class="headerlink" title="物理提取"></a>物理提取</h2><p><strong>软&#x2F;硬工具</strong>：</p>
-<p>a. <code>CH341A</code> 微型编程器<br>b. <code>flashrom</code> 软件 ：<code>sudo apt-get install flashrom</code></p>
-<p><strong>命令：</strong></p>
-<ul>
-<li><code>flashrom --programmer=ch341a_spi</code> 探测设备</li>
-<li><code>flashrom --programmer=ch341a_spi -c &lt;设备类型&gt; --read &lt;file&gt;</code> 读取固件</li>
-<li><code>flashrom --programmer=ch341a_spi -c &lt;设备类型&gt; --write &lt;file&gt;</code> 烧录固件</li>
-</ul>
-<h2 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h2><p><code>binwalk</code> :  <code>binwalk -e xxxxx.bin</code></p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
