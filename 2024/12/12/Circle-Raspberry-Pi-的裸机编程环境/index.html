@@ -19,27 +19,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="终端类 tmux">
+    <meta name="description" content="概述Circle 提供了一个针对 Raspberry Pi 的裸机编程环境。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GNU Unix&#x2F;Linux下 常用工具">
-<meta property="og:url" content="https://orchidrock.github.io/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">
+<meta property="og:title" content="Circle: Raspberry Pi 的裸机编程环境">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/">
 <meta property="og:site_name" content="StoneTough">
-<meta property="og:description" content="终端类 tmux">
+<meta property="og:description" content="概述Circle 提供了一个针对 Raspberry Pi 的裸机编程环境。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-14T10:06:00.000Z">
-<meta property="article:modified_time" content="2024-07-14T15:00:56.299Z">
+<meta property="article:published_time" content="2024-12-12T12:28:40.000Z">
+<meta property="article:modified_time" content="2024-12-13T02:26:34.199Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/","path":"2022/04/14/GNU-Unix-Linux下-常用工具/","title":"GNU Unix/Linux下 常用工具"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/","path":"2024/12/12/Circle-Raspberry-Pi-的裸机编程环境/","title":"Circle: Raspberry Pi 的裸机编程环境"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>GNU Unix/Linux下 常用工具 | StoneTough</title>
+<title>Circle: Raspberry Pi 的裸机编程环境 | StoneTough</title>
   
 
 
@@ -139,7 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">终端类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">网络工具类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AA%92%E4%BD%93%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">多媒体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E5%92%8C%E6%96%87%E4%BB%B6%E9%98%85%E8%AF%BB%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">编辑器和文件阅读器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E3%80%81%E5%BC%80%E5%8F%91%E5%92%8C%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">5.</span> <span class="nav-text">设计、开发和调试工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">6.</span> <span class="nav-text">系统管理工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%91%E5%AD%A6%E8%AE%A1%E7%AE%97%E3%80%81%E8%87%AA%E5%8A%A8%E5%8C%96EDA"><span class="nav-number">7.</span> <span class="nav-text">科学计算、自动化EDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D"><span class="nav-number">8.</span> <span class="nav-text">数据恢复</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">固件</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -210,7 +210,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -223,12 +223,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="GNU Unix/Linux下 常用工具 | StoneTough">
+      <meta itemprop="name" content="Circle: Raspberry Pi 的裸机编程环境 | StoneTough">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          GNU Unix/Linux下 常用工具
+          Circle: Raspberry Pi 的裸机编程环境
         </h1>
 
         <div class="post-meta-container">
@@ -239,14 +239,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-14 18:06:00" itemprop="dateCreated datePublished" datetime="2022-04-14T18:06:00+08:00">2022-04-14</time>
+      <time title="创建时间：2024-12-12 20:28:40" itemprop="dateCreated datePublished" datetime="2024-12-12T20:28:40+08:00">2024-12-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-14 23:00:56" itemprop="dateModified" datetime="2024-07-14T23:00:56+08:00">2024-07-14</time>
+      <time title="修改时间：2024-12-13 10:26:34" itemprop="dateModified" datetime="2024-12-13T10:26:34+08:00">2024-12-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,7 +254,11 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">开源硬件</span></a>
         </span>
     </span>
 
@@ -265,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>153</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -282,82 +286,10 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
-<li><code>tmux</code></li>
-</ul>
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
 <span id="more"></span>
 
-<h3 id="网络工具类"><a href="#网络工具类" class="headerlink" title="网络工具类"></a>网络工具类</h3><ul>
-<li><code>xchat</code>: IRC客户端</li>
-<li><code>iproute2</code> : 网络及其流量控制工包</li>
-<li><code>net-tools</code> : NET-3网络工具包</li>
-<li><code>openssh-server</code>: OpenSSH SSH服务器端</li>
-<li><code>wireshark</code>:强大的交互式网络抓包和分析工具</li>
-<li><code>ufw</code>: 网络防火墙管理工具</li>
-<li><code>nmap</code>: 网络嗅探工具</li>
-<li><code>nslookup</code>: DNS交互式查询工具</li>
-<li><code>telnet</code>:</li>
-<li><code>netcat|nc</code>: 连接和监听TCP&#x2F;UDP端口工具</li>
-<li><code>openssl</code>：SSL&#x2F;TLS网络加密协议的开源实现</li>
-<li><code>urlview</code>：URL解析器</li>
-<li><code>amule</code>：ed2k&#x2F;Kad 网络客户端</li>
-<li><code>iw</code>：无线设备管理和配置工具</li>
-<li><code>tcpdump</code>：抓包和包分析工具</li>
-<li><code>axel</code>：CLI接口的网络下载加速器</li>
-<li><code>aria2</code>：网络下载加速器</li>
-<li><code>lynx</code> : 通用的Roguelike风格的WWW分布式网页浏览器</li>
-<li><code>wscat</code>: 通过Websocket通信</li>
-</ul>
-<h3 id="多媒体类"><a href="#多媒体类" class="headerlink" title="多媒体类"></a>多媒体类</h3><ul>
-<li><code>vlc</code>: VLC多媒体播放器</li>
-<li><code>ffmpeg</code> : 一个功能强大的跨平台的音视频流处理工具</li>
-<li><code>audacity</code> : 跨平台的音频编辑器</li>
-<li><code>icotool</code> : 制作win32图标</li>
-<li><code>sng</code>：一种编辑PNG图片的文本化标记语言</li>
-<li><code>jpegoptim</code> ：优化&#x2F;压缩JPEG图片</li>
-<li><code>pngcrush</code> ： PNG优化工具</li>
-</ul>
-<h3 id="编辑器和文件阅读器"><a href="#编辑器和文件阅读器" class="headerlink" title="编辑器和文件阅读器"></a>编辑器和文件阅读器</h3><h3 id="设计、开发和调试工具"><a href="#设计、开发和调试工具" class="headerlink" title="设计、开发和调试工具"></a>设计、开发和调试工具</h3><p>A. <em>Linux可执行文件分析工具：</em></p>
-<ul>
-<li><code>strip</code>：从object文件中去除符号表。</li>
-<li><code>nm</code> ： 列出object文件的符号表。</li>
-<li><code>readelf</code> : 分析ELF文件。</li>
-<li><code>objdump</code> : 分析可执行文件（包括反汇编）。</li>
-<li><code>ldd</code>：打印共享库依赖。</li>
-<li><code>strace</code> : 跟踪系统调用和信号。</li>
-<li><code>size</code>: 打印二进制文件各个段的大小。</li>
-<li><code>pmap</code>: 打印进程的内存映射</li>
-<li><code>ipcs</code> : 打印当前系统IPC机制的信息</li>
-<li><code>ctags</code>: 为源代码文件生成tags</li>
-<li><code>cxref</code>: 为C语言代码生成交叉引用表</li>
-<li><code>cflow</code>：打印函数调用树</li>
-<li><code>valgrind</code>：检测数组访问错误和内存泄漏</li>
-</ul>
-<h3 id="系统管理工具"><a href="#系统管理工具" class="headerlink" title="系统管理工具"></a>系统管理工具</h3><ul>
-<li><code>top</code>：Roguelike风格的进程&#x2F;内存监控工具</li>
-<li><code>iostat</code>：报告CPU和I&#x2F;O设备的统计信息</li>
-<li><code>mpstat</code>：报告处理器统计信息</li>
-<li><code>pidstat</code>：报告进程的统计信息</li>
-<li><code>sar</code>：收集、报告、打印系统活动信息</li>
-<li><code>sadf</code>：以多种格式输出sar的统计信息，包括SVG图片</li>
-<li><code>iotop</code>：简单的top-like的I&#x2F;O监控工具</li>
-<li><code>updatedb</code>：为mlocate更新数据库</li>
-<li><code>locate</code>：基于数据库进行文件检索</li>
-<li><code>extundelete</code> ：从ext3&#x2F;ext4文件系统中恢复文件</li>
-<li><code>e2label</code>：改变ext2&#x2F;ext3&#x2F;ext4文件系统的Label</li>
-<li><code>tune2fs</code>：调整ext2&#x2F;ext3&#x2F;ext4文件系统参数，使用<code>-l</code>参数可打印当前参数值</li>
-<li><code>lsof</code> : 列出进程打开文件,包括socket</li>
-</ul>
-<h3 id="科学计算、自动化EDA"><a href="#科学计算、自动化EDA" class="headerlink" title="科学计算、自动化EDA"></a>科学计算、自动化EDA</h3><ul>
-<li><code>octave</code>：Octave是一种科学计算软件，旨在提供与Matlab语法兼容的开放源代码科学计算及数值分析的工具。</li>
-</ul>
-<h3 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h3><ul>
-<li><code>safecopy</code> : 安全拷贝，可用于数据备份</li>
-<li><code>TestDisk</code>: 修复分区、引导等；找回删除文件；分区备份等</li>
-<li><code>photorec &amp; fidentity</code>: 不依赖文件系统的完整性来恢复数据，默认支持400多种文件格式。但对于某些文件（例如数据库），当文件系统损坏后，可能无法完全恢复。</li>
-<li><code>foremost</code>: 基于文件magic指纹进行修复，可自定义文件格式。</li>
-<li><code>fsck &amp; e2fsck</code> : 检查和修复文件系统，<code>e2fsck</code>专门针对ext文件系统。在某些情况下，fsck相比前面的工具可以更有效地解决因文件系统损坏导致的重要文件无法访问的问题。</li>
-</ul>
+<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
 
     </div>
 
@@ -381,14 +313,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/04/14/Perl%E7%AE%80%E6%98%8E%E6%89%8B%E5%86%8C/" rel="prev" title="Perl简明手册">
-                  <i class="fa fa-angle-left"></i> Perl简明手册
+                <a href="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/" rel="prev" title="基于 4G 模组的 GPS 小型定位器">
+                  <i class="fa fa-angle-left"></i> 基于 4G 模组的 GPS 小型定位器
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/04/16/Shell%E8%84%9A%E6%9C%AC%E5%B8%B8%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Shell脚本常用过滤器命令">
-                  Shell脚本常用过滤器命令 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>

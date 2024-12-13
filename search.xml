@@ -2234,7 +2234,7 @@
 <p>d. 使用 VLC 搭建实时视频流服务器</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install vlc</span></span><br><span class="line"><span class="meta prompt_">$ </span></span><br></pre></td></tr></table></figure>
 
-
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>安装 raspberry pi OS 时会提示进行网络配置，最后配置信息会写入：<br><code>etc/NetworkManager/system-connections/preconfigured.nmconnection</code> </p>
 ]]></content>
       <categories>
         <category>开源硬件</category>
@@ -2709,7 +2709,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>注意生成的设备证书和 MQTT 连接参数。</p>
 <h3 id="使用-MQTT-协议连接云平台"><a href="#使用-MQTT-协议连接云平台" class="headerlink" title="使用 MQTT 协议连接云平台"></a>使用 MQTT 协议连接云平台</h3><h4 id="不使用-SSL"><a href="#不使用-SSL" class="headerlink" title="不使用 SSL"></a>不使用 SSL</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 配置消息接收模式</span><br><span class="line">$ AT+QMTCFG=&quot;recv/mode&quot;,0,0,1    # client_idx = 0; 消息内容和消息长度均包含在 URC 中</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"># 配置阿里云设备信息（product_key + device_name + device_secret）</span><br><span class="line">$ AT+QMTCFG=&quot;aliauth&quot;,0,&quot;k21omXYRDQU&quot;,&quot;EG800KCN&quot;,&quot;3c6bc85d94f6dfa58b5c1c812a56f64e&quot;</span><br><span class="line"></span><br><span class="line"># Open 网络端口</span><br><span class="line">$ AT+QMTOPEN=0,&quot;iot-06z00i7jerba07i.mqtt.iothub.aliyuncs.com&quot;,1883</span><br><span class="line">+QMTOPEN: 0,0␍␊</span><br><span class="line"></span><br><span class="line"># 建立连接</span><br><span class="line">$ AT+QMTCONN=0,&quot;clientEG800K_CN&quot;</span><br><span class="line"></span><br><span class="line"># 订阅 Topic</span><br><span class="line">$ AT+QMTSUB=0,1,&quot;/k21omXYRDQU/EG800KCN/user/get&quot;,2</span><br><span class="line">OK</span><br><span class="line">+QMTSUB: 0,1,0,1</span><br><span class="line"></span><br><span class="line">$ AT+QMTSUB=0,1,&quot;/sys/k21omXYRDQU/EG800KCN/thing/event/property/post_reply&quot;,2</span><br><span class="line">OK</span><br><span class="line">+QMTSUB: 0,1,0,1</span><br><span class="line"></span><br><span class="line"># 发布属性</span><br><span class="line">$ AT+QMTPUBEX=0,0,0,0,&quot;/sys/k21omXYRDQU/EG800KCN/thing/event/property/post&quot;,30</span><br><span class="line">&gt; &#123;id:0, version: 1.0&#125;</span><br><span class="line">OK</span><br><span class="line">+QMTPUBEX: 0,0,0</span><br><span class="line"></span><br><span class="line"># 关闭连接</span><br><span class="line">$ AT+QMTDISC=0</span><br><span class="line">+QMTDISC: 0,0␍␊</span><br><span class="line">+QMTSTAT: 0,5␍␊</span><br><span class="line"></span><br><span class="line"># Close 网络端口</span><br><span class="line">$ AT+QMTCLOSE=0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="使用-SSL"><a href="#使用-SSL" class="headerlink" title="使用 SSL"></a>使用 SSL</h3>]]></content>
+<h4 id="使用-SSL"><a href="#使用-SSL" class="headerlink" title="使用 SSL"></a>使用 SSL</h4>]]></content>
       <tags>
         <tag>嵌入式系统和IOT</tag>
       </tags>
@@ -4291,6 +4291,19 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Circle: Raspberry Pi 的裸机编程环境</title>
+    <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
+<span id="more"></span>
+
+<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>开源硬件</category>
       </categories>
   </entry>
 </search>
