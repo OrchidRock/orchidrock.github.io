@@ -27,7 +27,7 @@
 <meta property="og:description" content="概述本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-15T01:42:33.000Z">
-<meta property="article:modified_time" content="2024-12-15T02:51:35.462Z">
+<meta property="article:modified_time" content="2024-12-15T04:07:28.189Z">
 <meta property="article:author" content="顽石">
 <meta property="article:tag" content="嵌入式系统和IOT">
 <meta name="twitter:card" content="summary">
@@ -140,7 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B1%E9%99%A9%E7%9A%84%E6%96%B0%E4%B8%96%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">危险的新世界</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="nav-number">2.1.</span> <span class="nav-text">物联网中的实体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">通信协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E3%80%81%E6%94%BB%E5%87%BB%E5%92%8C%E5%AF%B9%E7%AD%96"><span class="nav-number">3.</span> <span class="nav-text">漏洞、攻击和对策</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B1%E9%99%A9%E7%9A%84%E6%96%B0%E4%B8%96%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">危险的新世界</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="nav-number">2.1.</span> <span class="nav-text">物联网中的实体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">通信协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E3%80%81%E6%94%BB%E5%87%BB%E5%92%8C%E5%AF%B9%E7%AD%96"><span class="nav-number">3.</span> <span class="nav-text">漏洞、攻击和对策</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E4%B8%8E%E5%AF%B9%E7%AD%96"><span class="nav-number">3.1.</span> <span class="nav-text">攻击与对策</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%A0%91"><span class="nav-number">3.2.</span> <span class="nav-text">攻击树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%A0%91"><span class="nav-number">3.3.</span> <span class="nav-text">错误树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A8%81%E8%83%81%E5%BB%BA%E6%A8%A1"><span class="nav-number">3.4.</span> <span class="nav-text">威胁建模</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%AE%89%E5%85%A8%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">物联网开发中的安全工程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">安全设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E8%BA%AB%E4%BB%BD%E8%AF%86%E5%88%AB%E5%92%8C%E8%AE%BF%E9%97%AE%E7%AE%A1%E7%90%86%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">5.</span> <span class="nav-text">物联网身份识别和访问管理解决方案</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -241,7 +241,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-12-15 09:42:33 / 修改时间：10:51:35" itemprop="dateCreated datePublished" datetime="2024-12-15T09:42:33+08:00">2024-12-15</time>
+      <time title="创建时间：2024-12-15 09:42:33 / 修改时间：12:07:28" itemprop="dateCreated datePublished" datetime="2024-12-15T09:42:33+08:00">2024-12-15</time>
     </span>
 
   
@@ -251,14 +251,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -293,7 +293,46 @@
 </ul>
 <p>设备的生命周期：设备的实现（OEM、ODM、BSP）, 服务的实现（CSP、OEM），设备和服务的部署。<br>硬件：MCU、主板、传感器、通信模组<br>操作系统：RTOS，TinyOS、Mantis、FreeRTOS、BrilloOS、嵌入式Linux、Ubuntu Core等。<br>物联网通信：设备-&gt;网关-&gt;控制器或网络服务</p>
 <h4 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h4><p>应用层：REST、AMQP、MQTT、LLAP、CoAP、SSI、DDS、XMPP 和 MQTT-SN、XMPP-IoT<br>传输层：TCP、UDP 和 TLS\DTLS<br>网络层：IPv4、IPv6 和 6LoWPAN<br>链路&#x2F;物理层：Zigbee、Bluetooth&#x2F;LE、802.15.4、802.11 WIFI、WAVE、WBAN、LTE、CDMA、GRPS、LoaWAN</p>
-<h3 id="漏洞、攻击和对策"><a href="#漏洞、攻击和对策" class="headerlink" title="漏洞、攻击和对策"></a>漏洞、攻击和对策</h3>
+<h3 id="漏洞、攻击和对策"><a href="#漏洞、攻击和对策" class="headerlink" title="漏洞、攻击和对策"></a>漏洞、攻击和对策</h3><p>信息保障的传统核心概念：保密性、完整性、认证性、不可抵赖性、可用性。<br>与物联网的信息物理方面相关的安全保障需求：可快速恢复性和物理安全性。</p>
+<p>威胁、漏洞和风险</p>
+<p>风险可以通过威胁模型进行管理。</p>
+<h4 id="攻击与对策"><a href="#攻击与对策" class="headerlink" title="攻击与对策"></a>攻击与对策</h4><p>物联网相关的最重要的攻击类型：<br>有线&#x2F;无线扫描映射攻击、协议攻击、窃听攻击、密码算法和密钥管理攻击、伪装攻击、操作系统与应用完整性攻击、拒绝服务与干扰、物理安全攻击（如改装、接口薄露等）、访问控制攻击。</p>
+<h4 id="攻击树"><a href="#攻击树" class="headerlink" title="攻击树"></a>攻击树</h4><p>攻击树是一种概念图，可以用来展示一项资产或者目标可能被攻击的方式。<br>SecurITree 软件 基于能力的攻击树模型构建工具。</p>
+<p>攻击目标 + 攻击操作（攻击操作之间的关系可以是‘与’关系，也可以是‘或’关系）。操作也是一个节点，也可以进行展开。</p>
+<p>总的来说，攻击树可能有非常简单或者复杂的子树。一般地，子树越复杂，越需要在隔离主树的情况下对其进行分析，这个过程称为‘子树分析’。</p>
+<h4 id="错误树"><a href="#错误树" class="headerlink" title="错误树"></a>错误树</h4><p>物理安全和可靠性工程原则的模型构建工具被称为错误树（也被称为故障树），它被用于错误树分析（FTA）中。</p>
+<p>错误树和攻击树的区别（用户如何进入并遍历树）：</p>
+<ul>
+<li>错误树并不是基于精心编排的攻击行为来构建的，在错误树中，一个智能实体经过慎重考虑可以随意进入树的多个叶子节点。</li>
+<li>错误树可以基于随机过程（故障&#x2F;错误发生比率），从每个叶子节点经过所依赖的中间节点进行遍历。</li>
+<li>错误树的每个叶子节点完全独立（错误随机发生，且彼此相互独立）于树的所有其他叶子节点。</li>
+</ul>
+<h4 id="威胁建模"><a href="#威胁建模" class="headerlink" title="威胁建模"></a>威胁建模</h4><p>构建威胁模型为人们提供了一个系统的方法，来对一个系统或者系统设计进行安全评估。<br>构建威胁模型有助于加深对一个系统中的人员、入口点和资产的透彻理解。</p>
+<p>流程：</p>
+<ol>
+<li>识别资产</li>
+<li>创建对系统&#x2F;架构的纵览</li>
+<li>剖析物联网系统</li>
+<li>识别威胁</li>
+<li>记录威胁</li>
+<li>对威胁进行评级</li>
+</ol>
+<p>STRIDE 模型：<br>威胁类型：身份欺骗、篡改数据、否认抵赖、信息泄漏、拒绝服务、权限提升、物理安全绕过、社会工程和供应链问题。</p>
+<p>威胁矩阵</p>
+<h3 id="物联网开发中的安全工程"><a href="#物联网开发中的安全工程" class="headerlink" title="物联网开发中的安全工程"></a>物联网开发中的安全工程</h3><p>在设计和开发中融入安全。</p>
+<p>微软 SDL：致力于解决安全需求并且引入了‘需求分类’这一概念，以此减轻开发团队在每个迭代周期内的负担。微软的技术提出了‘一次性、每次迭代、筒状安全需求’的概念。</p>
+<p>一次性需求：</p>
+<ul>
+<li>建立在整个开发中必须遵守的编码指南。</li>
+<li>为第三方组件和库建立许可软件列表。</li>
+</ul>
+<p>每次迭代：</p>
+<ul>
+<li>为了发现错误，在并入基线前对代码进行用行评审。</li>
+<li>确保在持续集成（CI）环境中通过静态代码分析工具运行代码。</li>
+</ul>
+<h4 id="安全设计"><a href="#安全设计" class="headerlink" title="安全设计"></a>安全设计</h4><h3 id="物联网身份识别和访问管理解决方案"><a href="#物联网身份识别和访问管理解决方案" class="headerlink" title="物联网身份识别和访问管理解决方案"></a>物联网身份识别和访问管理解决方案</h3><p>IAM</p>
+
     </div>
 
     
@@ -354,13 +393,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">246k</span>
+    <span title="站点总字数">247k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:50</span>
+    <span title="站点阅读时长">6:51</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
