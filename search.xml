@@ -4378,4 +4378,15 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>读书笔记</category>
       </categories>
   </entry>
+  <entry>
+    <title>Go Language Tutorial</title>
+    <url>/2024/12/15/Go-Language-Tutorial/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初由 2007 年工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，然后在 2009 年发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
+<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。</p>
+<span id="more"></span>
+]]></content>
+      <tags>
+        <tag>Go 语言</tag>
+      </tags>
+  </entry>
 </search>
