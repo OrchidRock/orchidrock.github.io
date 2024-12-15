@@ -19,27 +19,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="&emsp;&emsp;什么是隔？什么是不隔？&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。">
+    <meta name="description" content="概述本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="隔与不隔">
-<meta property="og:url" content="https://orchidrock.github.io/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/">
+<meta property="og:title" content="Practical Internet of Thing Security Notes">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
 <meta property="og:site_name" content="StoneTough">
-<meta property="og:description" content="&emsp;&emsp;什么是隔？什么是不隔？&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。">
+<meta property="og:description" content="概述本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-07-17T06:00:00.000Z">
-<meta property="article:modified_time" content="2024-07-21T13:11:37.252Z">
+<meta property="article:published_time" content="2024-12-15T01:42:33.000Z">
+<meta property="article:modified_time" content="2024-12-15T02:09:59.578Z">
 <meta property="article:author" content="顽石">
+<meta property="article:tag" content="嵌入式系统和IOT">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/">
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/","path":"2020/07/17/隔与不隔/","title":"隔与不隔"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/","path":"2024/12/15/Practical-Internet-of-Thing-Security-Notes/","title":"Practical Internet of Thing Security Notes"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>隔与不隔 | StoneTough</title>
+<title>Practical Internet of Thing Security Notes | StoneTough</title>
   
 
 
@@ -126,7 +127,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -139,6 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B1%E9%99%A9%E7%9A%84%E6%96%B0%E4%B8%96%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">危险的新世界</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -209,7 +211,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2020/07/17/%E9%9A%94%E4%B8%8E%E4%B8%8D%E9%9A%94/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -222,12 +224,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="隔与不隔 | StoneTough">
+      <meta itemprop="name" content="Practical Internet of Thing Security Notes | StoneTough">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          隔与不隔
+          Practical Internet of Thing Security Notes
         </h1>
 
         <div class="post-meta-container">
@@ -237,24 +239,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-07-17 14:00:00" itemprop="dateCreated datePublished" datetime="2020-07-17T14:00:00+08:00">2020-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-21 21:11:37" itemprop="dateModified" datetime="2024-07-21T21:11:37+08:00">2024-07-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%A3%E6%96%87%E5%88%9B%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">散文创作</span></a>
-        </span>
+      <time title="创建时间：2024-12-15 09:42:33 / 修改时间：10:09:59" itemprop="dateCreated datePublished" datetime="2024-12-15T09:42:33+08:00">2024-12-15</time>
     </span>
 
   
@@ -264,14 +251,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>977</span>
+      <span>543</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -281,10 +268,20 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>&emsp;&emsp;什么是隔？什么是不隔？<br>&emsp;&emsp;我们很容易明白房子是隔，窗户是不隔，这种隔与不隔的设计理念遍布在各种领域。特别是对于中国古代的园林，这种理念发挥得淋漓尽致:镂空的窗户、似透非透的围墙、曲折的小径、以水为核心的动静结合等，比比皆是。</p>
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临<br>的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。</p>
 <span id="more"></span>
-<p>&emsp;&emsp;我们为什么要去理解隔与不隔？<br>&emsp;&emsp;凡是人所创造的东西都反映着人的心灵，而人的心灵，在我看来，就是隔与不隔的一种混合。<br>&emsp;&emsp;在现代商业环境下诞生的东西很多都摆脱不了“隔”的命运，这种产品强调排它性来建立自己的优越感，优越是一种“隔”。这种“隔”被包装以后很容易演变成“精致”，而“精致”从来都不等于美，在我看来，美是隔与不隔的自然协调，它需要时间、耐心和痛苦的追寻。我们很多时候意识不到精致和美的区别，一味追求精致只会使心灵趋向“隔”的境地，远离自然，远离美。<br>&emsp;&emsp;不隔如水，隔如土，只有水土融合才有创造的力量。隔促进结构化，不隔反结构化。水具有融合的力量，更重要的是，它代表着在古人看来心灵的最高境界;但水的反结构化力量却象征着一种社会的变革，这种变革的隐喻在一些宗教神话里强化到了“末日预言”的地步，这种预言说世界将被大水淹没，所有的土地房屋被摧毁，然后大水退去，世界重新开始。这种预言其实是在表明对社会结构化（往往被说成是人的罪恶）的一种排斥和反抗。<br>&emsp;&emsp;现代城市几乎很难处理隔与不隔的协调，生活在其中的人更难使得自己的心灵宁静。我们是否思考过自己对城市的看法？我们是否思考过对城市是否有感情？我们为什么要建造城市？我们为什么对自己的家乡有很深的感情？家乡是否代表着我们心灵中不隔的重要部分。我们如何在城市的生活中不隔呢？我们是否走过城市的每一条街道，每一座桥，记住它们的名字？我们是否看过城市中每一个人他（她）们的面容？我们是否想象过自己是服务生、快递员、店铺小商人、保安、交警、保洁员、流浪汉甚至乞讨者？我们是否观察过路边的树、落叶、飞鸟、河流和墙边的小虫？<br>&emsp;&emsp;当我们开始思考这些问题的时候实际上我们的心灵就在“不隔”，而这种隔与不隔的协调对于我们任何人来说都不应该是被忽略的事情，我们越早去发现它，它就越早对我们产生重要的意义。</p>
-<p>—— 顽石 2020.07.17</p>
+
+<h3 id="危险的新世界"><a href="#危险的新世界" class="headerlink" title="危险的新世界"></a>危险的新世界</h3><p>（什么是 IOT？）</p>
+<blockquote>
+<p>一个信息社会的全球性基础设施，基于已有的和演化的、可互操作的信息与通信技术，利用（物理和虚拟）设备互联来提供先进的服务。—— ITU</p>
+</blockquote>
+<blockquote>
+<p>一个物联网是指这样一种网络，它将唯一标识的“实物”连接到互联网上。这里的实物具有感知&#x2F;驱动能力，以及潜在的可编程能力。通过对唯一身份标识和感知能力进行开发，<br>任意实体可以从任意时刻从任何位置收集“实物”相关信息，以及改变‘实物’的状态。 —— IETF</p>
+</blockquote>
+<p>（什么是物联网安全？）</p>
+<p>物联网安全不是传统意义上的网络安全，而是网络安全与其他工程规范融合的产物。…… 网络安全一般不关注硬件设备的物理和安全方面，或者是设备与物理世界的交互<br>方面的内容。</p>
+<p>物理网安全的安全需求不再仅仅局限于包括可信性、完整性、不可否认性等内容的基本信息保障原则，还包括与在物理世界中生成并接收信息的物理资源和机器相关的原则。</p>
+<p>跨行业合作的必要性</p>
 
     </div>
 
@@ -303,19 +300,19 @@
   </div>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" rel="tag"># 嵌入式系统和IOT</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/06/25/Raspberrypi-3%E7%A7%BB%E6%A4%8D%E6%80%BB%E7%BB%93/" rel="prev" title="Raspberrypi 3移植总结">
-                  <i class="fa fa-angle-left"></i> Raspberrypi 3移植总结
+                <a href="/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/" rel="prev" title="Circle: Raspberry Pi 的裸机编程环境">
+                  <i class="fa fa-angle-left"></i> Circle: Raspberry Pi 的裸机编程环境
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/" rel="next" title="伯特兰罗素：《我为什么活着》摘抄">
-                  伯特兰罗素：《我为什么活着》摘抄 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>

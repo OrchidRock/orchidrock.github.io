@@ -463,16 +463,16 @@
       </categories>
   </entry>
   <entry>
-    <title>ESP32 模组</title>
-    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
-<blockquote>
-<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
-</blockquote>
+    <title>Circle: Raspberry Pi 的裸机编程环境</title>
+    <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
+<span id="more"></span>
+
+<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
 ]]></content>
       <categories>
-        <category>嵌入式系统和IOT</category>
         <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -508,6 +508,19 @@
 <p>然后点击 <code>Connect</code> 。最后在浏览器中进行再进行检验即可。</p>
 ]]></content>
       <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ESP32 模组</title>
+    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开源硬件</category>
         <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
@@ -563,8 +576,8 @@
 </ul>
 ]]></content>
       <categories>
-        <category>嵌入式系统和IOT</category>
         <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -1081,24 +1094,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LFS 2: PiLFS项目</title>
-    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
-<span id="more"></span>
-
-<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
-<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
-<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
-<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LLVM 0: 构建步骤及目录结构</title>
     <url>/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 项目包括多个组件，并以核心组件 <strong>LLVM</strong> 的名字作为项目名。这些组件包括了处理 <strong>IR</strong> 和生成目标代码的工具、库和头文件。其中 <strong>clang</strong> 作为C&#x2F;C++&#x2F;Object-C的前端，其本质上是使用 LLVM 核心库的驱动程序，这得益于 LLVM 优秀的模块化特性。</p>
@@ -1178,6 +1173,24 @@
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LFS 2: PiLFS项目</title>
+    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
+<span id="more"></span>
+
+<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
+<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
+<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
+<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
       </categories>
   </entry>
   <entry>
@@ -1291,21 +1304,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Lex结构及简明参考手册</title>
-    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
-<span id="more"></span>
-
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LLVM 项目介绍</title>
     <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
@@ -1381,6 +1379,21 @@
         <category>编译器</category>
         <category>LLVM Project</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Lex结构及简明参考手册</title>
+    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
+<span id="more"></span>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>Linux Kernel Introduction</title>
@@ -1956,6 +1969,28 @@
       <categories>
         <category>Perl</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Practical Internet of Thing Security Notes</title>
+    <url>/2024/12/15/Practical-Internet-of-Thing-Security-Notes/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临<br>的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。</p>
+<span id="more"></span>
+
+<h3 id="危险的新世界"><a href="#危险的新世界" class="headerlink" title="危险的新世界"></a>危险的新世界</h3><p>（什么是 IOT？）</p>
+<blockquote>
+<p>一个信息社会的全球性基础设施，基于已有的和演化的、可互操作的信息与通信技术，利用（物理和虚拟）设备互联来提供先进的服务。—— ITU</p>
+</blockquote>
+<blockquote>
+<p>一个物联网是指这样一种网络，它将唯一标识的“实物”连接到互联网上。这里的实物具有感知&#x2F;驱动能力，以及潜在的可编程能力。通过对唯一身份标识和感知能力进行开发，<br>任意实体可以从任意时刻从任何位置收集“实物”相关信息，以及改变‘实物’的状态。 —— IETF</p>
+</blockquote>
+<p>（什么是物联网安全？）</p>
+<p>物联网安全不是传统意义上的网络安全，而是网络安全与其他工程规范融合的产物。…… 网络安全一般不关注硬件设备的物理和安全方面，或者是设备与物理世界的交互<br>方面的内容。</p>
+<p>物理网安全的安全需求不再仅仅局限于包括可信性、完整性、不可否认性等内容的基本信息保障原则，还包括与在物理世界中生成并接收信息的物理资源和机器相关的原则。</p>
+<p>跨行业合作的必要性</p>
+]]></content>
+      <tags>
+        <tag>嵌入式系统和IOT</tag>
+      </tags>
   </entry>
   <entry>
     <title>Python 元类</title>
@@ -4291,19 +4326,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Circle: Raspberry Pi 的裸机编程环境</title>
-    <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
-<span id="more"></span>
-
-<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-        <category>开源硬件</category>
       </categories>
   </entry>
 </search>
