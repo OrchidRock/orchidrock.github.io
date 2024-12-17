@@ -1,222 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CMake 构建工具介绍</title>
-    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
-</blockquote>
-<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
-<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
-<li>与平台环境耦合性强，跨平台性不足</li>
-</ul>
-<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
-<ul>
-<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
-<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
-<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
-<li><strong>以目标（target）为中心的方法论</strong>：</li>
-<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
-<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
-<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
-<li><strong>组件化&#x2F;模块化</strong>：</li>
-<li>支持多种构建模式</li>
-</ul>
-<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
-<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>命令</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>库</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
-<td><code>add_library(mylib mylib.cxx)</code></td>
-</tr>
-<tr>
-<td>可执行文件</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
-<td><code>add_executable(demo2 demo2.c)</code></td>
-</tr>
-<tr>
-<td>自定义目标</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
-<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
-</tr>
-</tbody></table>
-<p><strong>注意</strong>：</p>
-<ul>
-<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
-</ul>
-<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
-
-<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
-<p>相关命令表：</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">描述</th>
-<th align="left">示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
-<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
-<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left">set_property()</td>
-<td align="left">None</td>
-<td align="left">None</td>
-</tr>
-</tbody></table>
-<p>命令模式：</p>
-<ul>
-<li><code>PUBLIC</code>：</li>
-<li><code>PRIVATE</code>：</li>
-<li><code>INTERFACE</code>：</li>
-</ul>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
-
-<p>使用要求的传播（Transitive Usage Requirements）：</p>
-<ul>
-<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
-</ul>
-<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
-<ul>
-<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
-</ul>
-<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
-<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
-<thead>
-<tr>
-<th align="left">名字</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">set</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">option (ccmake)</td>
-<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
-</tr>
-<tr>
-<td align="left">list</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">target_compile_options()</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">set_target_properties</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">configure_file</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">add_subdirectory</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">install</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
-<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
-<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>CMAKE_PREFIX_PATH</strong></td>
-<td>依赖包路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_MODULE_PATH</strong></td>
-<td>CMake扩展模块所在路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
-<td>当执行<strong>install</strong> 目标时的安装路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_BUILD_TYPE</strong></td>
-<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
-</tr>
-<tr>
-<td><strong>BUILD_SHARED_LIBS</strong></td>
-<td>指定<code>add_library()</code>生成静态库还是动态库</td>
-</tr>
-</tbody></table>
-<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
-<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
-<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>构建工具</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -414,6 +198,222 @@
       </categories>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CMake 构建工具介绍</title>
+    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
+</blockquote>
+<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
+<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
+<li>与平台环境耦合性强，跨平台性不足</li>
+</ul>
+<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<ul>
+<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
+<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
+<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
+<li><strong>以目标（target）为中心的方法论</strong>：</li>
+<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
+<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
+<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
+<li><strong>组件化&#x2F;模块化</strong>：</li>
+<li>支持多种构建模式</li>
+</ul>
+<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
+<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>库</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
+<td><code>add_library(mylib mylib.cxx)</code></td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
+<td><code>add_executable(demo2 demo2.c)</code></td>
+</tr>
+<tr>
+<td>自定义目标</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
+<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
+</ul>
+<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
+<p>相关命令表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
+<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
+<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left">set_property()</td>
+<td align="left">None</td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
+<p>命令模式：</p>
+<ul>
+<li><code>PUBLIC</code>：</li>
+<li><code>PRIVATE</code>：</li>
+<li><code>INTERFACE</code>：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
+
+<p>使用要求的传播（Transitive Usage Requirements）：</p>
+<ul>
+<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
+</ul>
+<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
+<ul>
+<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
+</ul>
+<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">set</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">option (ccmake)</td>
+<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
+</tr>
+<tr>
+<td align="left">list</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">target_compile_options()</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">set_target_properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configure_file</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">add_subdirectory</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
+<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
+<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_PREFIX_PATH</strong></td>
+<td>依赖包路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td>CMake扩展模块所在路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>当执行<strong>install</strong> 目标时的安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
+</tr>
+<tr>
+<td><strong>BUILD_SHARED_LIBS</strong></td>
+<td>指定<code>add_library()</code>生成静态库还是动态库</td>
+</tr>
+</tbody></table>
+<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
+<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>构建工具</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -483,6 +483,9 @@
 
 <h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
 <h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
+<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
+<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
+<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
 <h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
 <ul>
 <li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
@@ -1249,83 +1252,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-        <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LLVM 2: Backend</title>
     <url>/2023/02/24/LLVM-2-Backend/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
@@ -1430,6 +1356,83 @@
 <p>其中，<code>IssueWidth</code>定义了同时发射指令的个数，<code>LoadLatency</code>定义了<code>load</code>指令的延迟，<code>MispredictPenalty</code>定义了分支预测失败的代价。</p>
 <h2 id="实现-DAG-指令选择类"><a href="#实现-DAG-指令选择类" class="headerlink" title="实现 DAG 指令选择类"></a>实现 DAG 指令选择类</h2><p>&emsp;&emsp; DAG 指令选择的大部分代码都可以使用<code>tblgen</code>工具生成，但目前仍需要使用手写代码创建类，并将所有内容放在一起。</p>
 <h3 id="初始化目标机器"><a href="#初始化目标机器" class="headerlink" title="初始化目标机器"></a>初始化目标机器</h3><h3 id="添加-SelectionDAG-的实现"><a href="#添加-SelectionDAG-的实现" class="headerlink" title="添加 SelectionDAG 的实现"></a>添加 SelectionDAG 的实现</h3><h3 id="目标-Lowering"><a href="#目标-Lowering" class="headerlink" title="目标 Lowering"></a>目标 Lowering</h3>]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+]]></content>
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
@@ -2482,6 +2485,8 @@
 <span id="more"></span>
 
 <h3 id="TLS-协议"><a href="#TLS-协议" class="headerlink" title="TLS 协议"></a>TLS 协议</h3><h4 id="协议栈体系结构"><a href="#协议栈体系结构" class="headerlink" title="协议栈体系结构"></a>协议栈体系结构</h4><p><img src="/2024/12/16/TLS-Protocol-Analysis/tls_protocal_stack.png"></p>
+<h4 id="TLS-握手"><a href="#TLS-握手" class="headerlink" title="TLS 握手"></a>TLS 握手</h4><p>TLS v1.2 的握手流程如下图所示，假设使用基于 RSA 的密钥交换算法：<br><img src="/2024/12/16/TLS-Protocol-Analysis/handshake.png"></p>
+<p>在 <code>ClientHello</code> 消息中的<strong>密码套件（cipher suite）</strong> 参数格式如下（TLS v1.2）:<br>~<a href="ciphersuite.png"></a></p>
 <h3 id="Demo-测试"><a href="#Demo-测试" class="headerlink" title="Demo 测试"></a>Demo 测试</h3><p>本节使用 Go 建立基于 TLS 的 C&#x2F;S 通信，并使用 wireshark 解析通信协议报文。</p>
 <h4 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h4><p>为了使用 TLS，我们首先需要生成一系列 TLS 证书。由于我们不是部署到生产环境，我们可以使用自签名证书；反之，我们需要从一个可信的 CA 获取证书。</p>
 <p>a. 生成私钥</p>
@@ -2578,28 +2583,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
-<span id="more"></span>
-
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -2685,6 +2668,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
