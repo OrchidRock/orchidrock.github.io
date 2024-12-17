@@ -4450,7 +4450,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>Go 语言中的 Defer，Panic 和 Recover</title>
     <url>/2024/12/17/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84-Defer%EF%BC%8CPanic-%E5%92%8C-Recover/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go 拥有一些通用的控制流机制：<code>if</code>，<code>for</code>，<code>switch</code>，<code>goto</code>。同时，Go 可以使用 <code>go</code> 语句将代码运行在一个独立的 <code>goroutine</code> 中。本文讨论一些不太常用的机制：<code>defer</code>，<code>panic</code> 和 <code>recover</code>。</p>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go拥有一些通用的控制流机制：<code>if</code>，<code>for</code>，<code>switch</code>，<code>goto</code>。同时，Go可以使用 <code>go</code> 语句将代码运行在一个独立的 <code>goroutine</code> 中。但本文想要讨论一些不太常用的控制流机制：<code>defer</code>，<code>panic</code> 和 <code>recover</code>。</p>
 <blockquote>
 <p>翻译自 <a href="https://golang.google.cn/blog/defer-panic-and-recover">Defer, Panic, and Recover - Go Blog</a></p>
 </blockquote>
@@ -4458,6 +4458,18 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>Go 语言</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OAuth 2.0 Analysis</title>
+    <url>/2024/12/17/OAuth-2-0-Analysis/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>OAuth2.0</strong> 是 <a href="https://datatracker.ietf.org/doc/html/rfc6749">IETF RFC 6749 - The OAuth 2.0 Authorization Framework</a> 中规定的基于令牌的授权框架，允许客户端访问受保护的分布式资源而<br>不必要为每个输入密码。OAuth2.0 的设立是为了解决互联网上经常出现的多个账户使用相同的密码，密码只在必要的时候修改等糟糕的密钥健康状况。</p>
+<p>IEFT ACE 工作组创建了定义 OAuth2.0 应用于物联网的工作文件。</p>
+<p>OAuth2.0 是一个框架。关于 OAuth2.0 的安全最佳实践，参考 <a href="https://datatracker.ietf.org/doc/html/rfc6819">IETF RFC 6819 - OAuth 2.0 Threat Model and Security Considerations</a>。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
       </categories>
   </entry>
 </search>
