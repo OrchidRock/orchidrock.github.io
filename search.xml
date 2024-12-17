@@ -992,7 +992,10 @@
 <h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>安装好 Hexo 后，需要使用 Hexo 的命令新建项目，生成项目文件夹，包括配置文件、脚本、辅助工具、模板、主题等。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo init &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> &lt;folder&gt;</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>在 _config.yml 中配置 Markdown 属性，禁止将回车转换为 <code>&lt;br&gt;</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">markdown:</span></span><br><span class="line">  <span class="attr">breaks:</span> <span class="literal">false</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
