@@ -4481,6 +4481,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <title>Diffie-HellMan 算法分析及其改进</title>
     <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-HellMan 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
+<span id="more"></span>
+
 <h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
 <ul>
 <li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
