@@ -1,6 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CMake 构建工具介绍</title>
+    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
+</blockquote>
+<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
+<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
+<li>与平台环境耦合性强，跨平台性不足</li>
+</ul>
+<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<ul>
+<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
+<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
+<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
+<li><strong>以目标（target）为中心的方法论</strong>：</li>
+<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
+<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
+<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
+<li><strong>组件化&#x2F;模块化</strong>：</li>
+<li>支持多种构建模式</li>
+</ul>
+<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
+<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>库</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
+<td><code>add_library(mylib mylib.cxx)</code></td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
+<td><code>add_executable(demo2 demo2.c)</code></td>
+</tr>
+<tr>
+<td>自定义目标</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
+<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
+</ul>
+<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
+<p>相关命令表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
+<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
+<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left">set_property()</td>
+<td align="left">None</td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
+<p>命令模式：</p>
+<ul>
+<li><code>PUBLIC</code>：</li>
+<li><code>PRIVATE</code>：</li>
+<li><code>INTERFACE</code>：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
+
+<p>使用要求的传播（Transitive Usage Requirements）：</p>
+<ul>
+<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
+</ul>
+<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
+<ul>
+<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
+</ul>
+<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">set</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">option (ccmake)</td>
+<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
+</tr>
+<tr>
+<td align="left">list</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">target_compile_options()</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">set_target_properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configure_file</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">add_subdirectory</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
+<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
+<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_PREFIX_PATH</strong></td>
+<td>依赖包路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td>CMake扩展模块所在路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>当执行<strong>install</strong> 目标时的安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
+</tr>
+<tr>
+<td><strong>BUILD_SHARED_LIBS</strong></td>
+<td>指定<code>add_library()</code>生成静态库还是动态库</td>
+</tr>
+</tbody></table>
+<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
+<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>构建工具</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -196,200 +390,6 @@
       <categories>
         <category>GNU/Linux操作系统</category>
       </categories>
-  </entry>
-  <entry>
-    <title>CMake 构建工具介绍</title>
-    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
-</blockquote>
-<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
-<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
-<li>与平台环境耦合性强，跨平台性不足</li>
-</ul>
-<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
-<ul>
-<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
-<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
-<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
-<li><strong>以目标（target）为中心的方法论</strong>：</li>
-<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
-<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
-<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
-<li><strong>组件化&#x2F;模块化</strong>：</li>
-<li>支持多种构建模式</li>
-</ul>
-<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
-<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>命令</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>库</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
-<td><code>add_library(mylib mylib.cxx)</code></td>
-</tr>
-<tr>
-<td>可执行文件</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
-<td><code>add_executable(demo2 demo2.c)</code></td>
-</tr>
-<tr>
-<td>自定义目标</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
-<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
-</tr>
-</tbody></table>
-<p><strong>注意</strong>：</p>
-<ul>
-<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
-</ul>
-<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
-
-<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
-<p>相关命令表：</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">描述</th>
-<th align="left">示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
-<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
-<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left">set_property()</td>
-<td align="left">None</td>
-<td align="left">None</td>
-</tr>
-</tbody></table>
-<p>命令模式：</p>
-<ul>
-<li><code>PUBLIC</code>：</li>
-<li><code>PRIVATE</code>：</li>
-<li><code>INTERFACE</code>：</li>
-</ul>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
-
-<p>使用要求的传播（Transitive Usage Requirements）：</p>
-<ul>
-<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
-</ul>
-<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
-<ul>
-<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
-</ul>
-<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
-<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
-<thead>
-<tr>
-<th align="left">名字</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">set</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">option (ccmake)</td>
-<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
-</tr>
-<tr>
-<td align="left">list</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">target_compile_options()</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">set_target_properties</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">configure_file</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">add_subdirectory</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">install</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
-<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
-<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>CMAKE_PREFIX_PATH</strong></td>
-<td>依赖包路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_MODULE_PATH</strong></td>
-<td>CMake扩展模块所在路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
-<td>当执行<strong>install</strong> 目标时的安装路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_BUILD_TYPE</strong></td>
-<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
-</tr>
-<tr>
-<td><strong>BUILD_SHARED_LIBS</strong></td>
-<td>指定<code>add_library()</code>生成静态库还是动态库</td>
-</tr>
-</tbody></table>
-<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
-<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
-<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>构建工具</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
   </entry>
   <entry>
     <title>CPython Internals 0: 配置和构建</title>
@@ -948,6 +948,36 @@
       </categories>
   </entry>
   <entry>
+    <title>Go Language Tutorial</title>
+    <url>/2024/12/15/Go-Language-Tutorial/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
+<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
+<ul>
+<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
+</ul>
+<span id="more"></span>
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Go 语言</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Go 语言中的 Defer，Panic 和 Recover</title>
+    <url>/2024/12/17/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84-Defer%EF%BC%8CPanic-%E5%92%8C-Recover/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go拥有一些通用的控制流机制：<code>if</code>，<code>for</code>，<code>switch</code>，<code>goto</code>。同时，Go可以使用 <code>go</code> 语句将代码运行在一个独立的 <code>goroutine</code> 中。但本文想要讨论一些不太常用的控制流机制：<code>defer</code>，<code>panic</code> 和 <code>recover</code>。</p>
+<blockquote>
+<p>翻译自 <a href="https://golang.google.cn/blog/defer-panic-and-recover">Defer, Panic, and Recover - Go Blog</a></p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>Go 语言</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Hexo 简介和使用手册</title>
     <url>/2024/07/14/Hexo-%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://hexo.io/zh-cn/">Hexo</a> 是一个快速、简洁且高效的博客框架。它基于 NodeJs 开发，支持 MarkDown 等多种渲染引擎， 可以快速生成静态网页。<br>Hexo 也支持多种主题和插件。</p>
@@ -1071,6 +1101,24 @@
       </categories>
   </entry>
   <entry>
+    <title>LFS 2: PiLFS项目</title>
+    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
+<span id="more"></span>
+
+<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
+<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
+<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
+<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LFS 1: 构建 BLFS 系统</title>
     <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
@@ -1173,24 +1221,6 @@
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LFS 2: PiLFS项目</title>
-    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
-<span id="more"></span>
-
-<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
-<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
-<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
-<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
       </categories>
   </entry>
   <entry>
@@ -1762,6 +1792,54 @@
       <categories>
         <category>高性能计算</category>
         <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Network Scanning Based on TCP</title>
+    <url>/2024/12/16/Network-Scanning-Based-on-TCP/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。</p>
+<p>我们将使用 <a href="https://pypi.org/project/scapy/">Scapy</a> 第三方库来做实际的扫描测试。Scapy 可以用来做 package 嗅探和伪造 package，并且它已经在内部实现了大量的网络协议。</p>
+<span id="more"></span>
+
+<h3 id="TCP-连接扫描"><a href="#TCP-连接扫描" class="headerlink" title="TCP 连接扫描"></a>TCP 连接扫描</h3><p>该方式尝试通过与目标主机上的待扫描 TCP 端口建立完整的 TCP 连接，根据连接的成败推断端口的工作状态。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">data = &#x27;hello, world&#x27;</span><br><span class="line"></span><br><span class="line">## 构造 package </span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088)/data</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &#x27;&#x27;:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;AR&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14: # RST+ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-SYN-扫描"><a href="#TCP-SYN-扫描" class="headerlink" title="TCP SYN 扫描"></a>TCP SYN 扫描</h3><p>该类型扫描是向主机上的待扫描端口发送一个 SYN 标志被设置为 1 的 TCP 报文， 此动作与 TCP 的三次握手中的第一阶段相同。如果被扫描的端口处于监听状态，它将返回 SYN+ACK，响应连接请求<br>源主机在收到响应报文后，发送 RST 标志为 1 的报文，中断与主机的连接。如果被扫描主机的端口是关闭的，则会回复 RST 为 1 的报文。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;S&quot;)</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &quot;&quot;:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src=&#x27;127.0.0.1&#x27;, dst=&#x27;127.0.0.1&#x27;) / TCP(sport=12345, dport=8088, flags=&quot;R&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14:  # RST + ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-Xmas-扫描（圣诞树扫描）"><a href="#TCP-Xmas-扫描（圣诞树扫描）" class="headerlink" title="TCP Xmas 扫描（圣诞树扫描）"></a>TCP Xmas 扫描（圣诞树扫描）</h3><p>在该扫描类型中，源主机会向目标主机发送设置 PSH、FIN、URG 标识的数据包。判断逻辑如下：</p>
+<ul>
+<li>如果目标主机的端口是开放的，不会有任何响应</li>
+<li>如果目标主机返回了 RST 报文，那么说明端口处于关闭状态</li>
+<li>如果目标主机返回一个 ICMP 数据包，其中错误类型为 3 且状态码为 1, 2, 3, 9, 10 或 13, 则说明目标端口被过滤了无法确定是否处于开放状态。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12345</span>, dport=<span class="number">8088</span>, flags=<span class="string">&quot;FPU&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Open|Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).flags == <span class="number">0x14</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-ACK-扫描"><a href="#TCP-ACK-扫描" class="headerlink" title="TCP ACK 扫描"></a>TCP ACK 扫描</h3><p>ACK 扫描不是用于发现端口开启或关闭状态的，而是用于发现服务器上是否存在有状态防火墙的。它的结果只能说明端口是否被过滤。</p>
+<h3 id="TCP-窗口扫描"><a href="#TCP-窗口扫描" class="headerlink" title="TCP 窗口扫描"></a>TCP 窗口扫描</h3><p>TCP 窗口扫描的流程同 ACK 扫描类似，同样是客户端向服务器发送一个带有 ACK 标识和端口号的 TCP 数据包，但是这种扫描能够用于发现目标服务器端口的状态。在 ACK 扫描中返回 RST 表明没有被过滤，但在窗口扫描中，当收到返回的 RST 数据包后，它会检查窗口大小的值。</p>
+<ul>
+<li>如果窗口大小的值是个非零值，则说明目标端口是开放的。</li>
+<li>如果返回的 RST 数据包中的窗口大小为0，则说明目标端口是关闭的。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12346</span>, dport=<span class="number">8089</span>, flags=<span class="string">&quot;A&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">10</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;No Response&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).window == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> resp.getlayer(TCP).window &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Opened&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>参考 <a href="https://www.cnblogs.com/linagcheng/p/13033631.html">端口扫描之开放端口扫描方式</a></p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OAuth 2.0 Analysis</title>
+    <url>/2024/12/17/OAuth-2-0-Analysis/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>OAuth2.0</strong> 是 <a href="https://datatracker.ietf.org/doc/html/rfc6749">IETF RFC 6749 - The OAuth 2.0 Authorization Framework</a> 中规定的基于令牌的授权框架，允许客户端访问受保护的分布式资源而<br>不必要为每个输入密码。OAuth2.0 的设立是为了解决互联网上经常出现的多个账户使用相同的密码，密码只在必要的时候修改等糟糕的密钥健康状况。</p>
+<p>IEFT ACE 工作组创建了定义 OAuth2.0 应用于物联网的工作文件。</p>
+<p>OAuth2.0 是一个框架。关于 OAuth2.0 的安全最佳实践，参考 <a href="https://datatracker.ietf.org/doc/html/rfc6819">IETF RFC 6819 - OAuth 2.0 Threat Model and Security Considerations</a>。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2341,6 +2419,14 @@
       </categories>
   </entry>
   <entry>
+    <title>SSL Protocol Analysis</title>
+    <url>/2024/12/16/SSL-Protocol-Analysis/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>信息安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Shell脚本常用过滤器命令</title>
     <url>/2022/04/16/Shell%E8%84%9A%E6%9C%AC%E5%B8%B8%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;过滤器是Unix&#x2F;Linux下多道程序设计风格的重要部分，它和管道机制一起可以发挥巨大的作用。相比使用通用语言来完成同样的工作，过滤器&#x2F;管道设计更加简洁清晰，更加敏捷和健壮。另外，在不同种类的shell中，有些命令的部分功能可能不同。</p>
@@ -2359,6 +2445,14 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>TLS Protocol Analysis</title>
+    <url>/2024/12/16/TLS-Protocol-Analysis/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2681,6 +2775,21 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>制作MultiBoot USB启动盘</title>
+    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+<span id="more"></span>
+
+<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
+<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
+<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
+<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于计算机操作系统启动引导的总结</title>
     <url>/2018/04/02/%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E7%9A%84%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;对于现代CPU而言，当其上电启动时，必须知道指令在什么地方，这是很简单的道理。现代大多数计算机的做法是将这第一段程序放到称为BIOS的固件（存储材料大都为EEPROM或FLASH芯片）里，该程序会根据配置信息读取磁盘（或其他存储设备，例如外接USB）的特定分区里的程序代码并执行，逐渐启动操作系统的所有组件。</p>
@@ -2721,21 +2830,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="方案三：UEFI"><a href="#方案三：UEFI" class="headerlink" title="方案三：UEFI"></a>方案三：UEFI</h3><p>&emsp;&emsp;关于如何在计算机启动时屏蔽UEFI以及安全启动请查看Disable_UEFI_and_Secure_Boot</p>
 <h3 id="方案四：U-boot"><a href="#方案四：U-boot" class="headerlink" title="方案四：U-boot"></a>方案四：U-boot</h3><p>&emsp;&emsp;待补充</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>① <a href="https://baike.baidu.com/item/%E4%B8%BB%E5%BC%95%E5%AF%BC%E8%AE%B0%E5%BD%95/7612638?fr=aladdin&fromid=10473976&fromtitle=mbr">MBR 百度百科</a><br>② <a href="https://baike.baidu.com/item/bios/91424?fr=aladdin">BIOS 百度百科</a><br>③ <a href="https://opensource.com/article/17/2/linux-boot-and-startup">An introduction to the Linux boot and startup processes</a><br>④ <a href="https://www.cnblogs.com/leaven/archive/2010/01/07/1641324.html">详解 Linux Initrd</a><br>⑤ <a href="https://baike.baidu.com/item/initrd/3239796?fr=aladdin">initrd 百度百科</a><br>⑥ <a href="https://wiki.archlinux.org/index.php/Mkinitcpio">mkinitcpio ArchLinux Wiki</a><br>⑦ <a href="https://wiki.archlinux.org/index.php/Category:Boot_loaders">Boot Loader ArchLinux Wiki</a><br>⑧ <a href="http://www.178linux.com/15793">UEFI原理小结</a><br>⑨ <a href="https://neosmart.net/wiki/easybcd/">EasyBCD 官方wiki</a><br>⑩ <a href="http://www.178linux.com/15788">UEFI与BIOS对比</a><br>⑪ <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT 维基百科</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>制作MultiBoot USB启动盘</title>
-    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
-<span id="more"></span>
-
-<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
-<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
-<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
-<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -4376,100 +4470,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Go Language Tutorial</title>
-    <url>/2024/12/15/Go-Language-Tutorial/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
-<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
-<ul>
-<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
-</ul>
-<span id="more"></span>
-
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Go 语言</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Network Scanning Based on TCP</title>
-    <url>/2024/12/16/Network-Scanning-Based-on-TCP/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。</p>
-<p>我们将使用 <a href="https://pypi.org/project/scapy/">Scapy</a> 第三方库来做实际的扫描测试。Scapy 可以用来做 package 嗅探和伪造 package，并且它已经在内部实现了大量的网络协议。</p>
-<span id="more"></span>
-
-<h3 id="TCP-连接扫描"><a href="#TCP-连接扫描" class="headerlink" title="TCP 连接扫描"></a>TCP 连接扫描</h3><p>该方式尝试通过与目标主机上的待扫描 TCP 端口建立完整的 TCP 连接，根据连接的成败推断端口的工作状态。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">data = &#x27;hello, world&#x27;</span><br><span class="line"></span><br><span class="line">## 构造 package </span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088)/data</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &#x27;&#x27;:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;AR&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14: # RST+ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="TCP-SYN-扫描"><a href="#TCP-SYN-扫描" class="headerlink" title="TCP SYN 扫描"></a>TCP SYN 扫描</h3><p>该类型扫描是向主机上的待扫描端口发送一个 SYN 标志被设置为 1 的 TCP 报文， 此动作与 TCP 的三次握手中的第一阶段相同。如果被扫描的端口处于监听状态，它将返回 SYN+ACK，响应连接请求<br>源主机在收到响应报文后，发送 RST 标志为 1 的报文，中断与主机的连接。如果被扫描主机的端口是关闭的，则会回复 RST 为 1 的报文。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;S&quot;)</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &quot;&quot;:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src=&#x27;127.0.0.1&#x27;, dst=&#x27;127.0.0.1&#x27;) / TCP(sport=12345, dport=8088, flags=&quot;R&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14:  # RST + ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="TCP-Xmas-扫描（圣诞树扫描）"><a href="#TCP-Xmas-扫描（圣诞树扫描）" class="headerlink" title="TCP Xmas 扫描（圣诞树扫描）"></a>TCP Xmas 扫描（圣诞树扫描）</h3><p>在该扫描类型中，源主机会向目标主机发送设置 PSH、FIN、URG 标识的数据包。判断逻辑如下：</p>
-<ul>
-<li>如果目标主机的端口是开放的，不会有任何响应</li>
-<li>如果目标主机返回了 RST 报文，那么说明端口处于关闭状态</li>
-<li>如果目标主机返回一个 ICMP 数据包，其中错误类型为 3 且状态码为 1, 2, 3, 9, 10 或 13, 则说明目标端口被过滤了无法确定是否处于开放状态。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12345</span>, dport=<span class="number">8088</span>, flags=<span class="string">&quot;FPU&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Open|Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).flags == <span class="number">0x14</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="TCP-ACK-扫描"><a href="#TCP-ACK-扫描" class="headerlink" title="TCP ACK 扫描"></a>TCP ACK 扫描</h3><p>ACK 扫描不是用于发现端口开启或关闭状态的，而是用于发现服务器上是否存在有状态防火墙的。它的结果只能说明端口是否被过滤。</p>
-<h3 id="TCP-窗口扫描"><a href="#TCP-窗口扫描" class="headerlink" title="TCP 窗口扫描"></a>TCP 窗口扫描</h3><p>TCP 窗口扫描的流程同 ACK 扫描类似，同样是客户端向服务器发送一个带有 ACK 标识和端口号的 TCP 数据包，但是这种扫描能够用于发现目标服务器端口的状态。在 ACK 扫描中返回 RST 表明没有被过滤，但在窗口扫描中，当收到返回的 RST 数据包后，它会检查窗口大小的值。</p>
-<ul>
-<li>如果窗口大小的值是个非零值，则说明目标端口是开放的。</li>
-<li>如果返回的 RST 数据包中的窗口大小为0，则说明目标端口是关闭的。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12346</span>, dport=<span class="number">8089</span>, flags=<span class="string">&quot;A&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">10</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;No Response&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).window == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> resp.getlayer(TCP).window &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Opened&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-
-<p>参考 <a href="https://www.cnblogs.com/linagcheng/p/13033631.html">端口扫描之开放端口扫描方式</a></p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>TLS Protocol Analysis</title>
-    <url>/2024/12/16/TLS-Protocol-Analysis/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>SSL Protocol Analysis</title>
-    <url>/2024/12/16/SSL-Protocol-Analysis/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Go 语言中的 Defer，Panic 和 Recover</title>
-    <url>/2024/12/17/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84-Defer%EF%BC%8CPanic-%E5%92%8C-Recover/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go拥有一些通用的控制流机制：<code>if</code>，<code>for</code>，<code>switch</code>，<code>goto</code>。同时，Go可以使用 <code>go</code> 语句将代码运行在一个独立的 <code>goroutine</code> 中。但本文想要讨论一些不太常用的控制流机制：<code>defer</code>，<code>panic</code> 和 <code>recover</code>。</p>
-<blockquote>
-<p>翻译自 <a href="https://golang.google.cn/blog/defer-panic-and-recover">Defer, Panic, and Recover - Go Blog</a></p>
-</blockquote>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>Go 语言</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OAuth 2.0 Analysis</title>
-    <url>/2024/12/17/OAuth-2-0-Analysis/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>OAuth2.0</strong> 是 <a href="https://datatracker.ietf.org/doc/html/rfc6749">IETF RFC 6749 - The OAuth 2.0 Authorization Framework</a> 中规定的基于令牌的授权框架，允许客户端访问受保护的分布式资源而<br>不必要为每个输入密码。OAuth2.0 的设立是为了解决互联网上经常出现的多个账户使用相同的密码，密码只在必要的时候修改等糟糕的密钥健康状况。</p>
-<p>IEFT ACE 工作组创建了定义 OAuth2.0 应用于物联网的工作文件。</p>
-<p>OAuth2.0 是一个框架。关于 OAuth2.0 的安全最佳实践，参考 <a href="https://datatracker.ietf.org/doc/html/rfc6819">IETF RFC 6819 - OAuth 2.0 Threat Model and Security Considerations</a>。</p>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>信息安全</category>
       </categories>
   </entry>
 </search>
