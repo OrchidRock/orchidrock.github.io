@@ -2486,7 +2486,10 @@
 
 <h3 id="TLS-协议"><a href="#TLS-协议" class="headerlink" title="TLS 协议"></a>TLS 协议</h3><h4 id="协议栈体系结构"><a href="#协议栈体系结构" class="headerlink" title="协议栈体系结构"></a>协议栈体系结构</h4><p><img src="/2024/12/16/TLS-Protocol-Analysis/tls_protocal_stack.png"></p>
 <h4 id="TLS-握手"><a href="#TLS-握手" class="headerlink" title="TLS 握手"></a>TLS 握手</h4><p>TLS v1.2 的握手流程如下图所示，假设使用基于 RSA 的密钥交换算法：<br><img src="/2024/12/16/TLS-Protocol-Analysis/handshake.png"></p>
-<p>在 <code>ClientHello</code> 消息中的<strong>密码套件（cipher suite）</strong> 参数格式如下（TLS v1.2）:<br>~<a href="ciphersuite.png"></a></p>
+<p>在 <code>ClientHello</code> 消息中的<strong>密码套件（cipher suite）</strong> 参数格式如下（TLS v1.2）:<br><img src="/2024/12/16/TLS-Protocol-Analysis/ciphersuite.png"></p>
+<blockquote>
+<p>参考 <a href="https://www.golinuxcloud.com/analyze-tls-mtls-wireshark/">Analyze TLS and mTLS Authentication with Wireshark</a>。</p>
+</blockquote>
 <h3 id="Demo-测试"><a href="#Demo-测试" class="headerlink" title="Demo 测试"></a>Demo 测试</h3><p>本节使用 Go 建立基于 TLS 的 C&#x2F;S 通信，并使用 wireshark 解析通信协议报文。</p>
 <h4 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h4><p>为了使用 TLS，我们首先需要生成一系列 TLS 证书。由于我们不是部署到生产环境，我们可以使用自签名证书；反之，我们需要从一个可信的 CA 获取证书。</p>
 <p>a. 生成私钥</p>
