@@ -198,28 +198,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CMake 构建工具介绍</title>
     <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
@@ -412,6 +390,28 @@
       <tags>
         <tag>微型语言</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
   </entry>
   <entry>
     <title>CUDA Tutorial</title>
@@ -1019,6 +1019,11 @@
 
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>在 _config.yml 中配置 Markdown 属性，禁止将回车转换为 <code>&lt;br&gt;</code>:</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">markdown:</span></span><br><span class="line">  <span class="attr">breaks:</span> <span class="literal">false</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="支持数学表达式"><a href="#支持数学表达式" class="headerlink" title="支持数学表达式"></a>支持数学表达式</h3><p>更换 Hexo 的 markdown 渲染引擎，<code>hexo-renderer-kramed</code>引擎是在默认的渲染引擎<code>hexo-renderer-marked</code>的基础上修改了一些 bug，两者比较接近，也比较轻量级。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm uninstall hexo-renderer-marked --save  <span class="comment"># 卸载原引擎</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install hexo-renderer-kramed --save  <span class="comment"># 安装新引擎</span></span></span><br></pre></td></tr></table></figure>
+
+
 
 <h3 id="生成和部署"><a href="#生成和部署" class="headerlink" title="生成和部署"></a>生成和部署</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo clean</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo generate</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hexo deploy</span></span><br></pre></td></tr></table></figure>
 
@@ -2693,6 +2698,40 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Wireless Network Security Analysis</title>
+    <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+
+<h3 id="STA-与-AP-建立连接的过程"><a href="#STA-与-AP-建立连接的过程" class="headerlink" title="STA 与 AP 建立连接的过程"></a>STA 与 AP 建立连接的过程</h3><p><img src="/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png"></p>
+<h2 id="无线局域网的安全问题"><a href="#无线局域网的安全问题" class="headerlink" title="无线局域网的安全问题"></a>无线局域网的安全问题</h2><ul>
+<li>信道干扰。攻击层次位于物理层，WLAN 的频段是公开的，因此 Attacker 很容易通过发射同频段的噪声信号实现信道干扰。</li>
+<li>窃听和嗅探。</li>
+<li>伪造 AP。AP 和 STA 的网络拓扑关系为中心化的，所有 STA 都是通过接入 AP 后通过 AP 完成数据转发的。攻击者可以伪造一个 AP，并在信号强度上合法 AP 发射的信号，进而截获甚至篡改 STA 的通信数据。</li>
+<li>重放攻击。</li>
+</ul>
+<h2 id="WEP-安全协议"><a href="#WEP-安全协议" class="headerlink" title="WEP 安全协议"></a>WEP 安全协议</h2><p><code>WEP (Wired Equivalent Privacy)</code> 是 IEEE 802.11b 中定义的第一个用于保护 WLAN 通信安全的协议。但目前因为其安全弱点，已经在 2003 年被 <code>Wi-FI Protected Access</code>淘汰，后来在 2004 年由完整的 IEEE 802.11i 标准（WPA2）所取代。</p>
+<p>802.11b 支持<strong>开放系统认证（open system authentication）</strong> 和 <strong>共享密钥认证（shared key authentication）</strong>。开放系统认证，也就是无认证。</p>
+<h3 id="共享密钥认证"><a href="#共享密钥认证" class="headerlink" title="共享密钥认证"></a>共享密钥认证</h3><p>共享密钥认证过程并不复杂，如下图所示：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/SKA.png"></p>
+<p>注意的是，上述认证过程是单向的，即只能 AP 向 STA 认证，因此 STA 容易受到<strong>伪 AP</strong> 的攻击。</p>
+<h3 id="数据加解密流程"><a href="#数据加解密流程" class="headerlink" title="数据加解密流程"></a>数据加解密流程</h3><p><strong>加密流程：</strong><br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png"></p>
+<p>加密数据帧 MPDU 格式：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/dataframe_encrypt.png"></p>
+<p><strong>解密流程：</strong><br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png"></p>
+<h3 id="安全性分析"><a href="#安全性分析" class="headerlink" title="安全性分析"></a>安全性分析</h3><ul>
+<li>密文逆向分析：根据加密流程，可以知道，当获取到两段密文 S1 和 S2 的情况下，即使不知道密钥流，也可以获得对应两个明文的异或结果。换句话说，在这种情况下，一旦知道了 S1 的明文，立即可以推导出 S2 的明文，反之亦然。因此，WEP 引入了 IV，<br>这样每次加密时，即使密钥相同，IV 不同，也能产生不同的密钥流。</li>
+<li>密钥破解：穷举 IV</li>
+<li>数据完整性问题：CRC 不能解决身份认证问题，任何人根据明文都可以计算出 CRC 校验和。另外 CRC 具有线性性质，而且流密码器对异或运算也是线性的，从而使得数据篡改成为可能。</li>
+</ul>
+<p>给定密文 <code>C</code>: $ C &#x3D; RC4(IV, k) \bigotimes (M || CRC(M)) $<br>攻击者按如下方式可以将明文 M 修改为 M’：</p>
+<p>a. 计算 M 和 M’ 的差分 $ \triangle $：$ \triangle &#x3D; M \bigotimes M’ $<br>b. 创建新的密文 $ C’ $： $ C’ &#x3D; C \bigotimes (\triangle || CRC(\triangle)) $</p>
+<p>证明略（利用 CRC 线性）</p>
+<p>因此，攻击者可以有针对性地对明文进行修改，而不用加密或者解密原消息。</p>
+<h2 id="WAP-WAP2-WAP3-安全协议"><a href="#WAP-WAP2-WAP3-安全协议" class="headerlink" title="WAP&#x2F;WAP2&#x2F;WAP3 安全协议"></a>WAP&#x2F;WAP2&#x2F;WAP3 安全协议</h2>]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
       </categories>
   </entry>
   <entry>
