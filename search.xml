@@ -1064,7 +1064,7 @@
 <p>为了解决 IPv4 存在的安全问题，IETF 设计了端到端的确保 IP 通信安全的机制，称为<code>IPSec (IP Security)</code>。</p>
 <span id="more"></span>
 
-<p>IPSec 标准之间的关系：<br><img src="/IPSec.png"></p>
+<p>IPSec 标准之间的关系：<br><img src="/2024/12/19/IPsec-Protocol-Analysis/IPsec.png"></p>
 <p>协议解释：</p>
 <ul>
 <li>认证头（AH）：为 IP 数据报提供<strong>无连接数据完整性</strong>、<strong>消息认证</strong>以及<strong>防重放攻击保护</strong>。</li>
