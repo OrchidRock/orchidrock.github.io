@@ -4600,13 +4600,37 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
 <p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
 <p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50% $<br>当 n &#x3D; 30 时，$ P \approx 70% $<br>当 n &#x3D; 40 时，$ P \approx 90% $<br>当 n &#x3D; 50 时，$ P \approx 97% $</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
 <p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。  </p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$ P’ \approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}}  $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
 ]]></content>
       <categories>
         <category>信息安全</category>
         <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IPsec Protocol Analysis</title>
+    <url>/2024/12/19/IPsec-Protocol-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>IPv4</code> 是应用最为广泛的网络层协议，它组成了如今 Internet 的核心。IPv4 协议是无状态、无认证、无加密协议，也没有带宽控制支持，很容易收到多方面的攻击。  </p>
+<p>为了解决 IPv4 存在的安全问题，IETF 设计了端到端的确保 IP 通信安全的机制，称为<code>IPSec (IP Security)</code>。</p>
+<span id="more"></span>
+
+<p>IPSec 标准之间的关系：<br><img src="/IPSec.png"></p>
+<p>协议解释：</p>
+<p>* </p>
+<h2 id="IPSec-Security-Policy"><a href="#IPSec-Security-Policy" class="headerlink" title="IPSec Security Policy"></a>IPSec Security Policy</h2><p>IPSec 操作的基础是应用于每一个从源端到目标端传输的 IP 包上的安全策略。  </p>
+<p>SA（Security Association） 安全关联。SA 是通信双方之间的单向逻辑连接，为通信数据流提供安全服务。所有经过同一 SA 的数据流会得到相同的安全服务。如果源端和目标端需要双向安全数据交换，则需要建立两个 SA，称为 “SA对”。  </p>
+<h2 id="IPSec-Mode"><a href="#IPSec-Mode" class="headerlink" title="IPSec Mode"></a>IPSec Mode</h2>]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
       </categories>
   </entry>
 </search>
