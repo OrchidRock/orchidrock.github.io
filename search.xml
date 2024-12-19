@@ -198,6 +198,31 @@
       </categories>
   </entry>
   <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$ P’ \approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}}  $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CMake 构建工具介绍</title>
     <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
@@ -476,31 +501,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Diffie-Hellman 算法分析及其改进</title>
-    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
-<span id="more"></span>
-
-<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
-<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
-<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
-<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
-<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
-<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
-<ul>
-<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
-<li>允许双方协商一个全局参数集合。</li>
-<li>利用现时确保抵抗重放攻击。</li>
-<li>能够交换 Diffie-Hellman 公开密钥。</li>
-<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
     <title>DroidCam 工具使用</title>
     <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
@@ -534,6 +534,31 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Diffie-Hellman 算法分析及其改进</title>
+    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
+<span id="more"></span>
+
+<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
+<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
+<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
+<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
+<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
+<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
+<ul>
+<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
+<li>允许双方协商一个全局参数集合。</li>
+<li>利用现时确保抵抗重放攻击。</li>
+<li>能够交换 Diffie-Hellman 公开密钥。</li>
+<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -1033,6 +1058,24 @@
       </categories>
   </entry>
   <entry>
+    <title>IPsec Protocol Analysis</title>
+    <url>/2024/12/19/IPsec-Protocol-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>IPv4</code> 是应用最为广泛的网络层协议，它组成了如今 Internet 的核心。IPv4 协议是无状态、无认证、无加密协议，也没有带宽控制支持，很容易收到多方面的攻击。  </p>
+<p>为了解决 IPv4 存在的安全问题，IETF 设计了端到端的确保 IP 通信安全的机制，称为<code>IPSec (IP Security)</code>。</p>
+<span id="more"></span>
+
+<p>IPSec 标准之间的关系：<br><img src="/IPSec.png"></p>
+<p>协议解释：</p>
+<p>* </p>
+<h2 id="IPSec-Security-Policy"><a href="#IPSec-Security-Policy" class="headerlink" title="IPSec Security Policy"></a>IPSec Security Policy</h2><p>IPSec 操作的基础是应用于每一个从源端到目标端传输的 IP 包上的安全策略。  </p>
+<p>SA（Security Association） 安全关联。SA 是通信双方之间的单向逻辑连接，为通信数据流提供安全服务。所有经过同一 SA 的数据流会得到相同的安全服务。如果源端和目标端需要双向安全数据交换，则需要建立两个 SA，称为 “SA对”。  </p>
+<h2 id="IPSec-Mode"><a href="#IPSec-Mode" class="headerlink" title="IPSec Mode"></a>IPSec Mode</h2>]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LFS 0: LFS 项目介绍</title>
     <url>/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<a href="https://www.linuxfromscratch.org/">LFS（Linux From Scratch）</a>项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。</p>
@@ -1257,83 +1300,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
-]]></content>
-      <categories>
-        <category>编译器</category>
-        <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LLVM 2: Backend</title>
     <url>/2023/02/24/LLVM-2-Backend/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
@@ -1438,6 +1404,83 @@
 <p>其中，<code>IssueWidth</code>定义了同时发射指令的个数，<code>LoadLatency</code>定义了<code>load</code>指令的延迟，<code>MispredictPenalty</code>定义了分支预测失败的代价。</p>
 <h2 id="实现-DAG-指令选择类"><a href="#实现-DAG-指令选择类" class="headerlink" title="实现 DAG 指令选择类"></a>实现 DAG 指令选择类</h2><p>&emsp;&emsp; DAG 指令选择的大部分代码都可以使用<code>tblgen</code>工具生成，但目前仍需要使用手写代码创建类，并将所有内容放在一起。</p>
 <h3 id="初始化目标机器"><a href="#初始化目标机器" class="headerlink" title="初始化目标机器"></a>初始化目标机器</h3><h3 id="添加-SelectionDAG-的实现"><a href="#添加-SelectionDAG-的实现" class="headerlink" title="添加 SelectionDAG 的实现"></a>添加 SelectionDAG 的实现</h3><h3 id="目标-Lowering"><a href="#目标-Lowering" class="headerlink" title="目标 Lowering"></a>目标 Lowering</h3>]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+]]></content>
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
@@ -1616,6 +1659,31 @@
       </categories>
   </entry>
   <entry>
+    <title>Linux Kernel  LKD3 阅读笔记</title>
+    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
+<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
+<span id="more"></span>
+<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
+<ul>
+<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
+<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+</ul>
+<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
+<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
+<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
+<p>Q2: Is the system call portable?</p>
+<p><strong><code>Provide mechanism, not policy.</code></strong></p>
+<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
+<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Linux Kernel: 内核数据结构</title>
     <url>/2023/04/19/Linux-Kernel-%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Linux 内核内建了常用的数据结构，并鼓励开发者尽可能地重用这些数据结构，而不是重新发明轮子。这些数据结构包括<code>链表（list_head）</code>、<code>队列</code>、<code>散列表（hlist）</code>和<code>二叉树</code>。</p>
@@ -1668,31 +1736,6 @@
 <h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
 <p>动态分配节点的初始化：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux Kernel  LKD3 阅读笔记</title>
-    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
-<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
-<span id="more"></span>
-<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
-<ul>
-<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
-<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
-</ul>
-<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
-<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
-<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
-<p>Q2: Is the system call portable?</p>
-<p><strong><code>Provide mechanism, not policy.</code></strong></p>
-<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
-<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1887,34 +1930,6 @@
       </categories>
   </entry>
   <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenMP Tutorial</title>
     <url>/2023/03/02/OpenMP-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.openmp.org/">OpenMP</a> 可以认为是用于<code>共享内存型并行编程</code> 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。</p>
@@ -2019,6 +2034,34 @@
 <h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>]]></content>
       <categories>
         <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2701,6 +2744,24 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>flex 规范参考</title>
+    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
+<span id="more"></span>
+
+<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Wireless Network Security Analysis</title>
     <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
@@ -2751,24 +2812,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>信息安全</category>
         <category>网络安全</category>
       </categories>
-  </entry>
-  <entry>
-    <title>flex 规范参考</title>
-    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
-<span id="more"></span>
-
-<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
   </entry>
   <entry>
     <title>vim配置及命令手册</title>
@@ -4588,49 +4631,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$ P’ \approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}}  $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IPsec Protocol Analysis</title>
-    <url>/2024/12/19/IPsec-Protocol-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>IPv4</code> 是应用最为广泛的网络层协议，它组成了如今 Internet 的核心。IPv4 协议是无状态、无认证、无加密协议，也没有带宽控制支持，很容易收到多方面的攻击。  </p>
-<p>为了解决 IPv4 存在的安全问题，IETF 设计了端到端的确保 IP 通信安全的机制，称为<code>IPSec (IP Security)</code>。</p>
-<span id="more"></span>
-
-<p>IPSec 标准之间的关系：<br><img src="/IPSec.png"></p>
-<p>协议解释：</p>
-<p>* </p>
-<h2 id="IPSec-Security-Policy"><a href="#IPSec-Security-Policy" class="headerlink" title="IPSec Security Policy"></a>IPSec Security Policy</h2><p>IPSec 操作的基础是应用于每一个从源端到目标端传输的 IP 包上的安全策略。  </p>
-<p>SA（Security Association） 安全关联。SA 是通信双方之间的单向逻辑连接，为通信数据流提供安全服务。所有经过同一 SA 的数据流会得到相同的安全服务。如果源端和目标端需要双向安全数据交换，则需要建立两个 SA，称为 “SA对”。  </p>
-<h2 id="IPSec-Mode"><a href="#IPSec-Mode" class="headerlink" title="IPSec Mode"></a>IPSec Mode</h2>]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>网络安全</category>
       </categories>
   </entry>
 </search>
