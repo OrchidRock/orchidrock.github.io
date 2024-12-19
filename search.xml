@@ -198,6 +198,28 @@
       </categories>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Birthday Attack for Hash Function Analysis</title>
     <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
@@ -213,7 +235,7 @@
 <h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
 <p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
 <p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$ P’ \approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}}  $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} $$<br>$$ &#x3D; e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$<br>\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}<br>\end{align}<br>$$</p>
 <p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
 <p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
 ]]></content>
@@ -417,28 +439,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -501,42 +501,6 @@
       </categories>
   </entry>
   <entry>
-    <title>DroidCam 工具使用</title>
-    <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
-<span id="more"></span>
-
-<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><h3 id="App端"><a href="#App端" class="headerlink" title="App端"></a>App端</h3><p>下载 App 端</p>
-<h3 id="PC-端"><a href="#PC-端" class="headerlink" title="PC 端"></a>PC 端</h3><p><strong>下载安装：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.2.zip</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">sha1sum</span>: d1038e6d62cac6f60b0dd8caa8d5849c79065a7b</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">unzip droidcam_latest.zip -d droidcam</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> droidcam &amp;&amp; <span class="built_in">sudo</span> ./install-client</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>Video 模块</strong>：</p>
-<p>安装 <code>v4l2loopback-dc</code> 内核模块：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-video</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 检查是否安装成功</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">lsmod | grep v4l2loopback_dc</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>Audio 模块</strong>：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-audio</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用-WIFI-连接"><a href="#使用-WIFI-连接" class="headerlink" title="使用 WIFI 连接"></a>使用 WIFI 连接</h3><p>运行<code>droidcam</code> 或者 <code>droidcam-cli</code>：</p>
-<p><code>$ droidcam</code></p>
-<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_wifi.png"></p>
-<p>其中 <code>Phone IP</code> 填写手机 App 中显示的 IP 地址。然后点击 <code>Connect</code> 即可。</p>
-<p>然后，用户可以在浏览器中的网络摄像头列表中找到对应的一项，可以在网站： <a href="https://www.webcamtest.cc/">网络摄像头测试</a> 中进行检验。</p>
-<p>使用完成后，可以在上面的<code>DroidCam Client</code>界面中点击 <code>Stop</code> 后退出。</p>
-<h3 id="使用-USB-连接"><a href="#使用-USB-连接" class="headerlink" title="使用 USB 连接"></a>使用 USB 连接</h3><p>首先打开手机的 <code>Debugging 模式</code>，具体方法可以查询网络资源。</p>
-<p>下载安装 <code>adb</code> 工具：</p>
-<p><code>$ sudo apt-get install adb</code></p>
-<p>检查设备是否可用：</p>
-<p><code>$ adb devices</code></p>
-<p>接下来，打开 <code>droidcam</code> 客户端，选择 <code>USB</code> 连接模式：</p>
-<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_usb.png"></p>
-<p>然后点击 <code>Connect</code> 。最后在浏览器中进行再进行检验即可。</p>
-]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Diffie-Hellman 算法分析及其改进</title>
     <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
@@ -571,6 +535,42 @@
 ]]></content>
       <categories>
         <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>DroidCam 工具使用</title>
+    <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
+<span id="more"></span>
+
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><h3 id="App端"><a href="#App端" class="headerlink" title="App端"></a>App端</h3><p>下载 App 端</p>
+<h3 id="PC-端"><a href="#PC-端" class="headerlink" title="PC 端"></a>PC 端</h3><p><strong>下载安装：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -O droidcam_latest.zip https://files.dev47apps.net/linux/droidcam_1.8.2.zip</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">sha1sum</span>: d1038e6d62cac6f60b0dd8caa8d5849c79065a7b</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">unzip droidcam_latest.zip -d droidcam</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> droidcam &amp;&amp; <span class="built_in">sudo</span> ./install-client</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Video 模块</strong>：</p>
+<p>安装 <code>v4l2loopback-dc</code> 内核模块：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-video</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 检查是否安装成功</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">lsmod | grep v4l2loopback_dc</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Audio 模块</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install-audio</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用-WIFI-连接"><a href="#使用-WIFI-连接" class="headerlink" title="使用 WIFI 连接"></a>使用 WIFI 连接</h3><p>运行<code>droidcam</code> 或者 <code>droidcam-cli</code>：</p>
+<p><code>$ droidcam</code></p>
+<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_wifi.png"></p>
+<p>其中 <code>Phone IP</code> 填写手机 App 中显示的 IP 地址。然后点击 <code>Connect</code> 即可。</p>
+<p>然后，用户可以在浏览器中的网络摄像头列表中找到对应的一项，可以在网站： <a href="https://www.webcamtest.cc/">网络摄像头测试</a> 中进行检验。</p>
+<p>使用完成后，可以在上面的<code>DroidCam Client</code>界面中点击 <code>Stop</code> 后退出。</p>
+<h3 id="使用-USB-连接"><a href="#使用-USB-连接" class="headerlink" title="使用 USB 连接"></a>使用 USB 连接</h3><p>首先打开手机的 <code>Debugging 模式</code>，具体方法可以查询网络资源。</p>
+<p>下载安装 <code>adb</code> 工具：</p>
+<p><code>$ sudo apt-get install adb</code></p>
+<p>检查设备是否可用：</p>
+<p><code>$ adb devices</code></p>
+<p>接下来，打开 <code>droidcam</code> 客户端，选择 <code>USB</code> 连接模式：</p>
+<p><img src="/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/droidcom_usb.png"></p>
+<p>然后点击 <code>Connect</code> 。最后在浏览器中进行再进行检验即可。</p>
+]]></content>
+      <categories>
         <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
@@ -670,6 +670,67 @@
       </categories>
   </entry>
   <entry>
+    <title>GMP库的使用</title>
+    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
+<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
+<blockquote>
+<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>编译应用程序时的链接选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
+
+<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
+<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
+<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
+<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
+<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
+<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
+<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
+<ol>
+<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
+<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
+<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
+<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
+<li>设置<em>custom allocation</em>的函数；</li>
+<li>生成随机数的函数。</li>
+</ol>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
+
+<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
+      </categories>
+  </entry>
+  <entry>
     <title>FreeRTOS+TCP介绍</title>
     <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
@@ -736,67 +797,6 @@
 <h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>GMP库的使用</title>
-    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
-<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
-<blockquote>
-<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>编译应用程序时的链接选项：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
-
-<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
-<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
-<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
-<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
-<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
-<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
-<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
-<ol>
-<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
-<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
-<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
-<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
-<li>设置<em>custom allocation</em>的函数；</li>
-<li>生成随机数的函数。</li>
-</ol>
-<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
-
-<p>输出结果：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
-
-<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
-]]></content>
-      <categories>
-        <category>高性能计算</category>
       </categories>
   </entry>
   <entry>
@@ -1072,6 +1072,7 @@
 <li>安全关联（SA）：提供算法和数据包，提供 AH、ESP 操作所需要的参数。</li>
 <li>密钥协议（IKE）：提供对称密钥的生成和交换。</li>
 </ul>
+<p>IPSec 的主要用途之一就是用来构建 <code>VPN</code>。</p>
 <h2 id="IPSec-Security-Policy"><a href="#IPSec-Security-Policy" class="headerlink" title="IPSec Security Policy"></a>IPSec Security Policy</h2><p>IPSec 操作的基础是应用于每一个从源端到目标端传输的 IP 包上的安全策略。  </p>
 <p>SA（Security Association） 安全关联。SA 是通信双方之间的单向逻辑连接，为通信数据流提供安全服务。所有经过同一 SA 的数据流会得到相同的安全服务。如果源端和目标端需要双向安全数据交换，则需要建立两个 SA，称为 “SA对”。  </p>
 <h2 id="IPSec-Mode"><a href="#IPSec-Mode" class="headerlink" title="IPSec Mode"></a>IPSec Mode</h2>]]></content>
@@ -1305,6 +1306,83 @@
       </categories>
   </entry>
   <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LLVM 2: Backend</title>
     <url>/2023/02/24/LLVM-2-Backend/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
@@ -1409,83 +1487,6 @@
 <p>其中，<code>IssueWidth</code>定义了同时发射指令的个数，<code>LoadLatency</code>定义了<code>load</code>指令的延迟，<code>MispredictPenalty</code>定义了分支预测失败的代价。</p>
 <h2 id="实现-DAG-指令选择类"><a href="#实现-DAG-指令选择类" class="headerlink" title="实现 DAG 指令选择类"></a>实现 DAG 指令选择类</h2><p>&emsp;&emsp; DAG 指令选择的大部分代码都可以使用<code>tblgen</code>工具生成，但目前仍需要使用手写代码创建类，并将所有内容放在一起。</p>
 <h3 id="初始化目标机器"><a href="#初始化目标机器" class="headerlink" title="初始化目标机器"></a>初始化目标机器</h3><h3 id="添加-SelectionDAG-的实现"><a href="#添加-SelectionDAG-的实现" class="headerlink" title="添加 SelectionDAG 的实现"></a>添加 SelectionDAG 的实现</h3><h3 id="目标-Lowering"><a href="#目标-Lowering" class="headerlink" title="目标 Lowering"></a>目标 Lowering</h3>]]></content>
-      <categories>
-        <category>编译器</category>
-        <category>LLVM Project</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
-<span id="more"></span>
-
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
-]]></content>
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
@@ -2749,24 +2750,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>flex 规范参考</title>
-    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
-<span id="more"></span>
-
-<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Wireless Network Security Analysis</title>
     <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
@@ -2791,8 +2774,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <li>数据完整性问题：CRC 不能解决身份认证问题，任何人根据明文都可以计算出 CRC 校验和。另外 CRC 具有线性性质，而且流密码器对异或运算也是线性的，从而使得数据篡改成为可能。</li>
 </ul>
 <p>给定密文 <code>C</code>: $ C &#x3D; RC4(IV, k) \bigotimes (M || CRC(M)) $<br>攻击者按如下方式可以将明文 M 修改为 M’：</p>
-<p>a. 计算 M 和 M’ 的差分 $ \triangle $：$ \triangle &#x3D; M \bigotimes M’ $<br>b. 创建新的密文 $ C’ $： $ C’ &#x3D; C \bigotimes (\triangle || CRC(\triangle)) $</p>
-<p>证明略（利用 CRC 线性）</p>
+<p>a. 计算 M 和 M’ 的差分 $ \Delta $：$ \Delta &#x3D; M \bigoplus M’ $<br>b. 创建新的密文 $ C’ $： $ C’ &#x3D; C \bigoplus (\Delta || CRC(\Delta)) $</p>
+<p>证明:<br>$$<br>\begin{align}<br>C’ &amp;&#x3D; C \bigoplus (\Delta || CRC(\Delta)) \<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M \bigoplus \Delta || CRC(M) \bigoplus CRC(\Delta)) \<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M’ || CRC(M \bigoplus \Delta)) \<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M’ || CRC(M’)<br>\end{align}<br>$$</p>
 <p>因此，攻击者可以有针对性地对明文进行修改，而不用加密或者解密原消息。</p>
 <h2 id="WPA-WPA2-WPA3-安全协议"><a href="#WPA-WPA2-WPA3-安全协议" class="headerlink" title="WPA&#x2F;WPA2&#x2F;WPA3 安全协议"></a>WPA&#x2F;WPA2&#x2F;WPA3 安全协议</h2><h3 id="WPA-协议"><a href="#WPA-协议" class="headerlink" title="WPA 协议"></a>WPA 协议</h3><p>由于 WEP 的安全性问题，IEEE 于 2003 年在 802.11g 标准中推出了 <code>WPA(Wi-Fi Protected Access)</code> 协议。<br>WPA 引入了临时密钥完整性协议 <code>TKIP</code>，相对 WEP，TKIP 在安全方面有两点增强：一是增加了密钥强度（但仍然使用 RC4 算法），从 40 位增加到 128 位；二是 <code>MIC</code>（Michael 算法） 代替 CRC 作为完整性校验算法。 </p>
 <p>加密过程：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wpa_encrypt.png"></p>
@@ -2817,6 +2800,24 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>信息安全</category>
         <category>网络安全</category>
       </categories>
+  </entry>
+  <entry>
+    <title>flex 规范参考</title>
+    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
+<span id="more"></span>
+
+<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>vim配置及命令手册</title>
