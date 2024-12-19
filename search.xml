@@ -1066,7 +1066,12 @@
 
 <p>IPSec 标准之间的关系：<br><img src="/IPSec.png"></p>
 <p>协议解释：</p>
-<p>* </p>
+<ul>
+<li>认证头（AH）：为 IP 数据报提供<strong>无连接数据完整性</strong>、<strong>消息认证</strong>以及<strong>防重放攻击保护</strong>。</li>
+<li>封装安全载荷（ESP）：提供机密性、数据源认证、无连接完整性、防重放和有限的传输流机密性。</li>
+<li>安全关联（SA）：提供算法和数据包，提供 AH、ESP 操作所需要的参数。</li>
+<li>密钥协议（IKE）：提供对称密钥的生成和交换。</li>
+</ul>
 <h2 id="IPSec-Security-Policy"><a href="#IPSec-Security-Policy" class="headerlink" title="IPSec Security Policy"></a>IPSec Security Policy</h2><p>IPSec 操作的基础是应用于每一个从源端到目标端传输的 IP 包上的安全策略。  </p>
 <p>SA（Security Association） 安全关联。SA 是通信双方之间的单向逻辑连接，为通信数据流提供安全服务。所有经过同一 SA 的数据流会得到相同的安全服务。如果源端和目标端需要双向安全数据交换，则需要建立两个 SA，称为 “SA对”。  </p>
 <h2 id="IPSec-Mode"><a href="#IPSec-Mode" class="headerlink" title="IPSec Mode"></a>IPSec Mode</h2>]]></content>
