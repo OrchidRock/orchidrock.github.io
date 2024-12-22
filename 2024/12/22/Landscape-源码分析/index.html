@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述Landscape 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。Landscape Server 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。Landscape Client 安装在 Ubuntu 上，并向 Server 注册。Landscape 自动化了整个 Ubuntu 系统的安全补丁、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Landscape 源码分析">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述Landscape 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。Landscape Server 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。Landscape Client 安装在 Ubuntu 上，并向 Server 注册。Landscape 自动化了整个 Ubuntu 系统的安全补丁、">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-22T13:34:20.000Z">
+<meta property="article:modified_time" content="2024-12-22T14:25:06.100Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/","path":"2024/12/22/Landscape-源码分析/","title":"Landscape 源码分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Landscape 源码分析 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">代码结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E6%8B%AC"><span class="nav-number">2.1.</span> <span class="nav-text">概括</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watchdog-%E6%A8%A1%E5%9D%97"><span class="nav-number">2.3.</span> <span class="nav-text">watchdog 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WatchDogService"><span class="nav-number">2.3.1.</span> <span class="nav-text">WatchDogService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WatchDog-%E7%B1%BB"><span class="nav-number">2.3.2.</span> <span class="nav-text">WatchDog 类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Daemon%E7%B1%BB%E5%92%8C%E5%85%B6%E5%AD%90%E7%B1%BB"><span class="nav-number">2.3.3.</span> <span class="nav-text">Daemon类和其子类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WatchedProcessProtocol%E7%B1%BB"><span class="nav-number">2.3.4.</span> <span class="nav-text">WatchedProcessProtocol类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#amp-%E6%A8%A1%E5%9D%97"><span class="nav-number">2.4.</span> <span class="nav-text">amp 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-%E7%9B%B8%E5%85%B3%E6%A8%A1%E5%9D%97%E5%92%8C%E7%B1%BB"><span class="nav-number">2.5.</span> <span class="nav-text">Service 相关模块和类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Monitor%E6%A8%A1%E5%9D%97"><span class="nav-number">2.6.</span> <span class="nav-text">Monitor模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manager%E6%A8%A1%E5%9D%97"><span class="nav-number">2.7.</span> <span class="nav-text">Manager模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bootstrap%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB"><span class="nav-number">2.8.</span> <span class="nav-text">Bootstrap相关的类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Configuration%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB"><span class="nav-number">2.9.</span> <span class="nav-text">Configuration相关的类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">2.10.</span> <span class="nav-text">日志</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Landscape 源码分析 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Landscape 源码分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-12-22 21:34:20 / 修改时间：22:25:06" itemprop="dateCreated datePublished" datetime="2024-12-22T21:34:20+08:00">2024-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>714</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a target="_blank" rel="noopener" href="https://ubuntu.com/landscape">Landscape</a> 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。<code>Landscape Server</code> 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。<code>Landscape Client</code> 安装在 Ubuntu 上，并向 Server 注册。<br>Landscape 自动化了整个 Ubuntu 系统的安全补丁、审计、访问管理和合规性任务。</p>
+<p>Landscape 源代码使用了 <a target="_blank" rel="noopener" href="https://twisted.org/">Twisted</a> 事件驱动网络引擎。</p>
+<span id="more"></span>
+
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p>在 landscape 包的<code>init.py</code>中我们看到定义了一些变量，这些变量几乎都和版本号有关，这些变量类似于 C 语言中的全局宏定义。</p>
+<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p>Landscape-client 可以<code>root</code>用户运行，进而可以使用一些高级管理特性，如果不需要使用这种特性时，可以使用<code>landscape</code>用户运行。通过修改<code>/etc/default/landscape-client</code>和<code>/etc/landscape/client.conf</code>文件可以办到（具体细节见项目代码<code>README</code>）。</p>
+<h3 id="watchdog-模块"><a href="#watchdog-模块" class="headerlink" title="watchdog 模块"></a>watchdog 模块</h3><p>代码位置：<code>landscape/client/watchdog.py</code></p>
+<p><strong>watchdog</strong> 是最高层的代码，它清理运行环境，载入配置文件，然后启动 <strong>ractor</strong> 循环。</p>
+<p>a. <code>clean_environment()</code>：该函数清除一些危险和敏感的变量。<br>b. 载入配置文件 : 和配置文件相关的工作被抽象为一系列具有继承关系的类，有些类在不同的模块中被重用。</p>
+<pre class="mermaid">classDiagram
+    landscape_lib_BaseConfiguration <-- landscape_client_deployment_BaseConfiguration
+    landscape_client_deployment_BaseConfiguration <-- landscape_client_deployment_Configuration
+    landscape_client_deployment_Configuration <-- landscape_client_watchdog_WatchDogConfiguration</pre>
+
+<p>c. 执行用户限制（只允许<code>landscape</code>或者<code>root</code>用户执行）；初始化 <code>logging</code>。<br>d. 实例化<code>WatchDogService</code>服务， 并成为application的子服务，启动<code>ractor</code>.</p>
+<h4 id="WatchDogService"><a href="#WatchDogService" class="headerlink" title="WatchDogService"></a>WatchDogService</h4><p><code>WatchDogService</code>继承自<code>twisted.service</code>，实例化时传递<code>WatchDogConfiguration</code>配置参数到私有实例变量<code>_config</code>。</p>
+<p>a. <code>resource</code>包来自于标准库，用来测试和控制系统资源的分配。<code>soft limit</code>与<code>hard limit</code>的区别，只有<code>root</code>进程可以提升<code>hard limit</code>（参考Linux&#x2F;Unix系统编程手册）。 资源类型包括 CPU 运行时间、可以生成文件的最大空间、进程堆&#x2F;栈的大小、打开文件描述符的数量（<code>RLIMIT_NOFILE</code>）等等。<br>b. <code>WatchDogService</code>的<code>startService</code>方法首先生成<code>BootStrapList</code>中的文件或者目录，然后设置资源限制，最后生成已经<code>callback</code>激发的<code>Defered</code>对象，<br>该对象增加的回调链:</p>
+<p>watchdog.check_running() | past<br>start_if_not_running() | die()</p>
+<p><code>watchdog</code>是在<code>WatchDogService</code>初始化时<code>WatchDog</code>类的实例对象。</p>
+<p><code>start_if_not_running</code>方法会调用<code>_daemonize()</code>方法，该方法根据实际参数判断自己是否要成为一个<code>daemon</code>进程，如果是的话，就调用<code>daemonize function</code>，该函数会调用 os 的底层 API，调用两次<code>fork()</code>，并让父进程自杀，其他具体细节可参考 Linux&#x2F;Unix系统编程手册。 最后调用<code>watchdog</code>的<code>start</code>方法，它根据条件启动其他<code>daemons</code>并进行监控。</p>
+<p>e. <code>stopService</code>方法<br>它主要工作是调用<code>watchdog</code>的<code>request_exit</code>方法，该方法会做比较精细复杂的工作来小心地让自己和其他<code>daemons</code>终止，比如避免重启。</p>
+<p>f. 不管是<code>startService</code>还是<code>stopService</code>方法返回的都是<code>Defered</code>对象或者<code>DeferedList</code>对象，这些对象会被<code>Twisted</code>内部使用。</p>
+<h4 id="WatchDog-类"><a href="#WatchDog-类" class="headerlink" title="WatchDog 类"></a>WatchDog 类</h4><p><code>WatchDog</code>类负责启动其他所有的<code>daemons</code>(包括<code>broker</code>，<code>Monitor</code>，<code>Manager</code>等)并确保它们运行。这些<code>daemons</code>运行在不同的<code>ractor</code>循环中，使用<code>AMP</code>协议通信。 <code>landscape_reactor</code>是<code>EventHandlingReactor</code>类的实例对象。</p>
+<p>a. <code>EventHandlingReactor</code>类封装了<code>twisted.internet.reactor</code>，继承自<code>EventHandlingReactorMixin</code>类，增加事件处理特性。 其中<code>callInThread</code>来源于<code>Twisted</code>对于多线程的支持。<code>Twisted</code>更多应用于 I&#x2F;O 密集型应用，即任务的计算任务不会持续很长时间，但是如果有一个<br>任务很耗时的话，<code>Twisted</code>的<code>ractor</code>循环此时完全被该任务占用，其他任务会面临饥饿的问题。因此将该任务放到辅助线程中去执行，<code>reactor</code>主循环可以得到解放。<code>callFromThread</code>中的function可以立即在<code>reactor</code>线程中执行，但不保证线程安全，即<code>reactor</code>立即被切换？如果它正在执行任务如何？。如果该 function一直在运行，<code>reactor</code>被阻塞，其他任务会面临饥饿问题。参看链接2和3。</p>
+<p>b. <code>EventHandingReactorMixin</code>类负责激活在被标识事件上绑定的<code>handlers</code>。重要的一点是这些事件的处理是同步的还是异步的？ <code>call_on</code>方法注册事件<code>handler</code>，一个事件类型可以绑定多个<code>handler</code>，并根据<code>handler</code>的优先级排序。 <code>fair</code>方法根据优先级顺序激发一个事件类型的所有<code>handler</code>，并返回所有<code>handler</code>的执行结果。 这些执行结果或许是<code>Defered</code>，即它的结果还不能立即得到。 <code>cancel_call</code>方法删除事件的某个<code>handler</code>绑定。</p>
+<p>c. <code>EventID</code>类，对于每个<code>handler</code>只对应一种事件类型，因此（event_type， (handler， priority)）可以唯一标识一个<code>handler</code>。</p>
+<p>d. <code>WatchDog</code>注册了<code>SIGUSR1</code>信号的<code>handler</code>，该<code>handler</code>会通知所有<code>daemons</code>调用<code>rotate_logs()</code>。</p>
+<p>e. <code>check_running</code>方法检测哪些<code>daemons</code>正在运行，结果放在一个<code>List</code>中，但结果本身是一个<code>Defered</code>对象。<code>gather_results</code>将所有<code>Defereds</code>放到<code>DeferedList</code>对象中管理。<code>DeferdList</code>会等待所有其管理的<code>Defereds</code>回调链完成后再运行自己的回调链，这样正好实现异步形式的<code>check_running</code>方法。</p>
+<p>f. <code>start</code>方法启动所有其他的<code>daemons</code>，并调用<code>start_minitoring</code>监控它们的进程状态。<code>start_monitoring</code>方法会启动一个回调<code>_check</code>方法，<code>_check</code>方法在完成一次<code>check</code>后增加自己到<code>reactor</code>回调链中，延时 5 秒。当检测到某个<code>daemon</code>在 5 次探测中均没有回复，<code>WatchDog</code>判断该<code>daemon</code>已经死掉，所以接下来就重启它，并清零探测失败计数器。</p>
+<h4 id="Daemon类和其子类"><a href="#Daemon类和其子类" class="headerlink" title="Daemon类和其子类"></a>Daemon类和其子类</h4><h4 id="WatchedProcessProtocol类"><a href="#WatchedProcessProtocol类" class="headerlink" title="WatchedProcessProtocol类"></a>WatchedProcessProtocol类</h4><h3 id="amp-模块"><a href="#amp-模块" class="headerlink" title="amp 模块"></a>amp 模块</h3><h3 id="Service-相关模块和类"><a href="#Service-相关模块和类" class="headerlink" title="Service 相关模块和类"></a>Service 相关模块和类</h3><h3 id="Monitor模块"><a href="#Monitor模块" class="headerlink" title="Monitor模块"></a>Monitor模块</h3><h3 id="Manager模块"><a href="#Manager模块" class="headerlink" title="Manager模块"></a>Manager模块</h3><h3 id="Bootstrap相关的类"><a href="#Bootstrap相关的类" class="headerlink" title="Bootstrap相关的类"></a>Bootstrap相关的类</h3><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="Configuration相关的类"></a>Configuration相关的类</h3><p><code>BootstrapList</code>类是其他类列表的分发器，这个列表中的元素甚至可以是它自己的实例对象，遵循闭包设计。<br><code>BootstrapPath</code>是<code>BootsrapFile</code>和<code>BootstrapDirectory</code>的父类，它通过模块生成文件路径（或文件或目录），并设置其用户属性<code>(chown)</code>和访问权限<code>(chmod)</code>。<br><code>BootstrapFile</code>对应文件，<code>BootstrapDirectory</code>对应目录。</p>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>遵循分离设计，重要的是<code>watchdog</code>，<code>monitor</code>，<code>broker</code>，<code>manager</code>都有自己的<code>logger</code>，因此它们的日志可以分开处理，但仍然使用相同的<code>logging APIs</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/22/Mersenne-Twister-Algorithm-Analysis/" rel="prev" title="Mersenne Twister Algorithm Analysis">
+                  <i class="fa fa-angle-left"></i> Mersenne Twister Algorithm Analysis
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">267k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:26</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

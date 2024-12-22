@@ -439,19 +439,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Circle: Raspberry Pi 的裸机编程环境</title>
-    <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
-<span id="more"></span>
-
-<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
-]]></content>
-      <categories>
-        <category>开源硬件</category>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -498,6 +485,19 @@
       <categories>
         <category>高性能计算</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Circle: Raspberry Pi 的裸机编程环境</title>
+    <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
+<span id="more"></span>
+
+<h3 id="固件"><a href="#固件" class="headerlink" title="固件"></a>固件</h3><p><strong>armstub</strong> 是引导分区中加载 ARM 存根的文件名。默认 ARM 存根存储在固件中，并根据树莓派型号和各种设置自动选择。<br>存根是先于内核运行的一小段 ARM 代码。它的任务是在将控制权传递给内核之前设置中断控制器等低级硬件。</p>
+]]></content>
+      <categories>
+        <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -660,6 +660,45 @@
       </categories>
   </entry>
   <entry>
+    <title>Flask网络框架介绍</title>
+    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
+<span id="more"></span>
+
+
+<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
+<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
+<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
+<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
+<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
+<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
+<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
+<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
+<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
+<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
+<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
+<ol>
+<li>将客户端与服务端分开</li>
+<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
+<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
+<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
+<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
+<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
+</ol>
+<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
+<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>FreeRTOS+TCP介绍</title>
     <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
@@ -726,106 +765,6 @@
 <h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Flask网络框架介绍</title>
-    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
-<span id="more"></span>
-
-
-<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
-<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
-<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
-<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
-<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
-<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
-<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
-<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
-<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
-<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
-<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
-<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
-<ol>
-<li>将客户端与服务端分开</li>
-<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
-<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
-<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
-<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
-<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
-</ol>
-<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
-<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>GMP库的使用</title>
-    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
-<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
-<blockquote>
-<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>编译应用程序时的链接选项：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
-
-<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
-<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
-<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
-<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
-<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
-<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
-<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
-<ol>
-<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
-<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
-<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
-<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
-<li>设置<em>custom allocation</em>的函数；</li>
-<li>生成随机数的函数。</li>
-</ol>
-<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
-
-<p>输出结果：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
-
-<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
-]]></content>
-      <categories>
-        <category>高性能计算</category>
       </categories>
   </entry>
   <entry>
@@ -910,6 +849,67 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GMP库的使用</title>
+    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
+<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
+<blockquote>
+<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>编译应用程序时的链接选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
+
+<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
+<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
+<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
+<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
+<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
+<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
+<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
+<ol>
+<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
+<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
+<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
+<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
+<li>设置<em>custom allocation</em>的函数；</li>
+<li>生成随机数的函数。</li>
+</ol>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
+
+<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
       </categories>
   </entry>
   <entry>
@@ -1522,6 +1522,45 @@
       </categories>
   </entry>
   <entry>
+    <title>Landscape 源码分析</title>
+    <url>/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://ubuntu.com/landscape">Landscape</a> 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。<code>Landscape Server</code> 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。<code>Landscape Client</code> 安装在 Ubuntu 上，并向 Server 注册。<br>Landscape 自动化了整个 Ubuntu 系统的安全补丁、审计、访问管理和合规性任务。</p>
+<p>Landscape 源代码使用了 <a href="https://twisted.org/">Twisted</a> 事件驱动网络引擎。</p>
+<span id="more"></span>
+
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p>在 landscape 包的<code>init.py</code>中我们看到定义了一些变量，这些变量几乎都和版本号有关，这些变量类似于 C 语言中的全局宏定义。</p>
+<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p>Landscape-client 可以<code>root</code>用户运行，进而可以使用一些高级管理特性，如果不需要使用这种特性时，可以使用<code>landscape</code>用户运行。通过修改<code>/etc/default/landscape-client</code>和<code>/etc/landscape/client.conf</code>文件可以办到（具体细节见项目代码<code>README</code>）。</p>
+<h3 id="watchdog-模块"><a href="#watchdog-模块" class="headerlink" title="watchdog 模块"></a>watchdog 模块</h3><p>代码位置：<code>landscape/client/watchdog.py</code></p>
+<p><strong>watchdog</strong> 是最高层的代码，它清理运行环境，载入配置文件，然后启动 <strong>ractor</strong> 循环。</p>
+<p>a. <code>clean_environment()</code>：该函数清除一些危险和敏感的变量。<br>b. 载入配置文件 : 和配置文件相关的工作被抽象为一系列具有继承关系的类，有些类在不同的模块中被重用。</p>
+<pre class="mermaid">classDiagram
+    landscape_lib_BaseConfiguration <-- landscape_client_deployment_BaseConfiguration
+    landscape_client_deployment_BaseConfiguration <-- landscape_client_deployment_Configuration
+    landscape_client_deployment_Configuration <-- landscape_client_watchdog_WatchDogConfiguration</pre>
+
+<p>c. 执行用户限制（只允许<code>landscape</code>或者<code>root</code>用户执行）；初始化 <code>logging</code>。<br>d. 实例化<code>WatchDogService</code>服务， 并成为application的子服务，启动<code>ractor</code>.</p>
+<h4 id="WatchDogService"><a href="#WatchDogService" class="headerlink" title="WatchDogService"></a>WatchDogService</h4><p><code>WatchDogService</code>继承自<code>twisted.service</code>，实例化时传递<code>WatchDogConfiguration</code>配置参数到私有实例变量<code>_config</code>。</p>
+<p>a. <code>resource</code>包来自于标准库，用来测试和控制系统资源的分配。<code>soft limit</code>与<code>hard limit</code>的区别，只有<code>root</code>进程可以提升<code>hard limit</code>（参考Linux&#x2F;Unix系统编程手册）。 资源类型包括 CPU 运行时间、可以生成文件的最大空间、进程堆&#x2F;栈的大小、打开文件描述符的数量（<code>RLIMIT_NOFILE</code>）等等。<br>b. <code>WatchDogService</code>的<code>startService</code>方法首先生成<code>BootStrapList</code>中的文件或者目录，然后设置资源限制，最后生成已经<code>callback</code>激发的<code>Defered</code>对象，<br>该对象增加的回调链:</p>
+<p>watchdog.check_running() | past<br>start_if_not_running() | die()</p>
+<p><code>watchdog</code>是在<code>WatchDogService</code>初始化时<code>WatchDog</code>类的实例对象。</p>
+<p><code>start_if_not_running</code>方法会调用<code>_daemonize()</code>方法，该方法根据实际参数判断自己是否要成为一个<code>daemon</code>进程，如果是的话，就调用<code>daemonize function</code>，该函数会调用 os 的底层 API，调用两次<code>fork()</code>，并让父进程自杀，其他具体细节可参考 Linux&#x2F;Unix系统编程手册。 最后调用<code>watchdog</code>的<code>start</code>方法，它根据条件启动其他<code>daemons</code>并进行监控。</p>
+<p>e. <code>stopService</code>方法<br>它主要工作是调用<code>watchdog</code>的<code>request_exit</code>方法，该方法会做比较精细复杂的工作来小心地让自己和其他<code>daemons</code>终止，比如避免重启。</p>
+<p>f. 不管是<code>startService</code>还是<code>stopService</code>方法返回的都是<code>Defered</code>对象或者<code>DeferedList</code>对象，这些对象会被<code>Twisted</code>内部使用。</p>
+<h4 id="WatchDog-类"><a href="#WatchDog-类" class="headerlink" title="WatchDog 类"></a>WatchDog 类</h4><p><code>WatchDog</code>类负责启动其他所有的<code>daemons</code>(包括<code>broker</code>，<code>Monitor</code>，<code>Manager</code>等)并确保它们运行。这些<code>daemons</code>运行在不同的<code>ractor</code>循环中，使用<code>AMP</code>协议通信。 <code>landscape_reactor</code>是<code>EventHandlingReactor</code>类的实例对象。</p>
+<p>a. <code>EventHandlingReactor</code>类封装了<code>twisted.internet.reactor</code>，继承自<code>EventHandlingReactorMixin</code>类，增加事件处理特性。 其中<code>callInThread</code>来源于<code>Twisted</code>对于多线程的支持。<code>Twisted</code>更多应用于 I&#x2F;O 密集型应用，即任务的计算任务不会持续很长时间，但是如果有一个<br>任务很耗时的话，<code>Twisted</code>的<code>ractor</code>循环此时完全被该任务占用，其他任务会面临饥饿的问题。因此将该任务放到辅助线程中去执行，<code>reactor</code>主循环可以得到解放。<code>callFromThread</code>中的function可以立即在<code>reactor</code>线程中执行，但不保证线程安全，即<code>reactor</code>立即被切换？如果它正在执行任务如何？。如果该 function一直在运行，<code>reactor</code>被阻塞，其他任务会面临饥饿问题。参看链接2和3。</p>
+<p>b. <code>EventHandingReactorMixin</code>类负责激活在被标识事件上绑定的<code>handlers</code>。重要的一点是这些事件的处理是同步的还是异步的？ <code>call_on</code>方法注册事件<code>handler</code>，一个事件类型可以绑定多个<code>handler</code>，并根据<code>handler</code>的优先级排序。 <code>fair</code>方法根据优先级顺序激发一个事件类型的所有<code>handler</code>，并返回所有<code>handler</code>的执行结果。 这些执行结果或许是<code>Defered</code>，即它的结果还不能立即得到。 <code>cancel_call</code>方法删除事件的某个<code>handler</code>绑定。</p>
+<p>c. <code>EventID</code>类，对于每个<code>handler</code>只对应一种事件类型，因此（event_type， (handler， priority)）可以唯一标识一个<code>handler</code>。</p>
+<p>d. <code>WatchDog</code>注册了<code>SIGUSR1</code>信号的<code>handler</code>，该<code>handler</code>会通知所有<code>daemons</code>调用<code>rotate_logs()</code>。</p>
+<p>e. <code>check_running</code>方法检测哪些<code>daemons</code>正在运行，结果放在一个<code>List</code>中，但结果本身是一个<code>Defered</code>对象。<code>gather_results</code>将所有<code>Defereds</code>放到<code>DeferedList</code>对象中管理。<code>DeferdList</code>会等待所有其管理的<code>Defereds</code>回调链完成后再运行自己的回调链，这样正好实现异步形式的<code>check_running</code>方法。</p>
+<p>f. <code>start</code>方法启动所有其他的<code>daemons</code>，并调用<code>start_minitoring</code>监控它们的进程状态。<code>start_monitoring</code>方法会启动一个回调<code>_check</code>方法，<code>_check</code>方法在完成一次<code>check</code>后增加自己到<code>reactor</code>回调链中，延时 5 秒。当检测到某个<code>daemon</code>在 5 次探测中均没有回复，<code>WatchDog</code>判断该<code>daemon</code>已经死掉，所以接下来就重启它，并清零探测失败计数器。</p>
+<h4 id="Daemon类和其子类"><a href="#Daemon类和其子类" class="headerlink" title="Daemon类和其子类"></a>Daemon类和其子类</h4><h4 id="WatchedProcessProtocol类"><a href="#WatchedProcessProtocol类" class="headerlink" title="WatchedProcessProtocol类"></a>WatchedProcessProtocol类</h4><h3 id="amp-模块"><a href="#amp-模块" class="headerlink" title="amp 模块"></a>amp 模块</h3><h3 id="Service-相关模块和类"><a href="#Service-相关模块和类" class="headerlink" title="Service 相关模块和类"></a>Service 相关模块和类</h3><h3 id="Monitor模块"><a href="#Monitor模块" class="headerlink" title="Monitor模块"></a>Monitor模块</h3><h3 id="Manager模块"><a href="#Manager模块" class="headerlink" title="Manager模块"></a>Manager模块</h3><h3 id="Bootstrap相关的类"><a href="#Bootstrap相关的类" class="headerlink" title="Bootstrap相关的类"></a>Bootstrap相关的类</h3><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="Configuration相关的类"></a>Configuration相关的类</h3><p><code>BootstrapList</code>类是其他类列表的分发器，这个列表中的元素甚至可以是它自己的实例对象，遵循闭包设计。<br><code>BootstrapPath</code>是<code>BootsrapFile</code>和<code>BootstrapDirectory</code>的父类，它通过模块生成文件路径（或文件或目录），并设置其用户属性<code>(chown)</code>和访问权限<code>(chmod)</code>。<br><code>BootstrapFile</code>对应文件，<code>BootstrapDirectory</code>对应目录。</p>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>遵循分离设计，重要的是<code>watchdog</code>，<code>monitor</code>，<code>broker</code>，<code>manager</code>都有自己的<code>logger</code>，因此它们的日志可以分开处理，但仍然使用相同的<code>logging APIs</code>。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Lex结构及简明参考手册</title>
     <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
@@ -1836,7 +1875,7 @@
   <entry>
     <title>Mersenne Twister Algorithm Analysis</title>
     <url>/2024/12/22/Mersenne-Twister-Algorithm-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>梅森旋转算法（Mersenne Twister Algorithm）</strong> 是一个伪随机发生算法。由松本真和西村拓士在 1997 年开发，基于有限二进制字段上的矩阵线性递归。虽然在实现上，MT 算法使用了<strong>反馈移位寄存器（FSR）</strong>，但注意其不能作为密码学意义上的伪随机数发生器。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>梅森旋转算法（Mersenne Twister Algorithm）</strong> 是一个伪随机发生算法。由松本真和西村拓士在 1997 年开发，基于有限二进制字段上的矩阵线性递归。虽然在实现上，MT算法使用了<strong>反馈移位寄存器（FSR）</strong>，但注意其不能作为密码学意义上的伪随机数发生器。</p>
 <p>最为广泛使用 Mersenne Twister 的一种算法变体是 <code>MT19937</code>，可以产生 32 位整数序列。</p>
 <span id="more"></span>
 
@@ -2004,6 +2043,34 @@
       </categories>
   </entry>
   <entry>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>OpenMP Tutorial</title>
     <url>/2023/03/02/OpenMP-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.openmp.org/">OpenMP</a> 可以认为是用于<code>共享内存型并行编程</code> 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。</p>
@@ -2108,34 +2175,6 @@
 <h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>]]></content>
       <categories>
         <category>高性能计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2818,6 +2857,24 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>flex 规范参考</title>
+    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
+<span id="more"></span>
+
+<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Wireless Network Security Analysis</title>
     <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
@@ -2868,24 +2925,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>信息安全</category>
         <category>网络安全</category>
       </categories>
-  </entry>
-  <entry>
-    <title>flex 规范参考</title>
-    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
-<span id="more"></span>
-
-<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
   </entry>
   <entry>
     <title>vim配置及命令手册</title>
