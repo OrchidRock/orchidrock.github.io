@@ -1111,29 +1111,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LFS 1: 构建 BLFS 系统</title>
-    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
-<span id="more"></span>
-<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
-<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
-<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
-<p><code>acpid</code> : 监控 acpi event。</p>
-<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
-<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
-<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
-<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
-<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
-<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
-<p><code>UPower</code> : 为访问电源设备提高接口。</p>
-<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LFS 0: LFS 项目介绍</title>
     <url>/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<a href="https://www.linuxfromscratch.org/">LFS（Linux From Scratch）</a>项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。</p>
@@ -1228,6 +1205,29 @@
 <p>为什么出现””Assumed value of MB_LEN_MAX wrong”错误? Answer: 修改tools&#x2F;gcc&#x2F;x86_64-lfs-linux-gnu&#x2F;10.2.0&#x2F;include-fixed&#x2F;limits.h 中的MB_LEN_MAX</p>
 <p>Patch包中PATH_MAX变量<br>无法进入chroot的问题,bash无法找到libncursesw.so.6? Answer: 将libncursesw.so.6复制到lib64。对于libopcodes.so、libbfd.so、libctf.so也是同样的解决方法。</p>
 <p>编辑&#x2F;etc&#x2F;ld.so.conf</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LFS 1: 构建 BLFS 系统</title>
+    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
+<span id="more"></span>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
+<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
+<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
+<p><code>acpid</code> : 监控 acpi event。</p>
+<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
+<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
+<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
+<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
+<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
+<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
+<p><code>UPower</code> : 为访问电源设备提高接口。</p>
+<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1831,6 +1831,38 @@
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Mersenne Twister Algorithm Analysis</title>
+    <url>/2024/12/22/Mersenne-Twister-Algorithm-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>梅森旋转算法（Mersenne Twister Algorithm）</strong> 是一个伪随机发生算法。由松本真和西村拓士在 1997 年开发，基于有限二进制字段上的矩阵线性递归。虽然在实现上，MT 算法使用了<strong>反馈移位寄存器（FSR）</strong>，但注意其不能作为密码学意义上的伪随机数发生器。</p>
+<p>最为广泛使用 Mersenne Twister 的一种算法变体是 <code>MT19937</code>，可以产生 32 位整数序列。</p>
+<span id="more"></span>
+
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="梅森素数"><a href="#梅森素数" class="headerlink" title="梅森素数"></a>梅森素数</h3><p>如果 p 是素数，我们将 $ 2^p - 1 $ 的一类数记为 $ M_p $，如果 $ M_p $ 也是素数，那么它就被称为 <strong>梅森素数（Mersenne Prime Number）</strong>。</p>
+<p>首先，用因式分解法可以证明，若 $ 2^p - 1 $ 是素数，则 p 也一定是素数，证明如下：<br>首先，易知 k方差的因式分解如下：<br>$$ a^k - 1 &#x3D;  (a - 1)(a^{k-1} + a^{k-2} + … + a + 1) $$</p>
+<p>我们假设 p 不是素数，其因式分解为 $ p &#x3D; sk (s &gt; 1, k &gt; 1)$，则：<br>$$ 2^p - 1 &#x3D; 2^{sk} - 1 &#x3D; ({2^s})^k - 1 &#x3D; (2^s - 1)[({2^s})^{k-1} + ({2^s})^{k-2} + … + 2^s + 1] $$</p>
+<p>即 $ 2^p - 1 $ 可以因式分解为大于 1 的整数，这与其为素数的前提条件矛盾，故原假设不成立，所以 p 是素数。</p>
+<p>但反过来，如果 p 为素数，则 $ 2^p - 1 $ 不一定为素数。目前已经发现 52 个梅森素数，最大的是 $ M_{136279841} $（即 $ 2^{136279841} - 1 $）。</p>
+<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><code>MT19937</code> 算法的周期为 $ 2^{19937}  - 1 $，该算法的优点如下：<br>a. 周期非常长，该周期为梅森素数<br>b. 在 1 &lt;&#x3D; k &lt;&#x3D; 623 都满足 k-分布<br>c. 产生速度快。</p>
+<p>算法分为三个阶段：</p>
+<ul>
+<li>a. 初始化，获得基础的梅森旋转链</li>
+<li>b. 对旋转链进行旋转算法</li>
+<li>c. 对旋转算法所得结果进行处理，提取伪随机数</li>
+</ul>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化 state &#x3D; 0, 初始化向量 iv 含有 n 个元素，每一个元素为一个 word (32位或者64位) 长。其中将 seed 设置为 iv 中的第一个向量，剩下的 n - 1 个 word 按照如下的方式初始化：<br>$$ x_i &#x3D; f \times (x_{i-1} \bigoplus (x_{i-1} &gt;&gt; (w - 2))) + i $$<br>其中 f 为常数 <code>1812433253</code>。</p>
+<p>从而得到一条初始化的梅森链。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="梅森旋转"><a href="#梅森旋转" class="headerlink" title="梅森旋转"></a>梅森旋转</h3><p>对于 k 从 0 到 n - 1:<br>$$ \vec x_k &#x3D; \vec x_{k+m} \bigoplus ((\vec x_k ^{(u)}||\vec x_{k+1} ^{(l)})A) $$<br>其中，$ \vec x_k ^{(u)} $ 代表第 k 个向量的高 $ w - r $ 位，$ \vec x_{k+1} ^{(l)} $ 代表第 k + 1 个向量的低 r 位。A 矩阵定义如下：</p>
+<p>$$A &#x3D; \begin{pmatrix}<br>0&amp;I_{w-1}\\<br>a_{w-1}&amp;(a_{w-2},…,a_0)\\<br>\end{pmatrix}$$</p>
+<p>因此，$ \vec xA $ 可以直接表示为：<br>$$ \vec xA &#x3D; \begin{cases}</p>
+<p>\end{cases}$$</p>
+]]></content>
+      <categories>
+        <category>算法</category>
       </categories>
   </entry>
   <entry>
@@ -2484,6 +2516,14 @@
       </categories>
   </entry>
   <entry>
+    <title>RISC-V 架构介绍</title>
+    <url>/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>计算机科学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RaspberryPi5 And AI Hailo8L Tutorial</title>
     <url>/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="">Raspberry Pi 5</a> 树莓派 AI 套件将树莓派 M.2 HAT+ 与 Hailo AI 加速模块捆绑在一起，用于树莓派 5。</p>
@@ -2521,14 +2561,6 @@
 ]]></content>
       <categories>
         <category>开源硬件</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>RISC-V 架构介绍</title>
-    <url>/2023/09/05/RISC-V-%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>计算机科学</category>
       </categories>
   </entry>
   <entry>
