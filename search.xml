@@ -2876,7 +2876,12 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <li>Application snaps:</li>
 <li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
 </ul>
-]]></content>
+<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
+<p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
+<p><strong>b. 安全启动</strong></p>
+<p><strong>c. 全盘加密</strong></p>
+<p><strong>d. 基于内核安全机制的限制</strong></p>
+<h3 id="第三方安全分析"><a href="#第三方安全分析" class="headerlink" title="第三方安全分析"></a>第三方安全分析</h3><h2 id="实践：Ubuntu-Core镜像制作"><a href="#实践：Ubuntu-Core镜像制作" class="headerlink" title="实践：Ubuntu Core镜像制作"></a>实践：Ubuntu Core镜像制作</h2>]]></content>
       <categories>
         <category>嵌入式系统和 IOT</category>
       </categories>
