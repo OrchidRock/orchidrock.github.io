@@ -19,25 +19,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="软件工程师、文艺青年:)">
-<meta property="og:type" content="website">
-<meta property="og:title" content="StoneTough">
-<meta property="og:url" content="https://orchidrock.github.io/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LFS-Project/">
+    <meta name="description" content="概述Ubuntu Core 是一个以应用为中心的嵌入式操作系统，所有组件均以 snap容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu Core and Snap Architecture Analysis">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/">
 <meta property="og:site_name" content="StoneTough">
-<meta property="og:description" content="软件工程师、文艺青年:)">
+<meta property="og:description" content="概述Ubuntu Core 是一个以应用为中心的嵌入式操作系统，所有组件均以 snap容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png">
+<meta property="article:published_time" content="2024-12-22T14:41:17.000Z">
+<meta property="article:modified_time" content="2024-12-23T07:51:29.664Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LFS-Project/">
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"categories/GNU-Linux操作系统/LFS-Project/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/","path":"2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/","title":"Ubuntu Core and Snap Architecture Analysis"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>分类: LFS Project | StoneTough</title>
+<title>Ubuntu Core and Snap Architecture Analysis | StoneTough</title>
   
 
 
@@ -124,7 +128,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -137,6 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -196,90 +201,144 @@
 
     </div>
 
-    <div class="main-inner category posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">LFS Project
-          <small>分类</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ubuntu Core and Snap Architecture Analysis | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubuntu Core and Snap Architecture Analysis
         </h1>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-12-22 22:41:17" itemprop="dateCreated datePublished" datetime="2024-12-22T22:41:17+08:00">2024-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-12-23 15:51:29" itemprop="dateModified" datetime="2024-12-23T15:51:29+08:00">2024-12-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8C-IOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和 IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>342</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a target="_blank" rel="noopener" href="https://cn.ubuntu.com/internet-of-things/core">Ubuntu Core</a> 是一个以应用为中心的嵌入式操作系统，所有组件均以 <code>snap</code>容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。</p>
+<span id="more"></span>
+
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>整体架构如下图所示：</p>
+<p><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png"></p>
+<blockquote>
+<p>图片来源：<a target="_blank" rel="noopener" href="https://assets.ubuntu.com/v1/b2c770ea-Ubuntu+Core20+Datasheet.pdf">Ubuntu Core 手册</a></p>
+</blockquote>
+<p>图片中的组件可以重用组合成定制的 Ubuntu Core 镜像。</p>
+<ul>
+<li>Kernel snap: 内核及其关联的模块、固件和设备树文件。</li>
+<li>Core snap: 标准的或者定制的 Ubuntu 根文件系统。</li>
+<li>Gadget snap: 已经容器化的硬件相关的启动资产和配置文件。</li>
+<li>System snaps：</li>
+<li>Application snaps:</li>
+<li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
+</ul>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-12-30T09:35:00+08:00"
-              content="2021-12-30">
-          12-30
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/" itemprop="url">
-            <span itemprop="name">LFS 2: PiLFS项目</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
 
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-04-19T20:33:00+08:00"
-              content="2021-04-19">
-          04-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/" itemprop="url">
-            <span itemprop="name">LFS 1: 构建 BLFS 系统</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-04-05T14:18:00+08:00"
-              content="2021-04-05">
-          04-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" itemprop="url">
-            <span itemprop="name">LFS 0: LFS 项目介绍</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-    </div>
   </div>
-  
-  
-  
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="prev" title="Landscape 源码分析">
+                  <i class="fa fa-angle-left"></i> Landscape 源码分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
 
 </div>
   </main>
@@ -355,7 +414,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
