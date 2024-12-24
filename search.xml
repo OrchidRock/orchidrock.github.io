@@ -4149,17 +4149,18 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <li><p><strong>Apparmor</strong></p>
 <p>  为每个命令生成<code>AppArmor</code>配置文件。这些具有适当的安全标签和特定于命令的<code>AppArmor</code>规则，用于协调文件访问、应用程序执行、Linux功能、挂载、ptrace、IPC、信号、粗粒度网络。</p>
 <p>  如前所述，每个命令都在特定于应用程序的默认策略下运行，该策略可以通过声明的接口进行扩展，这些接口在元数据中表示为 Plug 和 Slot。Strict 模式 Snap 中违反<code>AppArmor</code>策略的行为将被拒绝访问，并且通常将<code>errno</code>设置为<code>EACCES</code>。违规行为通常会被记录下来。</p>
-<p>  为 Snap 中要运行的每个命令生成一个<code>seccomp</code>过滤器，启用<code>allowlist</code>系统调用过滤，然后可以通过元数据中表示为 Plug 和 Slot 的声明接口进行扩展。 </p>
 </li>
 <li><p><strong>Seccomp</strong></p>
+<p>  为 Snap 中要运行的每个命令生成一个<code>seccomp</code>过滤器，启用<code>allowlist</code>系统调用过滤，然后可以通过元数据中表示为 Plug 和 Slot 的声明接口进行扩展。</p>
 <p>  违反<code>seccomp</code>策略的进程将被拒绝访问系统调用，<code>errno</code>设置为<code>EPERM</code>（2.32之前的 Snap 版本接收<code>SIGSYS</code>），并记录违规行为。</p>
-<p>  为每个标记设备的命令生成<code>udev</code>规则，以便可以将它们添加&#x2F;删除到命令的设备<code>cgroup</code>中。但是，默认情况下，不会标记任何设备，也不会使用设备<code>cgroup</code>，而是使用<code>AppArmor</code>来协调访问。</p>
-<p>  根据<code>snapd</code>的决定，当声明依赖接口时，除了<code>AppArmor</code>外，还可以使用设备<code>cgroup</code>，如元数据中的 Plug 和 Slot 所示。</p>
 </li>
 <li><p><strong>设备 Cgroup</strong></p>
+<p>  为每个标记设备的命令生成<code>udev</code>规则，以便可以将它们添加&#x2F;删除到命令的设备<code>cgroup</code>中。但是，默认情况下，不会标记任何设备，也不会使用设备<code>cgroup</code>，而是使用<code>AppArmor</code>来协调访问。</p>
+<p>  根据<code>snapd</code>的决定，当声明依赖接口时，除了<code>AppArmor</code>外，还可以使用设备<code>cgroup</code>，如元数据中的 Plug 和 Slot 所示。</p>
 <p>  访问不在 Snap 特定 <code>cgroup</code> 中的设备的进程将被拒绝访问，<code>errno</code>设置为<code>EPERM</code>。访问违规不会被记录。</p>
 </li>
-<li><p><strong>传统权限</strong><br>  传统的文件权限（所有者、组、文件ACL等）也通过 Snap 强制执行。 尝试访问传统文件权限不允许的资源的进程将被拒绝访问，<code>errno</code>通常设置为<code>EACCES</code>（有关详细信息，请参阅操作手册页）。访问违规不会被记录。</p>
+<li><p><strong>传统权限</strong></p>
+<p>  传统的文件权限（所有者、组、文件ACL等）也通过 Snap 强制执行。 尝试访问传统文件权限不允许的资源的进程将被拒绝访问，<code>errno</code>通常设置为<code>EACCES</code>（有关详细信息，请参阅操作手册页）。访问违规不会被记录。</p>
 </li>
 </ul>
 <p>因此，所有 Snap 都在默认安全策略下运行，<strong>该策略可以通过使用 <em>接口(interface)</em> 进行扩展</strong>，还句话说，当进行接口连接时，安全策略可以进行传递或者说扩展。</p>
