@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png">
 <meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snapcraft.png">
 <meta property="article:published_time" content="2024-12-22T14:41:17.000Z">
-<meta property="article:modified_time" content="2024-12-24T12:19:57.166Z">
+<meta property="article:modified_time" content="2024-12-24T15:04:33.965Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png">
@@ -144,7 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snap"><span class="nav-number">3.</span> <span class="nav-text">Snap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%EF%BC%88interface%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">接口（interface）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text">存储数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%97%E9%99%90-Confinement"><span class="nav-number">3.4.</span> <span class="nav-text">受限 (Confinement)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">3.5.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7"><span class="nav-number">4.1.</span> <span class="nav-text">安全特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">第三方安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9AUbuntu-Core%E9%95%9C%E5%83%8F%E5%88%B6%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">实践：Ubuntu Core镜像制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-Ubuntu-One-%E8%B4%A6%E5%8F%B7"><span class="nav-number">5.1.</span> <span class="nav-text">注册 Ubuntu One 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.</span> <span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="nav-number">5.3.</span> <span class="nav-text">对模型进行签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.4.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AF%BC%E9%95%9C%E5%83%8F"><span class="nav-number">5.5.</span> <span class="nav-text">引导镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE"><span class="nav-number">5.6.</span> <span class="nav-text">访问</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snap"><span class="nav-number">3.</span> <span class="nav-text">Snap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%EF%BC%88interface%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">接口（interface）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE"><span class="nav-number">3.3.</span> <span class="nav-text">存储数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E9%A2%9D-quotas"><span class="nav-number">3.4.</span> <span class="nav-text">配额 (quotas)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">3.5.</span> <span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AppArmor%E3%80%81Seccomp-%E5%92%8C%E8%AE%BE%E5%A4%87%E6%9D%83%E9%99%90"><span class="nav-number">3.5.1.</span> <span class="nav-text">AppArmor、Seccomp 和设备权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%88%B6-Confinement"><span class="nav-number">3.6.</span> <span class="nav-text">限制 (Confinement)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">3.7.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SquashFS-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">SquashFS 文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8-1"><span class="nav-number">5.</span> <span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text">安全特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">5.2.</span> <span class="nav-text">第三方安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9AUbuntu-Core%E9%95%9C%E5%83%8F%E5%88%B6%E4%BD%9C"><span class="nav-number">6.</span> <span class="nav-text">实践：Ubuntu Core镜像制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-Ubuntu-One-%E8%B4%A6%E5%8F%B7"><span class="nav-number">6.1.</span> <span class="nav-text">注册 Ubuntu One 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.2.</span> <span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="nav-number">6.3.</span> <span class="nav-text">对模型进行签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.4.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AF%BC%E9%95%9C%E5%83%8F"><span class="nav-number">6.5.</span> <span class="nav-text">引导镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE"><span class="nav-number">6.6.</span> <span class="nav-text">访问</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -251,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-12-24 20:19:57" itemprop="dateModified" datetime="2024-12-24T20:19:57+08:00">2024-12-24</time>
+      <time title="修改时间：2024-12-24 23:04:33" itemprop="dateModified" datetime="2024-12-24T23:04:33+08:00">2024-12-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -270,14 +270,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.7k</span>
+      <span>8.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
+      <span>14 分钟</span>
     </span>
 </div>
 
@@ -306,19 +306,92 @@
 </ul>
 <h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><p><a target="_blank" rel="noopener" href="https://snapcraft.io/docs">Snap</a> 是 Linux 系统软件包格式（其他格式有 debian、rpm等），可以被用于桌面、云和 IoT 多种场景。Snap 是自包含的（比如依赖的共享库等）、易安装、安全、跨平台和免依赖的。</p>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在使用 <code>snap</code> 命令之前需要安装并启动<code>snapd</code>，Ubuntu 系统默认已经安装。</p>
-<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>通道（Shannels）</strong>，用户可以选择从不同的通道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
-<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）的访问进行控制。Snap 可以请求某个接口，也可以依赖某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 Snap 提供的<em>接口</em>来访问相应的资源。</p>
-<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
-<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看 Snap 的接口，以及哪些接口的 Plug 和 Slot 已经连接。</p>
-<p>连接可以在安装 Snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;component&gt;</code> 手动建立，由 Snap 的具体功能决定。</p>
+<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>频道（Channels）</strong>，用户可以选择从不同的频道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
+<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）进行访问控制。Snap 可以请求某个接口，也可以提供某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 Snap 提供的<em>接口</em>来访问相应的资源。</p>
+<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。Plug 和 Slot 只有当它们有着相同的接口名时才能被连接。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
+<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看该 Snap 正在使用的接口，以及哪些接口的 Plug 和 Slot 已经连接，哪些没有连接。</p>
+<p>连接可以在安装 Snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;plug interface&gt; [&lt;snap&gt;:&lt;slot interface&gt;]</code> 手动建立，由 Snap 的具体功能决定。相应地，可以使用 <code>snap disconnect &lt;snap&gt;:&lt;plug interface&gt;</code> 来移除连接。</p>
+<p>用户可以使用 <code>snap interface &lt;interface-name&gt;</code> 查看哪些 Snaps 在使用指定的接口。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">snap interface home</span>  </span><br><span class="line">name:          home</span><br><span class="line">summary:       allows access to non-hidden files in the home directory</span><br><span class="line">documentation: https://snapcraft.io/docs/home-interface</span><br><span class="line">plugs:</span><br><span class="line">  - firefox</span><br><span class="line">  - vlc</span><br><span class="line">slots:</span><br><span class="line">  - snapd</span><br></pre></td></tr></table></figure>
+
 <h3 id="存储数据"><a href="#存储数据" class="headerlink" title="存储数据"></a>存储数据</h3><p>大多数 Snap 的受限模式都是严格的（<em>strict</em>）。这将 Snap 的执行环境和数据与系统隔离开来，一个需要用户访问文件的受限Snap很可能会使用 <em>Home Interface</em> 来弥合这种限制差距，允许 Snap 自动从主目录保存和加载文件。</p>
-<p>每个 Snap 的数据可以以快照的形式保存，数据实际上可以被看作是 Snap 的状态。因此，我们可以通过快照（snapshot）来备份、回滚 Snap 的状态。<br>每一个 Snap 被移除的时候可以自动生成快照，也可以使用 <code>snap save &lt;snap-name&gt;</code> 命令手动生成。回滚时使用 <code>snap restore &lt;#n&gt;</code>命令，最后一个参数为快照编号。</p>
+<p>每个 Snap 的数据可以以Snap 的形式保存，数据实际上可以被看作是 Snap 的状态。因此，我们可以通过Snap （snapshot）来备份、回滚 Snap 的状态。<br>每一个 Snap 被移除的时候可以自动生成Snap ，也可以使用 <code>snap save &lt;snap-name&gt;</code> 命令手动生成。回滚时使用 <code>snap restore &lt;#n&gt;</code>命令，最后一个参数为Snap 编号。</p>
+<p>其中一种数据是 Snap 的配置数据，这些配置数据可以使用 <code>snap get &lt;snap-name&gt; [option]</code> 来读取；对应地，可以使用<code>snap set &lt;snap-name&gt; &lt;option&gt; &lt;value&gt;</code><br>特别的，对于 <code>system</code> snap 配置选项和系统相关，其中一部分会影响 <code>Snapd</code> 的行为。示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> snap get system system</span></span><br><span class="line">Key              Value</span><br><span class="line">system.hostname  mimose-MDG-XX</span><br><span class="line">system.network   &#123;...&#125;</span><br><span class="line">system.timezone  UTC</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>更多信息参考 <a target="_blank" rel="noopener" href="https://snapcraft.io/docs/data-locations">Data locations</a> </p>
 </blockquote>
-<h3 id="受限-Confinement"><a href="#受限-Confinement" class="headerlink" title="受限 (Confinement)"></a>受限 (Confinement)</h3><p>每一个 Snap 都有一个受限模式(Confinement)。</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>Snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评。</p>
-<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
+<h3 id="配额-quotas"><a href="#配额-quotas" class="headerlink" title="配额 (quotas)"></a>配额 (quotas)</h3><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>Snap 被限制在一个限制性的安全沙箱中，无法访问 Sanp 之外的系统资源。安全策略和存储策略协同工作，使开发人员能够快速更新他们的应用程序，并为最终用户提供安全保障。 </p>
+<p>Snap 运行时，要完成下面的步骤（其中和内核安全机制，如 <code>seccomp</code>、<code>AppArmor</code> 紧密相关）：</p>
+<ol>
+<li><p>设置各种环境变量：</p>
+<ul>
+<li><code>HOME</code>：将所有命令设置为SNAP_USER_DATA</li>
+<li><code>SNAP</code>：只读安装目录</li>
+<li><code>SNAP_ARCH</code>：设备的架构（例如amd64、arm64、armhf、i386等）</li>
+<li><code>SNAP_DATA</code>：Snap 特定版本的可写区域</li>
+<li><code>SNAP_COMMON</code>：Snap 所有版本中通用的可写区域</li>
+<li><code>SNAP_LIBRARY_PATH</code>：应添加到LD_LIBRARY_PATH的其他目录</li>
+<li><code>SNAP_NAME</code>：Snap 名称</li>
+<li><code>SNAP_INSTANCE_NAME</code>：Snap 实例名称，包括实例密钥（如果已设置）（Snap 2.36+）</li>
+<li><code>SNAP_INSTANCE_KEY</code>：实例密钥（如果有）（Snap 2.36+）</li>
+<li><code>SNAP_REVISION</code>：存储Snap 的修订</li>
+<li><code>SNAP_USER_DATA</code>:特定Snap 版本的每个用户可写区域</li>
+<li><code>SNAP_USER_COMMON</code>：所有Snap 版本中通用的每个用户可写区域</li>
+<li><code>SNAP_VERSION</code>：Snap 版本（来自SNAP.yaml）</li>
+</ul>
+</li>
+<li><p>当硬件分配给 Snap 时，将使用默认设备（例如<code>/dev/null</code>、<code>/dev/urandom</code>等）和分配给此 Snap 的任何设备设置 <code>cgroup 设备组</code>。硬件被分配了接口连接。</p>
+</li>
+<li><p>设置一个在 Snap 中的所有命令之间共享的私有挂载命名空间。</p>
+</li>
+<li><p>使用 <code>per-snap</code> 私有挂载命名空间设置私有 <code>/tmp</code> 目录，并在<code>/tmp上</code>装载 <code>per-snap</code> 目录。</p>
+</li>
+<li><p>为每个命令设置一个新的 devpts 实例。</p>
+</li>
+<li><p>为命令设置<code>seccomp</code>过滤器。</p>
+</li>
+<li><p>在命令特定的<code>AppArmor</code>配置文件下，以默认的<code>nice</code>值执行命令。</p>
+</li>
+</ol>
+<p>安装 Snap 后，会检查其元数据，并将其与传统权限一起用于导出<code>AppArmor</code>配置文件、<code>Seccomp</code>过滤器和 <code>cgroup</code> 规则。这种组合提供了强大的应用程序限制和隔离。</p>
+<h4 id="AppArmor、Seccomp-和设备权限"><a href="#AppArmor、Seccomp-和设备权限" class="headerlink" title="AppArmor、Seccomp 和设备权限"></a>AppArmor、Seccomp 和设备权限</h4><ul>
+<li><p><strong>Apparmor</strong></p>
+<p>  为每个命令生成<code>AppArmor</code>配置文件。这些具有适当的安全标签和特定于命令的<code>AppArmor</code>规则，用于协调文件访问、应用程序执行、Linux功能、挂载、ptrace、IPC、信号、粗粒度网络。</p>
+<p>  如前所述，每个命令都在特定于应用程序的默认策略下运行，该策略可以通过声明的接口进行扩展，这些接口在元数据中表示为 Plug 和 Slot。Strict 模式 Snap 中违反<code>AppArmor</code>策略的行为将被拒绝访问，并且通常将<code>errno</code>设置为<code>EACCES</code>。违规行为通常会被记录下来。</p>
+<p>  为 Snap 中要运行的每个命令生成一个<code>seccomp</code>过滤器，启用<code>allowlist</code>系统调用过滤，然后可以通过元数据中表示为 Plug 和 Slot 的声明接口进行扩展。 </p>
+</li>
+<li><p><strong>Seccomp</strong></p>
+<p>  违反<code>seccomp</code>策略的进程将被拒绝访问系统调用，<code>errno</code>设置为<code>EPERM</code>（2.32之前的 Snap 版本接收<code>SIGSYS</code>），并记录违规行为。</p>
+<p>  为每个标记设备的命令生成<code>udev</code>规则，以便可以将它们添加&#x2F;删除到命令的设备<code>cgroup</code>中。但是，默认情况下，不会标记任何设备，也不会使用设备<code>cgroup</code>，而是使用<code>AppArmor</code>来协调访问。</p>
+<p>  根据<code>snapd</code>的决定，当声明依赖接口时，除了<code>AppArmor</code>外，还可以使用设备<code>cgroup</code>，如元数据中的 Plug 和 Slot 所示。</p>
+</li>
+<li><p><strong>设备 Cgroup</strong></p>
+<p>  访问不在 Snap 特定 <code>cgroup</code> 中的设备的进程将被拒绝访问，<code>errno</code>设置为<code>EPERM</code>。访问违规不会被记录。</p>
+</li>
+<li><p><strong>传统权限</strong><br>  传统的文件权限（所有者、组、文件ACL等）也通过 Snap 强制执行。 尝试访问传统文件权限不允许的资源的进程将被拒绝访问，<code>errno</code>通常设置为<code>EACCES</code>（有关详细信息，请参阅操作手册页）。访问违规不会被记录。</p>
+</li>
+</ul>
+<p>因此，所有 Snap 都在默认安全策略下运行，<strong>该策略可以通过使用 <em>接口(interface)</em> 进行扩展</strong>，还句话说，当进行接口连接时，安全策略可以进行传递或者说扩展。</p>
+<h3 id="限制-Confinement"><a href="#限制-Confinement" class="headerlink" title="限制 (Confinement)"></a>限制 (Confinement)</h3><p>Snap 限制决定了应用程序对系统资源（如文件、网络、外围设备和服务）的访问量。有几个级别的限制。</p>
+<p>限制确保单个软件不会影响用户系统的健壮性，也不会导致其他应用程序出现问题。因此，当用户运行 Snap 时，它提供的软件在一定程度上与系统隔离，默认情况下限制了对严格最低功能的访问。</p>
+<p>Snap 的限制级别控制其与用户系统的隔离程度。应用程序开发人员或打包人员可以调整限制级别，以广义地指定应用程序在正常使用或开发过程中需要多少对系统资源的访问权限。</p>
+<p>已发布 Snap 有两个级别的 Snap 限制：</p>
+<ul>
+<li><strong>Strict</strong>：被大多数 Snap 使用。Strict 限制的 Snap 在完全隔离的情况下运行，最高可达被认为始终安全的最低访问级别。因此，Strict 限制的 Snap 无法访问文件、网络、进程或任何其他系统资源，除非通过接口请求特定的访问权限（见下文）。</li>
+<li><strong>Classic</strong>：允许以与传统软件包几乎相同的方式访问系统资源。为了防止滥用，发布 Classic Snap 需要手动批准，安装需要<code>--Classic</code>命令行参数。</li>
+</ul>
+<p>在开发过程中，另一种模式很有用：</p>
+<ul>
+<li><strong>Devmode</strong>：为 Snap 创建者和开发人员提供的特殊模式。<code>devmode</code> Snap 作为严格受限的 Snap 运行，具有对系统资源的完全访问权限，并产生调试输出以识别未指定的接口。安装需要<code>--devmode</code>命令行参数。<code>Devmode</code> Snap 无法发布到 <code>stable</code> 频道，不会出现在搜索结果中，也不会自动更新。</li>
+</ul>
+<p>Strict 限制的 Snap 会使用Linux内核的安全功能，包括<code>AppArmor</code>、<code>seccomp</code>和命名空间，以防止应用程序和服务访问更广泛的系统。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>Snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评，参考 Snap 官方对性能的描述：<a target="_blank" rel="noopener" href="https://snapcraft.io/docs/snap-performance">Snap performance</a>。</p>
+<h2 id="SquashFS-文件系统"><a href="#SquashFS-文件系统" class="headerlink" title="SquashFS 文件系统"></a>SquashFS 文件系统</h2><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/filesystems/squashfs.txt">SquashFS</a> 是一个标准 Linux 文件系统，它将整个目录结构打包到单个压缩文件中。它经常被用于在 USB 设备上提供可引导的原生 Linux 环境，当然也可以用到打包 Snap。</p>
+<p>Snap 是一个 SquashFS 文件，其中包含 Snap 的库和二进制环境，以及描述其访问和功能的元数据。SquashFS 文件要么在首次安装 Snap 时由 <code>systemd</code>挂载，要么在已经安装 Snap 的系统（如Ubuntu Core）启动的早期阶段挂载。</p>
+<p>SquashFS 解压缩发生在 Snap 首次在系统上运行并且其性能受到密切监视时。特别是，解压缩性能可能因使用的压缩算法、SquashFS 存档的大小、它包含的文件数量、它是第一次被访问（冷缓存）还是再次被访问（热缓存）而有所不同。</p>
+<h2 id="安全-1"><a href="#安全-1" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
 <p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
 <p><strong>b. 安全启动</strong><br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png"></p>
 <p><strong>c. 全盘加密</strong></p>
@@ -433,13 +506,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">272k</span>
+    <span title="站点总字数">276k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:34</span>
+    <span title="站点阅读时长">7:40</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动

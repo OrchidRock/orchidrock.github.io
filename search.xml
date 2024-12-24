@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -220,6 +195,31 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -2186,8 +2186,8 @@
 <h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
 ]]></content>
       <categories>
-        <category>信息安全</category>
         <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2738,28 +2738,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Tmux快捷键参考手册</title>
-    <url>/2022/04/29/Tmux%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;tmux具有强大的终端复用功能，它可以实现编辑同步。tmux的命令模式、配置文件都与vim类似。tmux整体遵循CS设计，围绕window、session、pane等核心概念。详细手册参考man page或者项目github主页。</p>
-<span id="more"></span>
-
-<h3 id="命令及快捷键前缀"><a href="#命令及快捷键前缀" class="headerlink" title="命令及快捷键前缀"></a>命令及快捷键前缀</h3><p><code>Ctrl b</code> (可以在tmux.conf中更改为其他前缀)</p>
-<h4 id="创建新窗口"><a href="#创建新窗口" class="headerlink" title="创建新窗口"></a>创建新窗口</h4><p><code>:new-window (neww)</code><br><code>c</code> ：创建新窗口，窗口索引号会自动分配</p>
-<h4 id="关闭窗口"><a href="#关闭窗口" class="headerlink" title="关闭窗口"></a>关闭窗口</h4><p><code>:kill-window</code> ：关闭窗口，所有pane被关闭<br><code>&amp;</code>：关闭当前激活窗口</p>
-<h4 id="选择窗口"><a href="#选择窗口" class="headerlink" title="选择窗口"></a>选择窗口</h4><p><code>:select-window</code><br><code>[0-9]</code>：选择索引所代表的窗口<br><code>&#39;</code> ：根据索引选择当前窗口<br><code>n</code> ：选择下一个窗口<br><code>l</code> ：选择最后一个窗口<br><code>:choose-tree</code>：选择树结构<br><code>s或w</code>：然后使用上下左右进行选择，使用<code>t</code>可以进行标记，使用<code>x</code>可以直接关闭某个item。</p>
-<h4 id="分列窗口，创建pane"><a href="#分列窗口，创建pane" class="headerlink" title="分列窗口，创建pane"></a>分列窗口，创建pane</h4><p><code>:split-window (splitw)</code>：创建pane，分列窗口<br><code>% </code>: 水平分列<br><code>&quot;</code> : 垂直分列</p>
-<h4 id="关闭pane"><a href="#关闭pane" class="headerlink" title="关闭pane"></a>关闭pane</h4><p><code>:kill-pane</code>：关闭当前激活的pane<br><code>x</code></p>
-<h4 id="选择pane"><a href="#选择pane" class="headerlink" title="选择pane"></a>选择pane</h4><p><code>:select-pane</code><br><code>&lt;Up&gt; &lt;Down&gt; &lt;Right&gt; &lt;Left&gt;</code> ：按照上下左右的方向跳转<br><code>q</code> ：显示Pane数以其尺寸<br><code>&lt;Space&gt;</code>窗口布局切换<br><code>f</code>：寻找包含某个文本的pane或者window</p>
-<h4 id="重新规划pane大小"><a href="#重新规划pane大小" class="headerlink" title="重新规划pane大小"></a>重新规划pane大小</h4><p><code>Ctrl &lt;Left&gt;</code> 、<code>Ctrl &lt;Right&gt;</code>、<code>Ctrl &lt;Up&gt;</code> 、<code>Ctrl &lt;Down&gt;</code></p>
-<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p><code>:new-session</code>创建新的会话<br><code>:attach-session (attach)</code> ：连接一个已经存在的会话或者新建一个会话<br><code>:attach -t &lt;seesion-id&gt;</code><br><code>:detach-client</code>或<code>d</code>：从当前会话退出</p>
-<h4 id="设置鼠标"><a href="#设置鼠标" class="headerlink" title="设置鼠标"></a>设置鼠标</h4><p><code>:set -g mouse on</code><br><code>:set -g mouse off</code></p>
-<h4 id="文本模式"><a href="#文本模式" class="headerlink" title="文本模式"></a>文本模式</h4><p><code>Ctrl+b+[</code> : 进入文本复制模式，然后按下 <code>Space</code> 空格键选择起始位置，<code>Enter</code> 键完成，<code>Ctrl+b+]</code> 粘贴。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -2870,96 +2848,25 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Ubuntu Core and Snap Architecture Analysis</title>
-    <url>/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://cn.ubuntu.com/internet-of-things/core">Ubuntu Core</a> 是一个以应用为中心的嵌入式操作系统，所有组件均以 <code>snap</code>容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。</p>
+    <title>Tmux快捷键参考手册</title>
+    <url>/2022/04/29/Tmux%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;tmux具有强大的终端复用功能，它可以实现编辑同步。tmux的命令模式、配置文件都与vim类似。tmux整体遵循CS设计，围绕window、session、pane等核心概念。详细手册参考man page或者项目github主页。</p>
 <span id="more"></span>
 
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>整体架构如下图所示：</p>
-<p><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png"></p>
-<blockquote>
-<p>图片来源：<a href="https://assets.ubuntu.com/v1/b2c770ea-Ubuntu+Core20+Datasheet.pdf">Ubuntu Core 手册</a></p>
-</blockquote>
-<p>图片中的组件可以重用组合成定制的 Ubuntu Core 镜像。</p>
-<ul>
-<li>Kernel snap: 内核及其关联的模块、固件和设备树文件。</li>
-<li>Core snap: 标准的或者定制的 Ubuntu 根文件系统。</li>
-<li>Gadget snap: 已经容器化的硬件相关的启动资产和配置文件。</li>
-<li>System snaps：</li>
-<li>Application snaps:</li>
-<li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
-</ul>
-<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><p><a href="https://snapcraft.io/docs">Snap</a> 是 Linux 系统软件包格式（其他格式有 debian、rpm等），可以被用于桌面、云和 IoT 多种场景。Snap 是自包含的（比如依赖的共享库等）、易安装、安全、跨平台和免依赖的。</p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在使用 <code>snap</code> 命令之前需要安装并启动<code>snapd</code>，Ubuntu 系统默认已经安装。</p>
-<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>通道（Shannels）</strong>，用户可以选择从不同的通道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
-<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）的访问进行控制。Snap 可以请求某个接口，也可以依赖某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 Snap 提供的<em>接口</em>来访问相应的资源。</p>
-<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
-<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看 Snap 的接口，以及哪些接口的 Plug 和 Slot 已经连接。</p>
-<p>连接可以在安装 Snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;component&gt;</code> 手动建立，由 Snap 的具体功能决定。</p>
-<h3 id="存储数据"><a href="#存储数据" class="headerlink" title="存储数据"></a>存储数据</h3><p>大多数 Snap 的受限模式都是严格的（<em>strict</em>）。这将 Snap 的执行环境和数据与系统隔离开来，一个需要用户访问文件的受限Snap很可能会使用 <em>Home Interface</em> 来弥合这种限制差距，允许 Snap 自动从主目录保存和加载文件。</p>
-<p>每个 Snap 的数据可以以快照的形式保存，数据实际上可以被看作是 Snap 的状态。因此，我们可以通过快照（snapshot）来备份、回滚 Snap 的状态。<br>每一个 Snap 被移除的时候可以自动生成快照，也可以使用 <code>snap save &lt;snap-name&gt;</code> 命令手动生成。回滚时使用 <code>snap restore &lt;#n&gt;</code>命令，最后一个参数为快照编号。</p>
-<blockquote>
-<p>更多信息参考 <a href="https://snapcraft.io/docs/data-locations">Data locations</a> </p>
-</blockquote>
-<h3 id="受限-Confinement"><a href="#受限-Confinement" class="headerlink" title="受限 (Confinement)"></a>受限 (Confinement)</h3><p>每一个 Snap 都有一个受限模式(Confinement)。</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>Snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评。</p>
-<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
-<p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
-<p><strong>b. 安全启动</strong><br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png"></p>
-<p><strong>c. 全盘加密</strong></p>
-<p><strong>d. 基于内核安全机制的限制</strong></p>
-<h3 id="第三方安全分析"><a href="#第三方安全分析" class="headerlink" title="第三方安全分析"></a>第三方安全分析</h3><h2 id="实践：Ubuntu-Core镜像制作"><a href="#实践：Ubuntu-Core镜像制作" class="headerlink" title="实践：Ubuntu Core镜像制作"></a>实践：Ubuntu Core镜像制作</h2><h3 id="注册-Ubuntu-One-账号"><a href="#注册-Ubuntu-One-账号" class="headerlink" title="注册 Ubuntu One 账号"></a>注册 Ubuntu One 账号</h3><p>注册 Ubuntu One 账号，最重要的是使用 Ubuntu 的平台（<a href="https://snapcraft.io/snaps">snapcraft.io</a>）进行 Snap 包的在线生命周期管理，包括包的发布、更新、回退和卸载等。<br>如下图所示，可以看到当前账号所管理的 snaps：<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snapcraft.png"></p>
-<p>为了保证构建的 Ubuntu Core 镜像以及 snap包的合法性，还需要生成 snapcraft 证书，持有该证书的用户才能对 snap 包拥有限制的权限。创建证书时会要求输入 Ubuntu One 的账户和口令。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> snap install snapcraft --classic</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft export-login credentials.txt</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">export</span> SNAPCRAFT_STORE_CREDENTIALS=$(<span class="built_in">cat</span> credentials.txt)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取相关信息</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft <span class="built_in">whoami</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h3><p>制作定制 Ubuntu Core 镜像的核心是编写<em>模型断言（model assertion）</em>。一个 <em>assertion</em> 可以看作是一个被签名的 JSON 的文本，该文本描述了组成镜像的各个组件。模型包括的信息如下：</p>
-<ul>
-<li>身份 ID 信息。</li>
-<li>组成设备系统的基础 snaps (<em>essential snap</em>)。</li>
-<li>为了实现设备的功能强制要求或者可选的 snaps。</li>
-</ul>
-<p>为了快速创建模型，可以直接从 <a href="https://github.com/snapcore/models">snapcore</a> github 仓库下载对应设备的参考模型文件。以 <em>raspberry pi</em> 平台为例：<br><code>$ wget -O my-model.json https://raw.githubusercontent.com/snapcore/models/master/ubuntu-core-24-pi-arm64.json</code></p>
-<p>编辑 my-model.json, 修改<code>authority-id</code> 和 <code>brand-id</code> 为自己的开发者 ID（<em>developer ID</em>），该 ID 可以在命令中<code>snapcraft whoami</code> 获取到。这样做在逻辑上将该镜像与自己的 Ubuntu One 账号绑定，也就是只有开发者自己可以 push 镜像。</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;authority-id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;XXXXXXXXXXXX&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;brand-id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;XXXXXXXXXXXX&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
-
-<p><code>snaps</code> 描述了构建系统需要的基础 snaps（<code>kernel</code>，<code>core</code>等） 和 应用 snaps（<code>console-conf</code>），参考架构图。</p>
-<h3 id="对模型进行签名"><a href="#对模型进行签名" class="headerlink" title="对模型进行签名"></a>对模型进行签名</h3><p>首先确认是否已经有密钥对关联到开发者的账号：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft list-keys</span></span><br><span class="line">No keys have been registered. See &#x27;snapcraft register-key --help&#x27; to register a key.</span><br></pre></td></tr></table></figure>
-
-<p>如果没有的话，新建一个：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft create-key my-model-key</span></span><br></pre></td></tr></table></figure>
-
-<p>然后注册 key:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft register-key my-model-key</span></span><br><span class="line">...</span><br><span class="line">Registering key ...</span><br><span class="line">Done. The key &quot;my-model-key&quot; (&lt;key fingerprint&gt;) may be used to sign your assertions.</span><br></pre></td></tr></table></figure>
-
-<p>重新查看 key 状态：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft list-keys</span></span><br><span class="line">The following keys are available on this system:</span><br><span class="line">    Name          SHA3-384 fingerprint</span><br><span class="line">*   my-model-key  gX8JXpNUvUsAfS4IwNoxQVLeHzHqoI_ktGKdX-WRw9VlCEcTI6HNfgWdbdjvRFKm</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最后对 JSON 文件进行签名生成 <em>模型断言</em>：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snap sign -k my-model-key my-model.json &gt; my-model.model</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h3><p>安装 <code>ubuntu-image</code> 工具:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snap install ubuntu-image --classic</span></span><br></pre></td></tr></table></figure>
-
-<p>然后使用 <code>ubuntu-image</code> 构建镜像，并使用上一节生成的<em>模型断言</em>作为参数：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ubuntu-image snap my-model.model</span></span><br><span class="line">......</span><br><span class="line">[1] load_gadget_yaml</span><br><span class="line">[2] set_artifact_names</span><br><span class="line">[3] populate_rootfs_contents</span><br><span class="line">[4] generate_disk_info</span><br><span class="line">[5] calculate_rootfs_size</span><br><span class="line">[6] populate_bootfs_contents</span><br><span class="line">[7] populate_prepare_partitions</span><br><span class="line">[8] make_disk</span><br><span class="line">[9] generate_snap_manifest</span><br><span class="line">Build successful</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="引导镜像"><a href="#引导镜像" class="headerlink" title="引导镜像"></a>引导镜像</h3><blockquote>
-<p>参考 <a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a></p>
-</blockquote>
-<p>通过<code>qemu</code> 创建 Ubuntu Core 虚拟机，并进入系统：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 \</span></span><br><span class="line"><span class="language-bash"> -enable-kvm \</span></span><br><span class="line"><span class="language-bash"> -smp 1 \</span></span><br><span class="line"><span class="language-bash"> -m 2048 \</span></span><br><span class="line"><span class="language-bash"> -machine q35 \</span></span><br><span class="line"><span class="language-bash"> -cpu host \</span></span><br><span class="line"><span class="language-bash"> -global ICH9-LPC.disable_s3=1 \</span></span><br><span class="line"><span class="language-bash"> -net nic,model=virtio \</span></span><br><span class="line"><span class="language-bash"> -net user,hostfwd=tcp::8022-:22 \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_CODE_4M.secboot.fd,<span class="keyword">if</span>=pflash,format=raw,unit=0,<span class="built_in">readonly</span>=on \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_VARS_4M.ms.fd,<span class="keyword">if</span>=pflash,format=raw,unit=1 \</span></span><br><span class="line"><span class="language-bash"> -drive <span class="string">&quot;file=pc.img&quot;</span>,<span class="keyword">if</span>=none,format=raw,<span class="built_in">id</span>=disk1 \</span></span><br><span class="line"><span class="language-bash"> -device virtio-blk-pci,drive=disk1,bootindex=1 \</span></span><br><span class="line"><span class="language-bash"> -serial mon:stdio</span></span><br></pre></td></tr></table></figure>
-
-<p>引导过程中会弹出窗口，用户可以在窗口内进行相关配置。</p>
-<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>使用 SSH 登陆 Ubuntu Core，但 OpenSSH Server 服务器端不要求一个口令(Password)，而是被配置成需要使用 SSH 公钥进行认证，该 SSH 公钥和 Ubuntu One 账户是绑定关系。</p>
-<p>配置 SSH key 可以参考<a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a>。</p>
-<p>使用下面的命令登陆：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -i &lt;path-to-private-key&gt; &lt;sso-username&gt;@localhost -p 8022</span></span><br></pre></td></tr></table></figure>
-
-<p>其中 <em>sso-username</em> 和 Ubutnu One 账户关联。</p>
+<h3 id="命令及快捷键前缀"><a href="#命令及快捷键前缀" class="headerlink" title="命令及快捷键前缀"></a>命令及快捷键前缀</h3><p><code>Ctrl b</code> (可以在tmux.conf中更改为其他前缀)</p>
+<h4 id="创建新窗口"><a href="#创建新窗口" class="headerlink" title="创建新窗口"></a>创建新窗口</h4><p><code>:new-window (neww)</code><br><code>c</code> ：创建新窗口，窗口索引号会自动分配</p>
+<h4 id="关闭窗口"><a href="#关闭窗口" class="headerlink" title="关闭窗口"></a>关闭窗口</h4><p><code>:kill-window</code> ：关闭窗口，所有pane被关闭<br><code>&amp;</code>：关闭当前激活窗口</p>
+<h4 id="选择窗口"><a href="#选择窗口" class="headerlink" title="选择窗口"></a>选择窗口</h4><p><code>:select-window</code><br><code>[0-9]</code>：选择索引所代表的窗口<br><code>&#39;</code> ：根据索引选择当前窗口<br><code>n</code> ：选择下一个窗口<br><code>l</code> ：选择最后一个窗口<br><code>:choose-tree</code>：选择树结构<br><code>s或w</code>：然后使用上下左右进行选择，使用<code>t</code>可以进行标记，使用<code>x</code>可以直接关闭某个item。</p>
+<h4 id="分列窗口，创建pane"><a href="#分列窗口，创建pane" class="headerlink" title="分列窗口，创建pane"></a>分列窗口，创建pane</h4><p><code>:split-window (splitw)</code>：创建pane，分列窗口<br><code>% </code>: 水平分列<br><code>&quot;</code> : 垂直分列</p>
+<h4 id="关闭pane"><a href="#关闭pane" class="headerlink" title="关闭pane"></a>关闭pane</h4><p><code>:kill-pane</code>：关闭当前激活的pane<br><code>x</code></p>
+<h4 id="选择pane"><a href="#选择pane" class="headerlink" title="选择pane"></a>选择pane</h4><p><code>:select-pane</code><br><code>&lt;Up&gt; &lt;Down&gt; &lt;Right&gt; &lt;Left&gt;</code> ：按照上下左右的方向跳转<br><code>q</code> ：显示Pane数以其尺寸<br><code>&lt;Space&gt;</code>窗口布局切换<br><code>f</code>：寻找包含某个文本的pane或者window</p>
+<h4 id="重新规划pane大小"><a href="#重新规划pane大小" class="headerlink" title="重新规划pane大小"></a>重新规划pane大小</h4><p><code>Ctrl &lt;Left&gt;</code> 、<code>Ctrl &lt;Right&gt;</code>、<code>Ctrl &lt;Up&gt;</code> 、<code>Ctrl &lt;Down&gt;</code></p>
+<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p><code>:new-session</code>创建新的会话<br><code>:attach-session (attach)</code> ：连接一个已经存在的会话或者新建一个会话<br><code>:attach -t &lt;seesion-id&gt;</code><br><code>:detach-client</code>或<code>d</code>：从当前会话退出</p>
+<h4 id="设置鼠标"><a href="#设置鼠标" class="headerlink" title="设置鼠标"></a>设置鼠标</h4><p><code>:set -g mouse on</code><br><code>:set -g mouse off</code></p>
+<h4 id="文本模式"><a href="#文本模式" class="headerlink" title="文本模式"></a>文本模式</h4><p><code>Ctrl+b+[</code> : 进入文本复制模式，然后按下 <code>Space</code> 空格键选择起始位置，<code>Enter</code> 键完成，<code>Ctrl+b+]</code> 粘贴。</p>
 ]]></content>
       <categories>
-        <category>嵌入式系统和 IOT</category>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -3155,21 +3062,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>制作MultiBoot USB启动盘</title>
-    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
-<span id="more"></span>
-
-<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
-<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
-<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
-<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于计算机操作系统启动引导的总结</title>
     <url>/2018/04/02/%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E7%9A%84%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;对于现代CPU而言，当其上电启动时，必须知道指令在什么地方，这是很简单的道理。现代大多数计算机的做法是将这第一段程序放到称为BIOS的固件（存储材料大都为EEPROM或FLASH芯片）里，该程序会根据配置信息读取磁盘（或其他存储设备，例如外接USB）的特定分区里的程序代码并执行，逐渐启动操作系统的所有组件。</p>
@@ -3210,6 +3102,21 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="方案三：UEFI"><a href="#方案三：UEFI" class="headerlink" title="方案三：UEFI"></a>方案三：UEFI</h3><p>&emsp;&emsp;关于如何在计算机启动时屏蔽UEFI以及安全启动请查看Disable_UEFI_and_Secure_Boot</p>
 <h3 id="方案四：U-boot"><a href="#方案四：U-boot" class="headerlink" title="方案四：U-boot"></a>方案四：U-boot</h3><p>&emsp;&emsp;待补充</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>① <a href="https://baike.baidu.com/item/%E4%B8%BB%E5%BC%95%E5%AF%BC%E8%AE%B0%E5%BD%95/7612638?fr=aladdin&fromid=10473976&fromtitle=mbr">MBR 百度百科</a><br>② <a href="https://baike.baidu.com/item/bios/91424?fr=aladdin">BIOS 百度百科</a><br>③ <a href="https://opensource.com/article/17/2/linux-boot-and-startup">An introduction to the Linux boot and startup processes</a><br>④ <a href="https://www.cnblogs.com/leaven/archive/2010/01/07/1641324.html">详解 Linux Initrd</a><br>⑤ <a href="https://baike.baidu.com/item/initrd/3239796?fr=aladdin">initrd 百度百科</a><br>⑥ <a href="https://wiki.archlinux.org/index.php/Mkinitcpio">mkinitcpio ArchLinux Wiki</a><br>⑦ <a href="https://wiki.archlinux.org/index.php/Category:Boot_loaders">Boot Loader ArchLinux Wiki</a><br>⑧ <a href="http://www.178linux.com/15793">UEFI原理小结</a><br>⑨ <a href="https://neosmart.net/wiki/easybcd/">EasyBCD 官方wiki</a><br>⑩ <a href="http://www.178linux.com/15788">UEFI与BIOS对比</a><br>⑪ <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT 维基百科</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>制作MultiBoot USB启动盘</title>
+    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+<span id="more"></span>
+
+<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
+<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
+<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
+<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -4164,6 +4071,172 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>计算机科学</category>
         <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu Core and Snap Architecture Analysis</title>
+    <url>/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://cn.ubuntu.com/internet-of-things/core">Ubuntu Core</a> 是一个以应用为中心的嵌入式操作系统，所有组件均以 <code>snap</code>容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。</p>
+<span id="more"></span>
+
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>整体架构如下图所示：</p>
+<p><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png"></p>
+<blockquote>
+<p>图片来源：<a href="https://assets.ubuntu.com/v1/b2c770ea-Ubuntu+Core20+Datasheet.pdf">Ubuntu Core 手册</a></p>
+</blockquote>
+<p>图片中的组件可以重用组合成定制的 Ubuntu Core 镜像。</p>
+<ul>
+<li>Kernel snap: 内核及其关联的模块、固件和设备树文件。</li>
+<li>Core snap: 标准的或者定制的 Ubuntu 根文件系统。</li>
+<li>Gadget snap: 已经容器化的硬件相关的启动资产和配置文件。</li>
+<li>System snaps：</li>
+<li>Application snaps:</li>
+<li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
+</ul>
+<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><p><a href="https://snapcraft.io/docs">Snap</a> 是 Linux 系统软件包格式（其他格式有 debian、rpm等），可以被用于桌面、云和 IoT 多种场景。Snap 是自包含的（比如依赖的共享库等）、易安装、安全、跨平台和免依赖的。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在使用 <code>snap</code> 命令之前需要安装并启动<code>snapd</code>，Ubuntu 系统默认已经安装。</p>
+<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>频道（Channels）</strong>，用户可以选择从不同的频道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
+<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）进行访问控制。Snap 可以请求某个接口，也可以提供某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 Snap 提供的<em>接口</em>来访问相应的资源。</p>
+<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。Plug 和 Slot 只有当它们有着相同的接口名时才能被连接。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
+<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看该 Snap 正在使用的接口，以及哪些接口的 Plug 和 Slot 已经连接，哪些没有连接。</p>
+<p>连接可以在安装 Snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;plug interface&gt; [&lt;snap&gt;:&lt;slot interface&gt;]</code> 手动建立，由 Snap 的具体功能决定。相应地，可以使用 <code>snap disconnect &lt;snap&gt;:&lt;plug interface&gt;</code> 来移除连接。</p>
+<p>用户可以使用 <code>snap interface &lt;interface-name&gt;</code> 查看哪些 Snaps 在使用指定的接口。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">snap interface home</span>  </span><br><span class="line">name:          home</span><br><span class="line">summary:       allows access to non-hidden files in the home directory</span><br><span class="line">documentation: https://snapcraft.io/docs/home-interface</span><br><span class="line">plugs:</span><br><span class="line">  - firefox</span><br><span class="line">  - vlc</span><br><span class="line">slots:</span><br><span class="line">  - snapd</span><br></pre></td></tr></table></figure>
+
+<h3 id="存储数据"><a href="#存储数据" class="headerlink" title="存储数据"></a>存储数据</h3><p>大多数 Snap 的受限模式都是严格的（<em>strict</em>）。这将 Snap 的执行环境和数据与系统隔离开来，一个需要用户访问文件的受限Snap很可能会使用 <em>Home Interface</em> 来弥合这种限制差距，允许 Snap 自动从主目录保存和加载文件。</p>
+<p>每个 Snap 的数据可以以Snap 的形式保存，数据实际上可以被看作是 Snap 的状态。因此，我们可以通过Snap （snapshot）来备份、回滚 Snap 的状态。<br>每一个 Snap 被移除的时候可以自动生成Snap ，也可以使用 <code>snap save &lt;snap-name&gt;</code> 命令手动生成。回滚时使用 <code>snap restore &lt;#n&gt;</code>命令，最后一个参数为Snap 编号。</p>
+<p>其中一种数据是 Snap 的配置数据，这些配置数据可以使用 <code>snap get &lt;snap-name&gt; [option]</code> 来读取；对应地，可以使用<code>snap set &lt;snap-name&gt; &lt;option&gt; &lt;value&gt;</code><br>特别的，对于 <code>system</code> snap 配置选项和系统相关，其中一部分会影响 <code>Snapd</code> 的行为。示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> snap get system system</span></span><br><span class="line">Key              Value</span><br><span class="line">system.hostname  mimose-MDG-XX</span><br><span class="line">system.network   &#123;...&#125;</span><br><span class="line">system.timezone  UTC</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更多信息参考 <a href="https://snapcraft.io/docs/data-locations">Data locations</a> </p>
+</blockquote>
+<h3 id="配额-quotas"><a href="#配额-quotas" class="headerlink" title="配额 (quotas)"></a>配额 (quotas)</h3><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>Snap 被限制在一个限制性的安全沙箱中，无法访问 Sanp 之外的系统资源。安全策略和存储策略协同工作，使开发人员能够快速更新他们的应用程序，并为最终用户提供安全保障。 </p>
+<p>Snap 运行时，要完成下面的步骤（其中和内核安全机制，如 <code>seccomp</code>、<code>AppArmor</code> 紧密相关）：</p>
+<ol>
+<li><p>设置各种环境变量：</p>
+<ul>
+<li><code>HOME</code>：将所有命令设置为SNAP_USER_DATA</li>
+<li><code>SNAP</code>：只读安装目录</li>
+<li><code>SNAP_ARCH</code>：设备的架构（例如amd64、arm64、armhf、i386等）</li>
+<li><code>SNAP_DATA</code>：Snap 特定版本的可写区域</li>
+<li><code>SNAP_COMMON</code>：Snap 所有版本中通用的可写区域</li>
+<li><code>SNAP_LIBRARY_PATH</code>：应添加到LD_LIBRARY_PATH的其他目录</li>
+<li><code>SNAP_NAME</code>：Snap 名称</li>
+<li><code>SNAP_INSTANCE_NAME</code>：Snap 实例名称，包括实例密钥（如果已设置）（Snap 2.36+）</li>
+<li><code>SNAP_INSTANCE_KEY</code>：实例密钥（如果有）（Snap 2.36+）</li>
+<li><code>SNAP_REVISION</code>：存储Snap 的修订</li>
+<li><code>SNAP_USER_DATA</code>:特定Snap 版本的每个用户可写区域</li>
+<li><code>SNAP_USER_COMMON</code>：所有Snap 版本中通用的每个用户可写区域</li>
+<li><code>SNAP_VERSION</code>：Snap 版本（来自SNAP.yaml）</li>
+</ul>
+</li>
+<li><p>当硬件分配给 Snap 时，将使用默认设备（例如<code>/dev/null</code>、<code>/dev/urandom</code>等）和分配给此 Snap 的任何设备设置 <code>cgroup 设备组</code>。硬件被分配了接口连接。</p>
+</li>
+<li><p>设置一个在 Snap 中的所有命令之间共享的私有挂载命名空间。</p>
+</li>
+<li><p>使用 <code>per-snap</code> 私有挂载命名空间设置私有 <code>/tmp</code> 目录，并在<code>/tmp上</code>装载 <code>per-snap</code> 目录。</p>
+</li>
+<li><p>为每个命令设置一个新的 devpts 实例。</p>
+</li>
+<li><p>为命令设置<code>seccomp</code>过滤器。</p>
+</li>
+<li><p>在命令特定的<code>AppArmor</code>配置文件下，以默认的<code>nice</code>值执行命令。</p>
+</li>
+</ol>
+<p>安装 Snap 后，会检查其元数据，并将其与传统权限一起用于导出<code>AppArmor</code>配置文件、<code>Seccomp</code>过滤器和 <code>cgroup</code> 规则。这种组合提供了强大的应用程序限制和隔离。</p>
+<h4 id="AppArmor、Seccomp-和设备权限"><a href="#AppArmor、Seccomp-和设备权限" class="headerlink" title="AppArmor、Seccomp 和设备权限"></a>AppArmor、Seccomp 和设备权限</h4><ul>
+<li><p><strong>Apparmor</strong></p>
+<p>  为每个命令生成<code>AppArmor</code>配置文件。这些具有适当的安全标签和特定于命令的<code>AppArmor</code>规则，用于协调文件访问、应用程序执行、Linux功能、挂载、ptrace、IPC、信号、粗粒度网络。</p>
+<p>  如前所述，每个命令都在特定于应用程序的默认策略下运行，该策略可以通过声明的接口进行扩展，这些接口在元数据中表示为 Plug 和 Slot。Strict 模式 Snap 中违反<code>AppArmor</code>策略的行为将被拒绝访问，并且通常将<code>errno</code>设置为<code>EACCES</code>。违规行为通常会被记录下来。</p>
+<p>  为 Snap 中要运行的每个命令生成一个<code>seccomp</code>过滤器，启用<code>allowlist</code>系统调用过滤，然后可以通过元数据中表示为 Plug 和 Slot 的声明接口进行扩展。 </p>
+</li>
+<li><p><strong>Seccomp</strong></p>
+<p>  违反<code>seccomp</code>策略的进程将被拒绝访问系统调用，<code>errno</code>设置为<code>EPERM</code>（2.32之前的 Snap 版本接收<code>SIGSYS</code>），并记录违规行为。</p>
+<p>  为每个标记设备的命令生成<code>udev</code>规则，以便可以将它们添加&#x2F;删除到命令的设备<code>cgroup</code>中。但是，默认情况下，不会标记任何设备，也不会使用设备<code>cgroup</code>，而是使用<code>AppArmor</code>来协调访问。</p>
+<p>  根据<code>snapd</code>的决定，当声明依赖接口时，除了<code>AppArmor</code>外，还可以使用设备<code>cgroup</code>，如元数据中的 Plug 和 Slot 所示。</p>
+</li>
+<li><p><strong>设备 Cgroup</strong></p>
+<p>  访问不在 Snap 特定 <code>cgroup</code> 中的设备的进程将被拒绝访问，<code>errno</code>设置为<code>EPERM</code>。访问违规不会被记录。</p>
+</li>
+<li><p><strong>传统权限</strong><br>  传统的文件权限（所有者、组、文件ACL等）也通过 Snap 强制执行。 尝试访问传统文件权限不允许的资源的进程将被拒绝访问，<code>errno</code>通常设置为<code>EACCES</code>（有关详细信息，请参阅操作手册页）。访问违规不会被记录。</p>
+</li>
+</ul>
+<p>因此，所有 Snap 都在默认安全策略下运行，<strong>该策略可以通过使用 <em>接口(interface)</em> 进行扩展</strong>，还句话说，当进行接口连接时，安全策略可以进行传递或者说扩展。</p>
+<h3 id="限制-Confinement"><a href="#限制-Confinement" class="headerlink" title="限制 (Confinement)"></a>限制 (Confinement)</h3><p>Snap 限制决定了应用程序对系统资源（如文件、网络、外围设备和服务）的访问量。有几个级别的限制。</p>
+<p>限制确保单个软件不会影响用户系统的健壮性，也不会导致其他应用程序出现问题。因此，当用户运行 Snap 时，它提供的软件在一定程度上与系统隔离，默认情况下限制了对严格最低功能的访问。</p>
+<p>Snap 的限制级别控制其与用户系统的隔离程度。应用程序开发人员或打包人员可以调整限制级别，以广义地指定应用程序在正常使用或开发过程中需要多少对系统资源的访问权限。</p>
+<p>已发布 Snap 有两个级别的 Snap 限制：</p>
+<ul>
+<li><strong>Strict</strong>：被大多数 Snap 使用。Strict 限制的 Snap 在完全隔离的情况下运行，最高可达被认为始终安全的最低访问级别。因此，Strict 限制的 Snap 无法访问文件、网络、进程或任何其他系统资源，除非通过接口请求特定的访问权限（见下文）。</li>
+<li><strong>Classic</strong>：允许以与传统软件包几乎相同的方式访问系统资源。为了防止滥用，发布 Classic Snap 需要手动批准，安装需要<code>--Classic</code>命令行参数。</li>
+</ul>
+<p>在开发过程中，另一种模式很有用：</p>
+<ul>
+<li><strong>Devmode</strong>：为 Snap 创建者和开发人员提供的特殊模式。<code>devmode</code> Snap 作为严格受限的 Snap 运行，具有对系统资源的完全访问权限，并产生调试输出以识别未指定的接口。安装需要<code>--devmode</code>命令行参数。<code>Devmode</code> Snap 无法发布到 <code>stable</code> 频道，不会出现在搜索结果中，也不会自动更新。</li>
+</ul>
+<p>Strict 限制的 Snap 会使用Linux内核的安全功能，包括<code>AppArmor</code>、<code>seccomp</code>和命名空间，以防止应用程序和服务访问更广泛的系统。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>Snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评，参考 Snap 官方对性能的描述：<a href="https://snapcraft.io/docs/snap-performance">Snap performance</a>。</p>
+<h2 id="SquashFS-文件系统"><a href="#SquashFS-文件系统" class="headerlink" title="SquashFS 文件系统"></a>SquashFS 文件系统</h2><p><a href="https://www.kernel.org/doc/Documentation/filesystems/squashfs.txt">SquashFS</a> 是一个标准 Linux 文件系统，它将整个目录结构打包到单个压缩文件中。它经常被用于在 USB 设备上提供可引导的原生 Linux 环境，当然也可以用到打包 Snap。</p>
+<p>Snap 是一个 SquashFS 文件，其中包含 Snap 的库和二进制环境，以及描述其访问和功能的元数据。SquashFS 文件要么在首次安装 Snap 时由 <code>systemd</code>挂载，要么在已经安装 Snap 的系统（如Ubuntu Core）启动的早期阶段挂载。</p>
+<p>SquashFS 解压缩发生在 Snap 首次在系统上运行并且其性能受到密切监视时。特别是，解压缩性能可能因使用的压缩算法、SquashFS 存档的大小、它包含的文件数量、它是第一次被访问（冷缓存）还是再次被访问（热缓存）而有所不同。</p>
+<h2 id="安全-1"><a href="#安全-1" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
+<p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
+<p><strong>b. 安全启动</strong><br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png"></p>
+<p><strong>c. 全盘加密</strong></p>
+<p><strong>d. 基于内核安全机制的限制</strong></p>
+<h3 id="第三方安全分析"><a href="#第三方安全分析" class="headerlink" title="第三方安全分析"></a>第三方安全分析</h3><h2 id="实践：Ubuntu-Core镜像制作"><a href="#实践：Ubuntu-Core镜像制作" class="headerlink" title="实践：Ubuntu Core镜像制作"></a>实践：Ubuntu Core镜像制作</h2><h3 id="注册-Ubuntu-One-账号"><a href="#注册-Ubuntu-One-账号" class="headerlink" title="注册 Ubuntu One 账号"></a>注册 Ubuntu One 账号</h3><p>注册 Ubuntu One 账号，最重要的是使用 Ubuntu 的平台（<a href="https://snapcraft.io/snaps">snapcraft.io</a>）进行 Snap 包的在线生命周期管理，包括包的发布、更新、回退和卸载等。<br>如下图所示，可以看到当前账号所管理的 snaps：<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snapcraft.png"></p>
+<p>为了保证构建的 Ubuntu Core 镜像以及 snap包的合法性，还需要生成 snapcraft 证书，持有该证书的用户才能对 snap 包拥有限制的权限。创建证书时会要求输入 Ubuntu One 的账户和口令。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> snap install snapcraft --classic</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft export-login credentials.txt</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">export</span> SNAPCRAFT_STORE_CREDENTIALS=$(<span class="built_in">cat</span> credentials.txt)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取相关信息</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft <span class="built_in">whoami</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h3><p>制作定制 Ubuntu Core 镜像的核心是编写<em>模型断言（model assertion）</em>。一个 <em>assertion</em> 可以看作是一个被签名的 JSON 的文本，该文本描述了组成镜像的各个组件。模型包括的信息如下：</p>
+<ul>
+<li>身份 ID 信息。</li>
+<li>组成设备系统的基础 snaps (<em>essential snap</em>)。</li>
+<li>为了实现设备的功能强制要求或者可选的 snaps。</li>
+</ul>
+<p>为了快速创建模型，可以直接从 <a href="https://github.com/snapcore/models">snapcore</a> github 仓库下载对应设备的参考模型文件。以 <em>raspberry pi</em> 平台为例：<br><code>$ wget -O my-model.json https://raw.githubusercontent.com/snapcore/models/master/ubuntu-core-24-pi-arm64.json</code></p>
+<p>编辑 my-model.json, 修改<code>authority-id</code> 和 <code>brand-id</code> 为自己的开发者 ID（<em>developer ID</em>），该 ID 可以在命令中<code>snapcraft whoami</code> 获取到。这样做在逻辑上将该镜像与自己的 Ubuntu One 账号绑定，也就是只有开发者自己可以 push 镜像。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;authority-id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;XXXXXXXXXXXX&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;brand-id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;XXXXXXXXXXXX&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
+<p><code>snaps</code> 描述了构建系统需要的基础 snaps（<code>kernel</code>，<code>core</code>等） 和 应用 snaps（<code>console-conf</code>），参考架构图。</p>
+<h3 id="对模型进行签名"><a href="#对模型进行签名" class="headerlink" title="对模型进行签名"></a>对模型进行签名</h3><p>首先确认是否已经有密钥对关联到开发者的账号：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft list-keys</span></span><br><span class="line">No keys have been registered. See &#x27;snapcraft register-key --help&#x27; to register a key.</span><br></pre></td></tr></table></figure>
+
+<p>如果没有的话，新建一个：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft create-key my-model-key</span></span><br></pre></td></tr></table></figure>
+
+<p>然后注册 key:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft register-key my-model-key</span></span><br><span class="line">...</span><br><span class="line">Registering key ...</span><br><span class="line">Done. The key &quot;my-model-key&quot; (&lt;key fingerprint&gt;) may be used to sign your assertions.</span><br></pre></td></tr></table></figure>
+
+<p>重新查看 key 状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snapcraft list-keys</span></span><br><span class="line">The following keys are available on this system:</span><br><span class="line">    Name          SHA3-384 fingerprint</span><br><span class="line">*   my-model-key  gX8JXpNUvUsAfS4IwNoxQVLeHzHqoI_ktGKdX-WRw9VlCEcTI6HNfgWdbdjvRFKm</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后对 JSON 文件进行签名生成 <em>模型断言</em>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snap sign -k my-model-key my-model.json &gt; my-model.model</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h3><p>安装 <code>ubuntu-image</code> 工具:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snap install ubuntu-image --classic</span></span><br></pre></td></tr></table></figure>
+
+<p>然后使用 <code>ubuntu-image</code> 构建镜像，并使用上一节生成的<em>模型断言</em>作为参数：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ubuntu-image snap my-model.model</span></span><br><span class="line">......</span><br><span class="line">[1] load_gadget_yaml</span><br><span class="line">[2] set_artifact_names</span><br><span class="line">[3] populate_rootfs_contents</span><br><span class="line">[4] generate_disk_info</span><br><span class="line">[5] calculate_rootfs_size</span><br><span class="line">[6] populate_bootfs_contents</span><br><span class="line">[7] populate_prepare_partitions</span><br><span class="line">[8] make_disk</span><br><span class="line">[9] generate_snap_manifest</span><br><span class="line">Build successful</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="引导镜像"><a href="#引导镜像" class="headerlink" title="引导镜像"></a>引导镜像</h3><blockquote>
+<p>参考 <a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a></p>
+</blockquote>
+<p>通过<code>qemu</code> 创建 Ubuntu Core 虚拟机，并进入系统：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 \</span></span><br><span class="line"><span class="language-bash"> -enable-kvm \</span></span><br><span class="line"><span class="language-bash"> -smp 1 \</span></span><br><span class="line"><span class="language-bash"> -m 2048 \</span></span><br><span class="line"><span class="language-bash"> -machine q35 \</span></span><br><span class="line"><span class="language-bash"> -cpu host \</span></span><br><span class="line"><span class="language-bash"> -global ICH9-LPC.disable_s3=1 \</span></span><br><span class="line"><span class="language-bash"> -net nic,model=virtio \</span></span><br><span class="line"><span class="language-bash"> -net user,hostfwd=tcp::8022-:22 \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_CODE_4M.secboot.fd,<span class="keyword">if</span>=pflash,format=raw,unit=0,<span class="built_in">readonly</span>=on \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_VARS_4M.ms.fd,<span class="keyword">if</span>=pflash,format=raw,unit=1 \</span></span><br><span class="line"><span class="language-bash"> -drive <span class="string">&quot;file=pc.img&quot;</span>,<span class="keyword">if</span>=none,format=raw,<span class="built_in">id</span>=disk1 \</span></span><br><span class="line"><span class="language-bash"> -device virtio-blk-pci,drive=disk1,bootindex=1 \</span></span><br><span class="line"><span class="language-bash"> -serial mon:stdio</span></span><br></pre></td></tr></table></figure>
+
+<p>引导过程中会弹出窗口，用户可以在窗口内进行相关配置。</p>
+<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>使用 SSH 登陆 Ubuntu Core，但 OpenSSH Server 服务器端不要求一个口令(Password)，而是被配置成需要使用 SSH 公钥进行认证，该 SSH 公钥和 Ubuntu One 账户是绑定关系。</p>
+<p>配置 SSH key 可以参考<a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a>。</p>
+<p>使用下面的命令登陆：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -i &lt;path-to-private-key&gt; &lt;sso-username&gt;@localhost -p 8022</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <em>sso-username</em> 和 Ubutnu One 账户关联。</p>
+]]></content>
+      <categories>
+        <category>嵌入式系统和 IOT</category>
       </categories>
   </entry>
   <entry>
