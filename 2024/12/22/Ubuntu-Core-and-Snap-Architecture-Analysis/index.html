@@ -27,10 +27,11 @@
 <meta property="og:description" content="概述Ubuntu Core 是一个以应用为中心的嵌入式操作系统，所有组件均以 snap容器化封装，空间占用小、安全加固并可以组合的系统镜像，另外所有 App 支持原子化的 OTA 更新（即如果更新失败可以自动回滚）。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png">
 <meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png">
 <meta property="og:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snapcraft.png">
 <meta property="article:published_time" content="2024-12-22T14:41:17.000Z">
-<meta property="article:modified_time" content="2024-12-24T09:16:12.175Z">
+<meta property="article:modified_time" content="2024-12-24T11:58:45.621Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://orchidrock.github.io/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/ubuntu_core.png">
@@ -143,7 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snap"><span class="nav-number">3.</span> <span class="nav-text">Snap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7"><span class="nav-number">4.1.</span> <span class="nav-text">安全特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">第三方安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9AUbuntu-Core%E9%95%9C%E5%83%8F%E5%88%B6%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">实践：Ubuntu Core镜像制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-Ubuntu-One-%E8%B4%A6%E5%8F%B7"><span class="nav-number">5.1.</span> <span class="nav-text">注册 Ubuntu One 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.</span> <span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="nav-number">5.3.</span> <span class="nav-text">对模型进行签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.4.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AF%BC%E9%95%9C%E5%83%8F"><span class="nav-number">5.5.</span> <span class="nav-text">引导镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE"><span class="nav-number">5.6.</span> <span class="nav-text">访问</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snap"><span class="nav-number">3.</span> <span class="nav-text">Snap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%EF%BC%88interface%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">接口（interface）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%97%E9%99%90-Confinement"><span class="nav-number">3.3.</span> <span class="nav-text">受限 (Confinement)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7"><span class="nav-number">4.1.</span> <span class="nav-text">安全特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">第三方安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9AUbuntu-Core%E9%95%9C%E5%83%8F%E5%88%B6%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">实践：Ubuntu Core镜像制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-Ubuntu-One-%E8%B4%A6%E5%8F%B7"><span class="nav-number">5.1.</span> <span class="nav-text">注册 Ubuntu One 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.</span> <span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D"><span class="nav-number">5.3.</span> <span class="nav-text">对模型进行签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.4.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AF%BC%E9%95%9C%E5%83%8F"><span class="nav-number">5.5.</span> <span class="nav-text">引导镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE"><span class="nav-number">5.6.</span> <span class="nav-text">访问</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -250,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-12-24 17:16:12" itemprop="dateModified" datetime="2024-12-24T17:16:12+08:00">2024-12-24</time>
+      <time title="修改时间：2024-12-24 19:58:45" itemprop="dateModified" datetime="2024-12-24T19:58:45+08:00">2024-12-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,14 +270,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.5k</span>
+      <span>4.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -303,7 +304,17 @@
 <li>Application snaps:</li>
 <li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
 </ul>
-<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
+<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><p><a target="_blank" rel="noopener" href="https://snapcraft.io/docs">Snap</a> 是 Linux 系统软件包格式（其他格式有 debian、rpm等），可以被用于桌面、云和 IoT 多种场景。Snap 是自包含的（比如依赖的共享库等）、易安装、安全、跨平台和免依赖的。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在使用 <code>snap</code> 命令之前需要安装并启动<code>snapd</code>，Ubuntu 系统默认已经安装。</p>
+<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>通道（Shannels）</strong>，用户可以选择从不同的通道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
+<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）的访问进行控制。Snap 可以请求某个接口，也可以依赖某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 snap 提供的<em>接口</em>来访问相应的资源。</p>
+<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
+<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看 snap 的接口，以及哪些接口的 Plug 和 Slot 已经连接。</p>
+<p>连接可以在安装 snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;component&gt;</code> 手动建立，由 snap 的具体功能决定。</p>
+<p>Snap 的设计理念和初衷是什么呢？</p>
+<h3 id="受限-Confinement"><a href="#受限-Confinement" class="headerlink" title="受限 (Confinement)"></a>受限 (Confinement)</h3><p>每一个 Snap 都有一个受限模式(Confinement)。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评。</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
 <p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
 <p><strong>b. 安全启动</strong><br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png"></p>
 <p><strong>c. 全盘加密</strong></p>
@@ -356,7 +367,7 @@
 <p>使用下面的命令登陆：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -i &lt;path-to-private-key&gt; &lt;sso-username&gt;@localhost -p 8022</span></span><br></pre></td></tr></table></figure>
 
-<p>其中 <em><sso-username></em> 和 Ubutnu One 账户关联。</p>
+<p>其中 <em>sso-username</em> 和 Ubutnu One 账户关联。</p>
 
     </div>
 
@@ -418,13 +429,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">271k</span>
+    <span title="站点总字数">272k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:32</span>
+    <span title="站点阅读时长">7:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动

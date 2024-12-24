@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -220,6 +195,31 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -530,6 +530,31 @@
       </categories>
   </entry>
   <entry>
+    <title>Diffie-Hellman 算法分析及其改进</title>
+    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
+<span id="more"></span>
+
+<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
+<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
+<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
+<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
+<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
+<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
+<ul>
+<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
+<li>允许双方协商一个全局参数集合。</li>
+<li>利用现时确保抵抗重放攻击。</li>
+<li>能够交换 Diffie-Hellman 公开密钥。</li>
+<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>DroidCam 工具使用</title>
     <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
@@ -563,31 +588,6 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Diffie-Hellman 算法分析及其改进</title>
-    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
-<span id="more"></span>
-
-<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
-<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
-<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
-<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
-<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
-<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
-<ul>
-<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
-<li>允许双方协商一个全局参数集合。</li>
-<li>利用现时确保抵抗重放攻击。</li>
-<li>能够交换 Diffie-Hellman 公开密钥。</li>
-<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -660,6 +660,45 @@
       </categories>
   </entry>
   <entry>
+    <title>Flask网络框架介绍</title>
+    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
+<span id="more"></span>
+
+
+<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
+<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
+<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
+<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
+<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
+<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
+<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
+<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
+<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
+<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
+<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
+<ol>
+<li>将客户端与服务端分开</li>
+<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
+<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
+<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
+<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
+<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
+</ol>
+<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
+<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>FreeRTOS+TCP介绍</title>
     <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
@@ -726,45 +765,6 @@
 <h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Flask网络框架介绍</title>
-    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
-<span id="more"></span>
-
-
-<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
-<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
-<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
-<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
-<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
-<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
-<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
-<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
-<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
-<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
-<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
-<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
-<ol>
-<li>将客户端与服务端分开</li>
-<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
-<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
-<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
-<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
-<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
-</ol>
-<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
-<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -1111,6 +1111,29 @@
       </categories>
   </entry>
   <entry>
+    <title>LFS 1: 构建 BLFS 系统</title>
+    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
+<span id="more"></span>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
+<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
+<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
+<p><code>acpid</code> : 监控 acpi event。</p>
+<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
+<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
+<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
+<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
+<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
+<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
+<p><code>UPower</code> : 为访问电源设备提高接口。</p>
+<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LFS 0: LFS 项目介绍</title>
     <url>/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<a href="https://www.linuxfromscratch.org/">LFS（Linux From Scratch）</a>项目由Gerard Beekmans于1999年发起，它的目的是指导用户一步步从源代码构建整个Linux系统的所有组件，直到得到一个完全属于自己的 Working Linux 系统。LFS 项目充分体现了一种自己动手探索和学习的精神，也体现了 Linux 及相关开源社区的精神。</p>
@@ -1205,29 +1228,6 @@
 <p>为什么出现””Assumed value of MB_LEN_MAX wrong”错误? Answer: 修改tools&#x2F;gcc&#x2F;x86_64-lfs-linux-gnu&#x2F;10.2.0&#x2F;include-fixed&#x2F;limits.h 中的MB_LEN_MAX</p>
 <p>Patch包中PATH_MAX变量<br>无法进入chroot的问题,bash无法找到libncursesw.so.6? Answer: 将libncursesw.so.6复制到lib64。对于libopcodes.so、libbfd.so、libctf.so也是同样的解决方法。</p>
 <p>编辑&#x2F;etc&#x2F;ld.so.conf</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LFS 1: 构建 BLFS 系统</title>
-    <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
-<span id="more"></span>
-<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h3 id="文件系统和磁盘管理"><a href="#文件系统和磁盘管理" class="headerlink" title="文件系统和磁盘管理"></a>文件系统和磁盘管理</h3><h4 id="FUSE"><a href="#FUSE" class="headerlink" title="FUSE"></a>FUSE</h4><p>FUSE 称为用户空间文件系统(Filesystem in Userspace)，它可以允许用户在用户空间定制实现自己的文件系统或者挂载其他网络文件系统。例如它可以用来支持挂载使用MTP模式的android 文件系统(需要libmtp库的包装器,如mtpfs或者gvfsd-fuse)。要注意区分 MTP 模式和 USB 存储模式。</p>
-<h3 id="通用库"><a href="#通用库" class="headerlink" title="通用库"></a>通用库</h3><p>ICU <code>./configure</code>需要设置<code>--with-data-packaging=files</code>，否则中途编译会失败。</p>
-<h3 id="通用工具-系统工具"><a href="#通用工具-系统工具" class="headerlink" title="通用工具&#x2F;系统工具"></a>通用工具&#x2F;系统工具</h3><p><code>telepathy</code>框架，<code>empathy</code>： 即时聊天软件</p>
-<p><code>acpid</code> : 监控 acpi event。</p>
-<p><code>Autofs</code>: AutoFs 服务程序与 <code>mount</code> 命令不同之处在于它是一种守护进程，只有检测到用户试图访问一个尚未挂载的文件系统时才自动的检测并挂载该文件系统。</p>
-<p><code>Bubblewrap</code>： 轻量级沙盒应用。</p>
-<p><code>lm_sensors</code>： 监控硬件温度,电压,扇出等。</p>
-<p><code>Logrotate</code>： 自动轮换(并压缩)日志文件。</p>
-<p><code>Midnight Commander</code>： 可视化文件管理器。</p>
-<p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
-<p><code>UPower</code> : 为访问电源设备提高接口。</p>
-<h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2186,8 +2186,8 @@
 <h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
 ]]></content>
       <categories>
-        <category>信息安全</category>
         <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -2889,7 +2889,17 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <li>Application snaps:</li>
 <li>Snapd: 系统监护服务，该服务公开了便于进行设备管理的 REST API。</li>
 </ul>
-<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
+<h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><p><a href="https://snapcraft.io/docs">Snap</a> 是 Linux 系统软件包格式（其他格式有 debian、rpm等），可以被用于桌面、云和 IoT 多种场景。Snap 是自包含的（比如依赖的共享库等）、易安装、安全、跨平台和免依赖的。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在使用 <code>snap</code> 命令之前需要安装并启动<code>snapd</code>，Ubuntu 系统默认已经安装。</p>
+<p><code>snap</code> 命令可以用来做一些通用的软件包管理操作，具体用法参考 <code>man snap</code>。其中每个 Snap 都有若干个和发布相关的<strong>通道（Shannels）</strong>，用户可以选择从不同的通道安装（不同版本或者相同版本）snap，比如<code>latest/beta</code>，用于测试或者漏洞分析等。</p>
+<h3 id="接口（interface）"><a href="#接口（interface）" class="headerlink" title="接口（interface）"></a>接口（interface）</h3><p>接口（<em>interface</em>）用于对 Snap 进行隔离限制，包括 Snap 应该做什么，不应该做什么，更重要的是对外部资源（如网络、文件系统、声卡等）的访问进行控制。Snap 可以请求某个接口，也可以依赖某个接口，因此接口实际上也描述了系统中 Snap 之间的依赖关系和数据交互方式。<br>从另一方面说，Snap <strong>只能</strong>通过系统或者其他 snap 提供的<em>接口</em>来访问相应的资源。</p>
+<p>每个接口定义了插口(plug)和插槽(Slot) 的连接关系，每一个 Slot 可以多个 plug，Slot 可以看作资源的提供者，对应地，Plug 则可以被将看作资源的消费者。<br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/snap_interface.png"></p>
+<p>使用命令 <code>snap connections &lt;snap-name&gt;</code> 可以查看 snap 的接口，以及哪些接口的 Plug 和 Slot 已经连接。</p>
+<p>连接可以在安装 snap 时自动建立，也可以使用命令 <code>snap connect &lt;snap&gt;:&lt;component&gt;</code> 手动建立，由 snap 的具体功能决定。</p>
+<p>Snap 的设计理念和初衷是什么呢？</p>
+<h3 id="受限-Confinement"><a href="#受限-Confinement" class="headerlink" title="受限 (Confinement)"></a>受限 (Confinement)</h3><p>每一个 Snap 都有一个受限模式(Confinement)。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>snap 的一部分问题源于中心化和不透明的 App Store，与开源精神不符而受到质疑和批评，（可以参考<a href="https://cloud.tencent.com/developer/article/2017496">为什么Ubuntu的Snap是不受欢迎的</a>）。另外其在性能上的问题也遭到批评。</p>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="安全特性"><a href="#安全特性" class="headerlink" title="安全特性"></a>安全特性</h3><p><strong>a. 容器化带来的安全性</strong></p>
 <p>Snaps 是不可修改的，默认遵循“最小化特权”原则，这使得构建防篡改设备非常容易。Snaps 之间的通信和交互和传统的应用非常不同，抽象地说，Snaps 构建了一个基于事务的系统。</p>
 <p><strong>b. 安全启动</strong><br><img src="/2024/12/22/Ubuntu-Core-and-Snap-Architecture-Analysis/secure_boot.png"></p>
 <p><strong>c. 全盘加密</strong></p>
@@ -2942,7 +2952,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>使用下面的命令登陆：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -i &lt;path-to-private-key&gt; &lt;sso-username&gt;@localhost -p 8022</span></span><br></pre></td></tr></table></figure>
 
-<p>其中 <em><sso-username></em> 和 Ubutnu One 账户关联。</p>
+<p>其中 <em>sso-username</em> 和 Ubutnu One 账户关联。</p>
 ]]></content>
       <categories>
         <category>嵌入式系统和 IOT</category>
