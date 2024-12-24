@@ -530,31 +530,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Diffie-Hellman 算法分析及其改进</title>
-    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
-<span id="more"></span>
-
-<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
-<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
-<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
-<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
-<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
-<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
-<ul>
-<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
-<li>允许双方协商一个全局参数集合。</li>
-<li>利用现时确保抵抗重放攻击。</li>
-<li>能够交换 Diffie-Hellman 公开密钥。</li>
-<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
     <title>DroidCam 工具使用</title>
     <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
@@ -588,6 +563,31 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Diffie-Hellman 算法分析及其改进</title>
+    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
+<span id="more"></span>
+
+<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
+<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
+<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
+<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
+<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
+<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
+<ul>
+<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
+<li>允许双方协商一个全局参数集合。</li>
+<li>利用现时确保抵抗重放攻击。</li>
+<li>能够交换 Diffie-Hellman 公开密钥。</li>
+<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -2928,7 +2928,21 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snap install ubuntu-image --classic</span></span><br></pre></td></tr></table></figure>
 
 <p>然后使用 <code>ubuntu-image</code> 构建镜像，并使用上一节生成的<em>模型断言</em>作为参数：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ubuntu-image snap my-model.model</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ubuntu-image snap my-model.model</span></span><br><span class="line">......</span><br><span class="line">[1] load_gadget_yaml</span><br><span class="line">[2] set_artifact_names</span><br><span class="line">[3] populate_rootfs_contents</span><br><span class="line">[4] generate_disk_info</span><br><span class="line">[5] calculate_rootfs_size</span><br><span class="line">[6] populate_bootfs_contents</span><br><span class="line">[7] populate_prepare_partitions</span><br><span class="line">[8] make_disk</span><br><span class="line">[9] generate_snap_manifest</span><br><span class="line">Build successful</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="引导镜像"><a href="#引导镜像" class="headerlink" title="引导镜像"></a>引导镜像</h3><blockquote>
+<p>参考 <a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a></p>
+</blockquote>
+<p>通过<code>qemu</code> 创建 Ubuntu Core 虚拟机，并进入系统：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 \</span></span><br><span class="line"><span class="language-bash"> -enable-kvm \</span></span><br><span class="line"><span class="language-bash"> -smp 1 \</span></span><br><span class="line"><span class="language-bash"> -m 2048 \</span></span><br><span class="line"><span class="language-bash"> -machine q35 \</span></span><br><span class="line"><span class="language-bash"> -cpu host \</span></span><br><span class="line"><span class="language-bash"> -global ICH9-LPC.disable_s3=1 \</span></span><br><span class="line"><span class="language-bash"> -net nic,model=virtio \</span></span><br><span class="line"><span class="language-bash"> -net user,hostfwd=tcp::8022-:22 \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_CODE_4M.secboot.fd,<span class="keyword">if</span>=pflash,format=raw,unit=0,<span class="built_in">readonly</span>=on \</span></span><br><span class="line"><span class="language-bash"> -drive file=OVMF_VARS_4M.ms.fd,<span class="keyword">if</span>=pflash,format=raw,unit=1 \</span></span><br><span class="line"><span class="language-bash"> -drive <span class="string">&quot;file=pc.img&quot;</span>,<span class="keyword">if</span>=none,format=raw,<span class="built_in">id</span>=disk1 \</span></span><br><span class="line"><span class="language-bash"> -device virtio-blk-pci,drive=disk1,bootindex=1 \</span></span><br><span class="line"><span class="language-bash"> -serial mon:stdio</span></span><br></pre></td></tr></table></figure>
+
+<p>引导过程中会弹出窗口，用户可以在窗口内进行相关配置。</p>
+<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>使用 SSH 登陆 Ubuntu Core，但 OpenSSH Server 服务器端不要求一个口令(Password)，而是被配置成需要使用 SSH 公钥进行认证，该 SSH 公钥和 Ubuntu One 账户是绑定关系。</p>
+<p>配置 SSH key 可以参考<a href="https://ubuntu.com/core/docs/testing-with-qemu">Test Ubuntu Core with QEMU</a>。</p>
+<p>使用下面的命令登陆：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh -i &lt;path-to-private-key&gt; &lt;sso-username&gt;@localhost -p 8022</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <em><sso-username></em> 和 Ubutnu One 账户关联。</p>
 ]]></content>
       <categories>
         <category>嵌入式系统和 IOT</category>
