@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -195,31 +220,6 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -1733,6 +1733,16 @@
       </categories>
   </entry>
   <entry>
+    <title>Linux Kernel Security Summary</title>
+    <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Linux Kernel  LKD3 阅读笔记</title>
     <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
@@ -1751,16 +1761,6 @@
 <p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
 <h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
 <h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux Kernel Security Summary</title>
-    <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2056,6 +2056,83 @@
       </categories>
   </entry>
   <entry>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenWRT for Raspberry Pi Model 3</title>
+    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
+<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
+<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
+<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
+<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
+<p>设置口令：<br><code>sudo passwd openwrt</code></p>
+<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
+<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
+<p>我们使用最新的 <code>22.03.3</code> 版本</p>
+<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
+<p>具体配置选项:</p>
+<ul>
+<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
+<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
+<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
+<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
+<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
+<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
+</ul>
+</li>
+<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
+<li><strong>Luci &gt; Application</strong>:<ul>
+<li>luci-app-dockerman 容器</li>
+<li>luci-app-frpc 内网穿透客户端</li>
+<li>luci-app-ddns 动态域名解析</li>
+<li>luci-app-mwan3  分流助手(多运营商网络)</li>
+<li>luci-app-samba4 SMB网络共享</li>
+<li>luci-app-ttyd 网页终端插件</li>
+<li>luci-app-wol 网络唤醒</li>
+</ul>
+</li>
+<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
+</ul>
+<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
+<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>开源硬件</category>
+      </categories>
+  </entry>
+  <entry>
     <title>OpenMP Tutorial</title>
     <url>/2023/03/02/OpenMP-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.openmp.org/">OpenMP</a> 可以认为是用于<code>共享内存型并行编程</code> 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。</p>
@@ -2160,83 +2237,6 @@
 <h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>]]></content>
       <categories>
         <category>高性能计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenWRT for Raspberry Pi Model 3</title>
-    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
-<span id="more"></span>
-
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
-<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
-<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
-<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
-<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
-<p>设置口令：<br><code>sudo passwd openwrt</code></p>
-<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
-<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
-<p>我们使用最新的 <code>22.03.3</code> 版本</p>
-<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
-<p>具体配置选项:</p>
-<ul>
-<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
-<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
-<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
-<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
-<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
-<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
-</ul>
-</li>
-<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
-<li><strong>Luci &gt; Application</strong>:<ul>
-<li>luci-app-dockerman 容器</li>
-<li>luci-app-frpc 内网穿透客户端</li>
-<li>luci-app-ddns 动态域名解析</li>
-<li>luci-app-mwan3  分流助手(多运营商网络)</li>
-<li>luci-app-samba4 SMB网络共享</li>
-<li>luci-app-ttyd 网页终端插件</li>
-<li>luci-app-wol 网络唤醒</li>
-</ul>
-</li>
-<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
-</ul>
-<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
-<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>开源硬件</category>
       </categories>
   </entry>
   <entry>
@@ -2738,6 +2738,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>Tmux快捷键参考手册</title>
+    <url>/2022/04/29/Tmux%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;tmux具有强大的终端复用功能，它可以实现编辑同步。tmux的命令模式、配置文件都与vim类似。tmux整体遵循CS设计，围绕window、session、pane等核心概念。详细手册参考man page或者项目github主页。</p>
+<span id="more"></span>
+
+<h3 id="命令及快捷键前缀"><a href="#命令及快捷键前缀" class="headerlink" title="命令及快捷键前缀"></a>命令及快捷键前缀</h3><p><code>Ctrl b</code> (可以在tmux.conf中更改为其他前缀)</p>
+<h4 id="创建新窗口"><a href="#创建新窗口" class="headerlink" title="创建新窗口"></a>创建新窗口</h4><p><code>:new-window (neww)</code><br><code>c</code> ：创建新窗口，窗口索引号会自动分配</p>
+<h4 id="关闭窗口"><a href="#关闭窗口" class="headerlink" title="关闭窗口"></a>关闭窗口</h4><p><code>:kill-window</code> ：关闭窗口，所有pane被关闭<br><code>&amp;</code>：关闭当前激活窗口</p>
+<h4 id="选择窗口"><a href="#选择窗口" class="headerlink" title="选择窗口"></a>选择窗口</h4><p><code>:select-window</code><br><code>[0-9]</code>：选择索引所代表的窗口<br><code>&#39;</code> ：根据索引选择当前窗口<br><code>n</code> ：选择下一个窗口<br><code>l</code> ：选择最后一个窗口<br><code>:choose-tree</code>：选择树结构<br><code>s或w</code>：然后使用上下左右进行选择，使用<code>t</code>可以进行标记，使用<code>x</code>可以直接关闭某个item。</p>
+<h4 id="分列窗口，创建pane"><a href="#分列窗口，创建pane" class="headerlink" title="分列窗口，创建pane"></a>分列窗口，创建pane</h4><p><code>:split-window (splitw)</code>：创建pane，分列窗口<br><code>% </code>: 水平分列<br><code>&quot;</code> : 垂直分列</p>
+<h4 id="关闭pane"><a href="#关闭pane" class="headerlink" title="关闭pane"></a>关闭pane</h4><p><code>:kill-pane</code>：关闭当前激活的pane<br><code>x</code></p>
+<h4 id="选择pane"><a href="#选择pane" class="headerlink" title="选择pane"></a>选择pane</h4><p><code>:select-pane</code><br><code>&lt;Up&gt; &lt;Down&gt; &lt;Right&gt; &lt;Left&gt;</code> ：按照上下左右的方向跳转<br><code>q</code> ：显示Pane数以其尺寸<br><code>&lt;Space&gt;</code>窗口布局切换<br><code>f</code>：寻找包含某个文本的pane或者window</p>
+<h4 id="重新规划pane大小"><a href="#重新规划pane大小" class="headerlink" title="重新规划pane大小"></a>重新规划pane大小</h4><p><code>Ctrl &lt;Left&gt;</code> 、<code>Ctrl &lt;Right&gt;</code>、<code>Ctrl &lt;Up&gt;</code> 、<code>Ctrl &lt;Down&gt;</code></p>
+<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p><code>:new-session</code>创建新的会话<br><code>:attach-session (attach)</code> ：连接一个已经存在的会话或者新建一个会话<br><code>:attach -t &lt;seesion-id&gt;</code><br><code>:detach-client</code>或<code>d</code>：从当前会话退出</p>
+<h4 id="设置鼠标"><a href="#设置鼠标" class="headerlink" title="设置鼠标"></a>设置鼠标</h4><p><code>:set -g mouse on</code><br><code>:set -g mouse off</code></p>
+<h4 id="文本模式"><a href="#文本模式" class="headerlink" title="文本模式"></a>文本模式</h4><p><code>Ctrl+b+[</code> : 进入文本复制模式，然后按下 <code>Space</code> 空格键选择起始位置，<code>Enter</code> 键完成，<code>Ctrl+b+]</code> 粘贴。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -2842,28 +2864,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
 <p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Tmux快捷键参考手册</title>
-    <url>/2022/04/29/Tmux%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;tmux具有强大的终端复用功能，它可以实现编辑同步。tmux的命令模式、配置文件都与vim类似。tmux整体遵循CS设计，围绕window、session、pane等核心概念。详细手册参考man page或者项目github主页。</p>
-<span id="more"></span>
-
-<h3 id="命令及快捷键前缀"><a href="#命令及快捷键前缀" class="headerlink" title="命令及快捷键前缀"></a>命令及快捷键前缀</h3><p><code>Ctrl b</code> (可以在tmux.conf中更改为其他前缀)</p>
-<h4 id="创建新窗口"><a href="#创建新窗口" class="headerlink" title="创建新窗口"></a>创建新窗口</h4><p><code>:new-window (neww)</code><br><code>c</code> ：创建新窗口，窗口索引号会自动分配</p>
-<h4 id="关闭窗口"><a href="#关闭窗口" class="headerlink" title="关闭窗口"></a>关闭窗口</h4><p><code>:kill-window</code> ：关闭窗口，所有pane被关闭<br><code>&amp;</code>：关闭当前激活窗口</p>
-<h4 id="选择窗口"><a href="#选择窗口" class="headerlink" title="选择窗口"></a>选择窗口</h4><p><code>:select-window</code><br><code>[0-9]</code>：选择索引所代表的窗口<br><code>&#39;</code> ：根据索引选择当前窗口<br><code>n</code> ：选择下一个窗口<br><code>l</code> ：选择最后一个窗口<br><code>:choose-tree</code>：选择树结构<br><code>s或w</code>：然后使用上下左右进行选择，使用<code>t</code>可以进行标记，使用<code>x</code>可以直接关闭某个item。</p>
-<h4 id="分列窗口，创建pane"><a href="#分列窗口，创建pane" class="headerlink" title="分列窗口，创建pane"></a>分列窗口，创建pane</h4><p><code>:split-window (splitw)</code>：创建pane，分列窗口<br><code>% </code>: 水平分列<br><code>&quot;</code> : 垂直分列</p>
-<h4 id="关闭pane"><a href="#关闭pane" class="headerlink" title="关闭pane"></a>关闭pane</h4><p><code>:kill-pane</code>：关闭当前激活的pane<br><code>x</code></p>
-<h4 id="选择pane"><a href="#选择pane" class="headerlink" title="选择pane"></a>选择pane</h4><p><code>:select-pane</code><br><code>&lt;Up&gt; &lt;Down&gt; &lt;Right&gt; &lt;Left&gt;</code> ：按照上下左右的方向跳转<br><code>q</code> ：显示Pane数以其尺寸<br><code>&lt;Space&gt;</code>窗口布局切换<br><code>f</code>：寻找包含某个文本的pane或者window</p>
-<h4 id="重新规划pane大小"><a href="#重新规划pane大小" class="headerlink" title="重新规划pane大小"></a>重新规划pane大小</h4><p><code>Ctrl &lt;Left&gt;</code> 、<code>Ctrl &lt;Right&gt;</code>、<code>Ctrl &lt;Up&gt;</code> 、<code>Ctrl &lt;Down&gt;</code></p>
-<h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p><code>:new-session</code>创建新的会话<br><code>:attach-session (attach)</code> ：连接一个已经存在的会话或者新建一个会话<br><code>:attach -t &lt;seesion-id&gt;</code><br><code>:detach-client</code>或<code>d</code>：从当前会话退出</p>
-<h4 id="设置鼠标"><a href="#设置鼠标" class="headerlink" title="设置鼠标"></a>设置鼠标</h4><p><code>:set -g mouse on</code><br><code>:set -g mouse off</code></p>
-<h4 id="文本模式"><a href="#文本模式" class="headerlink" title="文本模式"></a>文本模式</h4><p><code>Ctrl+b+[</code> : 进入文本复制模式，然后按下 <code>Space</code> 空格键选择起始位置，<code>Enter</code> 键完成，<code>Ctrl+b+]</code> 粘贴。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -3001,29 +3001,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>《麦田里的守望者》读书笔记</title>
-    <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
-<p>&emsp;&emsp;一个不成熟男子的标志是他愿意为某种事业英勇地死去，一个成熟男子的标志是他愿意为某种事业卑贱地活着。</p>
-<span id="more"></span>
-
-
-<p>&emsp;&emsp;我想象你这样骑马瞎跑。将来要是摔下来，可不是玩儿的——那是很特殊、很可怕的一跤。摔下来的人，都感觉不到也听不见自己着地。只是一个劲儿往下摔。这整个安排是为哪种人作出的呢？只是为某一类人，他们在一生中这一时期或那一时期，想要寻找某种他们自己的环境无法提供的东西。或者寻找只是他们认为自己的环境无法提供的东西。于是他们停止寻找。他们甚至在还未真正开始寻找之前就已停止寻找。</p>
-<p>&emsp;&emsp;你一旦经受了所有的文孙先生的考验，你就可以学到越来越多的知识——那是说，只要你想学，肯学，有耐心学——你就可以学到一些你最最心爱的知识。其中的一门知识就是，你将发现对人类的行为感到惶惑、恐惧、甚至恶心的，你并不是第一个。在这方面你倒是一点也不孤独，你知道后一定会觉得兴奋，一定会受到鼓励。历史上有许许多多人都象你现在这样，在道德上和精神上都有过访捏的时期。幸而，他们中间有几个将自己彷徨的经过记录下来了。你可以向他们学习——只要你愿意。正如你有朝一日如果有什么贡献，别人也可以向你学习。这真是个极妙的轮回安排。而且这不是教育。这是历史。这是诗。</p>
-<p>&emsp;&emsp;只有受过教育的和有学问的人才能够对这世界作出伟大的贡献。这样说当然不对。不过我的确要说，受过教育的和有学问的人如果有聪明才智和创造能力——不幸的是，这样的情况并不多——他们留给后世的记录比起那般光有聪明才智和创造能力的人来，确实要宝贵得多。他们表达自己的思想更清楚，他们通常还有热情把自己的思想贯彻到底。而且——最最重要的一点——他们十有九个要比那种没有学问的思想家谦恭得多。</p>
-<p>&emsp;&emsp;学校教育还能给你带来别的好处。你受这种教育到了一定程度，就会发现自己脑子的尺寸，以及什么对它合适，什么对它不合适。过了一个时期，你就会心里有数，知道象你这样尺寸的头脑应该具有什么类型的思想。主要是，这可以让你节省不少时间，免得你去瞎试一些对你不合适、不贴切的思想。你惺僵就会知道你自己的正确尺寸，恰如其分地把你的头脑武装起来。</p>
-<p>&emsp;&emsp;“不管怎样，我老是在想象，有那么一群小孩子在一大块麦田里做游戏。几千几万个小孩子，附近没有一个人——没有一个大人，我是说——除了我。我呢，就站在那混帐的悬崖边。我的职务是在那儿守望，要是有哪个孩子往悬崖边奔来，我就把他捉住——我是说孩子们都在狂奔，也不知道自己是在往哪儿跑，我得从什么地方出来，把他们捉住。我整天就干这样的事。我只想当个麦田里的守望者。我知道这有点异想天开，可我真正喜欢干的就是这个。我知道这不象话。”</p>
-<p>&emsp;&emsp;最后，我打定主意，决计远走高飞。我决意不再回家，也不再到另一个混帐学校里去念书了。我决定再见老菲芘一面，向她告别，把她过圣诞节的钱还她，随后我一路搭人家的车到西部去。我想先到荷兰隧道不花钱搭一辆车，然后再搭一辆，然后再一辆、再一辆，这样不多几天我就可以到达西部，那儿阳光明媚，景色美丽；那儿没有人认识我，我可以随便找个工作做。我揣摩自己可以在一个加油站里找个工作，给人家的汽车加油什么的。不过我并不在乎找到的是什么样的工作，反正只要人家不认识我、我也不认识人家就成。我又想起了一个主意，打算到了那儿，就装作一个又袭又哑的人。这样我就可以不必跟任何人讲任何混帐废话了。要是有人想跟我说什么，他们就得写在纸上递给我。用这种方法交谈，过不多久他们就会腻烦得要命，这样我的下半辈子就再也用不着跟人谈话了。人人都会认为我是个可怜的又聋又哑的杂种，谁都不会来打扰我。他们会让我把汽油灌进他们的混帐汽车，他们会给我一份工资，我用自己挣来的钱造一座小屋，终身住在里面。我准备把小屋造在树林旁边，而不是造在树林里面，因为我喜欢屋里一天到晚都有充足的阳光。一日三餐我可以自己做了吃，以后我如果想结婚什么的，可以找一个同我一样又聋又哑的美丽姑娘。我们结婚以后，她就搬来跟我一起佐在我的小屋里，她如果想跟我说什么话，也得写在一张混帐纸上，象别人一样。</p>
-<p>&emsp;&emsp;我们如果生了孩子，就把他们送到什么地方藏起来。我们可以给他们买许许多多书，亲自教他们读书写字。</p>
-<p>&emsp;&emsp;我要定出这么个规则，凡是来看我的人，都不准在我家里做任何假模假式的事。谁要是想在我家里作假，就马上请他上路。</p>
-<p>&emsp;&emsp;嘿，雨开始下大了。是倾盆大雨，我可以对天发誓。所有做父母的、做母亲的和其他人等，全都奔过去躲到转台的屋檐下，免得被雨淋湿，可我依旧在长椅上坐了好一会儿。我身上都湿透了，尤其是我的脖子上和裤子上。我那顶猎人帽在某些部分的确给我挡住了不少雨，可我依旧淋得象只落汤鸡。不过我并不在乎。突然间我变得他妈的那么快乐，眼看着老菲芘那么一圈圈转个不停。我险些儿他妈的大叫大嚷起来，我心里实在快乐极了，我老实告诉你说。我不知道什么缘故。她穿着那么件蓝大衣，老那么转个不停，看去真他妈的好看极了。</p>
-<p>&emsp;&emsp;老天爷，我真希望你当时也在场——</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>《黑客与画家》读书笔记</title>
     <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
@@ -3046,8 +3023,31 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
 ]]></content>
       <categories>
-        <category>读书笔记</category>
         <category>软件工程</category>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>《麦田里的守望者》读书笔记</title>
+    <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
+<p>&emsp;&emsp;一个不成熟男子的标志是他愿意为某种事业英勇地死去，一个成熟男子的标志是他愿意为某种事业卑贱地活着。</p>
+<span id="more"></span>
+
+
+<p>&emsp;&emsp;我想象你这样骑马瞎跑。将来要是摔下来，可不是玩儿的——那是很特殊、很可怕的一跤。摔下来的人，都感觉不到也听不见自己着地。只是一个劲儿往下摔。这整个安排是为哪种人作出的呢？只是为某一类人，他们在一生中这一时期或那一时期，想要寻找某种他们自己的环境无法提供的东西。或者寻找只是他们认为自己的环境无法提供的东西。于是他们停止寻找。他们甚至在还未真正开始寻找之前就已停止寻找。</p>
+<p>&emsp;&emsp;你一旦经受了所有的文孙先生的考验，你就可以学到越来越多的知识——那是说，只要你想学，肯学，有耐心学——你就可以学到一些你最最心爱的知识。其中的一门知识就是，你将发现对人类的行为感到惶惑、恐惧、甚至恶心的，你并不是第一个。在这方面你倒是一点也不孤独，你知道后一定会觉得兴奋，一定会受到鼓励。历史上有许许多多人都象你现在这样，在道德上和精神上都有过访捏的时期。幸而，他们中间有几个将自己彷徨的经过记录下来了。你可以向他们学习——只要你愿意。正如你有朝一日如果有什么贡献，别人也可以向你学习。这真是个极妙的轮回安排。而且这不是教育。这是历史。这是诗。</p>
+<p>&emsp;&emsp;只有受过教育的和有学问的人才能够对这世界作出伟大的贡献。这样说当然不对。不过我的确要说，受过教育的和有学问的人如果有聪明才智和创造能力——不幸的是，这样的情况并不多——他们留给后世的记录比起那般光有聪明才智和创造能力的人来，确实要宝贵得多。他们表达自己的思想更清楚，他们通常还有热情把自己的思想贯彻到底。而且——最最重要的一点——他们十有九个要比那种没有学问的思想家谦恭得多。</p>
+<p>&emsp;&emsp;学校教育还能给你带来别的好处。你受这种教育到了一定程度，就会发现自己脑子的尺寸，以及什么对它合适，什么对它不合适。过了一个时期，你就会心里有数，知道象你这样尺寸的头脑应该具有什么类型的思想。主要是，这可以让你节省不少时间，免得你去瞎试一些对你不合适、不贴切的思想。你惺僵就会知道你自己的正确尺寸，恰如其分地把你的头脑武装起来。</p>
+<p>&emsp;&emsp;“不管怎样，我老是在想象，有那么一群小孩子在一大块麦田里做游戏。几千几万个小孩子，附近没有一个人——没有一个大人，我是说——除了我。我呢，就站在那混帐的悬崖边。我的职务是在那儿守望，要是有哪个孩子往悬崖边奔来，我就把他捉住——我是说孩子们都在狂奔，也不知道自己是在往哪儿跑，我得从什么地方出来，把他们捉住。我整天就干这样的事。我只想当个麦田里的守望者。我知道这有点异想天开，可我真正喜欢干的就是这个。我知道这不象话。”</p>
+<p>&emsp;&emsp;最后，我打定主意，决计远走高飞。我决意不再回家，也不再到另一个混帐学校里去念书了。我决定再见老菲芘一面，向她告别，把她过圣诞节的钱还她，随后我一路搭人家的车到西部去。我想先到荷兰隧道不花钱搭一辆车，然后再搭一辆，然后再一辆、再一辆，这样不多几天我就可以到达西部，那儿阳光明媚，景色美丽；那儿没有人认识我，我可以随便找个工作做。我揣摩自己可以在一个加油站里找个工作，给人家的汽车加油什么的。不过我并不在乎找到的是什么样的工作，反正只要人家不认识我、我也不认识人家就成。我又想起了一个主意，打算到了那儿，就装作一个又袭又哑的人。这样我就可以不必跟任何人讲任何混帐废话了。要是有人想跟我说什么，他们就得写在纸上递给我。用这种方法交谈，过不多久他们就会腻烦得要命，这样我的下半辈子就再也用不着跟人谈话了。人人都会认为我是个可怜的又聋又哑的杂种，谁都不会来打扰我。他们会让我把汽油灌进他们的混帐汽车，他们会给我一份工资，我用自己挣来的钱造一座小屋，终身住在里面。我准备把小屋造在树林旁边，而不是造在树林里面，因为我喜欢屋里一天到晚都有充足的阳光。一日三餐我可以自己做了吃，以后我如果想结婚什么的，可以找一个同我一样又聋又哑的美丽姑娘。我们结婚以后，她就搬来跟我一起佐在我的小屋里，她如果想跟我说什么话，也得写在一张混帐纸上，象别人一样。</p>
+<p>&emsp;&emsp;我们如果生了孩子，就把他们送到什么地方藏起来。我们可以给他们买许许多多书，亲自教他们读书写字。</p>
+<p>&emsp;&emsp;我要定出这么个规则，凡是来看我的人，都不准在我家里做任何假模假式的事。谁要是想在我家里作假，就马上请他上路。</p>
+<p>&emsp;&emsp;嘿，雨开始下大了。是倾盆大雨，我可以对天发誓。所有做父母的、做母亲的和其他人等，全都奔过去躲到转台的屋檐下，免得被雨淋湿，可我依旧在长椅上坐了好一会儿。我身上都湿透了，尤其是我的脖子上和裤子上。我那顶猎人帽在某些部分的确给我挡住了不少雨，可我依旧淋得象只落汤鸡。不过我并不在乎。突然间我变得他妈的那么快乐，眼看着老菲芘那么一圈圈转个不停。我险些儿他妈的大叫大嚷起来，我心里实在快乐极了，我老实告诉你说。我不知道什么缘故。她穿着那么件蓝大衣，老那么转个不停，看去真他妈的好看极了。</p>
+<p>&emsp;&emsp;老天爷，我真希望你当时也在场——</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
