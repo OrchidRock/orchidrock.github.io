@@ -26,6 +26,28 @@
       </categories>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -417,28 +439,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CUDA Tutorial</title>
     <url>/2023/04/12/CUDA-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CUDA 是专门为提高并行程序效率而开发的计算架构。它提供了对编程人员友好的编程模型，并支持多种高级编程语言（如 C&#x2F;C++、Fortran、Python、Java）或者 <code>OpenACC</code>。</p>
@@ -530,31 +530,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Diffie-Hellman 算法分析及其改进</title>
-    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
-<span id="more"></span>
-
-<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
-<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
-<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
-<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
-<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
-<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
-<ul>
-<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
-<li>允许双方协商一个全局参数集合。</li>
-<li>利用现时确保抵抗重放攻击。</li>
-<li>能够交换 Diffie-Hellman 公开密钥。</li>
-<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
     <title>DroidCam 工具使用</title>
     <url>/2022/07/21/DroidCam-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.dev47apps.com/">DroidCam</a> 软件可以将手机或者 tablet 的摄像头作为 PC 的 <code>webcam</code>（网络摄像头）来使用。</p>
@@ -588,6 +563,31 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Diffie-Hellman 算法分析及其改进</title>
+    <url>/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Diffie-Hellman 算法（简称 <code>DH</code> 算法）是最早的密钥交换算法，用于通信双方在非安全的信道中安全地交换密钥，用于加密后续的通信消息。该算法及其衍生算法在安全领域中应用很多，包括 TLS、IPSec、IKE 及 Bluetooth 网络和通信协议等。</p>
+<span id="more"></span>
+
+<h3 id="匿名-DH-算法"><a href="#匿名-DH-算法" class="headerlink" title="匿名 DH 算法"></a>匿名 DH 算法</h3><p>使用基本的 Diffie-Hellman 算法（见上节），在向对方发送 Diffie-Hellman 公钥参数时不进行认证。因此该方法容易遭受中间人攻击。</p>
+<h3 id="瞬时-DH-算法"><a href="#瞬时-DH-算法" class="headerlink" title="瞬时 DH 算法"></a>瞬时 DH 算法</h3><p>用于创建临时密钥，在这种方法中，Diffie-Hellman 公钥在交换时使用发送者的 RSA 或 DSS 或 ECC 私钥签名。接收者使用相应的公钥验证签名。</p>
+<h3 id="基于-RSA-的密钥交换算法"><a href="#基于-RSA-的密钥交换算法" class="headerlink" title="基于 RSA 的密钥交换算法"></a>基于 RSA 的密钥交换算法</h3><p>RSA 密钥交换算法使用文字描述如下：<br>a. 客户端向服务器端发起“交换请求（或证书请求）”，服务器首先回复公钥到客户端。<br>b. 客户端使用随机数生成密钥 <code>S</code>，使用收到的公钥进行加密，生成 <code>C</code>，把 <code>C</code> 发送到服务器。<br>c. 服务器收到 <code>C</code>，使用公钥对应的私钥进行解密，得到 <code>S</code>。<br>d. 客户端和服务器端得到了共享密钥 <code>S</code> （预主密钥）</p>
+<p>图示如下：<br><img src="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/RSA_KeyExchange.png"></p>
+<p>SSL 协议中，服务器发送的公钥在 SSL 中是通过<code>certificate</code>报文发送的，<code>certificate</code>中的包含了公钥。<code>C</code> 是通过<code>Client key exchange</code>报文发送的。</p>
+<h3 id="Oakley-算法"><a href="#Oakley-算法" class="headerlink" title="Oakley 算法"></a>Oakley 算法</h3><p>Oakley 算法是 IETF 对 DH 算法的改进，其特性包括：</p>
+<ul>
+<li>采用称为 <code>cookie</code> 程序的机制以对抗阻塞攻击。</li>
+<li>允许双方协商一个全局参数集合。</li>
+<li>利用现时确保抵抗重放攻击。</li>
+<li>能够交换 Diffie-Hellman 公开密钥。</li>
+<li>对 Diffie-Hellman 交换进行鉴别以防止中间人攻击。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -660,45 +660,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Flask网络框架介绍</title>
-    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
-<span id="more"></span>
-
-
-<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
-<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
-<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
-<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
-<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
-<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
-<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
-<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
-<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
-<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
-<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
-<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
-<ol>
-<li>将客户端与服务端分开</li>
-<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
-<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
-<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
-<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
-<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
-</ol>
-<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
-<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>FreeRTOS+TCP介绍</title>
     <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
@@ -765,6 +726,45 @@
 <h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Flask网络框架介绍</title>
+    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
+<span id="more"></span>
+
+
+<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
+<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
+<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
+<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
+<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
+<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
+<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
+<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
+<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
+<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
+<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
+<ol>
+<li>将客户端与服务端分开</li>
+<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
+<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
+<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
+<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
+<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
+</ol>
+<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
+<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -913,6 +913,15 @@
       </categories>
   </entry>
   <entry>
+    <title>Gaussian Elimination Method For Flip Game</title>
+    <url>/2024/12/26/Gaussian-Elimination-Method-For-Flip-Game/</url>
+    <content><![CDATA[<span id="more"></span>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>GNU编译调试工具链手册</title>
     <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
@@ -966,6 +975,23 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Go Language Tutorial</title>
+    <url>/2024/12/15/Go-Language-Tutorial/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
+<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
+<ul>
+<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
+</ul>
+<span id="more"></span>
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Go 语言</category>
       </categories>
   </entry>
   <entry>
@@ -1024,23 +1050,6 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Go Language Tutorial</title>
-    <url>/2024/12/15/Go-Language-Tutorial/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
-<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
-<ul>
-<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
-</ul>
-<span id="more"></span>
-
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Go 语言</category>
       </categories>
   </entry>
   <entry>
@@ -1212,6 +1221,24 @@
       </categories>
   </entry>
   <entry>
+    <title>LFS 2: PiLFS项目</title>
+    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
+<span id="more"></span>
+
+<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
+<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
+<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
+<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>LFS Project</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LFS 1: 构建 BLFS 系统</title>
     <url>/2021/04/19/LFS-1-%E6%9E%84%E5%BB%BA-BLFS-%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;LFS 虽然”五脏俱全”，但还很难“飞得很高”，与很多现代的 linux 发行版系统相比,它还是一个基础系统。<a href="https://www.linuxfromscratch.org/blfs/">BLFS</a> 项目于是在 LFS 的基础上继续前行，它为构建稳定、安全和现代化的操作系统提供了详细的指导。</p>
@@ -1228,24 +1255,6 @@
 <p><code>pm-utils</code>： 提供工具使得计算机休眠(hibernate或者suspend to RAM)。</p>
 <p><code>UPower</code> : 为访问电源设备提高接口。</p>
 <h3 id="X系统"><a href="#X系统" class="headerlink" title="X系统"></a>X系统</h3><p><code>xdrinfo</code> 包的安装需要注意,树莓派 pi3 官方预编译的图形库中没有 <code>libGL.so</code>，所以先跳过此包的安装。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>LFS Project</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LFS 2: PiLFS项目</title>
-    <url>/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p><a href="https://intestinate.com/pilfs/">PiLFS</a> 是从 <a href="http://linuxfromscratch.org/lfs">Linux From Scratch</a>项目中针对 Raspberry Pi 平台衍生出来的，它在原有项目的基础的上针对 Pi 增加了一些小的调整和构建时的技巧。</p>
-<span id="more"></span>
-
-<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>PiLFS 11.0与LFS-11.0版本相比，增加了一些特定的针对树梅派的 patch、脚本、内核和固件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc-9.1.0-rpi1-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi2-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi3-cpu-default.patch</span><br><span class="line">gcc-9.1.0-rpi4-cpu-default.patch</span><br><span class="line">expect5.45-aarch64-fix.patch</span><br><span class="line">ch5-build.sh</span><br><span class="line">ch7-build.sh</span><br><span class="line">rpi-5.10.y.tar.gz</span><br><span class="line">master.tar.gz</span><br><span class="line">v2021.04.29.-138a1.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>使用构建脚本ch5-build.sh [运行时间约 13小时21分钟]</p>
-<p>然后运行构建脚本ch7-build.sh [运行时间约15小时]</p>
-<p>在构建 Binutils 时对内存的消耗会显著增加,如果在 pi3 上运行,其系统内存会耗尽并导致整个构建过程终止退出。去掉 configure 参数 <code>--enable-gold</code> 后则可以解决该问题。<code>--enable-gold</code>参数用于构建和安装 <code>ld.gold</code> 链接器，该<code>ld.gold</code>与默认的<code>BFD ld</code>链接器相比会提高链接效率。</p>
-<p>内核和固件可以使用 Raspberry Pi 官方预编译好的包也可以自己从源代码编译。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1328,6 +1337,83 @@
 <p><code>clang -fmodules -fsyntax-only -Xclang -ast-dump main.c</code></p>
 <p><strong>代码生成和优化</strong>：</p>
 <p><code>clang -emit-llvm -S main.c -o main.ll</code><br><code>llvm-as main.ll -o main.bc</code><br><code>llvm-dis main.bc -o main.ll</code></p>
+]]></content>
+      <categories>
+        <category>编译器</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LLVM 项目介绍</title>
+    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
+<blockquote>
+<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
+<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
+<ul>
+<li>减少构造一个专用编译器的成本（包括时间成本）</li>
+<li>组件可以复用和共享</li>
+<li>允许针对不同的任务选择不同的组件</li>
+</ul>
+<p>构建C&#x2F;C++等主流语言的编译器：</p>
+<ul>
+<li>更好的编译性能</li>
+<li>生成更加优化的代码</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
+<ul>
+<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
+<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
+<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
+</ul>
+<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
+<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
+<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
+<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
+<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
+<p><strong>LLVM 三段式设计的实现</strong>:</p>
+<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
+<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
+<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
+<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
+<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
+<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
+<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
+<ul>
+<li>轻量级的 runtime 优化</li>
+<li>跨函数或过程间优化</li>
+<li>全局优化</li>
+<li>激进的重构转换</li>
+</ul>
+<p>以下面的 C 代码为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>转换为 LLVM IR：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
+<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
+<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
+<ul>
+<li>寻找可以转换的模式(Pattern)</li>
+<li>对于匹配的实例验证转换是安全和正确的</li>
+<li>执行转换，更新代码</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
+<p>针对上诉 IR 的优化函数可以如下示：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
+<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
+<p><strong>LLVM <code>.td</code> 文件</strong></p>
+<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
 ]]></content>
       <categories>
         <category>编译器</category>
@@ -1445,81 +1531,19 @@
       </categories>
   </entry>
   <entry>
-    <title>LLVM 项目介绍</title>
-    <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
-<blockquote>
-<p>参考 《<a href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a>》 by Chris Lattern.<br>参考 《<a href="https://llvm.org/pubs/2008-10-04-ACAT-LLVM-Intro.html">Introduction to the LLVM Compiler System</a>》 by Chars Lattern.</p>
-</blockquote>
+    <title>Lex结构及简明参考手册</title>
+    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
 <span id="more"></span>
 
-<h3 id="为什么需要-LLVM-？"><a href="#为什么需要-LLVM-？" class="headerlink" title="为什么需要 LLVM ？"></a>为什么需要 LLVM ？</h3><p>GCC 耦合度太高，其组件很难复用；其他编译器实现之间也同样难以共享代码。</p>
-<p>对于 LLVM：<br>构建高度模块化的编译组件集合 :</p>
-<ul>
-<li>减少构造一个专用编译器的成本（包括时间成本）</li>
-<li>组件可以复用和共享</li>
-<li>允许针对不同的任务选择不同的组件</li>
-</ul>
-<p>构建C&#x2F;C++等主流语言的编译器：</p>
-<ul>
-<li>更好的编译性能</li>
-<li>生成更加优化的代码</li>
-</ul>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>经典三段式编译器设计:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/SimpleCompiler.png"></p>
-<ul>
-<li>前端：前端主要负责语言的词法、语法和语义分析，并生成 AST 或其他 IR。</li>
-<li>优化器：将前端输出的 IR 作为输入，对 IR 进行一系列转换来优化代码，包括局部优化和全局优化等。</li>
-<li>后端：生成目标代码，它主要包括指令选择、寄存器分配和指派、指令调度等过程。</li>
-</ul>
-<p>&emsp;&emsp;这种架构具有灵活性及可扩展性，当开发一个新语言时，几乎只需要构造一个前端，中间优化器及后端代码生成器则可以复用，如下图所实示：</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/RetargetableCompiler.png"></p>
-<p>&emsp;&emsp;另外，这种架构有利于开源协作和维护，可以更大程度发挥开源社区的作用。</p>
-<p>&emsp;&emsp; Java 的成功一定程度上得益于该模型，Java的字节码 IR 与具体目标机器解耦，使得 Java 兼容各个平台。解释和运行字节码的 Java 虚拟机则可以作为后端支持各种目标机器和平台。</p>
-<p>&emsp;&emsp; GCC 的架构也类似于该经典模型，它支持多种语言前端和支持多种后端目标机器。</p>
-<p>&emsp;&emsp; 但不管 Java 还是 GCC 都被设计成<em>单一应用程序</em>(monolithic applications)，它们的代码很难被其他应用程序复用。另外，GCC 的代码受分层设计及缺乏抽象的困扰，不同组件间耦合性较强，很难将各个组件单独作为<strong>库</strong>来使用。</p>
-<p><strong>LLVM 三段式设计的实现</strong>:</p>
-<p><img src="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/LLVMCompiler1.png"></p>
-<p>&emsp;&emsp; LLVM IR 可以表示为文本格式（<strong>因此提高了透明性</strong>），而且它是与中间优化器交互的<strong>唯一</strong>接口。可以说，LLVM IR 是 <strong>完备的(Complete)</strong> 和 <strong>自包含的(self-contained)</strong> 。前端生成的LLVM IR 可以通过管道(Pipe)发送给优化器和后续代码生成器。相比而言，GCC 的 <strong>GIMPLE</strong> 中间表示形式却不是自包含的，它仍然引用源码树的某些信息。</p>
-<p>&emsp;&emsp;另外重要的是，<code>LLVM 是一系列库的集合</code>，而不是像 GCC 那样的单一命令行编译器，也不是像不透明的 JAVA 或 .NET 虚拟机。LLVM 是基础设施框架，它的一系列非常有用的编译技术可以灵活地被应用于特定的问题。这是它最强大的特性，同时也是最少被理解的设计点。</p>
-<p>&emsp;&emsp; LLVM 的优化器被组织成一系列 <strong>优化 Pass</strong>的<strong>流水线</strong>，这个流水线的任意一个Pass都有机会对 IR 进行更新。不同的<strong>优化级别</strong>会选择不同种类和数量的优化 Pass。这些 Pass 可以被打包成单个或多个静态库(在Unix环境下的<code>.a</code>文件)，库之间尽可能保持松耦合，如果有依赖关系，这些关系信息也会被显式地声明。</p>
-<p>&emsp;&emsp;这种设计使得特定问题的解决（例如开发图像处理语言的 JIT 编译器）可以灵活的复用上述编译技术。实现者可以根据需求对 Pass 的种类进行取舍或者编写自己的 Pass，因为 LLVM 不是魔法，它不能解决所有的优化问题。</p>
-<p>&emsp;&emsp; LLVM 的库具有丰富的能力，但<strong>它们本身</strong>实际上不能做任何事情。这取决于库的用户在开发应用（如 <strong>Clang C 编译器</strong>）时如何将它们更好地加以利用。这种精心设计的层次性和可分解性是使得 LLVM 优化器在不同的环境中应用到如此多不同的应用的原因。</p>
-<h3 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h3><p>&emsp;&emsp; LLVM IR 有以下设计目标：</p>
-<ul>
-<li>轻量级的 runtime 优化</li>
-<li>跨函数或过程间优化</li>
-<li>全局优化</li>
-<li>激进的重构转换</li>
-</ul>
-<p>以下面的 C 代码为例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="title function_">add1</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perhaps not the most efficient way to add two numbers.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="title function_">add2</span><span class="params">(<span class="type">unsigned</span> a, <span class="type">unsigned</span> b)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">return</span> add2(a<span class="number">-1</span>, b+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>转换为 LLVM IR：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add1</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%b</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%b</span>) &#123;</span><br><span class="line"><span class="symbol">entry:</span></span><br><span class="line">  <span class="variable">%tmp1</span> <span class="operator">=</span> <span class="keyword">icmp</span> <span class="keyword">eq</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">  <span class="keyword">br</span> <span class="type">i1</span> <span class="variable">%tmp1</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%done</span><span class="punctuation">,</span> <span class="type">label</span> <span class="variable">%recurse</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">recurse:</span></span><br><span class="line">  <span class="variable">%tmp2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp3</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">1</span></span><br><span class="line">  <span class="variable">%tmp4</span> <span class="operator">=</span> <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@add2</span>(<span class="type">i32</span> <span class="variable">%tmp2</span><span class="punctuation">,</span> <span class="type">i32</span> <span class="variable">%tmp3</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%tmp4</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="variable">%b</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp; LLVM IR 是一个底层的 RISC-like 指令集，每个指令为三地址格式。LLVM IR 支持标签，所以它看起来像汇编语言。<br>&emsp;&emsp;另外，它也是 SSA IR 的一种，即它使用无限多的虚拟寄存器，其主要特征是每个变量只赋值一次。SSA 通过简化程序中变量的特性，可以同时达到两种目的：第一，可以简化很多编译优化方法的过程；第二，对很多编译优化方法来说，可以获得更好的优化结果。</p>
-<p>更多详细信息参考<a href="http://127.0.0.1/index.php/archives/261/">LLVM 1: IR 汇编语言参考</a>。</p>
-<h3 id="LLVM-IR-优化"><a href="#LLVM-IR-优化" class="headerlink" title="LLVM IR 优化"></a>LLVM IR 优化</h3><p>&emsp;&emsp; 大多数优化遵循一个三段式结构：</p>
-<ul>
-<li>寻找可以转换的模式(Pattern)</li>
-<li>对于匹配的实例验证转换是安全和正确的</li>
-<li>执行转换，更新代码</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line"><span class="variable">%example1</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="variable">%a</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%example2</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%b</span><span class="punctuation">,</span> <span class="number">0</span></span><br><span class="line">⋮    ⋮    ⋮</span><br><span class="line"><span class="variable">%tmp</span> <span class="operator">=</span> <span class="keyword">mul</span> <span class="type">i32</span> <span class="variable">%c</span><span class="punctuation">,</span> <span class="number">2</span></span><br><span class="line"><span class="variable">%example3</span> <span class="operator">=</span> <span class="keyword">sub</span> <span class="type">i32</span> <span class="variable">%tmp</span><span class="punctuation">,</span> <span class="variable">%c</span></span><br></pre></td></tr></table></figure>
-<p>针对上诉 IR 的优化函数可以如下示：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// X - 0 -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op1, <span class="built_in">m_Zero</span>()))</span><br><span class="line">  <span class="keyword">return</span> Op0;</span><br><span class="line"></span><br><span class="line"><span class="comment">// X - X -&gt; 0</span></span><br><span class="line"><span class="keyword">if</span> (Op0 == Op1)</span><br><span class="line">  <span class="keyword">return</span> Constant::<span class="built_in">getNullValue</span>(Op0-&gt;<span class="built_in">getType</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// (X*2) - X -&gt; X</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">match</span>(Op0, <span class="built_in">m_Mul</span>(<span class="built_in">m_Specific</span>(Op1), <span class="built_in">m_ConstantInt</span>&lt;<span class="number">2</span>&gt;())))</span><br><span class="line">  <span class="keyword">return</span> Op1;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// Nothing matched, return null to indicate no transformation.</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="LLVM-代码生成器"><a href="#LLVM-代码生成器" class="headerlink" title="LLVM 代码生成器"></a>LLVM 代码生成器</h3><p>&emsp;&emsp; 和优化器类似，LLVM 的代码生成器也被组织成 Pass 的集合。虽然可以为每种 target都编写专用的代码生成器，但这些生成器实际上都在解决相同的问题。解决这些问题的算法是可以共享的。</p>
-<p>&emsp;&emsp; 代码生成器的 Pass 包括几类：指令选择、寄存器分配、调度、代码布局优化和生成汇编语言等，许多内置的 Pass 被设置为默认执行。代码生成器的作者可以在这些 Pass中进行选择，可以覆盖默认的 Pass 或者完成编写自己特定的 Pass。</p>
-<p><strong>LLVM <code>.td</code> 文件</strong></p>
-<p>其他详细内容参看 <a href="http://1.117.83.246/index.php/archives/262/">LLVM 2: Backend</a>。</p>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
 ]]></content>
       <categories>
         <category>编译器</category>
-        <category>LLVM Project</category>
       </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>Landscape 源码分析</title>
@@ -1561,19 +1585,29 @@
       </categories>
   </entry>
   <entry>
-    <title>Lex结构及简明参考手册</title>
-    <url>/2022/04/14/Lex%E7%BB%93%E6%9E%84%E5%8F%8A%E7%AE%80%E6%98%8E%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; Lex为词法分析器生成器。在许多情况下，相比自己动手写专用的生成器代码，使用lex有很多优势：获得更健壮、更简单、更清晰、更易维护的代码。这也是<code>避免重复造轮子</code>原则的应用。<code>flex</code>是lex的变种。<br>&emsp;&emsp; 词法分析器也可以用来完成源程序的宏预处理（如使用 <code>gcc -E</code>）。词法分析器围绕 <code>词法单元</code>、<code>模式</code>、<code>词素</code>等概念。</p>
+    <title>Linux Kernel  LKD3 阅读笔记</title>
+    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
+<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
 <span id="more"></span>
-
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>&emsp;&emsp; lex的核心模型是围绕正则表达式展开的，从理论上说，生成器首先需要将正则表达式转换为<em>不确定有限自动机</em>，然后再转换为<em>确定有限自动机</em>。</p>
+<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
+<ul>
+<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
+<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+</ul>
+<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
+<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
+<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
+<p>Q2: Is the system call portable?</p>
+<p><strong><code>Provide mechanism, not policy.</code></strong></p>
+<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
+<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
-        <category>编译器</category>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
       </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
   </entry>
   <entry>
     <title>Linux Kernel Introduction</title>
@@ -1743,24 +1777,58 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux Kernel  LKD3 阅读笔记</title>
-    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
-<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
+    <title>Linux kernel User Guide</title>
+    <url>/2023/03/09/Linux-kernel-User-Guide/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
+<blockquote>
+<p>参考 <a href="https://docs.kernel.org/admin-guide/index.html">The Linux kernel user’s and administrator’s guide</a>。</p>
+</blockquote>
 <span id="more"></span>
-<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><p>可以在 <a href="https://mirrors.edge.kernel.org/pub/linux/kernel">内核仓库</a> 中找到对应版本的源码压缩包、签名和补丁，也可以使用 git 克隆内核仓库。我们以 <code>5.4</code> 版本为例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.sign</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">也可以使用国内的镜像源：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.sign</span></span><br></pre></td></tr></table></figure>
+
+<p>获取 <em>Greg Kroah-Hartman</em> 和 <em>Linus Torvalds</em> 的公钥：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gpg2 --locate-keys torvalds@kernel.org gregkh@kernel.org</span></span><br></pre></td></tr></table></figure>
+
+<p>解压并验证签名：<br><code>$ xz -cd linux-5.4.tar.xz | gpg2 --verify linux-5.4.tar.sign -</code></p>
+<p><code>$ tar xf linux-5.4.tar</code><br><code>$ cd linux-5.4</code></p>
+<h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><p>编译环境所依赖的软件包列表：<a href="https://docs.kernel.org/process/changes.html#changes">Minimal requirements to compile the Kernel</a>。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="还原环境"><a href="#还原环境" class="headerlink" title="还原环境"></a>还原环境</h3><p><code>$ make mrproper</code><br>每次需要将内核源码树还原到刚解压时的状态，可运行该命令。</p>
+<p><code>$ make clean</code><br>删除生成的目标文件（不会删除<code>.config</code>）</p>
+<h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><p><code>make oldconfig</code> - 基于<code>Host</code>系统上的.config 进行配置，如<code>/boot/config-5.xx.xx-xx-generic</code></p>
+<p><code>make defconfig</code> - 按默认选项进行配置（<strong>x86_64_defconfig</strong>）<br><code>make allnoconfig</code> - 除必须选项外，其他一律不选（常用于嵌入式系统）<br><code>make allyesconfig</code> -</p>
+<p><code>make menuconfig</code> - 交互式界面</p>
+<p>可以查看 <code>make help</code> 来获取更多信息。</p>
+<p><strong>建议：</strong></p>
 <ul>
-<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
-<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+<li>使用 <code>make defconfig</code> 获取默认配置</li>
+<li>使用当前<code>Host</code>系统上的 config 文件，一般为 <code>/boot/config-xxxxxxxxx</code></li>
+<li>其他发行版系统的配置文件</li>
 </ul>
-<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
-<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
-<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
-<p>Q2: Is the system call portable?</p>
-<p><strong><code>Provide mechanism, not policy.</code></strong></p>
-<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
-<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p><code>make -j&lt;N&gt;</code></p>
+<p>可以使用 <code>ccache</code> 加速编译。</p>
+<p>如果遇到下面的问题：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://lkml.org/lkml/2021/1/14/387">https://lkml.org/lkml/2021/1/14/387</a></p>
+<p>如果遇到：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order&#x27;;</span><br><span class="line">arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://lkml.org/lkml/2020/1/29/494">https://lkml.org/lkml/2020/1/29/494</a></p>
+<p>很多编译问题都可以在<a href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
+<p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
+<p>然后修改 <code>grub</code> 配置文件</p>
+<h3 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h3><p><code>$ sudo make modules_install</code></p>
+<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>&emsp;&emsp;我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
+<h3 id="模块参数"><a href="#模块参数" class="headerlink" title="模块参数"></a>模块参数</h3><p>模块的参数可以通过内核命令行设置，例如：<br><code>usbcore.blinkenlights=1</code></p>
+<p>也可以使用 <code>modprobe</code> ：<br><code>modprobe usbcore blinkenlights=1</code></p>
+<p>使用 <code>modinfo info &lt;module_name&gt;</code> 可以获取可加载模块的参数列表。对于可加载模块，当被载入内核时，会将所有参数映射为 <code>/proc/modules/&#123;module_name&#125;/parameters/</code> 中的文件，这使得用户可以直接修改该文件来设置模块参数。</p>
+<h3 id="命令行参数格式"><a href="#命令行参数格式" class="headerlink" title="命令行参数格式"></a>命令行参数格式</h3><ul>
+<li><code>-</code> 与 <code>_</code> 是等价的，例如<code>log_buf=1M</code> 等价于 <code>log-buf=1M</code></li>
+<li>对于带空格的字符串使用双引号，例如<code>param=&quot;spaces in here&quot;</code></li>
+<li></li>
+</ul>
+<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1820,65 +1888,6 @@
 <h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
 <p>动态分配节点的初始化：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux kernel User Guide</title>
-    <url>/2023/03/09/Linux-kernel-User-Guide/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
-<blockquote>
-<p>参考 <a href="https://docs.kernel.org/admin-guide/index.html">The Linux kernel user’s and administrator’s guide</a>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><p>可以在 <a href="https://mirrors.edge.kernel.org/pub/linux/kernel">内核仓库</a> 中找到对应版本的源码压缩包、签名和补丁，也可以使用 git 克隆内核仓库。我们以 <code>5.4</code> 版本为例：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.sign</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">也可以使用国内的镜像源：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.sign</span></span><br></pre></td></tr></table></figure>
-
-<p>获取 <em>Greg Kroah-Hartman</em> 和 <em>Linus Torvalds</em> 的公钥：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gpg2 --locate-keys torvalds@kernel.org gregkh@kernel.org</span></span><br></pre></td></tr></table></figure>
-
-<p>解压并验证签名：<br><code>$ xz -cd linux-5.4.tar.xz | gpg2 --verify linux-5.4.tar.sign -</code></p>
-<p><code>$ tar xf linux-5.4.tar</code><br><code>$ cd linux-5.4</code></p>
-<h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><p>编译环境所依赖的软件包列表：<a href="https://docs.kernel.org/process/changes.html#changes">Minimal requirements to compile the Kernel</a>。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="还原环境"><a href="#还原环境" class="headerlink" title="还原环境"></a>还原环境</h3><p><code>$ make mrproper</code><br>每次需要将内核源码树还原到刚解压时的状态，可运行该命令。</p>
-<p><code>$ make clean</code><br>删除生成的目标文件（不会删除<code>.config</code>）</p>
-<h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><p><code>make oldconfig</code> - 基于<code>Host</code>系统上的.config 进行配置，如<code>/boot/config-5.xx.xx-xx-generic</code></p>
-<p><code>make defconfig</code> - 按默认选项进行配置（<strong>x86_64_defconfig</strong>）<br><code>make allnoconfig</code> - 除必须选项外，其他一律不选（常用于嵌入式系统）<br><code>make allyesconfig</code> -</p>
-<p><code>make menuconfig</code> - 交互式界面</p>
-<p>可以查看 <code>make help</code> 来获取更多信息。</p>
-<p><strong>建议：</strong></p>
-<ul>
-<li>使用 <code>make defconfig</code> 获取默认配置</li>
-<li>使用当前<code>Host</code>系统上的 config 文件，一般为 <code>/boot/config-xxxxxxxxx</code></li>
-<li>其他发行版系统的配置文件</li>
-</ul>
-<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p><code>make -j&lt;N&gt;</code></p>
-<p>可以使用 <code>ccache</code> 加速编译。</p>
-<p>如果遇到下面的问题：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table</span><br></pre></td></tr></table></figure>
-<p>参考链接：<a href="https://lkml.org/lkml/2021/1/14/387">https://lkml.org/lkml/2021/1/14/387</a></p>
-<p>如果遇到：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order&#x27;;</span><br><span class="line">arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here</span><br></pre></td></tr></table></figure>
-<p>参考链接：<a href="https://lkml.org/lkml/2020/1/29/494">https://lkml.org/lkml/2020/1/29/494</a></p>
-<p>很多编译问题都可以在<a href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
-<p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
-<p>然后修改 <code>grub</code> 配置文件</p>
-<h3 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h3><p><code>$ sudo make modules_install</code></p>
-<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>&emsp;&emsp;我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
-<h3 id="模块参数"><a href="#模块参数" class="headerlink" title="模块参数"></a>模块参数</h3><p>模块的参数可以通过内核命令行设置，例如：<br><code>usbcore.blinkenlights=1</code></p>
-<p>也可以使用 <code>modprobe</code> ：<br><code>modprobe usbcore blinkenlights=1</code></p>
-<p>使用 <code>modinfo info &lt;module_name&gt;</code> 可以获取可加载模块的参数列表。对于可加载模块，当被载入内核时，会将所有参数映射为 <code>/proc/modules/&#123;module_name&#125;/parameters/</code> 中的文件，这使得用户可以直接修改该文件来设置模块参数。</p>
-<h3 id="命令行参数格式"><a href="#命令行参数格式" class="headerlink" title="命令行参数格式"></a>命令行参数格式</h3><ul>
-<li><code>-</code> 与 <code>_</code> 是等价的，例如<code>log_buf=1M</code> 等价于 <code>log-buf=1M</code></li>
-<li>对于带空格的字符串使用双引号，例如<code>param=&quot;spaces in here&quot;</code></li>
-<li></li>
-</ul>
-<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1997,6 +2006,20 @@
       </categories>
   </entry>
   <entry>
+    <title>OAuth 2.0 Analysis</title>
+    <url>/2024/12/17/OAuth-2-0-Analysis/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>OAuth2.0</strong> 是 <a href="https://datatracker.ietf.org/doc/html/rfc6749">IETF RFC 6749 - The OAuth 2.0 Authorization Framework</a> 中规定的基于令牌的授权框架，允许客户端访问受保护的分布式资源而<br>不必要为每个输入密码。OAuth2.0 的设立是为了解决互联网上经常出现的多个账户使用相同的密码，密码只在必要的时候修改等糟糕的密钥健康状况。</p>
+<span id="more"></span>
+
+<p>IEFT ACE 工作组创建了定义 OAuth2.0 应用于物联网的工作文件。</p>
+<p>OAuth2.0 是一个框架。关于 OAuth2.0 的安全最佳实践，参考 <a href="https://datatracker.ietf.org/doc/html/rfc6819">IETF RFC 6819 - OAuth 2.0 Threat Model and Security Considerations</a>。</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Network Scanning Based on TCP</title>
     <url>/2024/12/16/Network-Scanning-Based-on-TCP/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。</p>
@@ -2033,103 +2056,12 @@
       </categories>
   </entry>
   <entry>
-    <title>OAuth 2.0 Analysis</title>
-    <url>/2024/12/17/OAuth-2-0-Analysis/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>OAuth2.0</strong> 是 <a href="https://datatracker.ietf.org/doc/html/rfc6749">IETF RFC 6749 - The OAuth 2.0 Authorization Framework</a> 中规定的基于令牌的授权框架，允许客户端访问受保护的分布式资源而<br>不必要为每个输入密码。OAuth2.0 的设立是为了解决互联网上经常出现的多个账户使用相同的密码，密码只在必要的时候修改等糟糕的密钥健康状况。</p>
-<span id="more"></span>
-
-<p>IEFT ACE 工作组创建了定义 OAuth2.0 应用于物联网的工作文件。</p>
-<p>OAuth2.0 是一个框架。关于 OAuth2.0 的安全最佳实践，参考 <a href="https://datatracker.ietf.org/doc/html/rfc6819">IETF RFC 6819 - OAuth 2.0 Threat Model and Security Considerations</a>。</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>网络安全</category>
-      </categories>
-  </entry>
-  <entry>
     <title>OpenGL 工具库</title>
     <url>/2023/04/18/OpenGL-%E5%B7%A5%E5%85%B7%E5%BA%93/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; OpenGL(OpenGL Utility Toolkit)  。<code>freeglut</code> 是 <code>GLUT</code> 的一个完全开源替代库。</p>
 ]]></content>
       <categories>
         <category>高性能计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenPGP常用命令手册</title>
-    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
-<span id="more"></span>
-
-<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
-<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
-<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
-<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
-<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
-<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
-<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
-<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
-<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
-</ul>
-<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
-<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
-<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
-</ul>
-<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
-<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>OpenWRT for Raspberry Pi Model 3</title>
-    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
-<span id="more"></span>
-
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
-<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
-<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
-<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
-<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
-<p>设置口令：<br><code>sudo passwd openwrt</code></p>
-<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
-<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
-<p>我们使用最新的 <code>22.03.3</code> 版本</p>
-<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
-<p>具体配置选项:</p>
-<ul>
-<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
-<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
-<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
-<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
-<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
-<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
-</ul>
-</li>
-<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
-<li><strong>Luci &gt; Application</strong>:<ul>
-<li>luci-app-dockerman 容器</li>
-<li>luci-app-frpc 内网穿透客户端</li>
-<li>luci-app-ddns 动态域名解析</li>
-<li>luci-app-mwan3  分流助手(多运营商网络)</li>
-<li>luci-app-samba4 SMB网络共享</li>
-<li>luci-app-ttyd 网页终端插件</li>
-<li>luci-app-wol 网络唤醒</li>
-</ul>
-</li>
-<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
-</ul>
-<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
-<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>开源硬件</category>
       </categories>
   </entry>
   <entry>
@@ -2240,6 +2172,83 @@
       </categories>
   </entry>
   <entry>
+    <title>OpenPGP常用命令手册</title>
+    <url>/2022/04/29/OpenPGP%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;详细手册参考man page或者gnupg wiki等在线资源。</p>
+<span id="more"></span>
+
+<h4 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h4><p><code>gpg --full-gen-key</code></p>
+<h4 id="列出当前密钥对"><a href="#列出当前密钥对" class="headerlink" title="列出当前密钥对"></a>列出当前密钥对</h4><p><code>gpg --list-keys</code> (公钥)<br><code>gpg --list-secret-keys</code> (私钥)</p>
+<h4 id="导出公钥"><a href="#导出公钥" class="headerlink" title="导出公钥"></a>导出公钥</h4><p><code>gpg --output &lt;文件名&gt; --armor --export &lt;user-id&gt;</code></p>
+<h4 id="导入公钥"><a href="#导入公钥" class="headerlink" title="导入公钥"></a>导入公钥</h4><p><code>gpg --import &lt;文件名&gt;</code></p>
+<h4 id="使用密钥服务器"><a href="#使用密钥服务器" class="headerlink" title="使用密钥服务器"></a>使用密钥服务器</h4><p><code>gpg --send-keys &lt;key-id&gt;</code><br><code>gpg --search-keys &lt;user-id&gt;</code><br><code>gpg --recv-keys &lt;key-id&gt;</code></p>
+<p><code>gpg --auto-key-locate &lt;mechanisms&gt; --locate-external-key &lt;user-id&gt;</code> 从外部服务器获取用户公钥,user-id可以是邮箱地址。mechanisms默认是 <code>local,wkd</code>。</p>
+<h4 id="加密和解密"><a href="#加密和解密" class="headerlink" title="加密和解密"></a>加密和解密</h4><ul>
+<li>非对称加密：<br><code> gpg --recipient &lt;user-id&gt; -e &lt;明文文件&gt;</code> (加密)<br><code> gpg --output &lt;明文文件&gt; -d &lt;加密文件&gt;</code> （解密）</li>
+<li>对称加密:<br><code> gpg -c &lt;明文文件&gt;</code> (加密)<br><code> gpg -o &lt;明文文件&gt; -d &lt;加密文件&gt;</code> (解密)</li>
+</ul>
+<h4 id="密钥维护"><a href="#密钥维护" class="headerlink" title="密钥维护"></a>密钥维护</h4><ul>
+<li>备份私钥<br><code>gpg --export-secret-keys --armor &lt;user-id&gt; &lt;文件名&gt;</code></li>
+<li>导入私钥<br><code>gpg --import &lt;私钥文件&gt;</code></li>
+</ul>
+<h4 id="编辑密钥"><a href="#编辑密钥" class="headerlink" title="编辑密钥"></a>编辑密钥</h4><p><code>gpg --edit-key &lt;user-id&gt;</code></p>
+<h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>OpenWRT for Raspberry Pi Model 3</title>
+    <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
+<p>在 Ubuntu 系统上：<br><code>$ sudo apt update</code></p>
+<p><code>$ sudo apt install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget</code></p>
+<h3 id="新建用户openwrt（可选）"><a href="#新建用户openwrt（可选）" class="headerlink" title="新建用户openwrt（可选）"></a>新建用户<code>openwrt</code>（可选）</h3><p>为了获得更干净的构建环境，我们可以新建一个<code>openwrt</code>用户（其他名字亦可）：</p>
+<p><code>sudo groupadd openwrt</code><br><code>sudo useradd -s /bin/bash -g openwrt -m -k /dev/null openwrt</code></p>
+<p>设置口令：<br><code>sudo passwd openwrt</code></p>
+<p>切换用户:<br><code>cd /home/openwrt</code><br><code>su openwrt</code></p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h3><p><code>git clone https://git.openwrt.org/openwrt/openwrt.git</code></p>
+<h3 id="更新并选择分支"><a href="#更新并选择分支" class="headerlink" title="更新并选择分支"></a>更新并选择分支</h3><p><code>git pull</code><br><code>git checkout &lt;XXXX&gt;</code></p>
+<p>我们使用最新的 <code>22.03.3</code> 版本</p>
+<h3 id="更新和安装-feeds"><a href="#更新和安装-feeds" class="headerlink" title="更新和安装 feeds"></a>更新和安装 <code>feeds</code></h3><p><code>./scripts/feeds update -a</code><br><code>./scripts/feeds install -a</code> : 安装所有获取的包的符号链接到<code>package/feeds</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>make menuconfig</code></p>
+<p>具体配置选项:</p>
+<ul>
+<li><strong>Target System</strong> 选择 <code>BCM27xx</code></li>
+<li><strong>Subtarget</strong> 选择 <code>BCM2710 boards (64bits)</code></li>
+<li><strong>Target Profile</strong> 自动选择为 <code>Raspberry Pi 3B/3B+/3CM (64bit)</code></li>
+<li><strong>Target Image</strong> 至少选择 <code>Gzip image</code><ul>
+<li><strong>Kernel partition size</strong> 可以设置为 <code>256</code> M</li>
+<li><strong>Root filesystem partition size</strong> 可以设置为 <code>1024</code> M（具体根据SD卡容量）</li>
+</ul>
+</li>
+<li><strong>Kernel Modules &gt; USB Supports</strong> 可以全选</li>
+<li><strong>Luci &gt; Application</strong>:<ul>
+<li>luci-app-dockerman 容器</li>
+<li>luci-app-frpc 内网穿透客户端</li>
+<li>luci-app-ddns 动态域名解析</li>
+<li>luci-app-mwan3  分流助手(多运营商网络)</li>
+<li>luci-app-samba4 SMB网络共享</li>
+<li>luci-app-ttyd 网页终端插件</li>
+<li>luci-app-wol 网络唤醒</li>
+</ul>
+</li>
+<li><strong>Luci -&gt; Themes</strong> : 主题，可以全选</li>
+</ul>
+<p>用户可以增加自己的扩展软件包或者 Luci 的扩展插件。</p>
+<h3 id="下载-编译"><a href="#下载-编译" class="headerlink" title="下载&amp;编译"></a>下载&amp;编译</h3><p><code>make -j8 download V=s</code><br><code>make -j1</code></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>开源硬件</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Perl简明手册</title>
     <url>/2022/04/14/Perl%E7%AE%80%E6%98%8E%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -2251,78 +2260,6 @@
       <categories>
         <category>Perl</category>
       </categories>
-  </entry>
-  <entry>
-    <title>Practical Internet of Thing Security Notes</title>
-    <url>/2024/12/15/Practical-Internet-of-Thing-Security-Notes/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。</p>
-<span id="more"></span>
-
-<h3 id="危险的新世界"><a href="#危险的新世界" class="headerlink" title="危险的新世界"></a>危险的新世界</h3><p>（什么是 IOT？）</p>
-<blockquote>
-<p>一个信息社会的全球性基础设施，基于已有的和演化的、可互操作的信息与通信技术，利用（物理和虚拟）设备互联来提供先进的服务。—— ITU</p>
-</blockquote>
-<blockquote>
-<p>一个物联网是指这样一种网络，它将唯一标识的“实物”连接到互联网上。这里的实物具有感知&#x2F;驱动能力，以及潜在的可编程能力。通过对唯一身份标识和感知能力进行开发，<br>任意实体可以从任意时刻从任何位置收集“实物”相关信息，以及改变‘实物’的状态。 —— IETF</p>
-</blockquote>
-<p>（什么是物联网安全？）</p>
-<p>物联网安全不是传统意义上的网络安全，而是网络安全与其他工程规范融合的产物。…… 网络安全一般不关注硬件设备的物理和安全方面，或者是设备与物理世界的交互方面的内容。</p>
-<p>物理网安全的安全需求不再仅仅局限于包括可信性、完整性、不可否认性等内容的基本信息保障原则，还包括与在物理世界中生成并接收信息的物理资源和机器相关的原则。</p>
-<p>跨行业合作的必要性 （信息安全工程 + 行业核心工程规范）</p>
-<p><strong>信息安全是一个生态系统</strong></p>
-<blockquote>
-<p>物理安全：系统必须不对世界造成伤害。<br>信息安全：世界必须不对系统造成伤害。</p>
-</blockquote>
-<h4 id="物联网中的实体"><a href="#物联网中的实体" class="headerlink" title="物联网中的实体"></a>物联网中的实体</h4><p>ITU-T Y.2060 中的定义：</p>
-<ul>
-<li>设备：一个具有必需的通信能力和可选的感知、运动、数据收集、数据存储和数据处理能力的装置。</li>
-<li>实体：一个物理世界（物理实体）或虚拟世界（虚拟实体）中能够被识别或者被整合到通信网络中的对象。</li>
-</ul>
-<p>设备的生命周期：设备的实现（OEM、ODM、BSP）, 服务的实现（CSP、OEM），设备和服务的部署。<br>硬件：MCU、主板、传感器、通信模组<br>操作系统：RTOS，TinyOS、Mantis、FreeRTOS、BrilloOS、嵌入式Linux、Ubuntu Core等。<br>物联网通信：设备-&gt;网关-&gt;控制器或网络服务</p>
-<h4 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h4><p>应用层：REST、AMQP、MQTT、LLAP、CoAP、SSI、DDS、XMPP 和 MQTT-SN、XMPP-IoT<br>传输层：TCP、UDP 和 TLS\DTLS<br>网络层：IPv4、IPv6 和 6LoWPAN<br>链路&#x2F;物理层：Zigbee、Bluetooth&#x2F;LE、802.15.4、802.11 WIFI、WAVE、WBAN、LTE、CDMA、GRPS、LoaWAN</p>
-<h3 id="漏洞、攻击和对策"><a href="#漏洞、攻击和对策" class="headerlink" title="漏洞、攻击和对策"></a>漏洞、攻击和对策</h3><p>信息保障的传统核心概念：保密性、完整性、认证性、不可抵赖性、可用性。<br>与物联网的信息物理方面相关的安全保障需求：可快速恢复性和物理安全性。</p>
-<p>威胁、漏洞和风险</p>
-<p>风险可以通过威胁模型进行管理。</p>
-<h4 id="攻击与对策"><a href="#攻击与对策" class="headerlink" title="攻击与对策"></a>攻击与对策</h4><p>物联网相关的最重要的攻击类型：<br>有线&#x2F;无线扫描映射攻击、协议攻击、窃听攻击、密码算法和密钥管理攻击、伪装攻击、操作系统与应用完整性攻击、拒绝服务与干扰、物理安全攻击（如改装、接口薄露等）、访问控制攻击。</p>
-<h4 id="攻击树"><a href="#攻击树" class="headerlink" title="攻击树"></a>攻击树</h4><p>攻击树是一种概念图，可以用来展示一项资产或者目标可能被攻击的方式。<br>SecurITree 软件 基于能力的攻击树模型构建工具。</p>
-<p>攻击目标 + 攻击操作（攻击操作之间的关系可以是‘与’关系，也可以是‘或’关系）。操作也是一个节点，也可以进行展开。</p>
-<p>总的来说，攻击树可能有非常简单或者复杂的子树。一般地，子树越复杂，越需要在隔离主树的情况下对其进行分析，这个过程称为‘子树分析’。</p>
-<h4 id="错误树"><a href="#错误树" class="headerlink" title="错误树"></a>错误树</h4><p>物理安全和可靠性工程原则的模型构建工具被称为错误树（也被称为故障树），它被用于错误树分析（FTA）中。</p>
-<p>错误树和攻击树的区别（用户如何进入并遍历树）：</p>
-<ul>
-<li>错误树并不是基于精心编排的攻击行为来构建的，在错误树中，一个智能实体经过慎重考虑可以随意进入树的多个叶子节点。</li>
-<li>错误树可以基于随机过程（故障&#x2F;错误发生比率），从每个叶子节点经过所依赖的中间节点进行遍历。</li>
-<li>错误树的每个叶子节点完全独立（错误随机发生，且彼此相互独立）于树的所有其他叶子节点。</li>
-</ul>
-<h4 id="威胁建模"><a href="#威胁建模" class="headerlink" title="威胁建模"></a>威胁建模</h4><p>构建威胁模型为人们提供了一个系统的方法，来对一个系统或者系统设计进行安全评估。<br>构建威胁模型有助于加深对一个系统中的人员、入口点和资产的透彻理解。</p>
-<p>流程：</p>
-<ol>
-<li>识别资产</li>
-<li>创建对系统&#x2F;架构的纵览</li>
-<li>剖析物联网系统</li>
-<li>识别威胁</li>
-<li>记录威胁</li>
-<li>对威胁进行评级</li>
-</ol>
-<p>STRIDE 模型：<br>威胁类型：身份欺骗、篡改数据、否认抵赖、信息泄漏、拒绝服务、权限提升、物理安全绕过、社会工程和供应链问题。</p>
-<p>威胁矩阵</p>
-<h3 id="物联网开发中的安全工程"><a href="#物联网开发中的安全工程" class="headerlink" title="物联网开发中的安全工程"></a>物联网开发中的安全工程</h3><p>在设计和开发中融入安全。</p>
-<p>微软 SDL：致力于解决安全需求并且引入了‘需求分类’这一概念，以此减轻开发团队在每个迭代周期内的负担。微软的技术提出了‘一次性、每次迭代、筒状安全需求’的概念。</p>
-<p>一次性需求：</p>
-<ul>
-<li>建立在整个开发中必须遵守的编码指南。</li>
-<li>为第三方组件和库建立许可软件列表。</li>
-</ul>
-<p>每次迭代：</p>
-<ul>
-<li>为了发现错误，在并入基线前对代码进行用行评审。</li>
-<li>确保在持续集成（CI）环境中通过静态代码分析工具运行代码。</li>
-</ul>
-<h4 id="安全设计"><a href="#安全设计" class="headerlink" title="安全设计"></a>安全设计</h4><h3 id="物联网身份识别和访问管理解决方案"><a href="#物联网身份识别和访问管理解决方案" class="headerlink" title="物联网身份识别和访问管理解决方案"></a>物联网身份识别和访问管理解决方案</h3><p>IAM</p>
-]]></content>
-      <tags>
-        <tag>嵌入式系统和IOT</tag>
-      </tags>
   </entry>
   <entry>
     <title>Python 元类</title>
@@ -2401,6 +2338,78 @@
       <categories>
         <category>Python</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Practical Internet of Thing Security Notes</title>
+    <url>/2024/12/15/Practical-Internet-of-Thing-Security-Notes/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。</p>
+<span id="more"></span>
+
+<h3 id="危险的新世界"><a href="#危险的新世界" class="headerlink" title="危险的新世界"></a>危险的新世界</h3><p>（什么是 IOT？）</p>
+<blockquote>
+<p>一个信息社会的全球性基础设施，基于已有的和演化的、可互操作的信息与通信技术，利用（物理和虚拟）设备互联来提供先进的服务。—— ITU</p>
+</blockquote>
+<blockquote>
+<p>一个物联网是指这样一种网络，它将唯一标识的“实物”连接到互联网上。这里的实物具有感知&#x2F;驱动能力，以及潜在的可编程能力。通过对唯一身份标识和感知能力进行开发，<br>任意实体可以从任意时刻从任何位置收集“实物”相关信息，以及改变‘实物’的状态。 —— IETF</p>
+</blockquote>
+<p>（什么是物联网安全？）</p>
+<p>物联网安全不是传统意义上的网络安全，而是网络安全与其他工程规范融合的产物。…… 网络安全一般不关注硬件设备的物理和安全方面，或者是设备与物理世界的交互方面的内容。</p>
+<p>物理网安全的安全需求不再仅仅局限于包括可信性、完整性、不可否认性等内容的基本信息保障原则，还包括与在物理世界中生成并接收信息的物理资源和机器相关的原则。</p>
+<p>跨行业合作的必要性 （信息安全工程 + 行业核心工程规范）</p>
+<p><strong>信息安全是一个生态系统</strong></p>
+<blockquote>
+<p>物理安全：系统必须不对世界造成伤害。<br>信息安全：世界必须不对系统造成伤害。</p>
+</blockquote>
+<h4 id="物联网中的实体"><a href="#物联网中的实体" class="headerlink" title="物联网中的实体"></a>物联网中的实体</h4><p>ITU-T Y.2060 中的定义：</p>
+<ul>
+<li>设备：一个具有必需的通信能力和可选的感知、运动、数据收集、数据存储和数据处理能力的装置。</li>
+<li>实体：一个物理世界（物理实体）或虚拟世界（虚拟实体）中能够被识别或者被整合到通信网络中的对象。</li>
+</ul>
+<p>设备的生命周期：设备的实现（OEM、ODM、BSP）, 服务的实现（CSP、OEM），设备和服务的部署。<br>硬件：MCU、主板、传感器、通信模组<br>操作系统：RTOS，TinyOS、Mantis、FreeRTOS、BrilloOS、嵌入式Linux、Ubuntu Core等。<br>物联网通信：设备-&gt;网关-&gt;控制器或网络服务</p>
+<h4 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h4><p>应用层：REST、AMQP、MQTT、LLAP、CoAP、SSI、DDS、XMPP 和 MQTT-SN、XMPP-IoT<br>传输层：TCP、UDP 和 TLS\DTLS<br>网络层：IPv4、IPv6 和 6LoWPAN<br>链路&#x2F;物理层：Zigbee、Bluetooth&#x2F;LE、802.15.4、802.11 WIFI、WAVE、WBAN、LTE、CDMA、GRPS、LoaWAN</p>
+<h3 id="漏洞、攻击和对策"><a href="#漏洞、攻击和对策" class="headerlink" title="漏洞、攻击和对策"></a>漏洞、攻击和对策</h3><p>信息保障的传统核心概念：保密性、完整性、认证性、不可抵赖性、可用性。<br>与物联网的信息物理方面相关的安全保障需求：可快速恢复性和物理安全性。</p>
+<p>威胁、漏洞和风险</p>
+<p>风险可以通过威胁模型进行管理。</p>
+<h4 id="攻击与对策"><a href="#攻击与对策" class="headerlink" title="攻击与对策"></a>攻击与对策</h4><p>物联网相关的最重要的攻击类型：<br>有线&#x2F;无线扫描映射攻击、协议攻击、窃听攻击、密码算法和密钥管理攻击、伪装攻击、操作系统与应用完整性攻击、拒绝服务与干扰、物理安全攻击（如改装、接口薄露等）、访问控制攻击。</p>
+<h4 id="攻击树"><a href="#攻击树" class="headerlink" title="攻击树"></a>攻击树</h4><p>攻击树是一种概念图，可以用来展示一项资产或者目标可能被攻击的方式。<br>SecurITree 软件 基于能力的攻击树模型构建工具。</p>
+<p>攻击目标 + 攻击操作（攻击操作之间的关系可以是‘与’关系，也可以是‘或’关系）。操作也是一个节点，也可以进行展开。</p>
+<p>总的来说，攻击树可能有非常简单或者复杂的子树。一般地，子树越复杂，越需要在隔离主树的情况下对其进行分析，这个过程称为‘子树分析’。</p>
+<h4 id="错误树"><a href="#错误树" class="headerlink" title="错误树"></a>错误树</h4><p>物理安全和可靠性工程原则的模型构建工具被称为错误树（也被称为故障树），它被用于错误树分析（FTA）中。</p>
+<p>错误树和攻击树的区别（用户如何进入并遍历树）：</p>
+<ul>
+<li>错误树并不是基于精心编排的攻击行为来构建的，在错误树中，一个智能实体经过慎重考虑可以随意进入树的多个叶子节点。</li>
+<li>错误树可以基于随机过程（故障&#x2F;错误发生比率），从每个叶子节点经过所依赖的中间节点进行遍历。</li>
+<li>错误树的每个叶子节点完全独立（错误随机发生，且彼此相互独立）于树的所有其他叶子节点。</li>
+</ul>
+<h4 id="威胁建模"><a href="#威胁建模" class="headerlink" title="威胁建模"></a>威胁建模</h4><p>构建威胁模型为人们提供了一个系统的方法，来对一个系统或者系统设计进行安全评估。<br>构建威胁模型有助于加深对一个系统中的人员、入口点和资产的透彻理解。</p>
+<p>流程：</p>
+<ol>
+<li>识别资产</li>
+<li>创建对系统&#x2F;架构的纵览</li>
+<li>剖析物联网系统</li>
+<li>识别威胁</li>
+<li>记录威胁</li>
+<li>对威胁进行评级</li>
+</ol>
+<p>STRIDE 模型：<br>威胁类型：身份欺骗、篡改数据、否认抵赖、信息泄漏、拒绝服务、权限提升、物理安全绕过、社会工程和供应链问题。</p>
+<p>威胁矩阵</p>
+<h3 id="物联网开发中的安全工程"><a href="#物联网开发中的安全工程" class="headerlink" title="物联网开发中的安全工程"></a>物联网开发中的安全工程</h3><p>在设计和开发中融入安全。</p>
+<p>微软 SDL：致力于解决安全需求并且引入了‘需求分类’这一概念，以此减轻开发团队在每个迭代周期内的负担。微软的技术提出了‘一次性、每次迭代、筒状安全需求’的概念。</p>
+<p>一次性需求：</p>
+<ul>
+<li>建立在整个开发中必须遵守的编码指南。</li>
+<li>为第三方组件和库建立许可软件列表。</li>
+</ul>
+<p>每次迭代：</p>
+<ul>
+<li>为了发现错误，在并入基线前对代码进行用行评审。</li>
+<li>确保在持续集成（CI）环境中通过静态代码分析工具运行代码。</li>
+</ul>
+<h4 id="安全设计"><a href="#安全设计" class="headerlink" title="安全设计"></a>安全设计</h4><h3 id="物联网身份识别和访问管理解决方案"><a href="#物联网身份识别和访问管理解决方案" class="headerlink" title="物联网身份识别和访问管理解决方案"></a>物联网身份识别和访问管理解决方案</h3><p>IAM</p>
+]]></content>
+      <tags>
+        <tag>嵌入式系统和IOT</tag>
+      </tags>
   </entry>
   <entry>
     <title>Python 装饰器</title>
@@ -2631,27 +2640,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Shell脚本常用过滤器命令</title>
-    <url>/2022/04/16/Shell%E8%84%9A%E6%9C%AC%E5%B8%B8%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;过滤器是Unix&#x2F;Linux下多道程序设计风格的重要部分，它和管道机制一起可以发挥巨大的作用。相比使用通用语言来完成同样的工作，过滤器&#x2F;管道设计更加简洁清晰，更加敏捷和健壮。另外，在不同种类的shell中，有些命令的部分功能可能不同。</p>
-<span id="more"></span>
-
-<h3 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h3><p>语法：</p>
-<h3 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h3><ul>
-<li><code>-v</code> ：反转模式匹配</li>
-</ul>
-<h3 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h3><h3 id="head和tail命令"><a href="#head和tail命令" class="headerlink" title="head和tail命令"></a>head和tail命令</h3><h3 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h3><h3 id="tr命令"><a href="#tr命令" class="headerlink" title="tr命令"></a>tr命令</h3><p>语法：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tr [-cdst][--help][--version][第一字符集][第二字符集]</span><br><span class="line">tr [OPTION]…SET1[SET2]</span><br></pre></td></tr></table></figure>
-
-<p>例子：<br><code>$ echo sasdas |tr a-z A-Z</code>  # 大小写转换</p>
-<h3 id="cut命令"><a href="#cut命令" class="headerlink" title="cut命令"></a>cut命令</h3><p>&emsp;&emsp;<strong>语法：</strong> <code>cut [-bcdfsz] FILE</code></p>
-<p>参考：<br><a href="https://www.runoob.com/linux/">Linux教程-菜鸟</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>TLS Protocol Analysis</title>
     <url>/2024/12/16/TLS-Protocol-Analysis/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>IEFT 在 <code>SSL v3.0</code> 的基础上制定了 SSL 的互联网标准版本，称为<strong>传输层安全</strong>（Transport Layer Security, TLS）协议。其目标是使 SSL 更安全，并使协议的规范更精确和完善。IEFT 在后续发布的 RFC 中建议禁用 SSL。</p>
@@ -2713,6 +2701,27 @@
       </categories>
   </entry>
   <entry>
+    <title>Shell脚本常用过滤器命令</title>
+    <url>/2022/04/16/Shell%E8%84%9A%E6%9C%AC%E5%B8%B8%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;过滤器是Unix&#x2F;Linux下多道程序设计风格的重要部分，它和管道机制一起可以发挥巨大的作用。相比使用通用语言来完成同样的工作，过滤器&#x2F;管道设计更加简洁清晰，更加敏捷和健壮。另外，在不同种类的shell中，有些命令的部分功能可能不同。</p>
+<span id="more"></span>
+
+<h3 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h3><p>语法：</p>
+<h3 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h3><ul>
+<li><code>-v</code> ：反转模式匹配</li>
+</ul>
+<h3 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h3><h3 id="head和tail命令"><a href="#head和tail命令" class="headerlink" title="head和tail命令"></a>head和tail命令</h3><h3 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h3><h3 id="tr命令"><a href="#tr命令" class="headerlink" title="tr命令"></a>tr命令</h3><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tr [-cdst][--help][--version][第一字符集][第二字符集]</span><br><span class="line">tr [OPTION]…SET1[SET2]</span><br></pre></td></tr></table></figure>
+
+<p>例子：<br><code>$ echo sasdas |tr a-z A-Z</code>  # 大小写转换</p>
+<h3 id="cut命令"><a href="#cut命令" class="headerlink" title="cut命令"></a>cut命令</h3><p>&emsp;&emsp;<strong>语法：</strong> <code>cut [-bcdfsz] FILE</code></p>
+<p>参考：<br><a href="https://www.runoob.com/linux/">Linux教程-菜鸟</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>TSP问题的数值模拟</title>
     <url>/2023/03/13/TSP%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>旅行商问题（Traveling SalesPerson Program, TSP）</code>是一个经典的组合优化问题。给定一个城市列表以及各相邻城市间的<strong>旅行代价值</strong>（例如物理距离），一个商人从出发城市开始，需要<strong>访问并且只访问一次</strong>其他所有城市后返回出发地，并要求旅行代价值最小。<br>&emsp;&emsp; 从图论的角度上分析，TSP 问题是 <strong>NP 完全问题</strong>。实际上，从工程实践的角度上看，它意味着在任何情况下，没有已知算法可以比<strong>穷举法</strong>更好地解决该问题。但是对于穷举法，随着顶点数的增加，会产生组合爆炸问题。<br>&emsp;&emsp;虽然如此，目前仍然存在许多近似算法和启发式算法可以使用，例如遗传算法、模拟退火法、蚁群算法、禁忌搜索算法、贪婪算法和神经网络等。</p>
@@ -2754,6 +2763,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h4 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h4><p><code>:new-session</code>创建新的会话<br><code>:attach-session (attach)</code> ：连接一个已经存在的会话或者新建一个会话<br><code>:attach -t &lt;seesion-id&gt;</code><br><code>:detach-client</code>或<code>d</code>：从当前会话退出</p>
 <h4 id="设置鼠标"><a href="#设置鼠标" class="headerlink" title="设置鼠标"></a>设置鼠标</h4><p><code>:set -g mouse on</code><br><code>:set -g mouse off</code></p>
 <h4 id="文本模式"><a href="#文本模式" class="headerlink" title="文本模式"></a>文本模式</h4><p><code>Ctrl+b+[</code> : 进入文本复制模式，然后按下 <code>Space</code> 空格键选择起始位置，<code>Enter</code> 键完成，<code>Ctrl+b+]</code> 粘贴。</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2845,28 +2876,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
-<span id="more"></span>
-
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -3001,33 +3010,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>《黑客与画家》读书笔记</title>
-    <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
-<h3 id="好设计是简单的设计"><a href="#好设计是简单的设计" class="headerlink" title="好设计是简单的设计"></a>好设计是简单的设计</h3><p>&emsp;&emsp;当你被迫把东西做的很简单时，你就被迫直接面对真正的问题。当你不能用表面的装饰交差时，你就不得不做好真正的本质部分。</p>
-<span id="more"></span>
-
-
-<h3 id="好设计是永不过时的设计"><a href="#好设计是永不过时的设计" class="headerlink" title="好设计是永不过时的设计"></a>好设计是永不过时的设计</h3><p>&emsp;&emsp;以永不过时作为目标是一种帮助自己找到最佳答案的方法:如果你不愿意别人的答案取代你的答案，你就只好自己做出最佳答案。<br>&emsp;&emsp;以永不过时作为目标也是一种避开时代风潮的方法。</p>
-<h3 id="好设计是解决主要问题的设计"><a href="#好设计是解决主要问题的设计" class="headerlink" title="好设计是解决主要问题的设计"></a>好设计是解决主要问题的设计</h3><p>&emsp;&emsp;答案可以不断改进，同样，问题本身也可以不断改进。</p>
-<h3 id="好设计是启发式的设计"><a href="#好设计是启发式的设计" class="headerlink" title="好设计是启发式的设计"></a>好设计是启发式的设计</h3><p>&emsp;&emsp;在建筑学和设计学中，这条原则意味着，一栋建筑或一个物品应该允许你按照自己的愿望来使用。在软件业中，这条原则意味着，你应该为用户提供一些基本模块，使得他们可以随心所欲自由组合，就像玩乐高积木那样。</p>
-<h3 id="好的设计通常是有点趣味性的设计"><a href="#好的设计通常是有点趣味性的设计" class="headerlink" title="好的设计通常是有点趣味性的设计"></a>好的设计通常是有点趣味性的设计</h3><p>&emsp;&emsp;好的设计并非一定有趣，但是很难想象完全无趣的设计会是好的设计。</p>
-<h3 id="好设计是艰苦的设计"><a href="#好设计是艰苦的设计" class="headerlink" title="好设计是艰苦的设计"></a>好设计是艰苦的设计</h3><p>&emsp;&emsp;在困难地点和预算不足的条件下，建筑师就只能做出很简练的设计。当解决难题成为压倒一切的任务时，那些流行样式和华丽装饰就被抛到一边去了。<br>&emsp;&emsp;你需要的是咬牙向前冲刺的痛苦，而不是脚被钉子扎破的痛苦。<br>&emsp;&emsp;功能应当决定形式。</p>
-<h3 id="好设计是看似容易的设计"><a href="#好设计是看似容易的设计" class="headerlink" title="好设计是看似容易的设计"></a>好设计是看似容易的设计</h3><p>&emsp;&emsp;但看似容易的设计，背后都需要大量的练习。</p>
-<h3 id="好设计是对称的设计"><a href="#好设计是对称的设计" class="headerlink" title="好设计是对称的设计"></a>好设计是对称的设计</h3><p>&emsp;&emsp;对称也许只是简洁性的一种体现，但是它十分重要。</p>
-<h3 id="好设计是模仿大自然的设计"><a href="#好设计是模仿大自然的设计" class="headerlink" title="好设计是模仿大自然的设计"></a>好设计是模仿大自然的设计</h3><p>&emsp;&emsp;并不是说模仿大自然这种行为本身有什么好，而是说大自然在长期的进化中已经解决了很多设计问题。所以，如果你的设计与大自然很接近，那基本上不会很差。</p>
-<h3 id="好设计是一种再设计"><a href="#好设计是一种再设计" class="headerlink" title="好设计是一种再设计"></a>好设计是一种再设计</h3><p>&emsp;&emsp;很少有人一次就可以把事情做对。专家的做法是先完成一个早期原型，然后提出修改计划，最后再把原型扔掉。<br>&emsp;&emsp;你应该培养对自己的不满。并且不要把犯错误看成灾难，要勇于承认、勇于改正。犯错误是很正常的事情。</p>
-<h3 id="好设计是能够复制的设计"><a href="#好设计是能够复制的设计" class="headerlink" title="好设计是能够复制的设计"></a>好设计是能够复制的设计</h3><p>&emsp;&emsp;有时候把事情做对，比原创更重要。<br>&emsp;&emsp;但也不要满足于一味的模仿。<br>&emsp;&emsp;最伟大的大师最终会达到一种超脱自我的境界。他们一心想找到正确答案，如果别人已经回答出了一部分，那就没理由不拿来用。他们足够自信地使用他人的成果，完全不担心因此丧失自己的特点。</p>
-<h3 id="好设计常常是奇特的设计"><a href="#好设计常常是奇特的设计" class="headerlink" title="好设计常常是奇特的设计"></a>好设计常常是奇特的设计</h3><p>&emsp;&emsp;如计算机中的Lisp语言。<br>&emsp;&emsp;但它是结果，而不是原因。爱因斯坦并不想让相对论变得很奇特，他只想找出真理，是真理本身显得很奇特。<br>&emsp;&emsp;你最后发展出来的风格是自然而然的结果。</p>
-<h3 id="好设计是成批出现的"><a href="#好设计是成批出现的" class="headerlink" title="好设计是成批出现的"></a>好设计是成批出现的</h3><p>&emsp;&emsp;推动人才成批出现的最大因素就是，让有天赋的人聚在一起，共同解决某个难题。<br>&emsp;&emsp;互相激励比天赋更重要。<br>&emsp;&emsp;在历史的任何时刻都有一些热点项目，一些团体在这些项目上做出了伟大的成绩。如果你远离这些中心，几乎不可能单靠自己取得伟大成果。在某种程度上，你个人最多可以对趋势产生一定的影响，但是你不可能决定趋势，实际上是趋势决定了你。（或许有人办得到，但是米兰的达芬奇显然没有办到。）</p>
-<h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-        <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>《麦田里的守望者》读书笔记</title>
     <url>/2017/10/10/%E3%80%8A%E9%BA%A6%E7%94%B0%E9%87%8C%E7%9A%84%E5%AE%88%E6%9C%9B%E8%80%85%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><em>本文是早期阅读时的摘抄笔记</em></p>
@@ -3056,6 +3038,64 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
 <span id="more"></span>
 <p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>《黑客与画家》读书笔记</title>
+    <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
+<h3 id="好设计是简单的设计"><a href="#好设计是简单的设计" class="headerlink" title="好设计是简单的设计"></a>好设计是简单的设计</h3><p>&emsp;&emsp;当你被迫把东西做的很简单时，你就被迫直接面对真正的问题。当你不能用表面的装饰交差时，你就不得不做好真正的本质部分。</p>
+<span id="more"></span>
+
+
+<h3 id="好设计是永不过时的设计"><a href="#好设计是永不过时的设计" class="headerlink" title="好设计是永不过时的设计"></a>好设计是永不过时的设计</h3><p>&emsp;&emsp;以永不过时作为目标是一种帮助自己找到最佳答案的方法:如果你不愿意别人的答案取代你的答案，你就只好自己做出最佳答案。<br>&emsp;&emsp;以永不过时作为目标也是一种避开时代风潮的方法。</p>
+<h3 id="好设计是解决主要问题的设计"><a href="#好设计是解决主要问题的设计" class="headerlink" title="好设计是解决主要问题的设计"></a>好设计是解决主要问题的设计</h3><p>&emsp;&emsp;答案可以不断改进，同样，问题本身也可以不断改进。</p>
+<h3 id="好设计是启发式的设计"><a href="#好设计是启发式的设计" class="headerlink" title="好设计是启发式的设计"></a>好设计是启发式的设计</h3><p>&emsp;&emsp;在建筑学和设计学中，这条原则意味着，一栋建筑或一个物品应该允许你按照自己的愿望来使用。在软件业中，这条原则意味着，你应该为用户提供一些基本模块，使得他们可以随心所欲自由组合，就像玩乐高积木那样。</p>
+<h3 id="好的设计通常是有点趣味性的设计"><a href="#好的设计通常是有点趣味性的设计" class="headerlink" title="好的设计通常是有点趣味性的设计"></a>好的设计通常是有点趣味性的设计</h3><p>&emsp;&emsp;好的设计并非一定有趣，但是很难想象完全无趣的设计会是好的设计。</p>
+<h3 id="好设计是艰苦的设计"><a href="#好设计是艰苦的设计" class="headerlink" title="好设计是艰苦的设计"></a>好设计是艰苦的设计</h3><p>&emsp;&emsp;在困难地点和预算不足的条件下，建筑师就只能做出很简练的设计。当解决难题成为压倒一切的任务时，那些流行样式和华丽装饰就被抛到一边去了。<br>&emsp;&emsp;你需要的是咬牙向前冲刺的痛苦，而不是脚被钉子扎破的痛苦。<br>&emsp;&emsp;功能应当决定形式。</p>
+<h3 id="好设计是看似容易的设计"><a href="#好设计是看似容易的设计" class="headerlink" title="好设计是看似容易的设计"></a>好设计是看似容易的设计</h3><p>&emsp;&emsp;但看似容易的设计，背后都需要大量的练习。</p>
+<h3 id="好设计是对称的设计"><a href="#好设计是对称的设计" class="headerlink" title="好设计是对称的设计"></a>好设计是对称的设计</h3><p>&emsp;&emsp;对称也许只是简洁性的一种体现，但是它十分重要。</p>
+<h3 id="好设计是模仿大自然的设计"><a href="#好设计是模仿大自然的设计" class="headerlink" title="好设计是模仿大自然的设计"></a>好设计是模仿大自然的设计</h3><p>&emsp;&emsp;并不是说模仿大自然这种行为本身有什么好，而是说大自然在长期的进化中已经解决了很多设计问题。所以，如果你的设计与大自然很接近，那基本上不会很差。</p>
+<h3 id="好设计是一种再设计"><a href="#好设计是一种再设计" class="headerlink" title="好设计是一种再设计"></a>好设计是一种再设计</h3><p>&emsp;&emsp;很少有人一次就可以把事情做对。专家的做法是先完成一个早期原型，然后提出修改计划，最后再把原型扔掉。<br>&emsp;&emsp;你应该培养对自己的不满。并且不要把犯错误看成灾难，要勇于承认、勇于改正。犯错误是很正常的事情。</p>
+<h3 id="好设计是能够复制的设计"><a href="#好设计是能够复制的设计" class="headerlink" title="好设计是能够复制的设计"></a>好设计是能够复制的设计</h3><p>&emsp;&emsp;有时候把事情做对，比原创更重要。<br>&emsp;&emsp;但也不要满足于一味的模仿。<br>&emsp;&emsp;最伟大的大师最终会达到一种超脱自我的境界。他们一心想找到正确答案，如果别人已经回答出了一部分，那就没理由不拿来用。他们足够自信地使用他人的成果，完全不担心因此丧失自己的特点。</p>
+<h3 id="好设计常常是奇特的设计"><a href="#好设计常常是奇特的设计" class="headerlink" title="好设计常常是奇特的设计"></a>好设计常常是奇特的设计</h3><p>&emsp;&emsp;如计算机中的Lisp语言。<br>&emsp;&emsp;但它是结果，而不是原因。爱因斯坦并不想让相对论变得很奇特，他只想找出真理，是真理本身显得很奇特。<br>&emsp;&emsp;你最后发展出来的风格是自然而然的结果。</p>
+<h3 id="好设计是成批出现的"><a href="#好设计是成批出现的" class="headerlink" title="好设计是成批出现的"></a>好设计是成批出现的</h3><p>&emsp;&emsp;推动人才成批出现的最大因素就是，让有天赋的人聚在一起，共同解决某个难题。<br>&emsp;&emsp;互相激励比天赋更重要。<br>&emsp;&emsp;在历史的任何时刻都有一些热点项目，一些团体在这些项目上做出了伟大的成绩。如果你远离这些中心，几乎不可能单靠自己取得伟大成果。在某种程度上，你个人最多可以对趋势产生一定的影响，但是你不可能决定趋势，实际上是趋势决定了你。（或许有人办得到，但是米兰的达芬奇显然没有办到。）</p>
+<h3 id="好设计常常是大胆的设计"><a href="#好设计常常是大胆的设计" class="headerlink" title="好设计常常是大胆的设计"></a>好设计常常是大胆的设计</h3><p>&emsp;&emsp;在任何一段历史中，人们都会把某些荒诞的东西当作正确的，并且深信不疑，以至于一旦你出言质疑，就有被排挤或者被暴力伤害的危险。<br>&emsp;&emsp;今天的实验性错误是明天的新理论。<br>&emsp;&emsp;大多数做出优美成果的人好像只是为了修正他们眼中的丑陋。伟大作品的出现常常来源于某人看到一样东西后，心想我能做得比这更好。<br>&emsp;&emsp;单单是无法容忍丑陋的东西还不够，只有对这个领域非常熟悉，你才可能发现哪些地方可以动手改进。你必须锻炼自己。只有在成为某个领域的专家之后，你才会听到心里有一个细微的声音说:“这样解决太糟糕了！一定有更好的选择。”不要忽视这种声音，要培育它们。优秀作品的秘诀就是:非常严格的品味，再加上贯实现这种品味的能力。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+        <category>软件工程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>制作MultiBoot USB启动盘</title>
+    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+<span id="more"></span>
+
+<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
+<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
+<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
+<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>可怜的伊壁鸠鲁</title>
+    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
+    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
+<span id="more"></span>
+
+
+<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
+<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
+<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
+<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
 ]]></content>
       <categories>
         <category>读书笔记</category>
@@ -3105,37 +3145,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>制作MultiBoot USB启动盘</title>
-    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
-<span id="more"></span>
-
-<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
-<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
-<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
-<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>可怜的伊壁鸠鲁</title>
-    <url>/2020/05/13/%E5%8F%AF%E6%80%9C%E7%9A%84%E4%BC%8A%E5%A3%81%E9%B8%A0%E9%B2%81/</url>
-    <content><![CDATA[<p><em>早期阅读伊壁鸠鲁哲学时所作笔记小诗。</em><br>——————<br>他用地面上所发生的自然现象<br>来类比解释天上的事情</p>
-<span id="more"></span>
-
-
-<p>他急切地想要把神<br>从它那多余的职位上拉下来<br>然后放逐它到宇宙之外安度晚年<br>不要再来管人间的事情</p>
-<p>他急功近利地列举各种自然的解释<br>来尝试揭示占星术士是一群疯子</p>
-<p>这个无神论者<br>凭持着德谟克里特——<br>那个时代最有力的武器<br>来攻击宗教迷信</p>
-<p>他制造了一个花园，并声称<br>在那里，没有恐惧和烦恼</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
