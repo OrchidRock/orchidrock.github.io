@@ -3415,7 +3415,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>比特币所使用的技术并非都是新的，而是建立在数十年的密码学和分布式网络的之上的，包括默克尔树、哈希函数、公钥密钥学及其对应的数学签名的研究。另外，<strong>BitGold</strong>、<strong>B-money</strong>、<strong>HashCash</strong> 和加密时间戳记等技术也为比特币提供了理论基础。</p>
 <p>比特币中已经解决的关键问题包括：<code>双重支付问题(double-spending problem)</code> 的实用解决方案和<code>拜占庭将军问题</code>的解决方案。</p>
 <span id="more"></span>
-]]></content>
+
+<h2 id="共识及其证明"><a href="#共识及其证明" class="headerlink" title="共识及其证明"></a>共识及其证明</h2>]]></content>
       <categories>
         <category>信息安全</category>
         <category>区块链</category>
