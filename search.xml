@@ -26,222 +26,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CMake 构建工具介绍</title>
-    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
-</blockquote>
-<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
-<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
-<li>与平台环境耦合性强，跨平台性不足</li>
-</ul>
-<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
-<ul>
-<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
-<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
-<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
-<li><strong>以目标（target）为中心的方法论</strong>：</li>
-<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
-<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
-<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
-<li><strong>组件化&#x2F;模块化</strong>：</li>
-<li>支持多种构建模式</li>
-</ul>
-<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
-<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>命令</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>库</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
-<td><code>add_library(mylib mylib.cxx)</code></td>
-</tr>
-<tr>
-<td>可执行文件</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
-<td><code>add_executable(demo2 demo2.c)</code></td>
-</tr>
-<tr>
-<td>自定义目标</td>
-<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
-<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
-</tr>
-</tbody></table>
-<p><strong>注意</strong>：</p>
-<ul>
-<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
-</ul>
-<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
-
-<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
-<p>相关命令表：</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">描述</th>
-<th align="left">示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
-<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
-<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
-<td align="left">None</td>
-</tr>
-<tr>
-<td align="left">set_property()</td>
-<td align="left">None</td>
-<td align="left">None</td>
-</tr>
-</tbody></table>
-<p>命令模式：</p>
-<ul>
-<li><code>PUBLIC</code>：</li>
-<li><code>PRIVATE</code>：</li>
-<li><code>INTERFACE</code>：</li>
-</ul>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
-
-<p>使用要求的传播（Transitive Usage Requirements）：</p>
-<ul>
-<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
-</ul>
-<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
-<ul>
-<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
-<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
-</ul>
-<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
-<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
-<thead>
-<tr>
-<th align="left">名字</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">set</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">option (ccmake)</td>
-<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
-</tr>
-<tr>
-<td align="left">list</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">target_compile_options()</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">set_target_properties</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">configure_file</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">add_subdirectory</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">install</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
-<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
-<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>CMAKE_PREFIX_PATH</strong></td>
-<td>依赖包路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_MODULE_PATH</strong></td>
-<td>CMake扩展模块所在路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
-<td>当执行<strong>install</strong> 目标时的安装路径</td>
-</tr>
-<tr>
-<td><strong>CMAKE_BUILD_TYPE</strong></td>
-<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
-</tr>
-<tr>
-<td><strong>BUILD_SHARED_LIBS</strong></td>
-<td>指定<code>add_library()</code>生成静态库还是动态库</td>
-</tr>
-</tbody></table>
-<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
-<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
-<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>构建工具</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -437,6 +221,222 @@
       <categories>
         <category>GNU/Linux操作系统</category>
       </categories>
+  </entry>
+  <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CMake 构建工具介绍</title>
+    <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
+</blockquote>
+<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
+<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
+<li>与平台环境耦合性强，跨平台性不足</li>
+</ul>
+<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<ul>
+<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
+<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
+<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
+<li><strong>以目标（target）为中心的方法论</strong>：</li>
+<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
+<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
+<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
+<li><strong>组件化&#x2F;模块化</strong>：</li>
+<li>支持多种构建模式</li>
+</ul>
+<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
+<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>库</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
+<td><code>add_library(mylib mylib.cxx)</code></td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
+<td><code>add_executable(demo2 demo2.c)</code></td>
+</tr>
+<tr>
+<td>自定义目标</td>
+<td><a href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
+<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
+</ul>
+<p>将库链接到可执行文件：<a href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
+<p>相关命令表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
+<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><a href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
+<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left">set_property()</td>
+<td align="left">None</td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
+<p>命令模式：</p>
+<ul>
+<li><code>PUBLIC</code>：</li>
+<li><code>PRIVATE</code>：</li>
+<li><code>INTERFACE</code>：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
+
+<p>使用要求的传播（Transitive Usage Requirements）：</p>
+<ul>
+<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
+</ul>
+<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
+<ul>
+<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
+</ul>
+<p>可以参考 <a href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">set</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">option (ccmake)</td>
+<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
+</tr>
+<tr>
+<td align="left">list</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">target_compile_options()</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">set_target_properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configure_file</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">add_subdirectory</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
+<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
+<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_PREFIX_PATH</strong></td>
+<td>依赖包路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td>CMake扩展模块所在路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>当执行<strong>install</strong> 目标时的安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
+</tr>
+<tr>
+<td><strong>BUILD_SHARED_LIBS</strong></td>
+<td>指定<code>add_library()</code>生成静态库还是动态库</td>
+</tr>
+</tbody></table>
+<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>打印变量列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
+<li>打印命令列表<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>构建工具</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>CUDA Tutorial</title>
@@ -1454,45 +1454,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Landscape 源码分析</title>
-    <url>/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://ubuntu.com/landscape">Landscape</a> 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。<code>Landscape Server</code> 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。<code>Landscape Client</code> 安装在 Ubuntu 上，并向 Server 注册。<br>Landscape 自动化了整个 Ubuntu 系统的安全补丁、审计、访问管理和合规性任务。</p>
-<p>Landscape 源代码使用了 <a href="https://twisted.org/">Twisted</a> 事件驱动网络引擎。</p>
-<span id="more"></span>
-
-<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p>在 landscape 包的<code>init.py</code>中我们看到定义了一些变量，这些变量几乎都和版本号有关，这些变量类似于 C 语言中的全局宏定义。</p>
-<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p>Landscape-client 可以<code>root</code>用户运行，进而可以使用一些高级管理特性，如果不需要使用这种特性时，可以使用<code>landscape</code>用户运行。通过修改<code>/etc/default/landscape-client</code>和<code>/etc/landscape/client.conf</code>文件可以办到（具体细节见项目代码<code>README</code>）。</p>
-<h3 id="watchdog-模块"><a href="#watchdog-模块" class="headerlink" title="watchdog 模块"></a>watchdog 模块</h3><p>代码位置：<code>landscape/client/watchdog.py</code></p>
-<p><strong>watchdog</strong> 是最高层的代码，它清理运行环境，载入配置文件，然后启动 <strong>ractor</strong> 循环。</p>
-<p>a. <code>clean_environment()</code>：该函数清除一些危险和敏感的变量。<br>b. 载入配置文件 : 和配置文件相关的工作被抽象为一系列具有继承关系的类，有些类在不同的模块中被重用。</p>
-<pre class="mermaid">classDiagram
-    landscape_lib_BaseConfiguration <-- landscape_client_deployment_BaseConfiguration
-    landscape_client_deployment_BaseConfiguration <-- landscape_client_deployment_Configuration
-    landscape_client_deployment_Configuration <-- landscape_client_watchdog_WatchDogConfiguration</pre>
-
-<p>c. 执行用户限制（只允许<code>landscape</code>或者<code>root</code>用户执行）；初始化 <code>logging</code>。<br>d. 实例化<code>WatchDogService</code>服务， 并成为application的子服务，启动<code>ractor</code>.</p>
-<h4 id="WatchDogService"><a href="#WatchDogService" class="headerlink" title="WatchDogService"></a>WatchDogService</h4><p><code>WatchDogService</code>继承自<code>twisted.service</code>，实例化时传递<code>WatchDogConfiguration</code>配置参数到私有实例变量<code>_config</code>。</p>
-<p>a. <code>resource</code>包来自于标准库，用来测试和控制系统资源的分配。<code>soft limit</code>与<code>hard limit</code>的区别，只有<code>root</code>进程可以提升<code>hard limit</code>（参考Linux&#x2F;Unix系统编程手册）。 资源类型包括 CPU 运行时间、可以生成文件的最大空间、进程堆&#x2F;栈的大小、打开文件描述符的数量（<code>RLIMIT_NOFILE</code>）等等。<br>b. <code>WatchDogService</code>的<code>startService</code>方法首先生成<code>BootStrapList</code>中的文件或者目录，然后设置资源限制，最后生成已经<code>callback</code>激发的<code>Defered</code>对象，<br>该对象增加的回调链:</p>
-<p>watchdog.check_running() | past<br>start_if_not_running() | die()</p>
-<p><code>watchdog</code>是在<code>WatchDogService</code>初始化时<code>WatchDog</code>类的实例对象。</p>
-<p><code>start_if_not_running</code>方法会调用<code>_daemonize()</code>方法，该方法根据实际参数判断自己是否要成为一个<code>daemon</code>进程，如果是的话，就调用<code>daemonize function</code>，该函数会调用 os 的底层 API，调用两次<code>fork()</code>，并让父进程自杀，其他具体细节可参考 Linux&#x2F;Unix系统编程手册。 最后调用<code>watchdog</code>的<code>start</code>方法，它根据条件启动其他<code>daemons</code>并进行监控。</p>
-<p>e. <code>stopService</code>方法<br>它主要工作是调用<code>watchdog</code>的<code>request_exit</code>方法，该方法会做比较精细复杂的工作来小心地让自己和其他<code>daemons</code>终止，比如避免重启。</p>
-<p>f. 不管是<code>startService</code>还是<code>stopService</code>方法返回的都是<code>Defered</code>对象或者<code>DeferedList</code>对象，这些对象会被<code>Twisted</code>内部使用。</p>
-<h4 id="WatchDog-类"><a href="#WatchDog-类" class="headerlink" title="WatchDog 类"></a>WatchDog 类</h4><p><code>WatchDog</code>类负责启动其他所有的<code>daemons</code>(包括<code>broker</code>，<code>Monitor</code>，<code>Manager</code>等)并确保它们运行。这些<code>daemons</code>运行在不同的<code>ractor</code>循环中，使用<code>AMP</code>协议通信。 <code>landscape_reactor</code>是<code>EventHandlingReactor</code>类的实例对象。</p>
-<p>a. <code>EventHandlingReactor</code>类封装了<code>twisted.internet.reactor</code>，继承自<code>EventHandlingReactorMixin</code>类，增加事件处理特性。 其中<code>callInThread</code>来源于<code>Twisted</code>对于多线程的支持。<code>Twisted</code>更多应用于 I&#x2F;O 密集型应用，即任务的计算任务不会持续很长时间，但是如果有一个<br>任务很耗时的话，<code>Twisted</code>的<code>ractor</code>循环此时完全被该任务占用，其他任务会面临饥饿的问题。因此将该任务放到辅助线程中去执行，<code>reactor</code>主循环可以得到解放。<code>callFromThread</code>中的function可以立即在<code>reactor</code>线程中执行，但不保证线程安全，即<code>reactor</code>立即被切换？如果它正在执行任务如何？。如果该 function一直在运行，<code>reactor</code>被阻塞，其他任务会面临饥饿问题。参看链接2和3。</p>
-<p>b. <code>EventHandingReactorMixin</code>类负责激活在被标识事件上绑定的<code>handlers</code>。重要的一点是这些事件的处理是同步的还是异步的？ <code>call_on</code>方法注册事件<code>handler</code>，一个事件类型可以绑定多个<code>handler</code>，并根据<code>handler</code>的优先级排序。 <code>fair</code>方法根据优先级顺序激发一个事件类型的所有<code>handler</code>，并返回所有<code>handler</code>的执行结果。 这些执行结果或许是<code>Defered</code>，即它的结果还不能立即得到。 <code>cancel_call</code>方法删除事件的某个<code>handler</code>绑定。</p>
-<p>c. <code>EventID</code>类，对于每个<code>handler</code>只对应一种事件类型，因此（event_type， (handler， priority)）可以唯一标识一个<code>handler</code>。</p>
-<p>d. <code>WatchDog</code>注册了<code>SIGUSR1</code>信号的<code>handler</code>，该<code>handler</code>会通知所有<code>daemons</code>调用<code>rotate_logs()</code>。</p>
-<p>e. <code>check_running</code>方法检测哪些<code>daemons</code>正在运行，结果放在一个<code>List</code>中，但结果本身是一个<code>Defered</code>对象。<code>gather_results</code>将所有<code>Defereds</code>放到<code>DeferedList</code>对象中管理。<code>DeferdList</code>会等待所有其管理的<code>Defereds</code>回调链完成后再运行自己的回调链，这样正好实现异步形式的<code>check_running</code>方法。</p>
-<p>f. <code>start</code>方法启动所有其他的<code>daemons</code>，并调用<code>start_minitoring</code>监控它们的进程状态。<code>start_monitoring</code>方法会启动一个回调<code>_check</code>方法，<code>_check</code>方法在完成一次<code>check</code>后增加自己到<code>reactor</code>回调链中，延时 5 秒。当检测到某个<code>daemon</code>在 5 次探测中均没有回复，<code>WatchDog</code>判断该<code>daemon</code>已经死掉，所以接下来就重启它，并清零探测失败计数器。</p>
-<h4 id="Daemon类和其子类"><a href="#Daemon类和其子类" class="headerlink" title="Daemon类和其子类"></a>Daemon类和其子类</h4><h4 id="WatchedProcessProtocol类"><a href="#WatchedProcessProtocol类" class="headerlink" title="WatchedProcessProtocol类"></a>WatchedProcessProtocol类</h4><h3 id="amp-模块"><a href="#amp-模块" class="headerlink" title="amp 模块"></a>amp 模块</h3><h3 id="Service-相关模块和类"><a href="#Service-相关模块和类" class="headerlink" title="Service 相关模块和类"></a>Service 相关模块和类</h3><h3 id="Monitor模块"><a href="#Monitor模块" class="headerlink" title="Monitor模块"></a>Monitor模块</h3><h3 id="Manager模块"><a href="#Manager模块" class="headerlink" title="Manager模块"></a>Manager模块</h3><h3 id="Bootstrap相关的类"><a href="#Bootstrap相关的类" class="headerlink" title="Bootstrap相关的类"></a>Bootstrap相关的类</h3><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="Configuration相关的类"></a>Configuration相关的类</h3><p><code>BootstrapList</code>类是其他类列表的分发器，这个列表中的元素甚至可以是它自己的实例对象，遵循闭包设计。<br><code>BootstrapPath</code>是<code>BootsrapFile</code>和<code>BootstrapDirectory</code>的父类，它通过模块生成文件路径（或文件或目录），并设置其用户属性<code>(chown)</code>和访问权限<code>(chmod)</code>。<br><code>BootstrapFile</code>对应文件，<code>BootstrapDirectory</code>对应目录。</p>
-<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>遵循分离设计，重要的是<code>watchdog</code>，<code>monitor</code>，<code>broker</code>，<code>manager</code>都有自己的<code>logger</code>，因此它们的日志可以分开处理，但仍然使用相同的<code>logging APIs</code>。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LLVM 项目介绍</title>
     <url>/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; <a href="https://llvm.org/">LLVM</a> 是一套开源的编译器基础设施项目, 它包含了一系列模块化的编译器组件和工具链。</p>
@@ -1567,6 +1528,45 @@
       <categories>
         <category>编译器</category>
         <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Landscape 源码分析</title>
+    <url>/2024/12/22/Landscape-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://ubuntu.com/landscape">Landscape</a> 是一个集群监控管理软件，它可以作为 web 服务来使用或者直接使用 API。<code>Landscape Server</code> 可以通过 Canonical 作为托管解决方案或者 Software-as-a-Server 模型，也可以自行托管。<code>Landscape Client</code> 安装在 Ubuntu 上，并向 Server 注册。<br>Landscape 自动化了整个 Ubuntu 系统的安全补丁、审计、访问管理和合规性任务。</p>
+<p>Landscape 源代码使用了 <a href="https://twisted.org/">Twisted</a> 事件驱动网络引擎。</p>
+<span id="more"></span>
+
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p>在 landscape 包的<code>init.py</code>中我们看到定义了一些变量，这些变量几乎都和版本号有关，这些变量类似于 C 语言中的全局宏定义。</p>
+<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p>Landscape-client 可以<code>root</code>用户运行，进而可以使用一些高级管理特性，如果不需要使用这种特性时，可以使用<code>landscape</code>用户运行。通过修改<code>/etc/default/landscape-client</code>和<code>/etc/landscape/client.conf</code>文件可以办到（具体细节见项目代码<code>README</code>）。</p>
+<h3 id="watchdog-模块"><a href="#watchdog-模块" class="headerlink" title="watchdog 模块"></a>watchdog 模块</h3><p>代码位置：<code>landscape/client/watchdog.py</code></p>
+<p><strong>watchdog</strong> 是最高层的代码，它清理运行环境，载入配置文件，然后启动 <strong>ractor</strong> 循环。</p>
+<p>a. <code>clean_environment()</code>：该函数清除一些危险和敏感的变量。<br>b. 载入配置文件 : 和配置文件相关的工作被抽象为一系列具有继承关系的类，有些类在不同的模块中被重用。</p>
+<pre class="mermaid">classDiagram
+    landscape_lib_BaseConfiguration <-- landscape_client_deployment_BaseConfiguration
+    landscape_client_deployment_BaseConfiguration <-- landscape_client_deployment_Configuration
+    landscape_client_deployment_Configuration <-- landscape_client_watchdog_WatchDogConfiguration</pre>
+
+<p>c. 执行用户限制（只允许<code>landscape</code>或者<code>root</code>用户执行）；初始化 <code>logging</code>。<br>d. 实例化<code>WatchDogService</code>服务， 并成为application的子服务，启动<code>ractor</code>.</p>
+<h4 id="WatchDogService"><a href="#WatchDogService" class="headerlink" title="WatchDogService"></a>WatchDogService</h4><p><code>WatchDogService</code>继承自<code>twisted.service</code>，实例化时传递<code>WatchDogConfiguration</code>配置参数到私有实例变量<code>_config</code>。</p>
+<p>a. <code>resource</code>包来自于标准库，用来测试和控制系统资源的分配。<code>soft limit</code>与<code>hard limit</code>的区别，只有<code>root</code>进程可以提升<code>hard limit</code>（参考Linux&#x2F;Unix系统编程手册）。 资源类型包括 CPU 运行时间、可以生成文件的最大空间、进程堆&#x2F;栈的大小、打开文件描述符的数量（<code>RLIMIT_NOFILE</code>）等等。<br>b. <code>WatchDogService</code>的<code>startService</code>方法首先生成<code>BootStrapList</code>中的文件或者目录，然后设置资源限制，最后生成已经<code>callback</code>激发的<code>Defered</code>对象，<br>该对象增加的回调链:</p>
+<p>watchdog.check_running() | past<br>start_if_not_running() | die()</p>
+<p><code>watchdog</code>是在<code>WatchDogService</code>初始化时<code>WatchDog</code>类的实例对象。</p>
+<p><code>start_if_not_running</code>方法会调用<code>_daemonize()</code>方法，该方法根据实际参数判断自己是否要成为一个<code>daemon</code>进程，如果是的话，就调用<code>daemonize function</code>，该函数会调用 os 的底层 API，调用两次<code>fork()</code>，并让父进程自杀，其他具体细节可参考 Linux&#x2F;Unix系统编程手册。 最后调用<code>watchdog</code>的<code>start</code>方法，它根据条件启动其他<code>daemons</code>并进行监控。</p>
+<p>e. <code>stopService</code>方法<br>它主要工作是调用<code>watchdog</code>的<code>request_exit</code>方法，该方法会做比较精细复杂的工作来小心地让自己和其他<code>daemons</code>终止，比如避免重启。</p>
+<p>f. 不管是<code>startService</code>还是<code>stopService</code>方法返回的都是<code>Defered</code>对象或者<code>DeferedList</code>对象，这些对象会被<code>Twisted</code>内部使用。</p>
+<h4 id="WatchDog-类"><a href="#WatchDog-类" class="headerlink" title="WatchDog 类"></a>WatchDog 类</h4><p><code>WatchDog</code>类负责启动其他所有的<code>daemons</code>(包括<code>broker</code>，<code>Monitor</code>，<code>Manager</code>等)并确保它们运行。这些<code>daemons</code>运行在不同的<code>ractor</code>循环中，使用<code>AMP</code>协议通信。 <code>landscape_reactor</code>是<code>EventHandlingReactor</code>类的实例对象。</p>
+<p>a. <code>EventHandlingReactor</code>类封装了<code>twisted.internet.reactor</code>，继承自<code>EventHandlingReactorMixin</code>类，增加事件处理特性。 其中<code>callInThread</code>来源于<code>Twisted</code>对于多线程的支持。<code>Twisted</code>更多应用于 I&#x2F;O 密集型应用，即任务的计算任务不会持续很长时间，但是如果有一个<br>任务很耗时的话，<code>Twisted</code>的<code>ractor</code>循环此时完全被该任务占用，其他任务会面临饥饿的问题。因此将该任务放到辅助线程中去执行，<code>reactor</code>主循环可以得到解放。<code>callFromThread</code>中的function可以立即在<code>reactor</code>线程中执行，但不保证线程安全，即<code>reactor</code>立即被切换？如果它正在执行任务如何？。如果该 function一直在运行，<code>reactor</code>被阻塞，其他任务会面临饥饿问题。参看链接2和3。</p>
+<p>b. <code>EventHandingReactorMixin</code>类负责激活在被标识事件上绑定的<code>handlers</code>。重要的一点是这些事件的处理是同步的还是异步的？ <code>call_on</code>方法注册事件<code>handler</code>，一个事件类型可以绑定多个<code>handler</code>，并根据<code>handler</code>的优先级排序。 <code>fair</code>方法根据优先级顺序激发一个事件类型的所有<code>handler</code>，并返回所有<code>handler</code>的执行结果。 这些执行结果或许是<code>Defered</code>，即它的结果还不能立即得到。 <code>cancel_call</code>方法删除事件的某个<code>handler</code>绑定。</p>
+<p>c. <code>EventID</code>类，对于每个<code>handler</code>只对应一种事件类型，因此（event_type， (handler， priority)）可以唯一标识一个<code>handler</code>。</p>
+<p>d. <code>WatchDog</code>注册了<code>SIGUSR1</code>信号的<code>handler</code>，该<code>handler</code>会通知所有<code>daemons</code>调用<code>rotate_logs()</code>。</p>
+<p>e. <code>check_running</code>方法检测哪些<code>daemons</code>正在运行，结果放在一个<code>List</code>中，但结果本身是一个<code>Defered</code>对象。<code>gather_results</code>将所有<code>Defereds</code>放到<code>DeferedList</code>对象中管理。<code>DeferdList</code>会等待所有其管理的<code>Defereds</code>回调链完成后再运行自己的回调链，这样正好实现异步形式的<code>check_running</code>方法。</p>
+<p>f. <code>start</code>方法启动所有其他的<code>daemons</code>，并调用<code>start_minitoring</code>监控它们的进程状态。<code>start_monitoring</code>方法会启动一个回调<code>_check</code>方法，<code>_check</code>方法在完成一次<code>check</code>后增加自己到<code>reactor</code>回调链中，延时 5 秒。当检测到某个<code>daemon</code>在 5 次探测中均没有回复，<code>WatchDog</code>判断该<code>daemon</code>已经死掉，所以接下来就重启它，并清零探测失败计数器。</p>
+<h4 id="Daemon类和其子类"><a href="#Daemon类和其子类" class="headerlink" title="Daemon类和其子类"></a>Daemon类和其子类</h4><h4 id="WatchedProcessProtocol类"><a href="#WatchedProcessProtocol类" class="headerlink" title="WatchedProcessProtocol类"></a>WatchedProcessProtocol类</h4><h3 id="amp-模块"><a href="#amp-模块" class="headerlink" title="amp 模块"></a>amp 模块</h3><h3 id="Service-相关模块和类"><a href="#Service-相关模块和类" class="headerlink" title="Service 相关模块和类"></a>Service 相关模块和类</h3><h3 id="Monitor模块"><a href="#Monitor模块" class="headerlink" title="Monitor模块"></a>Monitor模块</h3><h3 id="Manager模块"><a href="#Manager模块" class="headerlink" title="Manager模块"></a>Manager模块</h3><h3 id="Bootstrap相关的类"><a href="#Bootstrap相关的类" class="headerlink" title="Bootstrap相关的类"></a>Bootstrap相关的类</h3><h3 id="Configuration相关的类"><a href="#Configuration相关的类" class="headerlink" title="Configuration相关的类"></a>Configuration相关的类</h3><p><code>BootstrapList</code>类是其他类列表的分发器，这个列表中的元素甚至可以是它自己的实例对象，遵循闭包设计。<br><code>BootstrapPath</code>是<code>BootsrapFile</code>和<code>BootstrapDirectory</code>的父类，它通过模块生成文件路径（或文件或目录），并设置其用户属性<code>(chown)</code>和访问权限<code>(chmod)</code>。<br><code>BootstrapFile</code>对应文件，<code>BootstrapDirectory</code>对应目录。</p>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>遵循分离设计，重要的是<code>watchdog</code>，<code>monitor</code>，<code>broker</code>，<code>manager</code>都有自己的<code>logger</code>，因此它们的日志可以分开处理，但仍然使用相同的<code>logging APIs</code>。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -2334,60 +2334,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python 装饰器</title>
-    <url>/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
-<blockquote>
-<p>主要翻译自：<a href="https://realpython.com/primer-on-python-decorators/">Primer on Python Decorators</a> by <em>Geir Arne Hjelle</em>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><strong>注意</strong>： Python 尽管不是纯粹的函数式编程语言（如与 Lisp 相比），但仍然支持许多函数式编程的概念，包括函数作为第一级状态对象（first-class objects）。（这与 python 的 <code>everything is a object</code> 也是保持一致的。）</p>
-<p>###1.1 First-Class Objects<br>函数作为第一级对象意味着 <strong>函数可以被作为参数传递</strong>，就如其他对象（如 <code>string</code>，<code>float</code>, <code>list</code>等）一样。示例如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">be_awesome</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Yo <span class="subst">&#123;name&#125;</span>, together we are the awesomest!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet_bob</span>(<span class="params">greeter_func</span>):</span><br><span class="line">    <span class="keyword">return</span> greeter_func(<span class="string">&quot;Bob&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><code>say_hello()</code> 和 <code>be_awesome</code> 是普通的函数，而<code>greet_bob()</code> 函数将一个函数作为它的参数，例如我们可以将 <code>say_hello</code> 的引用传递给它：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet_bob(say_hello)</span></span><br><span class="line">&#x27;Hello Bob&#x27;</span><br></pre></td></tr></table></figure>
-<p>在 Python 中，<strong>函数的参数都是引用</strong>（具体实现可参考 <a href="https://stonetough.com/index.php/archives/244/">Python Internals</a>），<code>say_hello</code> 作为<code>greet_bob</code>的参数时不会被执行，它只会在 <code>greet_bob</code> 的函数体中被执行。</p>
-<h3 id="Inner-函数"><a href="#Inner-函数" class="headerlink" title="Inner 函数"></a>Inner 函数</h3><p><code>Inner函数</code>是定义在函数中的函数，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printing from the parent() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the first_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the second_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    second_child()</span><br><span class="line">    first_child()</span><br></pre></td></tr></table></figure>
-
-<p><code>first_child()</code> 和 <code>second_child()</code> 作为 <code>parent()</code> 的内部函数，它们存在于<code>parent()</code>函数的内部域中，也就是说，如果在<code>parent()</code>外调用它们则会失败：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">NameError: name &#x27;first_child&#x27; is not defined</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="函数作为返回值"><a href="#函数作为返回值" class="headerlink" title="函数作为返回值"></a>函数作为返回值</h3><p>函数可以作为返回值，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hi, I am Emma&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Call me Liam&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> first_child</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> second_child</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>parent()</code> 函数返回的是<code>first_child()</code>和<code>second_child()</code>函数的引用，如果要调用它们，需要加’()’，如下所示：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first = parent(1)</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second = parent(2)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.first_child at 0x7f599f1e2e18&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.second_child at 0x7f599dad5268&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first()</span></span><br><span class="line">&#x27;Hi, I am Emma&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second()</span></span><br><span class="line">&#x27;Call me Liam&#x27;</span><br></pre></td></tr></table></figure>
-
-<h2 id="简单的装饰器"><a href="#简单的装饰器" class="headerlink" title="简单的装饰器"></a>简单的装饰器</h2><p>先看一个简单的例子：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_whee = my_decorator(say_whee)</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Something is happening before the function is called.</span><br><span class="line">Whee!</span><br><span class="line">Something is happening after the function is called.</span><br></pre></td></tr></table></figure>
-
-<p><code>say_whee()</code> 函数的引用作为 <code>my_decorator()</code> 参数传入，<code>my_decorator()</code>函数返回其内部函数 <code>wrapper()</code> 的引用，并赋值给 <code>say_whee</code>。因此，在全局环境中，<code>say_whee</code>标识符不再绑定为 <code>say_whee()</code> 函数，而是绑定为 <code>wrapper()</code>函数。然而，<code>wrapper()</code> 函数在它的上下文环境中保存了原来的 <code>say_whee()</code> 函数的引用。（在这里，过程和数据的概念不再是完全对立的，过程可以是数据，数据也可以是过程。）</p>
-<p>简单来说，<strong>装饰器包装了一个函数，修改了它的行为。</strong></p>
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><p>上述装饰 <code>say_whee()</code> 函数的做法是有些繁琐的，所以在 Python 中允许使用 <code>@</code>符号来简单地使用装饰器，下面的例子做了同样的事情，但更加简洁：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="重用装饰器"><a href="#重用装饰器" class="headerlink" title="重用装饰器"></a>重用装饰器</h3><p>装饰器函数可以单独定义在一个模块中，其他模块可以通过 <code>import</code> 导入它。</p>
-<h3 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h3><p>在内部包装函数中使用 ** *args ** 和 ** *kwargs **作为形参，使得它可以接受任意的位置参数和关键字参数，如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>测试：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Whee!</span><br><span class="line">Whee!</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet(<span class="string">&quot;World&quot;</span>)</span></span><br><span class="line">Hello World</span><br><span class="line">Hello World</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="从装饰器函数中返回值"><a href="#从装饰器函数中返回值" class="headerlink" title="从装饰器函数中返回值"></a>从装饰器函数中返回值</h3><p>如果被装饰的函数有返回值，我们只需要在包装函数中返回这个返回值即可。如下所示：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">return_greeting</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hi <span class="subst">&#123;name&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; return_greeting(<span class="string">&quot;Adam&quot;</span>)</span></span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line">&#x27;Hi Adam&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="使用-functools-wraps"><a href="#使用-functools-wraps" class="headerlink" title="使用 @functools.wraps()"></a>使用 @functools.wraps()</h3><h2 id="更有用的例子"><a href="#更有用的例子" class="headerlink" title="更有用的例子"></a>更有用的例子</h2>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Python 元类</title>
     <url>/2022/11/20/Python-%E5%85%83%E7%B1%BB/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，<strong>everything is a object</strong>，类也不例外。当把类看作对象时，类也是可以是被<code>动态创建</code>的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。<code>type</code> 是 python 内置的元类，用户也可以创建自己的元类。</p>
@@ -2466,6 +2412,60 @@
       </categories>
   </entry>
   <entry>
+    <title>Python 装饰器</title>
+    <url>/2022/10/23/Python-%E8%A3%85%E9%A5%B0%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="https://stonetough.com/index.php/archives/73/">Python3某些强大的特性与Lisp的关系</a> 一文中提到 Python 装饰器提供了一种定义<strong>高阶函数</strong>的语法。从定义上说，装饰器是一个以另一个函数为参数的函数，它将隐式地扩展或修改这个函数的行为。</p>
+<blockquote>
+<p>主要翻译自：<a href="https://realpython.com/primer-on-python-decorators/">Primer on Python Decorators</a> by <em>Geir Arne Hjelle</em>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><strong>注意</strong>： Python 尽管不是纯粹的函数式编程语言（如与 Lisp 相比），但仍然支持许多函数式编程的概念，包括函数作为第一级状态对象（first-class objects）。（这与 python 的 <code>everything is a object</code> 也是保持一致的。）</p>
+<p>###1.1 First-Class Objects<br>函数作为第一级对象意味着 <strong>函数可以被作为参数传递</strong>，就如其他对象（如 <code>string</code>，<code>float</code>, <code>list</code>等）一样。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">be_awesome</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Yo <span class="subst">&#123;name&#125;</span>, together we are the awesomest!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet_bob</span>(<span class="params">greeter_func</span>):</span><br><span class="line">    <span class="keyword">return</span> greeter_func(<span class="string">&quot;Bob&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>say_hello()</code> 和 <code>be_awesome</code> 是普通的函数，而<code>greet_bob()</code> 函数将一个函数作为它的参数，例如我们可以将 <code>say_hello</code> 的引用传递给它：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet_bob(say_hello)</span></span><br><span class="line">&#x27;Hello Bob&#x27;</span><br></pre></td></tr></table></figure>
+<p>在 Python 中，<strong>函数的参数都是引用</strong>（具体实现可参考 <a href="https://stonetough.com/index.php/archives/244/">Python Internals</a>），<code>say_hello</code> 作为<code>greet_bob</code>的参数时不会被执行，它只会在 <code>greet_bob</code> 的函数体中被执行。</p>
+<h3 id="Inner-函数"><a href="#Inner-函数" class="headerlink" title="Inner 函数"></a>Inner 函数</h3><p><code>Inner函数</code>是定义在函数中的函数，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printing from the parent() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the first_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Printing from the second_child() function&quot;</span>)</span><br><span class="line"></span><br><span class="line">    second_child()</span><br><span class="line">    first_child()</span><br></pre></td></tr></table></figure>
+
+<p><code>first_child()</code> 和 <code>second_child()</code> 作为 <code>parent()</code> 的内部函数，它们存在于<code>parent()</code>函数的内部域中，也就是说，如果在<code>parent()</code>外调用它们则会失败：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">NameError: name &#x27;first_child&#x27; is not defined</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数作为返回值"><a href="#函数作为返回值" class="headerlink" title="函数作为返回值"></a>函数作为返回值</h3><p>函数可以作为返回值，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">parent</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hi, I am Emma&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">second_child</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Call me Liam&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> first_child</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> second_child</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>parent()</code> 函数返回的是<code>first_child()</code>和<code>second_child()</code>函数的引用，如果要调用它们，需要加’()’，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first = parent(1)</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second = parent(2)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.first_child at 0x7f599f1e2e18&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second</span></span><br><span class="line">&lt;function parent.&lt;locals&gt;.second_child at 0x7f599dad5268&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; first()</span></span><br><span class="line">&#x27;Hi, I am Emma&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; second()</span></span><br><span class="line">&#x27;Call me Liam&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单的装饰器"><a href="#简单的装饰器" class="headerlink" title="简单的装饰器"></a>简单的装饰器</h2><p>先看一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_whee = my_decorator(say_whee)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Something is happening before the function is called.</span><br><span class="line">Whee!</span><br><span class="line">Something is happening after the function is called.</span><br></pre></td></tr></table></figure>
+
+<p><code>say_whee()</code> 函数的引用作为 <code>my_decorator()</code> 参数传入，<code>my_decorator()</code>函数返回其内部函数 <code>wrapper()</code> 的引用，并赋值给 <code>say_whee</code>。因此，在全局环境中，<code>say_whee</code>标识符不再绑定为 <code>say_whee()</code> 函数，而是绑定为 <code>wrapper()</code>函数。然而，<code>wrapper()</code> 函数在它的上下文环境中保存了原来的 <code>say_whee()</code> 函数的引用。（在这里，过程和数据的概念不再是完全对立的，过程可以是数据，数据也可以是过程。）</p>
+<p>简单来说，<strong>装饰器包装了一个函数，修改了它的行为。</strong></p>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><p>上述装饰 <code>say_whee()</code> 函数的做法是有些繁琐的，所以在 Python 中允许使用 <code>@</code>符号来简单地使用装饰器，下面的例子做了同样的事情，但更加简洁：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_decorator</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening before the function is called.&quot;</span>)</span><br><span class="line">        func()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Something is happening after the function is called.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="重用装饰器"><a href="#重用装饰器" class="headerlink" title="重用装饰器"></a>重用装饰器</h3><p>装饰器函数可以单独定义在一个模块中，其他模块可以通过 <code>import</code> 导入它。</p>
+<h3 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h3><p>在内部包装函数中使用 ** *args ** 和 ** *kwargs **作为形参，使得它可以接受任意的位置参数和关键字参数，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_whee</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Whee!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; say_whee()</span></span><br><span class="line">Whee!</span><br><span class="line">Whee!</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; greet(<span class="string">&quot;World&quot;</span>)</span></span><br><span class="line">Hello World</span><br><span class="line">Hello World</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="从装饰器函数中返回值"><a href="#从装饰器函数中返回值" class="headerlink" title="从装饰器函数中返回值"></a>从装饰器函数中返回值</h3><p>如果被装饰的函数有返回值，我们只需要在包装函数中返回这个返回值即可。如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">do_twice</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper_do_twice</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper_do_twice</span><br><span class="line"></span><br><span class="line"><span class="meta">@do_twice</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">return_greeting</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Creating greeting&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;Hi <span class="subst">&#123;name&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; return_greeting(<span class="string">&quot;Adam&quot;</span>)</span></span><br><span class="line">Creating greeting</span><br><span class="line">Creating greeting</span><br><span class="line">&#x27;Hi Adam&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-functools-wraps"><a href="#使用-functools-wraps" class="headerlink" title="使用 @functools.wraps()"></a>使用 @functools.wraps()</h3><h2 id="更有用的例子"><a href="#更有用的例子" class="headerlink" title="更有用的例子"></a>更有用的例子</h2>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Python3异步编程与Twisted框架介绍</title>
     <url>/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><h3 id="异步编程模型"><a href="#异步编程模型" class="headerlink" title="异步编程模型"></a>异步编程模型</h3><p>&emsp;&emsp;在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计算机对现实世界的抽象也就无法回避现实世界存在的这样的基本问题。</p>
@@ -2480,6 +2480,39 @@
 <p>&emsp;&emsp; coroutine之间可以形成链状结构，即某一个coroutine的数据依赖于另一个coroutine，这种结构可以使用await关键字实现。call_soon、call_at和call_later API可以在特定的时间执行某个callback函数，Future对象可以用来异步获取任务的执行结果，其本身可以注册一些回调函数，这些 回调函数会在Future对象的结果设置后被调用。在Twisted框架中，它也是有着非常重要的作用。关于event loop清晰详细的描述，krondo的文章<a href="https://wiki.jikexueyuan.com/project/twisted-intro/">Twisted Introduction</a> 可以作为很好的参考。</p>
 <p>&emsp;&emsp;asyncio虽然是单线程的应用，但它仍然是并发的程序，它同样要面对并发的同步问题。asyncio可以使用类似与线程和进程的同步原语（Synchronization Primitives），比如锁（Lock）、事件（Event）、条件变量（Condition）和安全队列（safed queueu）。</p>
 <h3 id="Twisted-框架"><a href="#Twisted-框架" class="headerlink" title="Twisted 框架"></a>Twisted 框架</h3><p>&emsp;&emsp;Twisted是事件驱动的网络框架，其实现了反映堆模式（reactor），并支持多种协议和服务。总结来说，Twisted是将程序构建在reactor驱动的一系列异步回调链上，所以可以认为reactor是最顶层的代码，而用户的代码却是最底层，这与同步程序正好相反。Twisted中异步函数通常会返回一个Deferred对象，它类似于python的coroutine与generator。一个Deferred对象代表了一个‘异步的结果’或者说‘结果还没有到来’，异步函数会负责（通过启动一系列事件）当结果到来时相应地激活（那些事件来激活Deferred）Deferred中的callback链或者errback链。和具体可参考<a href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction</a>。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Python3某些强大的特性与Lisp的关系</title>
+    <url>/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。<br>&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、<br>面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garbage-collected）等。其中包括对Lisp语言函数式编程的传统，python提供map、filter、和reduce等函数；提供列表解析（list comprehensions）、字典（dictionaries）、集合（set）和生成器（generator）表达式等；同时在标准库中提供functools和itertools模块，这两个模块的特性来源于函数式编程语言Haskell和Standard ML。<br>&emsp;&emsp;这些特性不仅赋予了语言强大的抽象能力，而且反映了一些关于计算科学的本质问题。</p>
+<span id="more"></span>
+
+<h3 id="闭包（closure）"><a href="#闭包（closure）" class="headerlink" title="闭包（closure）"></a>闭包（closure）</h3><p>&emsp;&emsp;在数学中，closure一般是指域的封闭性，比如整数域在加法运算下是封闭的。在数系发展的历史上，先出现的是非零自然数域，即1,2,3,4,…，负数是不存在也是不可理解和忽视的，这种情况下，我们说非零自然数域在减法上是不封闭的。后来一方面人们逐渐在生活中不自觉的使用负数，比如某个人的欠款，另一方面则来自数学本身内在的发展要求，促使人们扩展数系，引入零和负数。数学的内在动力就是呼吁这种内在逻辑的自洽性，而不关心现实世界是否可以找到对应的概念。后来数系逐渐扩展到整数域、有理数域、实数域以及复数域，数学的抽象能力逐渐增强。<br>&emsp;&emsp;在计算机编程语言领域，closure有两种含义：一种是和数学中类似，即一个数据结构中可以包含它自身的嵌套结构，一个运算的结果可以作为它自己操作的参数；另外一种是指在lambda表达式中实现自由变量（free variables）的技术。<br>&emsp;&emsp;python的基本数据结构和类型，如list，tuple，set, dict, str都支持闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; a_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line">&gt;&gt; a_tuple = (<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), <span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">&gt;&gt; a_dict = [<span class="string">&#x27;a&#x27;</span>:<span class="number">123</span>, <span class="string">&#x27;b&#x27;</span>:[<span class="string">&#x27;c&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;d&#x27;</span>:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+<p>另外在这种数据结构上的运算也满足闭包，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; added_list = a_list + a_list</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在Lisp中，只有一种组合数据的胶水（glue），即序对（pair）。由序对构造的数据对象称为表结构（list-structured）数据。这种结构当然也是满足闭包特性的，例如：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> c (<span class="name"><span class="built_in">list</span></span> a b))</span><br><span class="line">=&gt; c</span><br><span class="line">(( <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)(<span class="name">1</span> (<span class="name">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>Lisp中所有的表达式也都可以看作表结构数据。list数据结构也是一种序对，或者说是序对的链，其中链的结尾使用约定的标记’()。例如：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">3</span> <span class="number">4</span>) <span class="number">5</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">cons</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">2</span> (<span class="name"><span class="built_in">cons</span></span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">3</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">4</span> &#x27;())) (<span class="name"><span class="built_in">cons</span></span> <span class="number">5</span> &#x27;())))))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">equal?</span></span> a b)</span><br><span class="line">#t <span class="comment">;; a 与 b的值是相等的</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;那么到目前为止，这种闭包特性带给了我们什么重要的东西呢？我们可以看到，在Lisp中，我们所知道的更为复杂的数据结构，例如链表、栈、队列、树、堆等都可以使用通用的pair来构造，闭包特性赋予了pair表达层次性数据的能力。另外，这种特性非常适合递归算法，例如对树的几乎所有遍历、查找、替换和映射的操作，都可以使用递归算法简单而优雅的解决。Lisp拥有非常简单的语法，或者说程序员几乎不需要考虑语法的问题，从而获得了在语义上的强大抽象能力。<br>&emsp;&emsp;在python中，也可以基于通用的tuple或者list来构造复杂的数据结构，但python的做法则尽量是使用标准库来解决，在那里可以专心解决性能和效率的问题。这是一种小而强大、简单而强大的理念，python具有很强的可扩展性，且避免过早优化，其语言核心尽量保持小、整洁和简单，然后将大量功能放入标准库中，这种做法鼓励了模块化的设计。</p>
+<h3 id="装饰器（decorator）"><a href="#装饰器（decorator）" class="headerlink" title="装饰器（decorator）"></a>装饰器（decorator）</h3><p>&emsp;&emsp;关于这个主题，可以参考链接 <a href="https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html">Python3 Decorators</a>。装饰器的特性类似于宏（macro），基于该特性使得python可以获得动态获取、修改函数（functions）内部状态的强大能力。<br>&emsp;&emsp;在Lisp中，函数具有第一级状态（first-class functions）,即函数本身可以作为返回值，可以作为函数的参数，可以用变量命名，可以包含在数据结构中。我们也可以说，函数本身满足闭包性质。首先我们以<a href="https://www.mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-12.html#%25_sec_1.3.4">SICP Exercise 1.41</a>来表现这种特性:</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">double</span> f) (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name">f</span> (<span class="name">f</span> x))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">inc</span> x) (<span class="name"><span class="built_in">+</span></span> x <span class="number">1</span>))</span><br><span class="line">(((<span class="name">double</span> (<span class="name">double</span> double)) inc) <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<p>过程double以过程f作为参数,并返回一个过程（以lambda表达式的形式），该过程将f执行两次。所以，最后一行表达式的值是21，f被执行了16次。python中可以使用装饰器实现类似的函数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">f</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">my_double</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> f(f(x))</span><br><span class="line">    <span class="keyword">return</span> my_double</span><br><span class="line"></span><br><span class="line"><span class="meta">@double</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;Lisp中的这种特性可以非常方便地建立更一般的抽象，比如说高阶函数，它可以增加代码的重用性以及程序的模块化。而python的装饰器特性主要还是获得开始时所说得那种动态修改函数性质的能力，它不需要修改原来函数的代码却可以获得额外的功能，使得程序更加清晰和简洁，比如，定义property等。当然它也可以用来进行定义高阶抽象，比如表格化或者记忆化（Memoized），这种方法可以大大提高某些算法（动态规划、树形递归等）的效率，它针对一类问题而不是某个特定的问题。在 <a href="https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">PythonDecoratorLibrary Memorized</a> 例子中使用Memoized装饰器可以在不改动原有算法代码的基础上提高算法的效率。</p>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>&emsp;&emsp;在Lisp中过程与数据可以相互转换，过程本身也可以成为对象。python中可以将函数本身看成对象，不同的变量可以引用（reference）同一个函数对象，一个函数也就可以作为另一个函数的参数。我们以map为例来表现这种特性的威力，假设我们要将一列数加倍，我们可以写下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br></pre></td></tr></table></figure>
+<p>那么如果需要将一列字母全部变为大写，我们可以写：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [a.upper() <span class="keyword">for</span> a <span class="keyword">in</span> char_list]</span><br></pre></td></tr></table></figure>
+<p>我们还可以给出大量这样的例子，那么这些例子中是否包含共同的、一般性的概念呢？是否可以用一种统一的方式解决一类的问题呢？如果我们抽象的看待这类问题，将对list中数据的操作函数作为参数由用户定义，就是说map是一种对list数据的映射，这种映射本身由用户自己定义。我们的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">map</span>(<span class="params">f, a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [f(i) <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="built_in">str</span>.upper, char_list)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*<span class="number">2</span>, a_list)</span><br></pre></td></tr></table></figure>
+<p>capitalize和double函数都可以基于map来定义，我们说map有更高的抽象能力。<br>&emsp;&emsp;python中的map、filter、sorted和reduce函数都是基于上诉的思想，这种高阶函数的使用使得程序简单、清晰和模块化，更重要的是它们可以协作组合完成更加复杂的功能。</p>
+<h3 id="函数式编程模块"><a href="#函数式编程模块" class="headerlink" title="函数式编程模块"></a>函数式编程模块</h3><p>&emsp;&emsp;functools库中主要的工具是partial类，它可以使用默认参数来包装（wrap）一个可调用的对象（callable object）,结果对象可以看作原来的那个对象。这里的可调用对象既可以是单独的函数（standalone function）也可以是类（class）。在某些场景，对象会作为某些方法的参数，但该对象不能带有自己的默认参数，而partial通过wrap原有的对象和其默认参数获得一个新的对象，该对象可以作为无参对象传入其他方法。<br>total_ordering装饰器可以自动增加类的比较方法（ rich comparison methods）。<br>&emsp;&emsp;itertools库中的函数可以实现惰性求值（lazy evaluation），数据只有等到它被需要的时候才会产生，这样可以更有效率的使用存储资源，而且可以用来表达更加复杂的算法。<br>其中itertools.map和python内置的map函数有些不同，前者返回的是iterator，对输入数据的操作还没有进行，它只在需要的时候产生数据；而后者返回的就是映射后的最终数据。<br>&emsp;&emsp;operator提供函数式的运算操作符。</p>
 ]]></content>
       <categories>
         <category>Python</category>
@@ -2546,39 +2579,6 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># descriptors4.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OneDigitNumericValue</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set_name__</span>(<span class="params">self, owner, name</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__get__</span>(<span class="params">self, obj, <span class="built_in">type</span>=<span class="literal">None</span></span>) -&gt; <span class="built_in">object</span>:</span><br><span class="line">        <span class="keyword">return</span> obj.__dict__.get(<span class="variable language_">self</span>.name) <span class="keyword">or</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__set__</span>(<span class="params">self, obj, value</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        obj.__dict__[<span class="variable language_">self</span>.name] = value</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>():</span><br><span class="line">    number = OneDigitNumericValue()</span><br><span class="line"></span><br><span class="line">my_foo_object = Foo()</span><br><span class="line">my_second_foo_object = Foo()</span><br><span class="line"></span><br><span class="line">my_foo_object.number = <span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(my_foo_object.number)</span><br><span class="line"><span class="built_in">print</span>(my_second_foo_object.number)</span><br><span class="line"></span><br><span class="line">my_third_foo_object = Foo()</span><br><span class="line"><span class="built_in">print</span>(my_third_foo_object.number)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>其中 <code>__set_name__()</code> 方法在描述符实例化时会被默认调用，并且 <code>name</code> 参数会被默认设置。</p>
 <h2 id="为什么使用-Python-描述器？"><a href="#为什么使用-Python-描述器？" class="headerlink" title="为什么使用 Python 描述器？"></a>为什么使用 Python 描述器？</h2>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Python3某些强大的特性与Lisp的关系</title>
-    <url>/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;python作为解释性语言，拥有许多优秀和强大的特性，理解这些特性的本质和来源对我们学习这门语言有着很大的帮助。<br>&emsp;&emsp;python吸收了历史上以及现存的许多语言的特性，比如结构化（structured）、<br>面向对象（OOP）、函数式编程（functional programming）、动态类型（dynamically typed）以及垃圾收集（garbage-collected）等。其中包括对Lisp语言函数式编程的传统，python提供map、filter、和reduce等函数；提供列表解析（list comprehensions）、字典（dictionaries）、集合（set）和生成器（generator）表达式等；同时在标准库中提供functools和itertools模块，这两个模块的特性来源于函数式编程语言Haskell和Standard ML。<br>&emsp;&emsp;这些特性不仅赋予了语言强大的抽象能力，而且反映了一些关于计算科学的本质问题。</p>
-<span id="more"></span>
-
-<h3 id="闭包（closure）"><a href="#闭包（closure）" class="headerlink" title="闭包（closure）"></a>闭包（closure）</h3><p>&emsp;&emsp;在数学中，closure一般是指域的封闭性，比如整数域在加法运算下是封闭的。在数系发展的历史上，先出现的是非零自然数域，即1,2,3,4,…，负数是不存在也是不可理解和忽视的，这种情况下，我们说非零自然数域在减法上是不封闭的。后来一方面人们逐渐在生活中不自觉的使用负数，比如某个人的欠款，另一方面则来自数学本身内在的发展要求，促使人们扩展数系，引入零和负数。数学的内在动力就是呼吁这种内在逻辑的自洽性，而不关心现实世界是否可以找到对应的概念。后来数系逐渐扩展到整数域、有理数域、实数域以及复数域，数学的抽象能力逐渐增强。<br>&emsp;&emsp;在计算机编程语言领域，closure有两种含义：一种是和数学中类似，即一个数据结构中可以包含它自身的嵌套结构，一个运算的结果可以作为它自己操作的参数；另外一种是指在lambda表达式中实现自由变量（free variables）的技术。<br>&emsp;&emsp;python的基本数据结构和类型，如list，tuple，set, dict, str都支持闭包，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; a_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line">&gt;&gt; a_tuple = (<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), <span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">&gt;&gt; a_dict = [<span class="string">&#x27;a&#x27;</span>:<span class="number">123</span>, <span class="string">&#x27;b&#x27;</span>:[<span class="string">&#x27;c&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;d&#x27;</span>:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
-<p>另外在这种数据结构上的运算也满足闭包，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt; added_list = a_list + a_list</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;在Lisp中，只有一种组合数据的胶水（glue），即序对（pair）。由序对构造的数据对象称为表结构（list-structured）数据。这种结构当然也是满足闭包特性的，例如：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> c (<span class="name"><span class="built_in">list</span></span> a b))</span><br><span class="line">=&gt; c</span><br><span class="line">(( <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)(<span class="name">1</span> (<span class="name">4</span> <span class="number">5</span>) <span class="number">2</span> <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-<p>Lisp中所有的表达式也都可以看作表结构数据。list数据结构也是一种序对，或者说是序对的链，其中链的结尾使用约定的标记’()。例如：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> a (<span class="name"><span class="built_in">list</span></span> <span class="number">1</span> <span class="number">2</span> (<span class="name"><span class="built_in">list</span></span> <span class="number">3</span> <span class="number">4</span>) <span class="number">5</span>))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">define</span></span> b (<span class="name"><span class="built_in">cons</span></span> <span class="number">1</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">2</span> (<span class="name"><span class="built_in">cons</span></span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">3</span> (<span class="name"><span class="built_in">cons</span></span> <span class="number">4</span> &#x27;())) (<span class="name"><span class="built_in">cons</span></span> <span class="number">5</span> &#x27;())))))</span><br><span class="line">=&gt; (<span class="name"><span class="built_in">equal?</span></span> a b)</span><br><span class="line">#t <span class="comment">;; a 与 b的值是相等的</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;那么到目前为止，这种闭包特性带给了我们什么重要的东西呢？我们可以看到，在Lisp中，我们所知道的更为复杂的数据结构，例如链表、栈、队列、树、堆等都可以使用通用的pair来构造，闭包特性赋予了pair表达层次性数据的能力。另外，这种特性非常适合递归算法，例如对树的几乎所有遍历、查找、替换和映射的操作，都可以使用递归算法简单而优雅的解决。Lisp拥有非常简单的语法，或者说程序员几乎不需要考虑语法的问题，从而获得了在语义上的强大抽象能力。<br>&emsp;&emsp;在python中，也可以基于通用的tuple或者list来构造复杂的数据结构，但python的做法则尽量是使用标准库来解决，在那里可以专心解决性能和效率的问题。这是一种小而强大、简单而强大的理念，python具有很强的可扩展性，且避免过早优化，其语言核心尽量保持小、整洁和简单，然后将大量功能放入标准库中，这种做法鼓励了模块化的设计。</p>
-<h3 id="装饰器（decorator）"><a href="#装饰器（decorator）" class="headerlink" title="装饰器（decorator）"></a>装饰器（decorator）</h3><p>&emsp;&emsp;关于这个主题，可以参考链接 <a href="https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html">Python3 Decorators</a>。装饰器的特性类似于宏（macro），基于该特性使得python可以获得动态获取、修改函数（functions）内部状态的强大能力。<br>&emsp;&emsp;在Lisp中，函数具有第一级状态（first-class functions）,即函数本身可以作为返回值，可以作为函数的参数，可以用变量命名，可以包含在数据结构中。我们也可以说，函数本身满足闭包性质。首先我们以<a href="https://www.mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-12.html#%25_sec_1.3.4">SICP Exercise 1.41</a>来表现这种特性:</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">double</span> f) (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name">f</span> (<span class="name">f</span> x))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">inc</span> x) (<span class="name"><span class="built_in">+</span></span> x <span class="number">1</span>))</span><br><span class="line">(((<span class="name">double</span> (<span class="name">double</span> double)) inc) <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
-<p>过程double以过程f作为参数,并返回一个过程（以lambda表达式的形式），该过程将f执行两次。所以，最后一行表达式的值是21，f被执行了16次。python中可以使用装饰器实现类似的函数：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">f</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">my_double</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> f(f(x))</span><br><span class="line">    <span class="keyword">return</span> my_double</span><br><span class="line"></span><br><span class="line"><span class="meta">@double</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;Lisp中的这种特性可以非常方便地建立更一般的抽象，比如说高阶函数，它可以增加代码的重用性以及程序的模块化。而python的装饰器特性主要还是获得开始时所说得那种动态修改函数性质的能力，它不需要修改原来函数的代码却可以获得额外的功能，使得程序更加清晰和简洁，比如，定义property等。当然它也可以用来进行定义高阶抽象，比如表格化或者记忆化（Memoized），这种方法可以大大提高某些算法（动态规划、树形递归等）的效率，它针对一类问题而不是某个特定的问题。在 <a href="https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">PythonDecoratorLibrary Memorized</a> 例子中使用Memoized装饰器可以在不改动原有算法代码的基础上提高算法的效率。</p>
-<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>&emsp;&emsp;在Lisp中过程与数据可以相互转换，过程本身也可以成为对象。python中可以将函数本身看成对象，不同的变量可以引用（reference）同一个函数对象，一个函数也就可以作为另一个函数的参数。我们以map为例来表现这种特性的威力，假设我们要将一列数加倍，我们可以写下面的代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [i * <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br></pre></td></tr></table></figure>
-<p>那么如果需要将一列字母全部变为大写，我们可以写：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [a.upper() <span class="keyword">for</span> a <span class="keyword">in</span> char_list]</span><br></pre></td></tr></table></figure>
-<p>我们还可以给出大量这样的例子，那么这些例子中是否包含共同的、一般性的概念呢？是否可以用一种统一的方式解决一类的问题呢？如果我们抽象的看待这类问题，将对list中数据的操作函数作为参数由用户定义，就是说map是一种对list数据的映射，这种映射本身由用户自己定义。我们的代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">map</span>(<span class="params">f, a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> [f(i) <span class="keyword">for</span> i <span class="keyword">in</span> a_list]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">capitalize</span>(<span class="params">char_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="built_in">str</span>.upper, char_list)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">a_list</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*<span class="number">2</span>, a_list)</span><br></pre></td></tr></table></figure>
-<p>capitalize和double函数都可以基于map来定义，我们说map有更高的抽象能力。<br>&emsp;&emsp;python中的map、filter、sorted和reduce函数都是基于上诉的思想，这种高阶函数的使用使得程序简单、清晰和模块化，更重要的是它们可以协作组合完成更加复杂的功能。</p>
-<h3 id="函数式编程模块"><a href="#函数式编程模块" class="headerlink" title="函数式编程模块"></a>函数式编程模块</h3><p>&emsp;&emsp;functools库中主要的工具是partial类，它可以使用默认参数来包装（wrap）一个可调用的对象（callable object）,结果对象可以看作原来的那个对象。这里的可调用对象既可以是单独的函数（standalone function）也可以是类（class）。在某些场景，对象会作为某些方法的参数，但该对象不能带有自己的默认参数，而partial通过wrap原有的对象和其默认参数获得一个新的对象，该对象可以作为无参对象传入其他方法。<br>total_ordering装饰器可以自动增加类的比较方法（ rich comparison methods）。<br>&emsp;&emsp;itertools库中的函数可以实现惰性求值（lazy evaluation），数据只有等到它被需要的时候才会产生，这样可以更有效率的使用存储资源，而且可以用来表达更加复杂的算法。<br>其中itertools.map和python内置的map函数有些不同，前者返回的是iterator，对输入数据的操作还没有进行，它只在需要的时候产生数据；而后者返回的就是映射后的最终数据。<br>&emsp;&emsp;operator提供函数式的运算操作符。</p>
-]]></content>
       <categories>
         <category>Python</category>
       </categories>
@@ -3406,6 +3406,19 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>散文创作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>[经典论文]Bitcoin: A Peer-to-Peer Electronic Cash System</title>
+    <url>/2024/12/31/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87-Bitcoin-A-Peer-to-Peer-Electronic-Cash-System/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>中本聪发布于 2008 年的论文：<a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer Electronic Cash System</a> 首次提出了比特币的概念。该论文介绍的关键思想是一种完全的点对点电子现金，对等体之间转移付款不需要第三方信任体(Trusted Third party)。</p>
+<p>比特币所使用的技术并非都是新的，而是建立在数十年的密码学和分布式网络的之上的，包括默克尔树、哈希函数、公钥密钥学及其对应的数学签名的研究。另外，<strong>BitGold</strong>、<strong>B-money</strong>、<strong>HashCash</strong> 和加密时间戳记等技术也为比特币提供了理论基础。</p>
+<p>比特币中已经解决的关键问题包括：<code>双重支付问题(double-spending problem)</code> 的实用解决方案和<code>拜占庭将军问题</code>的解决方案。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>区块链</category>
       </categories>
   </entry>
   <entry>
