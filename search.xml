@@ -2636,7 +2636,8 @@
     <url>/2024/12/16/SSL-Protocol-Analysis/</url>
     <content><![CDATA[]]></content>
       <categories>
-        <category>信息安全，网络安全</category>
+        <category>信息安全</category>
+        <category>网络安全</category>
       </categories>
   </entry>
   <entry>
@@ -4261,7 +4262,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <p>其中 <em>sso-username</em> 和 Ubutnu One 账户关联。</p>
 ]]></content>
       <categories>
-        <category>嵌入式系统和 IOT</category>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
