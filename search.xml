@@ -4986,4 +4986,19 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>C++</category>
       </categories>
   </entry>
+  <entry>
+    <title>C++的并发编程</title>
+    <url>/2025/02/20/Cplusplus%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>C++</code> 在 C++ 11 标准中正式增加了对并发的支持，不仅包含了线程内存模型，还在 C++ 的标准库中扩展了管理线程的类、共享数据保护、线程同步以及低级操作原语。 </p>
+<p>本文根据相关资源做一些精要记录和心得总结。</p>
+<blockquote>
+<p>参考 《C++ Concurrency in Action. 2nd Edition》 by Anthony Williams.</p>
+</blockquote>
+<span id="more"></span>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
 </search>
