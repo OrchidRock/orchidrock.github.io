@@ -1592,7 +1592,7 @@
 <span id="more"></span>
 
 <blockquote>
-<p>参考 <a href="https://encyclopedia.thefreedictionary.com/linux+kernel">Linux Kernel - wikipedia</a><br>参考《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 <a href="https://0xax.gitbooks.io/linux-insides/content/">linux-insides</a> - By <strong>0xax</strong> | <a href="https://www.bookstack.cn/read/linux-insides-zh/README.md">Linux内核揭秘-中文版</a>。</p>
+<p>参考 <a href="https://encyclopedia.thefreedictionary.com/linux+kernel">Linux Kernel - wikipedia</a><br>参考《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 <a href="https://0xax.gitbooks.io/linux-insides/content/">linux-insides</a> - By <strong>0xax</strong> | <a href="https://www.bookstack.cn/read/linux-insides-zh/README.md">Linux内核揭秘-中文版</a>。<br>参考 <a href="https://linux-kernel-labs.github.io/">kernel teaching</a></p>
 </blockquote>
 <h2 id="Unix-渊源"><a href="#Unix-渊源" class="headerlink" title="Unix 渊源"></a>Unix 渊源</h2><p>&emsp;&emsp; Unix 系统最初在 1969 年诞生于贝尔实验室。Unix 衍生出了很多变种，例如 <code>OpenBSD</code>等，它的很多设计理念也深刻影响了 GNU&#x2F;Linux（<em>准确来说，主要影响的是内核上层的应用程序和环境</em>） 。更重要的是，<code>Unix</code>有着开放源码和同僚复审的传统，这种理念产生的优势被 Linux 充分的发挥和利用。关于这个主题，可以阅读经典的《The Art of UNIX Programming》 (在 <a href="http://1.117.83.246/index.php/archives/187/">Unix编程艺术笔记</a> 中有一些摘要总结)。</p>
 <p>&emsp;&emsp;Linux 的成长伴随着互联网的崛起，这就使得它与 <code>Unix</code> 在开发模式上有些不同。Linux 几乎是通过来源于”网络部落“的一些“松散”的开发者贡献给世界的，但它现在已经变得十分强大。《大教堂与集市》一书中有详细和精彩的描述。</p>
@@ -1852,6 +1852,8 @@
 
 <p>解压并验证签名：<br><code>$ xz -cd linux-5.4.tar.xz | gpg2 --verify linux-5.4.tar.sign -</code></p>
 <p><code>$ tar xf linux-5.4.tar</code><br><code>$ cd linux-5.4</code></p>
+<p>如果验证签名失败，并显示“缺少公钥”，可以根据提示的用户 ID 从密钥服务器导入公钥（前提是密钥服务器没有受到攻击）：</p>
+<p><code>$ gpg2 --keyserver keyserver.ubuntu.com --recv-keys 0D3B3537C4790F9D</code></p>
 <h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><p>编译环境所依赖的软件包列表：<a href="https://docs.kernel.org/process/changes.html#changes">Minimal requirements to compile the Kernel</a>。</p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="还原环境"><a href="#还原环境" class="headerlink" title="还原环境"></a>还原环境</h3><p><code>$ make mrproper</code><br>每次需要将内核源码树还原到刚解压时的状态，可运行该命令。</p>
 <p><code>$ make clean</code><br>删除生成的目标文件（不会删除<code>.config</code>）</p>
@@ -1888,7 +1890,7 @@
 <li></li>
 </ul>
 <h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
-]]></content>
+<h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -4949,6 +4951,16 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++语言的设计与演化</title>
+    <url>/2025/02/20/Cplusplus%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%BC%94%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《The Design and Evolution of C++》 是 C++ 之父为描述 C++ 语言的发展历史、设计理念和技术细节的著作。本篇文章对该书做一些精要部分的摘抄，并记录一些自己的心得。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>C++</category>
       </categories>
   </entry>
 </search>
