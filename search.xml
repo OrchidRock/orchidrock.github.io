@@ -4990,15 +4990,30 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <title>C++的并发编程</title>
     <url>/2025/02/20/Cplusplus%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>C++</code> 在 C++ 11 标准中正式增加了对并发的支持，不仅包含了线程内存模型，还在 C++ 的标准库中扩展了管理线程的类、共享数据保护、线程同步以及低级操作原语。 </p>
-<p>本文根据相关资源做一些精要记录和心得总结。</p>
+<p>C++ 14 和 C++ 17 标准随后又增加了其他扩展。同时在标准库的具体实现下，兼顾性能，尽可能地减小<strong>抽象惩罚（abstraction penalty）</strong>。</p>
 <blockquote>
 <p>参考 《C++ Concurrency in Action. 2nd Edition》 by Anthony Williams.</p>
 </blockquote>
 <span id="more"></span>
 
-]]></content>
+<h2 id="线程管理"><a href="#线程管理" class="headerlink" title="线程管理"></a>线程管理</h2><p>使用 <code>RAII</code> 来等待线程完成。<code>RAII</code> 的做法是使用一个对象，在其构造时获取对应的资源，在对象生命期内控制对资源的访问，使之始终保持有效，最后在对象析构的时候，释放构造时获取的资源。<br>具体使用时，可以利用局部变量自动销毁的机制，在变量的析构函数中释放资源（或其他操作，如线程 join 等）。<code>RAII</code> 比较典型的应用场景是对<code>锁</code>资源的管理。</p>
+<p><strong>分离线程（detach）</strong></p>
+<h2 id="线程共享数据"><a href="#线程共享数据" class="headerlink" title="线程共享数据"></a>线程共享数据</h2><h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h2 id="内存模型和原子类型操作"><a href="#内存模型和原子类型操作" class="headerlink" title="内存模型和原子类型操作"></a>内存模型和原子类型操作</h2><h2 id="并发数据结构（有锁和无锁）"><a href="#并发数据结构（有锁和无锁）" class="headerlink" title="并发数据结构（有锁和无锁）"></a>并发数据结构（有锁和无锁）</h2>]]></content>
       <categories>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Can总线的安全分析</title>
+    <url>/2025/02/20/Can%E6%80%BB%E7%BA%BF%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>参考 <a href="https://xz.aliyun.com/news/12474">浅谈车辆CAN总线安全</a></p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
       </categories>
   </entry>
 </search>
