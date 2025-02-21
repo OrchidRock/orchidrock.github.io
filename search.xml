@@ -1894,15 +1894,16 @@
 </ul>
 <h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
 <h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2><blockquote>
-<p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a></p>
+<p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a><br>参考 <a href="https://www.kernel.org/doc/html/v6.13-rc6/dev-tools/gdb-kernel-debugging.html">Debugging kernel and modules via gdb</a></p>
 </blockquote>
 <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
 <h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。</p>
-<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。</p>
+<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -hda /dev/zero -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
 
-<p>运行 gdb：<code>$ gdb vmlinux</code> 或者 <code>$ gdb vmlinuz</code><br>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br></pre></td></tr></table></figure>]]></content>
+<p>运行 gdb：<code>$ gdb vmlinux</code> 或者 <code>$ gdb vmlinuz</code><br>注意这里如果提示无法加载<code>vmlinux-gdb.py</code>，则根据提示在 gdb 配置文件中为 <code>add-auto-load-safe-path</code> 设置脚本绝对路径。该脚本中扩展了一些 gdb 命令，比如查看内核缓冲区、查看进程等。</p>
+<p>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -5027,6 +5028,27 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>信息安全</category>
         <category>网络安全</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用 Clang/LLVM 构建 Linux 内核</title>
+    <url>/2025/02/21/%E4%BD%BF%E7%94%A8Clang-LLVM%E6%9E%84%E5%BB%BALinux%E5%86%85%E6%A0%B8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Linux 内核是用 C 语言编写的，但其并不完全符合 <code>ANSI C</code> 标准，实际上，内核开发者使用的 C 语言涵盖了 ISO C99 标准和 GNU C 扩展特性，这使得内核的构建长期依赖 gcc。</p>
+<p><code>Clang</code> 和 <code>LLVM</code> 的持续性工作改变了这种现状，使得其可作为构建内核的替代工具。一些发行版，例如 Android、ChromwOS、OpenMandriva 等都在使用 Clang 编译的内核。</p>
+<p>关于 LLVM 的简单介绍，参考 <a href="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LLVM 项目介绍">[LLVM 项目介绍]</a>。Clang 是 LLVM 的前端，支持 C 语言和内核所需要的 GNU C 扩展。</p>
+<span id="more"></span>
+
+<h2 id="使用-LLVM-构建"><a href="#使用-LLVM-构建" class="headerlink" title="使用 LLVM 构建"></a>使用 LLVM 构建</h2><h3 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h3><p>安装 LLVM 和 对应的链接器 lld： <code>$ sudo apt-get install clang lld</code>，该命令会自动安装所依赖的其他软件包。</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \</span></span><br><span class="line"><span class="language-bash">  OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \</span></span><br><span class="line"><span class="language-bash">  HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld</span></span><br></pre></td></tr></table></figure>
+
+<p>目前支持的架构参考 <a href="https://docs.kernel.org/translations/zh_CN/kbuild/llvm.html#id5">使用 Clang&#x2F;LLVM 构建 Linux</a>。</p>
+<h2 id="使用-lldb-调试"><a href="#使用-lldb-调试" class="headerlink" title="使用 lldb 调试"></a>使用 lldb 调试</h2><p>安装 LLVM 的调试器 lldb </p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>编译器</category>
+        <category>Linux Kernel</category>
+        <category>LLVM Project</category>
       </categories>
   </entry>
 </search>
