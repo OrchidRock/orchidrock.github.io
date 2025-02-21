@@ -1875,6 +1875,9 @@
 <p>如果遇到：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order&#x27;;</span><br><span class="line">arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here</span><br></pre></td></tr></table></figure>
 <p>参考链接：<a href="https://lkml.org/lkml/2020/1/29/494">https://lkml.org/lkml/2020/1/29/494</a></p>
+<p>如果遇到：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cc1: error: code model kernel does not support PIC mode</span><br></pre></td></tr></table></figure>
+<p>则可以修改内核源码中的 <code>Makefile</code> 文件，添加<code>-fno-pie</code> 到变量 <code>KBUILD_CFLAGS</code> 。</p>
 <p>很多编译问题都可以在<a href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
 <p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
@@ -1890,7 +1893,16 @@
 <li></li>
 </ul>
 <h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
-<h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2>]]></content>
+<h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2><blockquote>
+<p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a></p>
+</blockquote>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
+<h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。</p>
+<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -hda /dev/zero -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
+
+<p>运行 gdb：<code>$ gdb vmlinux</code> 或者 <code>$ gdb vmlinuz</code><br>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -5006,7 +5018,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>Can总线的安全分析</title>
     <url>/2025/02/20/Can%E6%80%BB%E7%BA%BF%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>使用 ICSim 模拟器</p>
+<blockquote>
 <p>参考 <a href="https://xz.aliyun.com/news/12474">浅谈车辆CAN总线安全</a></p>
 </blockquote>
 <span id="more"></span>
