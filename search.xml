@@ -5103,4 +5103,14 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>读书笔记</category>
       </categories>
   </entry>
+  <entry>
+    <title>使用 Octave 编写机器学习应用原型</title>
+    <url>/2025/02/23/%E4%BD%BF%E7%94%A8Octave%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%94%E7%94%A8%E5%8E%9F%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://octave.org/#">Octave</a> 是开源的科学数值计算工具，类似于 <code>matlab</code>，它的语言的语法绝不部分与 matlab 兼容。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
 </search>
