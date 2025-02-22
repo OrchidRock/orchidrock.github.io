@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Bash 使用简明笔记</title>
     <url>/2022/04/14/Bash-%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -195,31 +220,6 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -488,6 +488,20 @@
       </categories>
   </entry>
   <entry>
+    <title>Can总线的安全分析</title>
+    <url>/2025/02/20/Can%E6%80%BB%E7%BA%BF%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>使用 ICSim 模拟器</p>
+<blockquote>
+<p>参考 <a href="https://xz.aliyun.com/news/12474">浅谈车辆CAN总线安全</a></p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Circle: Raspberry Pi 的裸机编程环境</title>
     <url>/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://github.com/rsta2/circle/">Circle</a> 提供了一个针对 Raspberry Pi 的裸机编程环境。</p>
@@ -498,6 +512,56 @@
       <categories>
         <category>开源硬件</category>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++的并发编程</title>
+    <url>/2025/02/20/Cplusplus%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>C++</code> 在 C++ 11 标准中正式增加了对并发的支持，不仅包含了线程内存模型，还在 C++ 的标准库中扩展了管理线程的类、共享数据保护、线程同步以及低级操作原语。 </p>
+<p>C++ 14 和 C++ 17 标准随后又增加了其他扩展。同时在标准库的具体实现下，兼顾性能，尽可能地减小<strong>抽象惩罚（abstraction penalty）</strong>。</p>
+<blockquote>
+<p>参考 《C++ Concurrency in Action. 2nd Edition》 by Anthony Williams.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="线程管理"><a href="#线程管理" class="headerlink" title="线程管理"></a>线程管理</h2><p>使用 <code>RAII</code> 来等待线程完成。<code>RAII</code> 的做法是使用一个对象，在其构造时获取对应的资源，在对象生命期内控制对资源的访问，使之始终保持有效，最后在对象析构的时候，释放构造时获取的资源。<br>具体使用时，可以利用局部变量自动销毁的机制，在变量的析构函数中释放资源（或其他操作，如线程 join 等）。<code>RAII</code> 比较典型的应用场景是对<code>锁</code>资源的管理。</p>
+<p><strong>分离线程（detach）</strong></p>
+<h2 id="线程共享数据"><a href="#线程共享数据" class="headerlink" title="线程共享数据"></a>线程共享数据</h2><h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h2 id="内存模型和原子类型操作"><a href="#内存模型和原子类型操作" class="headerlink" title="内存模型和原子类型操作"></a>内存模型和原子类型操作</h2><h2 id="并发数据结构（有锁和无锁）"><a href="#并发数据结构（有锁和无锁）" class="headerlink" title="并发数据结构（有锁和无锁）"></a>并发数据结构（有锁和无锁）</h2>]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++语言的设计与演化</title>
+    <url>/2025/02/20/Cplusplus%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%BC%94%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《The Design and Evolution of C++》 是 C++ 之父 <strong>Bjarne Stroustrup</strong> 为描述 C++ 语言的发展历史、设计理念和技术细节的著作。本篇文章对该书做一些精要部分的摘抄，并记录一些自己的心得。</p>
+<span id="more"></span>
+
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>（在作者看来，语言的设计要考虑到许多实践性的和社会性的因素，初始设计往往是满足当时的特定问题，后来成才去满足新的需求，反映对问题和对解决它们的工具和技术的新理解。）  </p>
+<blockquote>
+<p>我始终不渝的信念是，所有成功的语言都是逐渐成长起来的，而不是仅根据某个第一原则设计出来的。</p>
+</blockquote>
+<p>（很多语言，例如 Lisp，在设计时就指定了很多原则，如函数的第一性原则、函数式、基于序对的表结构是所有数据结构的基础等等，Lisp 很难说可以去尽可能满足现实中的需求。）</p>
+<h3 id="C-之前的历史"><a href="#C-之前的历史" class="headerlink" title="C++ 之前的历史"></a>C++ 之前的历史</h3><p><strong>Simula 语言和分布式系统</strong></p>
+<p>（Simula 语言是被认为是第一个 OOP 语言，它引入了 OOP 的基本概念：对象、类和继承。）<br>（在作者看来，在没有合适工具的情况下绝不去冲击一个问题，作者总结了一个“合适的工具”应该是什么样的。）</p>
+<ul>
+<li>对程序组织的支持（类）、对并发的某种形式的支持，以及对基于类的类型系统的强检查。</li>
+<li>构建、运行都要快（至少能够运行得像 BCPL 一样快）。</li>
+<li>允许高度可移植。</li>
+</ul>
+<p>（在作者看来，这些准则和语言的任何特定特征没有任何关系。相反，它们只是提出了对解决方案的一些约束条件。）</p>
+<blockquote>
+<p>我在操作系统领域的知识基础，以及对于模块化和通信的兴趣对于 C++ 有持久的影响。例如 C++ 的保护模型就来自于访问权限许可和转让的概念；初始化和赋值<br>的区分来自于对转让能力的思考；C++ 的 const 概念是从读写保护机制中演化出来的；而 C++ 异常处理机制的设计则受到 Brian Randell 小组在容错系统工作的影响。</p>
+</blockquote>
+<p><strong>C语言</strong></p>
+<p>（作者分析了自己的实用主义和经验主义哲学倾向，倾心<code>齐克果</code>的存在主义哲学，认为其对个人的几乎狂热关心以及敏锐的心理洞察力比黑格尔及马克思更具有感染力。）<br>（这影响了 C++ 被有意地设计成能够支持各种各样的风格，而不是强调“一条真理之路”。）</p>
+<h3 id="带类的-C-语言"><a href="#带类的-C-语言" class="headerlink" title="带类的 C 语言"></a>带类的 C 语言</h3><p>（语言要保持通用型，而不是面向特定的应用领域，当需要支持时，就应该通过库或者特定的扩充来做这件事。） </p>
+<blockquote>
+<p>来类的 C 应该能够用到 C 可以使用的一切地方。这还意味着需要取得与 C 相当的执行效率。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -591,6 +655,19 @@
       </categories>
   </entry>
   <entry>
+    <title>ESP32 模组</title>
+    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
+<blockquote>
+<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开源硬件</category>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>ESP8266 NodeMCU 介绍</title>
     <url>/2022/05/20/ESP8266-NodeMCU-%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<code>ESP8266 NodeMCU Kit</code> 开发板使用 <code>ESP8266 WIFI 模组</code>，再加上一些外部电路，可方便用于学习、测试和原型开发。其开源的可用固件除了<a href="https://github.com/espressif/">官方固件</a>外，还包括 <a href="https://www.nodemcu.com/index_cn.html">NodeMCU</a> 和 <a href="https://micropython.org/">MicroPython</a>。<br>&emsp;&emsp; 其中 <a href="https://nodemcu.readthedocs.io/en/release/">NodeMCU</a> 是基于 <code>Lua</code> 的开源固件。它使用基于模块（<code>on-module</code>）闪存的<code>SPIFFS</code>文件系统 。</p>
@@ -640,19 +717,6 @@
 <li><a href="https://nodemcu.readthedocs.io/en/release/">NodeMCU 官方文档</a></li>
 <li><a href="https://github.com/nodemcu">NodeMCU Github</a></li>
 </ul>
-]]></content>
-      <categories>
-        <category>开源硬件</category>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ESP32 模组</title>
-    <url>/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>ESP32</code> 是 ESP8266 的升级版本。除了 WIFI 模块外，<code>ESP32</code> 还包括蓝牙模块。</p>
-<blockquote>
-<p>参考 <a href="https://makeradvisor.com/esp32-vs-esp8266/">ESP32 vs ESP8266 – Pros and Cons</a> .</p>
-</blockquote>
 ]]></content>
       <categories>
         <category>开源硬件</category>
@@ -1742,24 +1806,9 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux Kernel  LKD3 阅读笔记</title>
-    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;<em>《Linux Kernel Development.3rd.Edition》重读笔记。</em></p>
-<p>&emsp;&emsp;The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>&emsp;&emsp;Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
-<span id="more"></span>
-<h2 id="进程与进程调度"><a href="#进程与进程调度" class="headerlink" title="进程与进程调度"></a>进程与进程调度</h2><p>Linux CFS调度策略的特点：</p>
-<ul>
-<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
-<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
-</ul>
-<p>&emsp;&emsp;CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br>&emsp;&emsp;<em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>&emsp;&emsp;CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>&emsp;&emsp;CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>&emsp;&emsp;CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>&emsp;&emsp;schedule()函数是进程调度的主入口。</p>
-<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>&emsp;&emsp;The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>&emsp;&emsp;In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>&emsp;&emsp;A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>&emsp;&emsp;Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>&emsp;&emsp;接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
-<p>Q1:  Are you needlessly limiting the function?<br>&emsp;&emsp;<strong>Design the system call to be as general as possible.</strong><br>&emsp;&emsp;<strong>The purpose of the system call will remain constant but its use may change.</strong></p>
-<p>Q2: Is the system call portable?</p>
-<p><strong><code>Provide mechanism, not policy.</code></strong></p>
-<p>&emsp;&emsp;内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
-<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>&emsp;&emsp;中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>&emsp;&emsp;异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>&emsp;&emsp;设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>&emsp;&emsp;每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>&emsp;&emsp;中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br>&emsp;&emsp;<strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h3 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h3><h3 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h3><p>&emsp;&emsp;内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>&emsp;&emsp;Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
+    <title>Linux Kernel Security Summary</title>
+    <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1767,9 +1816,29 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux Kernel Security Summary</title>
-    <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+    <title>Linux Kernel  LKD3 阅读笔记</title>
+    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《Linux Kernel Development.3rd.Edition》重读笔记。</p>
+<blockquote>
+<p>The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>进程 &#x3D; 程序 + 环境</p>
+<h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p><strong>slab 分配器</strong>：通过预先分配和重复使用 <code>task_struct</code>，可以避免动态分配和释放所带来的资源消耗，可以加快进程创建的效率。<br>注意<code>写时拷贝</code>技术的作用是什么？（内核创建子进程时，并不复制整个进程地址空间，而是父子进程共享同一个拷贝。只有当子进程需要写入页的时候，才真正地进行拷贝）。fork 后父子进程的区别仅仅在于 PID、PPID、某些资源和统计量。<br>注意分析 fork 系统调用的流程：<code>fork/clone -&gt; do_fork -&gt; _do_fork -&gt; copy_precess</code>。</p>
+<h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><p>Linux CFS调度策略的特点：</p>
+<ul>
+<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
+<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+</ul>
+<p>CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br><em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>schedule()函数是进程调度的主入口。</p>
+<h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
+<p>Q1:  Are you needlessly limiting the function?<br><strong>Design the system call to be as general as possible.</strong><br><strong>The purpose of the system call will remain constant but its use may change.</strong></p>
+<p>Q2: Is the system call portable?</p>
+<p><strong><code>Provide mechanism, not policy.</code></strong></p>
+<p>内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
+<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br><strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
+<h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -1896,14 +1965,21 @@
 <h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2><blockquote>
 <p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a><br>参考 <a href="https://www.kernel.org/doc/html/v6.13-rc6/dev-tools/gdb-kernel-debugging.html">Debugging kernel and modules via gdb</a></p>
 </blockquote>
-<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
-<h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。</p>
-<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code>  或者对于 ARM 架构：<code>$ sudo apt-get install qemu-system-arm</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
+<h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。另外取消 <code>Kernel Features -&gt; Randomize the address of the kernel image</code> 配置项。</p>
+<h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -hda /dev/zero -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
+<p>如果是 <code>arm64</code> 架构： </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-aarch64 -s -S -no-reboot -M virt -cpu cortex-a72 -smp 4 -kernel <span class="built_in">arch</span>/arm64/boot/Image --append <span class="string">&quot;root=/dev/vda2 console=ttyAMA0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
 
 <p>运行 gdb：<code>$ gdb vmlinux</code> 或者 <code>$ gdb vmlinuz</code><br>注意这里如果提示无法加载<code>vmlinux-gdb.py</code>，则根据提示在 gdb 配置文件中为 <code>add-auto-load-safe-path</code> 设置脚本绝对路径。该脚本中扩展了一些 gdb 命令，比如查看内核缓冲区、查看进程等。</p>
 <p>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>
+
+<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><p>使用 <a href="https://buildroot.org/">Buildroot 工具</a> 来制作根文件系统。官网下载源代码后，编译构建：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig  <span class="comment"># 选择架构和文件系统类型</span></span></span><br></pre></td></tr></table></figure>
+
+]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -2210,8 +2286,8 @@
 <h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
 ]]></content>
       <categories>
-        <category>GNU/Linux操作系统</category>
         <category>信息安全</category>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -2609,10 +2685,10 @@
   <entry>
     <title>RaspberryPi5 And AI Hailo8L Tutorial</title>
     <url>/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="">Raspberry Pi 5</a> 树莓派 AI 套件将树莓派 M.2 HAT+ 与 Hailo AI 加速模块捆绑在一起，用于树莓派 5。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="">Raspberry Pi 5</a> 树莓派 <a href="https://www.raspberrypi.com/documentation/computers/ai.html">AI 套件</a>将树莓派 M.2 HAT+ 与 Hailo AI 加速模块捆绑在一起，用于树莓派 5。</p>
 <span id="more"></span>
 
-<h3 id="温度传感器"><a href="#温度传感器" class="headerlink" title="温度传感器"></a>温度传感器</h3><p>获取当前温度：<br><code>$ vcgencmd measure_temp</code></p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="温度传感器"><a href="#温度传感器" class="headerlink" title="温度传感器"></a>温度传感器</h3><p>获取当前温度：<br><code>$ vcgencmd measure_temp</code></p>
 <p>可以使用 stress 命令来手动增加 CPU 负载，观察 CPU 温度变化。<br><code>$ stress --cpu 4</code></p>
 <p>Raspberry 的 Active Cooler 主动冷却器由固件主动控制：在 60°C 时，鼓风机风扇将打开，在 67.5°C 时风扇速度将增加，最后在 75°C 时风扇增加到全速。<br>当温度回落到这些限制以下时，鼓风机的风扇将自动停止旋转。</p>
 <h3 id="摄像头"><a href="#摄像头" class="headerlink" title="摄像头"></a>摄像头</h3><p>在 RaspberryPi OS Lite 系统中使用第三方摄像头需要更改启动配置。首先更改 config.txt:<br>a. 关闭摄像头自动检测</p>
@@ -2625,7 +2701,47 @@
 <p>d. 使用 VLC 搭建实时视频流服务器</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install vlc</span></span><br><span class="line"><span class="meta prompt_">$ </span></span><br></pre></td></tr></table></figure>
 
-<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>安装 raspberry pi OS 时会提示进行网络配置，最后配置信息会写入：<br><code>etc/NetworkManager/system-connections/preconfigured.nmconnection</code> </p>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>安装 raspberry pi OS 时会提示进行网络配置，最后配置信息会写入：<br><code>/etc/NetworkManager/system-connections/preconfigured.nmconnection</code> </p>
+<h3 id="远程桌面"><a href="#远程桌面" class="headerlink" title="远程桌面"></a>远程桌面</h3><p>a. 使用 <code>raspi-config</code> 使能 <code>VNC</code>，打开 VNC 服务器。<br>b. 在客户机安装 <code>tigervnc-viewer</code> VNC 客户端。</p>
+<h2 id="AI-测试"><a href="#AI-测试" class="headerlink" title="AI 测试"></a>AI 测试</h2><h3 id="硬件准备"><a href="#硬件准备" class="headerlink" title="硬件准备"></a>硬件准备</h3><p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/aihal_plus.png"></p>
+<p>a. 连接 Raspberry 5 开发板、摄像头以及 <a href="https://www.raspberrypi.com/documentation/accessories/ai-hat-plus.html#ai-hat-plus-installation">AI HAT+</a>。注意在连接前，检查固件版本是否最最新的：<code>$ sudo rpi-eeprom-update</code>。</p>
+<p>b. 为了更好地利用 NPU 的性能，建议使能<a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#pcie-gen-3-0">PCIe Gen 3.0</a></p>
+<p>c. 安装 <code>hailo</code> AI 软件套件：<code>$ sudo apt-get install hailo-all</code>，这些软件包括：</p>
+<ul>
+<li>Hailo 内核设备驱动和固件</li>
+<li>HailoRT 中间层软件</li>
+<li>Hailo Tappas 后处理核心库</li>
+<li>demo 包</li>
+</ul>
+<p>（注意，如果下载速度过慢，可以更换国内的 debian 镜像源）</p>
+<p>d. 重启</p>
+<p>e. 确认软硬件环境一切 OK：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hailortcli fw-control identify</span></span><br><span class="line">Executing on device: 0000:01:00.0</span><br><span class="line">Identifying board</span><br><span class="line">Control Protocol Version: 2</span><br><span class="line">Firmware Version: 4.20.0 (release,app,extended context switch buffer)</span><br><span class="line">Logger Version: 0</span><br><span class="line">Board Name: Hailo-8</span><br><span class="line">Device Architecture: HAILO8L</span><br><span class="line">Serial Number: &lt;N/A&gt;</span><br><span class="line">Part Number: &lt;N/A&gt;</span><br><span class="line">Product Name: &lt;N/A&gt;</span><br></pre></td></tr></table></figure>
+
+<p>后面三个编号为 <code>&lt;N/A&gt;</code> 对 <strong>AI HAT+</strong> 设备来说是正常的，不影响实际的功能。</p>
+<p>如果得到下面的输出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">CHECK failed - Driver version (4.18.0) is different from library version (4.20.0)</span><br></pre></td></tr></table></figure>
+<p>则需要更新系统：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt update</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt full-upgrade</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install hailo-all</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">reboot</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p><code>rpicam-apps</code> 软件套件实现了一个<strong>后处理框架（post-processing framework）</strong>。</p>
+<p><code>$ sudo apt update &amp;&amp; sudo apt install rpicam-apps</code></p>
+<h4 id="对象检测（Object-Detection）"><a href="#对象检测（Object-Detection）" class="headerlink" title="对象检测（Object Detection）"></a>对象检测（Object Detection）</h4><p>该 demo 使用神经网络识别特定对象，并使用方框进行标记。下面以 <a href="https://zhuanlan.zhihu.com/p/598566644">YOLOv6 模型</a> 为例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov6_inference.json</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/hailo_yolov6_inference.png"></p>
+<p>使用 <code>YOLOv8</code> 模型后实物检测和实例分割更准确：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov8_inference.json</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/hailo_yolov8_inference.png"></p>
+<p>还可以使用 <code>YOLOX</code> 模型、 使用<code>YOLOv5</code>模型进行人脸识别：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov5_personface.json</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="图像分割"><a href="#图像分割" class="headerlink" title="图像分割"></a>图像分割</h4><p>使用 <code>YOLov5</code> 模型进行图像分割：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov5_segmentation.json --framerate 20</span></span><br></pre></td></tr></table></figure>
+
+<p>如果输出未找到 <code>/usr/share/hailo-models/yolov5seg.json</code>，可以在 <a href="https://github.com/hailo-ai/tappas/blob/master/apps/h8/gstreamer/general/instance_segmentation/resources/configs/yolov5seg.json">tappas-github</a> 中另行下载。</p>
+<h4 id="姿态估计"><a href="#姿态估计" class="headerlink" title="姿态估计"></a>姿态估计</h4><p>下面的 demo 进行了 17 个点的人体姿态模拟：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov8_pose.json</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/hailo_yolov8_pose.png"></p>
 ]]></content>
       <categories>
         <category>开源硬件</category>
@@ -3087,6 +3203,42 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>使用 Clang/LLVM 构建 Linux 内核</title>
+    <url>/2025/02/21/%E4%BD%BF%E7%94%A8Clang-LLVM%E6%9E%84%E5%BB%BALinux%E5%86%85%E6%A0%B8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Linux 内核是用 C 语言编写的，但其并不完全符合 <code>ANSI C</code> 标准，实际上，内核开发者使用的 C 语言涵盖了 ISO C99 标准和 GNU C 扩展特性，这使得内核的构建长期依赖 gcc。</p>
+<p><code>Clang</code> 和 <code>LLVM</code> 的持续性工作改变了这种现状，使得其可作为构建内核的替代工具。一些发行版，例如 Android、ChromwOS、OpenMandriva 等都在使用 Clang 编译的内核。</p>
+<p>关于 LLVM 的简单介绍，参考 <a href="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LLVM 项目介绍">[LLVM 项目介绍]</a>。Clang 是 LLVM 的前端，支持 C 语言和内核所需要的 GNU C 扩展。</p>
+<span id="more"></span>
+
+<h2 id="使用-LLVM-构建"><a href="#使用-LLVM-构建" class="headerlink" title="使用 LLVM 构建"></a>使用 LLVM 构建</h2><h3 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h3><p>安装 LLVM 和 对应的链接器 lld： <code>$ sudo apt-get install clang lld</code>，该命令会自动安装所依赖的其他软件包。</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \</span></span><br><span class="line"><span class="language-bash">  OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf AS=llvm-as \</span></span><br><span class="line"><span class="language-bash">  HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTAS=llvm-as HOSTLD=ld.lld</span></span><br></pre></td></tr></table></figure>
+
+<p>目前支持的架构参考 <a href="https://docs.kernel.org/translations/zh_CN/kbuild/llvm.html#id5">使用 Clang&#x2F;LLVM 构建 Linux</a>。</p>
+<h2 id="使用-lldb-调试"><a href="#使用-lldb-调试" class="headerlink" title="使用 lldb 调试"></a>使用 lldb 调试</h2><p>安装 LLVM 的调试器 lldb </p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>编译器</category>
+        <category>Linux Kernel</category>
+        <category>LLVM Project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>制作MultiBoot USB启动盘</title>
+    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
+<span id="more"></span>
+
+<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
+<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
+<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
+<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于计算机操作系统启动引导的总结</title>
     <url>/2018/04/02/%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E7%9A%84%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>&emsp;&emsp;对于现代CPU而言，当其上电启动时，必须知道指令在什么地方，这是很简单的道理。现代大多数计算机的做法是将这第一段程序放到称为BIOS的固件（存储材料大都为EEPROM或FLASH芯片）里，该程序会根据配置信息读取磁盘（或其他存储设备，例如外接USB）的特定分区里的程序代码并执行，逐渐启动操作系统的所有组件。</p>
@@ -3127,21 +3279,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h3 id="方案三：UEFI"><a href="#方案三：UEFI" class="headerlink" title="方案三：UEFI"></a>方案三：UEFI</h3><p>&emsp;&emsp;关于如何在计算机启动时屏蔽UEFI以及安全启动请查看Disable_UEFI_and_Secure_Boot</p>
 <h3 id="方案四：U-boot"><a href="#方案四：U-boot" class="headerlink" title="方案四：U-boot"></a>方案四：U-boot</h3><p>&emsp;&emsp;待补充</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>① <a href="https://baike.baidu.com/item/%E4%B8%BB%E5%BC%95%E5%AF%BC%E8%AE%B0%E5%BD%95/7612638?fr=aladdin&fromid=10473976&fromtitle=mbr">MBR 百度百科</a><br>② <a href="https://baike.baidu.com/item/bios/91424?fr=aladdin">BIOS 百度百科</a><br>③ <a href="https://opensource.com/article/17/2/linux-boot-and-startup">An introduction to the Linux boot and startup processes</a><br>④ <a href="https://www.cnblogs.com/leaven/archive/2010/01/07/1641324.html">详解 Linux Initrd</a><br>⑤ <a href="https://baike.baidu.com/item/initrd/3239796?fr=aladdin">initrd 百度百科</a><br>⑥ <a href="https://wiki.archlinux.org/index.php/Mkinitcpio">mkinitcpio ArchLinux Wiki</a><br>⑦ <a href="https://wiki.archlinux.org/index.php/Category:Boot_loaders">Boot Loader ArchLinux Wiki</a><br>⑧ <a href="http://www.178linux.com/15793">UEFI原理小结</a><br>⑨ <a href="https://neosmart.net/wiki/easybcd/">EasyBCD 官方wiki</a><br>⑩ <a href="http://www.178linux.com/15788">UEFI与BIOS对比</a><br>⑪ <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT 维基百科</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>制作MultiBoot USB启动盘</title>
-    <url>/2022/01/11/%E5%88%B6%E4%BD%9CMultiBoot-USB%E5%90%AF%E5%8A%A8%E7%9B%98/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>该文章介绍如何制作可以启动多个Linux或Windows系统的USB盘.使用grub可以启动多种GNU&#x2F;Linux系统，但启动Windows系统会稍微比较麻烦：首先windows系统的镜像文件可能大于4G，它只能存储在NTFS文件系统分区中，在FAT32分区中是不行的，所以解决方法是分别创建FAT32分区和NTFS分区。<br>另外要做到兼容Lagecy BIOS和UEFI。<br>如果要兼容UEFI，必须增加额外的EFI系统分区。</p>
-<span id="more"></span>
-
-<h3 id="创建混合UEFI-GPT-BIOS-GPT-MBR"><a href="#创建混合UEFI-GPT-BIOS-GPT-MBR" class="headerlink" title="创建混合UEFI GPT+ BIOS GPT&#x2F;MBR"></a>创建混合UEFI GPT+ BIOS GPT&#x2F;MBR</h3><p><a href="https://wiki.archlinux.org/title/Multiboot_USB_drive">https://wiki.archlinux.org/title/Multiboot_USB_drive</a></p>
-<h3 id="glim"><a href="#glim" class="headerlink" title="glim"></a>glim</h3><p><a href="https://github.com/thias/glim">https://github.com/thias/glim</a><br>glim主要由一系列grub的配置脚本文件构成,还包括一些资源文件,比如grub的背景图片,字体以及启动项logo等.使用时只需要将iso镜像文件拷贝到对应的目录即可,但有些GNU&#x2F;Linux操作系统更新很快,特别是有些boot目录的文件名会有所改动,这时候就要手动修改对应的grub配置脚本. glim目前不支持windows系统.</p>
-<h3 id="multisystem"><a href="#multisystem" class="headerlink" title="multisystem"></a>multisystem</h3><p><a href="http://liveusb.info/">http://liveusb.info</a></p>
-<h3 id="Aio-Boot"><a href="#Aio-Boot" class="headerlink" title="Aio Boot"></a>Aio Boot</h3><p><a href="https://www.aioboot.com/en/about/">https://www.aioboot.com/en/about/</a><br>Aio Boot是windows下的应用程序,它使用起来比较方便,特别对于Linux系统的新手而言.它的功能更丰富,支持的操作系统也更多,除了Linux还包括Android和和Windows 7&#x2F;8&#x2F;10等.</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -4964,91 +5101,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++语言的设计与演化</title>
-    <url>/2025/02/20/Cplusplus%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%BC%94%E5%8C%96/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《The Design and Evolution of C++》 是 C++ 之父 <strong>Bjarne Stroustrup</strong> 为描述 C++ 语言的发展历史、设计理念和技术细节的著作。本篇文章对该书做一些精要部分的摘抄，并记录一些自己的心得。</p>
-<span id="more"></span>
-
-<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>（在作者看来，语言的设计要考虑到许多实践性的和社会性的因素，初始设计往往是满足当时的特定问题，后来成才去满足新的需求，反映对问题和对解决它们的工具和技术的新理解。）  </p>
-<blockquote>
-<p>我始终不渝的信念是，所有成功的语言都是逐渐成长起来的，而不是仅根据某个第一原则设计出来的。</p>
-</blockquote>
-<p>（很多语言，例如 Lisp，在设计时就指定了很多原则，如函数的第一性原则、函数式、基于序对的表结构是所有数据结构的基础等等，Lisp 很难说可以去尽可能满足现实中的需求。）</p>
-<h3 id="C-之前的历史"><a href="#C-之前的历史" class="headerlink" title="C++ 之前的历史"></a>C++ 之前的历史</h3><p><strong>Simula 语言和分布式系统</strong></p>
-<p>（Simula 语言是被认为是第一个 OOP 语言，它引入了 OOP 的基本概念：对象、类和继承。）<br>（在作者看来，在没有合适工具的情况下绝不去冲击一个问题，作者总结了一个“合适的工具”应该是什么样的。）</p>
-<ul>
-<li>对程序组织的支持（类）、对并发的某种形式的支持，以及对基于类的类型系统的强检查。</li>
-<li>构建、运行都要快（至少能够运行得像 BCPL 一样快）。</li>
-<li>允许高度可移植。</li>
-</ul>
-<p>（在作者看来，这些准则和语言的任何特定特征没有任何关系。相反，它们只是提出了对解决方案的一些约束条件。）</p>
-<blockquote>
-<p>我在操作系统领域的知识基础，以及对于模块化和通信的兴趣对于 C++ 有持久的影响。例如 C++ 的保护模型就来自于访问权限许可和转让的概念；初始化和赋值<br>的区分来自于对转让能力的思考；C++ 的 const 概念是从读写保护机制中演化出来的；而 C++ 异常处理机制的设计则受到 Brian Randell 小组在容错系统工作的影响。</p>
-</blockquote>
-<p><strong>C语言</strong></p>
-<p>（作者分析了自己的实用主义和经验主义哲学倾向，倾心<code>齐克果</code>的存在主义哲学，认为其对个人的几乎狂热关心以及敏锐的心理洞察力比黑格尔及马克思更具有感染力。）<br>（这影响了 C++ 被有意地设计成能够支持各种各样的风格，而不是强调“一条真理之路”。）</p>
-<h3 id="带类的-C-语言"><a href="#带类的-C-语言" class="headerlink" title="带类的 C 语言"></a>带类的 C 语言</h3><p>（语言要保持通用型，而不是面向特定的应用领域，当需要支持时，就应该通过库或者特定的扩充来做这件事。） </p>
-<blockquote>
-<p>来类的 C 应该能够用到 C 可以使用的一切地方。这还意味着需要取得与 C 相当的执行效率。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++的并发编程</title>
-    <url>/2025/02/20/Cplusplus%E7%9A%84%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>C++</code> 在 C++ 11 标准中正式增加了对并发的支持，不仅包含了线程内存模型，还在 C++ 的标准库中扩展了管理线程的类、共享数据保护、线程同步以及低级操作原语。 </p>
-<p>C++ 14 和 C++ 17 标准随后又增加了其他扩展。同时在标准库的具体实现下，兼顾性能，尽可能地减小<strong>抽象惩罚（abstraction penalty）</strong>。</p>
-<blockquote>
-<p>参考 《C++ Concurrency in Action. 2nd Edition》 by Anthony Williams.</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="线程管理"><a href="#线程管理" class="headerlink" title="线程管理"></a>线程管理</h2><p>使用 <code>RAII</code> 来等待线程完成。<code>RAII</code> 的做法是使用一个对象，在其构造时获取对应的资源，在对象生命期内控制对资源的访问，使之始终保持有效，最后在对象析构的时候，释放构造时获取的资源。<br>具体使用时，可以利用局部变量自动销毁的机制，在变量的析构函数中释放资源（或其他操作，如线程 join 等）。<code>RAII</code> 比较典型的应用场景是对<code>锁</code>资源的管理。</p>
-<p><strong>分离线程（detach）</strong></p>
-<h2 id="线程共享数据"><a href="#线程共享数据" class="headerlink" title="线程共享数据"></a>线程共享数据</h2><h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h2 id="内存模型和原子类型操作"><a href="#内存模型和原子类型操作" class="headerlink" title="内存模型和原子类型操作"></a>内存模型和原子类型操作</h2><h2 id="并发数据结构（有锁和无锁）"><a href="#并发数据结构（有锁和无锁）" class="headerlink" title="并发数据结构（有锁和无锁）"></a>并发数据结构（有锁和无锁）</h2>]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Can总线的安全分析</title>
-    <url>/2025/02/20/Can%E6%80%BB%E7%BA%BF%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>使用 ICSim 模拟器</p>
-<blockquote>
-<p>参考 <a href="https://xz.aliyun.com/news/12474">浅谈车辆CAN总线安全</a></p>
-</blockquote>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>网络安全</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用 Clang/LLVM 构建 Linux 内核</title>
-    <url>/2025/02/21/%E4%BD%BF%E7%94%A8Clang-LLVM%E6%9E%84%E5%BB%BALinux%E5%86%85%E6%A0%B8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Linux 内核是用 C 语言编写的，但其并不完全符合 <code>ANSI C</code> 标准，实际上，内核开发者使用的 C 语言涵盖了 ISO C99 标准和 GNU C 扩展特性，这使得内核的构建长期依赖 gcc。</p>
-<p><code>Clang</code> 和 <code>LLVM</code> 的持续性工作改变了这种现状，使得其可作为构建内核的替代工具。一些发行版，例如 Android、ChromwOS、OpenMandriva 等都在使用 Clang 编译的内核。</p>
-<p>关于 LLVM 的简单介绍，参考 <a href="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LLVM 项目介绍">[LLVM 项目介绍]</a>。Clang 是 LLVM 的前端，支持 C 语言和内核所需要的 GNU C 扩展。</p>
-<span id="more"></span>
-
-<h2 id="使用-LLVM-构建"><a href="#使用-LLVM-构建" class="headerlink" title="使用 LLVM 构建"></a>使用 LLVM 构建</h2><h3 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h3><p>安装 LLVM 和 对应的链接器 lld： <code>$ sudo apt-get install clang lld</code>，该命令会自动安装所依赖的其他软件包。</p>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \</span></span><br><span class="line"><span class="language-bash">  OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \</span></span><br><span class="line"><span class="language-bash">  HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld</span></span><br></pre></td></tr></table></figure>
-
-<p>目前支持的架构参考 <a href="https://docs.kernel.org/translations/zh_CN/kbuild/llvm.html#id5">使用 Clang&#x2F;LLVM 构建 Linux</a>。</p>
-<h2 id="使用-lldb-调试"><a href="#使用-lldb-调试" class="headerlink" title="使用 lldb 调试"></a>使用 lldb 调试</h2><p>安装 LLVM 的调试器 lldb </p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>编译器</category>
-        <category>Linux Kernel</category>
-        <category>LLVM Project</category>
       </categories>
   </entry>
 </search>
