@@ -555,10 +555,41 @@
 </blockquote>
 <p><strong>C语言</strong></p>
 <p>（作者分析了自己的实用主义和经验主义哲学倾向，倾心<code>齐克果</code>的存在主义哲学，认为其对个人的几乎狂热关心以及敏锐的心理洞察力比黑格尔及马克思更具有感染力。）<br>（这影响了 C++ 被有意地设计成能够支持各种各样的风格，而不是强调“一条真理之路”。）</p>
-<h3 id="带类的-C-语言"><a href="#带类的-C-语言" class="headerlink" title="带类的 C 语言"></a>带类的 C 语言</h3><p>（语言要保持通用型，而不是面向特定的应用领域，当需要支持时，就应该通过库或者特定的扩充来做这件事。） </p>
+<h3 id="带类的-C-语言"><a href="#带类的-C-语言" class="headerlink" title="带类的 C 语言"></a>带类的 C 语言</h3><p>（语言要保持通用型，而不是面向特定的应用领域，当需要支持时，就应该通过库或者特定的扩充来做这件事。）  </p>
 <blockquote>
 <p>来类的 C 应该能够用到 C 可以使用的一切地方。这还意味着需要取得与 C 相当的执行效率。</p>
 </blockquote>
+<p>（早期<code>带类的 C </code>是通过<strong>预处理程序</strong>实现的，C 的全部能力都是可以使用的 ）</p>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>（<code>类</code> 是最重要和核心的概念。但不要把它看得过于神秘，我们可以说类是一种抽象机制，在数据和数据操作方面，又是一种封装机制。）</p>
+<p><code>对象</code>是<code>类</code>的实例化，或者说前者由后者创建，这和基本数据类型（如 <code>int</code>、<code>float</code>等）的变量的创建是一致的。  </p>
+<blockquote>
+<p>函数定义通常写在“其他地方”，以使得类的声明看起来就像是一个接口描述，而不像是为了组织代码而提供的一种语法结构，这也意味着可以分别编译。</p>
+</blockquote>
+<p><code>new()</code> 是构造函数，后来演化为 C++ 里面的构造函数，不过函数名使用类名，而 <code>new</code> 则作为保留关键字用于动态分配对象的内存空间。</p>
+<h4 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h4><p>用户定义的类型和内部类型在语言法则上要保持一致性，即都可以定义局部或者全局变量（Simula没有做到这一点）。</p>
+<p><strong>内联</strong></p>
+<blockquote>
+<p>引入内联的一般性理由与越过保护屏障的代价有关。…… 在带类的 C 中只有成员函数能做成 inline 的，做法只有一种，就是把它的函数体放进类的声明中。<br>后来 C++ 引入了 inline 关键字并允许内联非成员函数。</p>
+</blockquote>
+<p><code>inline</code> 关键字只是一种让编译器<strong>尽可能</strong>去内联的提示，编译器可以忽略它。</p>
+<h4 id="link"><a href="#link" class="headerlink" title="link"></a>link</h4><blockquote>
+<p>按名字等价是 C++ 类型系统的基石，而内存布局相容性则保证了可以使用显式类型转换，以便能够提供低级的转换服务。</p>
+</blockquote>
+<p>（相反，在 python 语言中可以按照结构等价的，在底层内存数据层面，相同名字的变量引用的是同一块只读存储区。）</p>
+<blockquote>
+<p>惟一定义原则：在 C++ 中，每个函数、变量、类型、变量、常量等都应该恰好有一个定义。</p>
+</blockquote>
+<p>（在作者看来，带类的 C 要考虑一种纯朴的实现，不使用复杂的、花哨的和不实用的算法或机制。这种简单性和实用性可以快速培养用户的满足感与成就感。）</p>
+<p>（在作者看来，C++ 是一个系统中的一个语言，而不是系统本身，不像 Smalltalk 或者 Lisp 那样被认为是完整的系统或者环境。）</p>
+<blockquote>
+<p>能够与其他语言和系统共生的问题至今还明显不是大多数理论家、所谓的完美主义者、学术界用户们的关注点。但我相信这是 C++ 成功的一个主要原因。</p>
+</blockquote>
+<p><strong>和 C 的连接兼容性要比代码的兼容性重要得多</strong></p>
+<h4 id="对象的内存布局模型"><a href="#对象的内存布局模型" class="headerlink" title="对象的内存布局模型"></a>对象的内存布局模型</h4><p>class 的布局模型和 struct 完全一样。<code>this</code> 指针的使用。</p>
+<h3 id="静态类型检查"><a href="#静态类型检查" class="headerlink" title="静态类型检查"></a>静态类型检查</h3><p>对调用不加声明函数是否需要检查以及如何检查的讨论。带类的 C 引入了 <code>void</code> 关键字。</p>
+<p>是否支持隐式窄转换（如 int -&gt; char）的讨论。（不阻止，但会报告警告信息，但多数程序员往往忽略编译器的警告信息）</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>C++ 引入的很多对 C 的语法的改进最后也被 ASNI C 标准所接受，但作者的原则是一贯的：对 C 用户的兼容是第一位的。不会做激进地改进，“什么都不做就什么都做了”。</p>
+<h3 id="派生类与虚函数"><a href="#派生类与虚函数" class="headerlink" title="派生类与虚函数"></a>派生类与虚函数</h3><p>没有虚函数时的多态性：用户可以使用派生类的对象而把基类当作实现细节。</p>
 ]]></content>
       <categories>
         <category>C++</category>
@@ -5106,7 +5137,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>使用 Octave 编写机器学习应用原型</title>
     <url>/2025/02/23/%E4%BD%BF%E7%94%A8Octave%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%94%E7%94%A8%E5%8E%9F%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://octave.org/#">Octave</a> 是开源的科学数值计算工具，类似于 <code>matlab</code>，它的语言的语法绝不部分与 matlab 兼容。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://octave.org/#">Octave</a> 是开源的科学数值计算工具，类似于 <code>matlab</code>，它的语言的语法绝大部分与 matlab 兼容。</p>
 <span id="more"></span>
 ]]></content>
       <categories>
