@@ -2776,7 +2776,8 @@
 ]]></content>
       <categories>
         <category>开源硬件</category>
-        <category>机器学习</category>
+        <category>人工智能</category>
+        <category>深度学习</category>
       </categories>
   </entry>
   <entry>
@@ -5142,6 +5143,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <span id="more"></span>
 ]]></content>
       <categories>
+        <category>人工智能</category>
         <category>机器学习</category>
       </categories>
   </entry>
