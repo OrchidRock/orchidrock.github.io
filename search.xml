@@ -5144,4 +5144,17 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>机器学习</category>
       </categories>
   </entry>
+  <entry>
+    <title>SSH 安全登录配置</title>
+    <url>/2024/02/24/SSH%E5%AE%89%E5%85%A8%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenSSH 远程登陆应尽可能避免使用 <strong>口令+密码</strong> 的认证方式，而尽量使用非对称公钥证书进行认证。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/tang_jian_dong/article/details/124771246">Centos8 ssh 禁用密码登录， 使用证书登录</a></p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全、网络安全</category>
+      </categories>
+  </entry>
 </search>
