@@ -19,27 +19,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="概述Go 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。 Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。Go 的哲学包括：  简洁（Simplicity">
+    <meta name="description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go Language Tutorial">
-<meta property="og:url" content="https://orchidrock.github.io/2024/12/15/Go-Language-Tutorial/">
+<meta property="og:title" content="S32K1XX芯片CPU核性能优化方法总结">
+<meta property="og:url" content="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 <meta property="og:site_name" content="StoneTough">
-<meta property="og:description" content="概述Go 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。 Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。Go 的哲学包括：  简洁（Simplicity">
+<meta property="og:description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-12-15T04:44:11.000Z">
-<meta property="article:modified_time" content="2024-12-17T00:31:21.985Z">
+<meta property="article:published_time" content="2025-02-25T05:00:50.000Z">
+<meta property="article:modified_time" content="2025-02-25T05:48:23.024Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2024/12/15/Go-Language-Tutorial/">
+<link rel="canonical" href="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/15/Go-Language-Tutorial/","path":"2024/12/15/Go-Language-Tutorial/","title":"Go Language Tutorial"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/","path":"2025/02/25/S32K1XX芯片CPU核性能优化方法总结/","title":"S32K1XX芯片CPU核性能优化方法总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Go Language Tutorial | StoneTough</title>
+<title>S32K1XX芯片CPU核性能优化方法总结 | StoneTough</title>
   
 
 
@@ -139,7 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text">时钟频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE-Cache"><span class="nav-number">3.</span> <span class="nav-text">指令和数据 Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%A2%91%E7%8E%87"><span class="nav-number">4.</span> <span class="nav-text">Flash 的工作频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96"><span class="nav-number">5.</span> <span class="nav-text">Flash 的指令和数据预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%AE%B5%E7%9A%84%E5%B8%83%E5%B1%80"><span class="nav-number">7.</span> <span class="nav-text">内存段的布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6-FPU"><span class="nav-number">8.</span> <span class="nav-text">使用硬件 FPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -210,7 +210,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/15/Go-Language-Tutorial/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -223,12 +223,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Go Language Tutorial | StoneTough">
+      <meta itemprop="name" content="S32K1XX芯片CPU核性能优化方法总结 | StoneTough">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Go Language Tutorial
+          S32K1XX芯片CPU核性能优化方法总结
         </h1>
 
         <div class="post-meta-container">
@@ -238,15 +238,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2024-12-15 12:44:11" itemprop="dateCreated datePublished" datetime="2024-12-15T12:44:11+08:00">2024-12-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-12-17 08:31:21" itemprop="dateModified" datetime="2024-12-17T08:31:21+08:00">2024-12-17</time>
+      <time title="创建时间：2025-02-25 13:00:50 / 修改时间：13:48:23" itemprop="dateCreated datePublished" datetime="2025-02-25T13:00:50+08:00">2025-02-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,7 +248,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go-%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">Go 语言</span></a>
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
         </span>
     </span>
 
@@ -265,7 +259,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>431</span>
+      <span>290</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -282,16 +276,10 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
-<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
-<ul>
-<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
-</ul>
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K1XX 系列 MCU为例， 并参考一些资料对此进行了总结。</p>
 <span id="more"></span>
 
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
     </div>
 
     
@@ -314,14 +302,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/12/15/Practical-Internet-of-Thing-Security-Notes/" rel="prev" title="Practical Internet of Thing Security Notes">
-                  <i class="fa fa-angle-left"></i> Practical Internet of Thing Security Notes
+                <a href="/2025/02/24/%E5%8A%9F%E8%83%BD%E5%AE%89%E5%85%A8%E6%A0%87%E5%87%86-ISO26262-%E4%B8%AD%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" rel="prev" title="功能安全标准 ISO26262 中的硬件安全机制">
+                  <i class="fa fa-angle-left"></i> 功能安全标准 ISO26262 中的硬件安全机制
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/12/16/Network-Scanning-Based-on-TCP/" rel="next" title="Network Scanning Based on TCP">
-                  Network Scanning Based on TCP <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -408,7 +393,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

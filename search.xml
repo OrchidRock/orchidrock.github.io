@@ -5203,4 +5203,15 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>功能安全</category>
       </categories>
   </entry>
+  <entry>
+    <title>S32K1XX芯片CPU核性能优化方法总结</title>
+    <url>/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K1XX 系列 MCU为例， 并参考一些资料对此进行了总结。</p>
+<span id="more"></span>
+
+<h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
 </search>
