@@ -21,25 +21,27 @@
 
     <meta name="description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
 <meta property="og:type" content="article">
-<meta property="og:title" content="S32K1XX芯片CPU核性能优化方法总结">
-<meta property="og:url" content="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+<meta property="og:title" content="S32K芯片CPU核性能优化方法总结">
+<meta property="og:url" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 <meta property="og:site_name" content="StoneTough">
 <meta property="og:description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png">
 <meta property="article:published_time" content="2025-02-25T05:00:50.000Z">
-<meta property="article:modified_time" content="2025-02-25T05:48:23.024Z">
+<meta property="article:modified_time" content="2025-02-26T01:28:58.625Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+<link rel="canonical" href="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/","path":"2025/02/25/S32K1XX芯片CPU核性能优化方法总结/","title":"S32K1XX芯片CPU核性能优化方法总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/","path":"2025/02/25/S32K芯片CPU核性能优化方法总结/","title":"S32K芯片CPU核性能优化方法总结"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>S32K1XX芯片CPU核性能优化方法总结 | StoneTough</title>
+<title>S32K芯片CPU核性能优化方法总结 | StoneTough</title>
   
 
 
@@ -139,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text">时钟频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE-Cache"><span class="nav-number">3.</span> <span class="nav-text">指令和数据 Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%A2%91%E7%8E%87"><span class="nav-number">4.</span> <span class="nav-text">Flash 的工作频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96"><span class="nav-number">5.</span> <span class="nav-text">Flash 的指令和数据预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%AE%B5%E7%9A%84%E5%B8%83%E5%B1%80"><span class="nav-number">7.</span> <span class="nav-text">内存段的布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6-FPU"><span class="nav-number">8.</span> <span class="nav-text">使用硬件 FPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%92%8C%E5%AD%98%E5%82%A8%E5%99%A8%E6%98%A0%E5%B0%84"><span class="nav-number">2.</span> <span class="nav-text">架构和存储器映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text">时钟频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE-Cache"><span class="nav-number">4.</span> <span class="nav-text">指令和数据 Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%A2%91%E7%8E%87"><span class="nav-number">5.</span> <span class="nav-text">Flash 的工作频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96"><span class="nav-number">6.</span> <span class="nav-text">Flash 的指令和数据预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">7.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%AE%B5%E7%9A%84%E5%B8%83%E5%B1%80"><span class="nav-number">8.</span> <span class="nav-text">内存段的布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6-FPU"><span class="nav-number">9.</span> <span class="nav-text">使用硬件 FPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8%E6%80%A7%E8%83%BD%EF%BC%88%E6%A0%B8%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">多核性能（核间通信）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">11.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -210,7 +212,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2025/02/25/S32K1XX%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -223,12 +225,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="S32K1XX芯片CPU核性能优化方法总结 | StoneTough">
+      <meta itemprop="name" content="S32K芯片CPU核性能优化方法总结 | StoneTough">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          S32K1XX芯片CPU核性能优化方法总结
+          S32K芯片CPU核性能优化方法总结
         </h1>
 
         <div class="post-meta-container">
@@ -238,9 +240,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-02-25 13:00:50 / 修改时间：13:48:23" itemprop="dateCreated datePublished" datetime="2025-02-25T13:00:50+08:00">2025-02-25</time>
+      <time title="创建时间：2025-02-25 13:00:50" itemprop="dateCreated datePublished" datetime="2025-02-25T13:00:50+08:00">2025-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-26 09:28:58" itemprop="dateModified" datetime="2025-02-26T09:28:58+08:00">2025-02-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -259,7 +267,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>290</span>
+      <span>746</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -276,10 +284,16 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K1XX 系列 MCU为例， 并参考一些资料对此进行了总结。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K1XX&#x2F;S32K3XX 系列 MCU为例， 并参考一些资料对此进行了总结。</p>
 <span id="more"></span>
 
-<h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI4MzExNzgwNw==&mid=2650117254&idx=3&sn=49a012cb4d0dc0092565173d2de03d10&chksm=f38ea506c4f92c106f5a62418cb70cad082b4e08bbc589b57dee17439108e634c673b1f04599&mpshare=1&scene=23&srcid=#">汽车电子expert成长之路-微信公众号</a></p>
+</blockquote>
+<h2 id="架构和存储器映射"><a href="#架构和存储器映射" class="headerlink" title="架构和存储器映射"></a>架构和存储器映射</h2><p>S32K 系列内核的存储器映射，可以概括如下：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png"></p>
+<h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><p>S32K1XX MCU 使用 ARM 的 <code>Cortex M0+</code> （如 S32K118 和 S32K116）和 <code>Cortex M4F</code> （如 S32K14X）核，主频率可以达到最高 48MHZ 和 112MHZ （HSRUN）模式。S32K3 MCU使用 ARM 的 <code>Cortex M7</code> 核（哈佛架构 + 6级超标量流水线 + 分支预测），主频可以达到 120MHZ-240 MHZ。</p>
+<p>但仅仅通过调整 <code>PLL</code> 或者 <code>FLL</code> 产生 CPU 核和内部总线的最高时钟频率就能获得最高性能吗？如果对于计算密集型且不需要考虑 cache 的应用，大概是正确的；但对于大部分应用来说，这样做是不够的。很多应用的性能受到存储、浮点计算、IO等的极大影响，另外我们还要考虑编译器优化、程序链接等软件层面的影响。综合考虑各种软硬方面，开发者才能最大程度地发挥 CPU 核的最大性能。</p>
+<h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
     </div>
 
     
@@ -337,7 +351,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">285k</span>
+    <span title="站点总字数">286k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
