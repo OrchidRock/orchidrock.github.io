@@ -223,6 +223,28 @@
       </categories>
   </entry>
   <entry>
+    <title>CPython Internals 0: 配置和构建</title>
+    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
+<blockquote>
+<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
+<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
+<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
+<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
+<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+        <category>CPython</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CMake 构建工具介绍</title>
     <url>/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
@@ -415,28 +437,6 @@
       <tags>
         <tag>微型语言</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CPython Internals 0: 配置和构建</title>
-    <url>/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; CPython 是使用最广的 Python 解释器。CPython 抽象了C语言开发平台和操作系统的复杂性，它使得开发者可以更高效、更优雅地编写可移植、可裁减和高性能的应用程序。但对于 Python 开发者而言，不能仅仅满足于使用 Python，理解 CPython 内部是如何工作，也同样重要，甚至它也是非常有趣的。</p>
-<blockquote>
-<p>官方文档：<a href="https://devguide.python.org/">Python Developer’s Guide</a><br>书籍：<a href="https://realpython.com/products/cpython-internals-book/">CPython Internals</a> By Anthony Shaw。该书的中文翻译版本：<a href="https://hai-shi.gitbook.io/cpython-internals/">CPython 实现原理</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="构建和编译"><a href="#构建和编译" class="headerlink" title="构建和编译"></a>构建和编译</h2><ul>
-<li>安装依赖<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt install libssl-dev zlib1g-dev libncurses5-dev \</span></span><br><span class="line"><span class="language-bash">libncursesw5-dev libreadline-dev libsqlite3-dev libgdbm-dev \</span></span><br><span class="line"><span class="language-bash">libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev</span></span><br></pre></td></tr></table></figure></li>
-<li>clone 仓库<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/python/cpython.git</span></span><br></pre></td></tr></table></figure></li>
-<li>生成 makefile<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./configure</span> </span><br></pre></td></tr></table></figure></li>
-<li>编译<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>EBNF -&gt; NFA -&gt; DFA</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-        <category>CPython</category>
-      </categories>
   </entry>
   <entry>
     <title>CUDA Tutorial</title>
@@ -894,45 +894,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Flask网络框架介绍</title>
-    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
-<span id="more"></span>
-
-
-<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
-<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
-<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
-<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
-<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
-<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
-<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
-<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
-<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
-<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
-<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
-<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
-<ol>
-<li>将客户端与服务端分开</li>
-<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
-<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
-<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
-<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
-<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
-</ol>
-<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
-<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>FreeRTOS+TCP介绍</title>
     <url>/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; FreeRTOS+TCP实现了可扩展、开源和线程安全的TCP&#x2F;IP协议栈。它的特性如下：</p>
@@ -999,6 +960,190 @@
 <h3 id="移植"><a href="#移植" class="headerlink" title="移植"></a>移植</h3><h3 id="QEMU示例"><a href="#QEMU示例" class="headerlink" title="QEMU示例"></a>QEMU示例</h3>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Flask网络框架介绍</title>
+    <url>/2021/01/22/Flask%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;Flask是一个轻量级、灵活和高度可扩展的web应用框架。它由一个健壮的核心来提供web需要的基础功能，然后将期望的其他功能由第三方扩展模块提供，这与python语言的特性相似。</p>
+<span id="more"></span>
+
+
+<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><p>&emsp;&emsp;路由（routes）机制是指为每一个http请求的URL映射（map）处理函数（handler），具体实现则使用python的修饰符或者app.add_url_rule()方法。下面的代码例子非常简单直接，它为根路径指定index()处理函数，该函数直接返回一段HTML语句到客户端，这种处理函数称之为视图（view）函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World!&lt;/h1&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<p>这很少的几行代码已经可以运行一个web服务器！<br>&emsp;&emsp;Flask通过route修饰符的语法可以支持三种类型的URLs。route修饰符将URL看作由静态部分与动态部分组成，动态部分由&lt;&gt;标记，用作视图函数的参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">user</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello World %s!&lt;/h1&gt;&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+<p>所以user可以处理所有静态部分为’&#x2F;user&#x2F;‘的URL。另外route修饰符的参数也可以设置Request的类型，如GET型或者POST型。</p>
+<p>&emsp;&emsp;Flask使用context机制来提供一些变量，这些变量被看作是全局（global）的，可以直接访问，比如Http请求的一些信息可以访问request变量获得。context分为Application context和Request context，前者包括一些面向整个应用的变量（如g, current_app）,后者包括一些仅面向某次http请求的变量（如reauest、session）。同时也不难理解，前者的变量只能在应用启动激活后才能访问，后者只能在某次来自客户端的request请求期间才可以访问。</p>
+<p>&emsp;&emsp;Flask使用Request Hooks机制来绑定一些函数，这些函数可以在http请求被分发（dispatching）到视图函数之前或者之后执行，这些函数可以执行一些通用的任务，可以避免相同的任务代码必须包含在所有的视图函数中，以此增加代码的重用性。</p>
+<p>&emsp;&emsp;app.config字典是一个通用的地方来存放配置变量。其中SECRET_KEY变量被Flask或第三方模块用作加密key，例如保护网站免受CSRF攻击的Flask-WTF模块。</p>
+<p>&emsp;&emsp;Blueprint机制是Flask为了支持动态生成应用实例（Application Instance）以及应用工厂（Application Factory）模式而产生的。app实例不再在全局代码的开头生成，而是由外部模块调用函数生成，因此view函数不能再使用app修饰符，因为此时app实例还不存在。Blueprint类似于Application，但它所定义的route处于休眠状态直到该Blueprint在Application中注册，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">main = Blueprint(<span class="string">&#x27;main&#x27;</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@main.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;....&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main)</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>每一个Blueprint实际上生成了一个自己的命名空间（Namesapce），因此在不同的Blueprint中可以包含同名的view函数。</p>
+<h3 id="Jinja2模板引擎"><a href="#Jinja2模板引擎" class="headerlink" title="Jinja2模板引擎"></a>Jinja2模板引擎</h3><p>&emsp;&emsp;Flask支持将业务逻辑（business logic）与表示逻辑（presentation logic）分离。对数据库的操作是最常见的业务逻辑，而生成返回到客户端的HTML代码称为表示逻辑，将表示逻辑使用模板（template）可以提高应用的可维护性。<br>&emsp;&emsp;模块文件包含静态部分和一些动态变量，这些动态变量的值由具体的Request context决定，将变量替换为实际的值并返回最后的Response的过程称之为渲染（rendering）。render_template方法是Jinja2引擎的主要接口。<br>&emsp;&emsp;Jinja2支持任何类型的动态变量，包括list、dictionaries或者object等。Jinja2支持过滤器（filer），例如，其中capitalize将name的首字母转换成大写字母。其中safe过滤器可以防止特殊字符串比如HTML代码中被解析，否则恶意用户可以在最后的response中插入被执行的恶意代码。Jinja2支持控制结构，如if、for等，也支持宏（macro）功能，它类似于python的函数功能。Jinja2支持在任何地方引用另一个模块文件，来增加代码重用性，也支持模块继承功能。<br>&emsp;&emsp;在模板文件中直接写入某些Link的URL地址会导致非常大的不灵活性，因此Flask提供url_for()方法从URL map中生成实际的URL地址。<br>&emsp;&emsp;从另外一种角度看，模块引擎实际上是一种嵌入在HTML代码中的另外一种语言，它要在静态页面中增加动态内容的目的是和其他语言，如PHP，JSP等是相同的。从语言的角度理解模板引擎更能认识到它所带来的便利性，以及它本身不可避免地的带来的复杂性。</p>
+<h3 id="Flask-WTF表单处理模块"><a href="#Flask-WTF表单处理模块" class="headerlink" title="Flask-WTF表单处理模块"></a>Flask-WTF表单处理模块</h3><p>&emsp;&emsp;Form类或其子类来表示web表单，该类定义了一系列域来表示表单中的对象，并通过validators函数来对域进行合法性检查。例如表单中的Text对象可以用StringField类表示，并使用Required()来检测非空合法性。表单的这种封装形式便于使用模板渲染。<br>&emsp;&emsp;Post&#x2F;Redirect&#x2F;Get 模式是为了防止客户端刷新页面时发送重复的Post请求的机制。服务端首先处理Post请求，将Post请求中的表单数据存入session变量（Request context变量）中，然后返回Redirect报文；客户端接受到Redirect报文后发送Get请求，服务端会读取session变量中的数据并生成最后的包含HTML代码的Response。</p>
+<h3 id="数据库模块"><a href="#数据库模块" class="headerlink" title="数据库模块"></a>数据库模块</h3><p>&emsp;&emsp;在选择数据库的问题上，ORMs和ODMs是一种值得注意的模型。它们可以将在对象（object）的操作转换为底层的数据库SQL命令，开发者可以不用自己编写SQL命令代码。这种机制可能会影响一些程序的性能，但在易用性、可移植性等方面却有着优势。<br>&emsp;&emsp;Flask-SQLAlchemy模块是Flask对SQLAlchmy ORM的一种扩展。Model类可以被python的类继承来表示一个表，类中的属性（attributes）会转换为表的schema的属性（Column）。这些类的属性可以设置表名，也可以设置约束，如主键约束、外健引用、值域等，对应于编写数据库表定义的DDT文件。ForeignKey类和relationship方法可以表示数据库表与表的关系，如一对多（one-to-many）、多对一（many-to-one）和多对多（many-to-many）。插入、删除、查询和更新等操作都可以通过flask-sqlachemy提供的API完成，它们在运行过程中会执行底层的SQL命令，如果出现错误，也会抛出异常给用户。这些API可以直接在view函数中使用，来完成相应的业务逻辑。另外Pagination类支持分页功能。<br>&emsp;&emsp;数据库迁移（database migration）框架Flask-Migrate用来跟踪数据库表schema的变化。在应用开发过程中，Model类的属性可能会增加、减少或更新，这导致数据库表的schema定义也要发生变化，而且要保证原有的数据不能丢失，migrate被用来帮助开发者有效率地解决这样的问题。</p>
+<h3 id="Werkzeug模块"><a href="#Werkzeug模块" class="headerlink" title="Werkzeug模块"></a>Werkzeug模块</h3><p>&emsp;&emsp;Werkzeug的security模块可以提供基于HASH的安全密码(secure password hashing)。<br>Werkzeug 是WSGI模块</p>
+<h3 id="其他模块"><a href="#其他模块" class="headerlink" title="其他模块"></a>其他模块</h3><p>Flask-script模块为Flask增加了命令行解析器。<br>Flask-Moment模块提高时间和日期的本地化（Localization）。<br>Flask-login模块可以完成用户登陆、认证和保存登陆状态的功能。<br>itsdangerous模块提供加密token，可以用于身份认证。<br>Flask-pagedown模块支持MarkDown文本编辑器。<br>Flask-HTTPAuth模块提供RESTful的用户认证功能。</p>
+<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>&emsp;&emsp;对于RIA（Rich Internet Application）架构，客户端承担更多的业务逻辑，而服务端主要任务是提供数据访问和存储。RIA和服务端通信的协议可以使用RPC，如XML-RPC或者SOAP，REST(Representational State Transfer)也是一个流行的选择。Flask可以容易地实现RESTful的web服务器。REST架构的风格：</p>
+<ol>
+<li>将客户端与服务端分开</li>
+<li>无状态（Stateless）：即服务端不保存任何客户端在不同的Request间传递的状态信息，而客户端的每次Request必须包含所有必要的信息。</li>
+<li>缓存化（Cache）：服务端的Response可以被标记是否缓存。</li>
+<li>统一接口（Uniform Interface）：客户端和服务端的通信协议必须一致、良好定义和标准化。</li>
+<li>分层系统：客户端和服务器间可以插入代理（Proxy），来提高性能、可用性和可扩展性。</li>
+<li>Code-On-Demand：客户端可以从服务端下载代码并在自己的上下文中执行。</li>
+</ol>
+<p>在REST中，资源（Resource）是核心概念，每一个资源URL必须与唯一的一个资源相互对应。资源的集合也可以对应一个URL，这个URL一般以’&#x2F;‘结尾，来表达这些资源集合在一个文件夹中。另外，在REST架构中，GET请求用来获取单个资源或者资源集合；POST请求新增一个资源并把它加入某个集合中；PUT请求更新一个资源；DELETE请求删除一个资源或者资源集合。REST不严格要求资源的编码格式，客户端和服务端可以通过HTTP协商，常用的格式包括JSON和XML。REST的资源架构类似于WWW，在那里 ，一个资源中会包含许多指向其他资源的链接，整个WWW就是资源作为节点形成的巨大网络。<br>&emsp;&emsp;在REST中，Versioning指REST服务端的接口可以版本化，并且在URL中包含版本号，这样做可以使得服务端根据版本号服务不同的客户端，这些客户端可能使用了最新的API，而另外一些却没有。<br>&emsp;&emsp;由于REST是无状态的，因此它不能按照传统的方法来进行用户认证和访问控制。REST中，客户端的每一个请求都必须携带必要的认证信息，比如可以包含在HTTP的Authorization头部中。基于Token的认证可以避免将敏感信息频繁地出现在来往的报文中，客户端首先发送携带口令的请求，得到带有Token的回复，然后后续请求都只需要携带这个token来进行认证，token如果超期，客户端重新携带口令请求一个新的token。另外，服务端返回到客户端的资源不一定要和数据库的资源完全相同，有些安全敏感但对客户端无用的信息可以不包含在Response中。</p>
+<h3 id="应用开发结构"><a href="#应用开发结构" class="headerlink" title="应用开发结构"></a>应用开发结构</h3><p>&emsp;&emsp;Flask鼓励开发者按照自己的需求设定自己的项目文件和结构布局。<br>&emsp;&emsp;工厂模式（Factory Pattern）。<br>&emsp;&emsp;requirements.txt文件中记录应用所有的包依赖（Package Dependencies），它可以由pip自动生成，也就可以作为pip的install文件来自动安装所有的依赖包。<br>&emsp;&emsp;单元测试（UnitTests）,可以使用python unittest库。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GNU Unix/Linux下 常用工具</title>
+    <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
+<li><code>tmux</code></li>
+</ul>
+<span id="more"></span>
+
+<h3 id="网络工具类"><a href="#网络工具类" class="headerlink" title="网络工具类"></a>网络工具类</h3><ul>
+<li><code>xchat</code>: IRC客户端</li>
+<li><code>iproute2</code> : 网络及其流量控制工包</li>
+<li><code>net-tools</code> : NET-3网络工具包</li>
+<li><code>openssh-server</code>: OpenSSH SSH服务器端</li>
+<li><code>wireshark</code>:强大的交互式网络抓包和分析工具</li>
+<li><code>ufw</code>: 网络防火墙管理工具</li>
+<li><code>nmap</code>: 网络嗅探工具</li>
+<li><code>nslookup</code>: DNS交互式查询工具</li>
+<li><code>telnet</code>:</li>
+<li><code>netcat|nc</code>: 连接和监听TCP&#x2F;UDP端口工具</li>
+<li><code>openssl</code>：SSL&#x2F;TLS网络加密协议的开源实现</li>
+<li><code>urlview</code>：URL解析器</li>
+<li><code>amule</code>：ed2k&#x2F;Kad 网络客户端</li>
+<li><code>iw</code>：无线设备管理和配置工具</li>
+<li><code>tcpdump</code>：抓包和包分析工具</li>
+<li><code>axel</code>：CLI接口的网络下载加速器</li>
+<li><code>aria2</code>：网络下载加速器</li>
+<li><code>lynx</code> : 通用的Roguelike风格的WWW分布式网页浏览器</li>
+<li><code>wscat</code>: 通过Websocket通信</li>
+</ul>
+<h3 id="多媒体类"><a href="#多媒体类" class="headerlink" title="多媒体类"></a>多媒体类</h3><ul>
+<li><code>vlc</code>: VLC多媒体播放器</li>
+<li><code>ffmpeg</code> : 一个功能强大的跨平台的音视频流处理工具</li>
+<li><code>audacity</code> : 跨平台的音频编辑器</li>
+<li><code>icotool</code> : 制作win32图标</li>
+<li><code>sng</code>：一种编辑PNG图片的文本化标记语言</li>
+<li><code>jpegoptim</code> ：优化&#x2F;压缩JPEG图片</li>
+<li><code>pngcrush</code> ： PNG优化工具</li>
+</ul>
+<h3 id="编辑器和文件阅读器"><a href="#编辑器和文件阅读器" class="headerlink" title="编辑器和文件阅读器"></a>编辑器和文件阅读器</h3><h3 id="设计、开发和调试工具"><a href="#设计、开发和调试工具" class="headerlink" title="设计、开发和调试工具"></a>设计、开发和调试工具</h3><p>A. <em>Linux可执行文件分析工具：</em></p>
+<ul>
+<li><code>strip</code>：从object文件中去除符号表。</li>
+<li><code>nm</code> ： 列出object文件的符号表。</li>
+<li><code>readelf</code> : 分析ELF文件。</li>
+<li><code>objdump</code> : 分析可执行文件（包括反汇编）。</li>
+<li><code>ldd</code>：打印共享库依赖。</li>
+<li><code>strace</code> : 跟踪系统调用和信号。</li>
+<li><code>size</code>: 打印二进制文件各个段的大小。</li>
+<li><code>pmap</code>: 打印进程的内存映射</li>
+<li><code>ipcs</code> : 打印当前系统IPC机制的信息</li>
+<li><code>ctags</code>: 为源代码文件生成tags</li>
+<li><code>cxref</code>: 为C语言代码生成交叉引用表</li>
+<li><code>cflow</code>：打印函数调用树</li>
+<li><code>valgrind</code>：检测数组访问错误和内存泄漏</li>
+</ul>
+<h3 id="系统管理工具"><a href="#系统管理工具" class="headerlink" title="系统管理工具"></a>系统管理工具</h3><ul>
+<li><code>top</code>：Roguelike风格的进程&#x2F;内存监控工具</li>
+<li><code>iostat</code>：报告CPU和I&#x2F;O设备的统计信息</li>
+<li><code>mpstat</code>：报告处理器统计信息</li>
+<li><code>pidstat</code>：报告进程的统计信息</li>
+<li><code>sar</code>：收集、报告、打印系统活动信息</li>
+<li><code>sadf</code>：以多种格式输出sar的统计信息，包括SVG图片</li>
+<li><code>iotop</code>：简单的top-like的I&#x2F;O监控工具</li>
+<li><code>updatedb</code>：为mlocate更新数据库</li>
+<li><code>locate</code>：基于数据库进行文件检索</li>
+<li><code>extundelete</code> ：从ext3&#x2F;ext4文件系统中恢复文件</li>
+<li><code>e2label</code>：改变ext2&#x2F;ext3&#x2F;ext4文件系统的Label</li>
+<li><code>tune2fs</code>：调整ext2&#x2F;ext3&#x2F;ext4文件系统参数，使用<code>-l</code>参数可打印当前参数值</li>
+<li><code>lsof</code> : 列出进程打开文件,包括socket</li>
+</ul>
+<h3 id="科学计算、自动化EDA"><a href="#科学计算、自动化EDA" class="headerlink" title="科学计算、自动化EDA"></a>科学计算、自动化EDA</h3><ul>
+<li><code>octave</code>：Octave是一种科学计算软件，旨在提供与Matlab语法兼容的开放源代码科学计算及数值分析的工具。</li>
+</ul>
+<h3 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h3><ul>
+<li><code>safecopy</code> : 安全拷贝，可用于数据备份</li>
+<li><code>TestDisk</code>: 修复分区、引导等；找回删除文件；分区备份等</li>
+<li><code>photorec &amp; fidentity</code>: 不依赖文件系统的完整性来恢复数据，默认支持400多种文件格式。但对于某些文件（例如数据库），当文件系统损坏后，可能无法完全恢复。</li>
+<li><code>foremost</code>: 基于文件magic指纹进行修复，可自定义文件格式。</li>
+<li><code>fsck &amp; e2fsck</code> : 检查和修复文件系统，<code>e2fsck</code>专门针对ext文件系统。在某些情况下，fsck相比前面的工具可以更有效地解决因文件系统损坏导致的重要文件无法访问的问题。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GMP库的使用</title>
+    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
+<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
+<blockquote>
+<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>编译应用程序时的链接选项：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
+
+<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
+<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
+<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
+<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
+<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
+<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
+<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
+<ol>
+<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
+<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
+<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
+<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
+<li>设置<em>custom allocation</em>的函数；</li>
+<li>生成随机数的函数。</li>
+</ol>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
+
+<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
+]]></content>
+      <categories>
+        <category>高性能计算</category>
       </categories>
   </entry>
   <entry>
@@ -1152,151 +1297,6 @@
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>GMP库的使用</title>
-    <url>/2023/03/18/GMP%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="ttps://gmplib.org">GMP</a> 是一个执行<strong>任意精度</strong>数值计算的可移植 C&#x2F;C++ 库，它支持整数、有理数和浮点数。无论是对于低精度还是高精度计算，GMP 都可以提供很好的性能。</p>
-<p>&emsp;&emsp; GMP 的高性能来自于以下几点特性：使用字符串(<code>fullword</code>)作为基础数据类型；使用精心设计的算法；在底层，针对通用内部循环使用精心优化的汇编代码（支持不同的 CPU ）。</p>
-<blockquote>
-<p>参考 <a href="https://gmplib.org/manual">GMP Manual</a>。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="头文件和库"><a href="#头文件和库" class="headerlink" title="头文件和库"></a>头文件和库</h3><p>主要头文件（支持C&#x2F;C++编译器）：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于 C++，也可直接使用&lt;gmpxx.h&gt;</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用带有<code>FILE*</code>参数的函数，需要增加<code>&lt;stdio.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>如果需要使用支持带有<code>va_list</code>参数的函数（如<code>gmp_vprintf</code>），需要增加 <code>&lt;stdarg.h&gt;</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmp.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>编译应用程序时的链接选项：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc test.c -lgmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于 C++</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ test.cpp -lgmpxx -lgmp</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="术语和类型"><a href="#术语和类型" class="headerlink" title="术语和类型"></a>术语和类型</h3><p>对于<em>多精度整数</em>，使用<code>mpz_t</code>类型：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">mpz_t</span> x, y, z;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">mpz_t</span> x;&#125;;</span><br><span class="line"><span class="type">mpz_t</span> vec[<span class="number">20</span>];</span><br></pre></td></tr></table></figure>
-
-<p>对于<em>多精度分数</em>（即有理数），使用<code>mpq_t</code>类型。<br>对于<em>浮点数</em>，使用<code>mqf_t</code>类型。</p>
-<p>浮点数函数的形参类型和返回类型是其<em>指数</em>， 用 C 类型表示为<code>mp_exp_t</code>。<code>mp_exp_t</code>类型通常等价于<code>long</code>，出于效率考虑，在一些系统上可能为<code>int</code>。</p>
-<p><em>limb</em> 代表多精度数的一部分，该部分刚好可以填充到一个机器字中。对应的 C 类型为 <code>mp_limb_t</code>，它可能为 32 位或者 64 位。</p>
-<p>一个多精度数的 <em>limb</em> 的个数使用<code>mp_size_t</code>类型表示。</p>
-<p>一个多精度数的 <em>bit</em> 的个数使用 <code>mp_bitcnt_t</code>类型表示。</p>
-<p><em>Random state</em> 代表选择的算法和当前的状态数据，使用<code>mp_randstate_t</code>类型表示。</p>
-<h3 id="函数-API"><a href="#函数-API" class="headerlink" title="函数 API"></a>函数 API</h3><p>在 GMP 库中有 6 种类型的函数：</p>
-<ol>
-<li>对于<strong>有符号整数</strong>的计算，使用以<code>mpz_</code> 开头的函数；这一类函数大约有 150 个。</li>
-<li>对于<strong>有理数</strong>的计算，使用以<code>mpq_</code>开头的函数；</li>
-<li>对于<strong>浮点数</strong>的计算，使用以<code>mpf_</code>开头的函数；</li>
-<li>对于操作底层的原生数值类型，使用以<code>mpn_</code>开头的函数，关联的数据类型是<code>mp_limb_t</code>的数组。</li>
-<li>设置<em>custom allocation</em>的函数；</li>
-<li>生成随机数的函数。</li>
-</ol>
-<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在对一个 GMP 变量赋值前，用户需要首先使用对应的初始化函数对它进行初始化。当该变量不再使用时，用户需要使用对应的清除函数清除它。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="type">mpz_t</span> n;</span><br><span class="line">    mpz_init(n);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) &#123;</span><br><span class="line">        mpz_mul(n,...);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mpz_clear(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>对于<code>mpz_t</code>这样的 GMP 类型，底层实现为<em>单元素的数组</em>。相应的变量实际上是 <em>指针</em>，它指向实际的对象(object)。如果使用C++的术语的话，<em>变量</em>是<code>左值引用</code>，<em>对象</em>是<code>右值</code>。 出于效率和正确性的考虑，不建议作对象拷贝（或者说右值拷贝），其内部成员也不应该被用户访问。</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>在上一节，我们说 GMP 的变量实际上是<code>左值引用</code>，因此对于使用 GMP 变量作为其参数的函数，可以在函数体中修改其参数指向的数据内容。如果只是读参数指向的数据内容，可以将形参声明为<code>const</code>。示例如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span> <span class="params">(<span class="type">mpz_t</span> result, <span class="type">const</span> <span class="type">mpz_t</span> param, <span class="type">unsigned</span> <span class="type">long</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">long</span>  i;</span><br><span class="line">  mpz_mul_ui (result, param, n);</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    mpz_add_ui (result, result, i*<span class="number">7</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">mpz_t</span>  r, n;</span><br><span class="line">  mpz_init (r);</span><br><span class="line">  mpz_init_set_str (n, <span class="string">&quot;123456&quot;</span>, <span class="number">0</span>);</span><br><span class="line">  foo (r, n, <span class="number">20L</span>);</span><br><span class="line">  gmp_printf (<span class="string">&quot;%Zd\n&quot;</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="C-绑定"><a href="#C-绑定" class="headerlink" title="C++绑定"></a>C++绑定</h2><p>GMP 的 C++接口相对 C 接口来说，更加方便使用。如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;gmpxx.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    mpz_class a, b, c;</span><br><span class="line">    <span class="function">mpz_class <span class="title">d</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    a = <span class="number">12500</span>;</span><br><span class="line">    b = <span class="string">&quot;12300000000000&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    c = a+d;</span><br><span class="line">    c = <span class="built_in">sqrt</span>(c);</span><br><span class="line">    </span><br><span class="line">    <span class="function">mpf_class <span class="title">f</span><span class="params">(<span class="string">&quot;1.23e12&quot;</span>)</span></span>;</span><br><span class="line">    f = f * f;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; a &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; d &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; f &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o cpp_binding_test cpp_binding_test.cpp -lgmp -lgmpxx</span></span><br></pre></td></tr></table></figure>
-
-<p>输出结果：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./cpp_binding_test</span></span><br><span class="line">12500 12300000000000 111 0</span><br><span class="line">1.5129e+24</span><br></pre></td></tr></table></figure>
-
-<h2 id="串行化"><a href="#串行化" class="headerlink" title="串行化"></a>串行化</h2><p>&emsp;&emsp; 如果我们在 <code>MPI 编程</code>中需要发送或者接收 <code>mpz_class/mpf_class</code> 的数据结构,该如何做呢?<br>参考: <a href="https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html">https://gmplib.org/list-archives/gmp-discuss/2002-December/000194.html</a></p>
-]]></content>
-      <categories>
-        <category>高性能计算</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>GNU Unix/Linux下 常用工具</title>
-    <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
-    <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
-<li><code>tmux</code></li>
-</ul>
-<span id="more"></span>
-
-<h3 id="网络工具类"><a href="#网络工具类" class="headerlink" title="网络工具类"></a>网络工具类</h3><ul>
-<li><code>xchat</code>: IRC客户端</li>
-<li><code>iproute2</code> : 网络及其流量控制工包</li>
-<li><code>net-tools</code> : NET-3网络工具包</li>
-<li><code>openssh-server</code>: OpenSSH SSH服务器端</li>
-<li><code>wireshark</code>:强大的交互式网络抓包和分析工具</li>
-<li><code>ufw</code>: 网络防火墙管理工具</li>
-<li><code>nmap</code>: 网络嗅探工具</li>
-<li><code>nslookup</code>: DNS交互式查询工具</li>
-<li><code>telnet</code>:</li>
-<li><code>netcat|nc</code>: 连接和监听TCP&#x2F;UDP端口工具</li>
-<li><code>openssl</code>：SSL&#x2F;TLS网络加密协议的开源实现</li>
-<li><code>urlview</code>：URL解析器</li>
-<li><code>amule</code>：ed2k&#x2F;Kad 网络客户端</li>
-<li><code>iw</code>：无线设备管理和配置工具</li>
-<li><code>tcpdump</code>：抓包和包分析工具</li>
-<li><code>axel</code>：CLI接口的网络下载加速器</li>
-<li><code>aria2</code>：网络下载加速器</li>
-<li><code>lynx</code> : 通用的Roguelike风格的WWW分布式网页浏览器</li>
-<li><code>wscat</code>: 通过Websocket通信</li>
-</ul>
-<h3 id="多媒体类"><a href="#多媒体类" class="headerlink" title="多媒体类"></a>多媒体类</h3><ul>
-<li><code>vlc</code>: VLC多媒体播放器</li>
-<li><code>ffmpeg</code> : 一个功能强大的跨平台的音视频流处理工具</li>
-<li><code>audacity</code> : 跨平台的音频编辑器</li>
-<li><code>icotool</code> : 制作win32图标</li>
-<li><code>sng</code>：一种编辑PNG图片的文本化标记语言</li>
-<li><code>jpegoptim</code> ：优化&#x2F;压缩JPEG图片</li>
-<li><code>pngcrush</code> ： PNG优化工具</li>
-</ul>
-<h3 id="编辑器和文件阅读器"><a href="#编辑器和文件阅读器" class="headerlink" title="编辑器和文件阅读器"></a>编辑器和文件阅读器</h3><h3 id="设计、开发和调试工具"><a href="#设计、开发和调试工具" class="headerlink" title="设计、开发和调试工具"></a>设计、开发和调试工具</h3><p>A. <em>Linux可执行文件分析工具：</em></p>
-<ul>
-<li><code>strip</code>：从object文件中去除符号表。</li>
-<li><code>nm</code> ： 列出object文件的符号表。</li>
-<li><code>readelf</code> : 分析ELF文件。</li>
-<li><code>objdump</code> : 分析可执行文件（包括反汇编）。</li>
-<li><code>ldd</code>：打印共享库依赖。</li>
-<li><code>strace</code> : 跟踪系统调用和信号。</li>
-<li><code>size</code>: 打印二进制文件各个段的大小。</li>
-<li><code>pmap</code>: 打印进程的内存映射</li>
-<li><code>ipcs</code> : 打印当前系统IPC机制的信息</li>
-<li><code>ctags</code>: 为源代码文件生成tags</li>
-<li><code>cxref</code>: 为C语言代码生成交叉引用表</li>
-<li><code>cflow</code>：打印函数调用树</li>
-<li><code>valgrind</code>：检测数组访问错误和内存泄漏</li>
-</ul>
-<h3 id="系统管理工具"><a href="#系统管理工具" class="headerlink" title="系统管理工具"></a>系统管理工具</h3><ul>
-<li><code>top</code>：Roguelike风格的进程&#x2F;内存监控工具</li>
-<li><code>iostat</code>：报告CPU和I&#x2F;O设备的统计信息</li>
-<li><code>mpstat</code>：报告处理器统计信息</li>
-<li><code>pidstat</code>：报告进程的统计信息</li>
-<li><code>sar</code>：收集、报告、打印系统活动信息</li>
-<li><code>sadf</code>：以多种格式输出sar的统计信息，包括SVG图片</li>
-<li><code>iotop</code>：简单的top-like的I&#x2F;O监控工具</li>
-<li><code>updatedb</code>：为mlocate更新数据库</li>
-<li><code>locate</code>：基于数据库进行文件检索</li>
-<li><code>extundelete</code> ：从ext3&#x2F;ext4文件系统中恢复文件</li>
-<li><code>e2label</code>：改变ext2&#x2F;ext3&#x2F;ext4文件系统的Label</li>
-<li><code>tune2fs</code>：调整ext2&#x2F;ext3&#x2F;ext4文件系统参数，使用<code>-l</code>参数可打印当前参数值</li>
-<li><code>lsof</code> : 列出进程打开文件,包括socket</li>
-</ul>
-<h3 id="科学计算、自动化EDA"><a href="#科学计算、自动化EDA" class="headerlink" title="科学计算、自动化EDA"></a>科学计算、自动化EDA</h3><ul>
-<li><code>octave</code>：Octave是一种科学计算软件，旨在提供与Matlab语法兼容的开放源代码科学计算及数值分析的工具。</li>
-</ul>
-<h3 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h3><ul>
-<li><code>safecopy</code> : 安全拷贝，可用于数据备份</li>
-<li><code>TestDisk</code>: 修复分区、引导等；找回删除文件；分区备份等</li>
-<li><code>photorec &amp; fidentity</code>: 不依赖文件系统的完整性来恢复数据，默认支持400多种文件格式。但对于某些文件（例如数据库），当文件系统损坏后，可能无法完全恢复。</li>
-<li><code>foremost</code>: 基于文件magic指纹进行修复，可自定义文件格式。</li>
-<li><code>fsck &amp; e2fsck</code> : 检查和修复文件系统，<code>e2fsck</code>专门针对ext文件系统。在某些情况下，fsck相比前面的工具可以更有效地解决因文件系统损坏导致的重要文件无法访问的问题。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -2341,36 +2341,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux Kernel  LKD3 阅读笔记</title>
-    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《Linux Kernel Development.3rd.Edition》重读笔记。</p>
-<blockquote>
-<p>The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>进程 &#x3D; 程序 + 环境</p>
-<h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p><strong>slab 分配器</strong>：通过预先分配和重复使用 <code>task_struct</code>，可以避免动态分配和释放所带来的资源消耗，可以加快进程创建的效率。<br>注意<code>写时拷贝</code>技术的作用是什么？（内核创建子进程时，并不复制整个进程地址空间，而是父子进程共享同一个拷贝。只有当子进程需要写入页的时候，才真正地进行拷贝）。fork 后父子进程的区别仅仅在于 PID、PPID、某些资源和统计量。<br>注意分析 fork 系统调用的流程：<code>fork/clone -&gt; do_fork -&gt; _do_fork -&gt; copy_precess</code>。</p>
-<h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><p>Linux CFS调度策略的特点：</p>
-<ul>
-<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
-<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
-</ul>
-<p>CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br><em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>schedule()函数是进程调度的主入口。</p>
-<h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
-<p>Q1:  Are you needlessly limiting the function?<br><strong>Design the system call to be as general as possible.</strong><br><strong>The purpose of the system call will remain constant but its use may change.</strong></p>
-<p>Q2: Is the system call portable?</p>
-<p><strong><code>Provide mechanism, not policy.</code></strong></p>
-<p>内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
-<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br><strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Linux Kernel Security Summary</title>
     <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
@@ -2433,6 +2403,36 @@
 <h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __WAITQUEUE_INITIALIZER(name, tsk) &#123;					\</span></span><br><span class="line"><span class="meta">	.private	= tsk,							\</span></span><br><span class="line"><span class="meta">	.func		= default_wake_function,				\</span></span><br><span class="line"><span class="meta">	.entry		= &#123; NULL, NULL &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAITQUEUE(name, tsk)						\</span></span><br><span class="line"><span class="meta">	struct wait_queue_entry name = __WAITQUEUE_INITIALIZER(name, tsk)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __WAIT_QUEUE_HEAD_INITIALIZER(name) &#123;					\</span></span><br><span class="line"><span class="meta">	.lock		= __SPIN_LOCK_UNLOCKED(name.lock),			\</span></span><br><span class="line"><span class="meta">	.head		= &#123; &amp;(name).head, &amp;(name).head &#125; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DECLARE_WAIT_QUEUE_HEAD(name) \</span></span><br><span class="line"><span class="meta">	struct wait_queue_head name = __WAIT_QUEUE_HEAD_INITIALIZER(name)</span></span><br></pre></td></tr></table></figure>
 <p>动态分配节点的初始化：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">init_waitqueue_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="keyword">struct</span> task_struct *p)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= p;</span><br><span class="line">	wq_entry-&gt;func		= default_wake_function;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span></span><br><span class="line"><span class="title function_">init_waitqueue_func_entry</span><span class="params">(<span class="keyword">struct</span> wait_queue_entry *wq_entry, <span class="type">wait_queue_func_t</span> func)</span></span><br><span class="line">&#123;</span><br><span class="line">	wq_entry-&gt;flags		= <span class="number">0</span>;</span><br><span class="line">	wq_entry-&gt;private	= <span class="literal">NULL</span>;</span><br><span class="line">	wq_entry-&gt;func		= func;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Kernel  LKD3 阅读笔记</title>
+    <url>/2021/04/07/Linux-Kernel-LKD3-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>《Linux Kernel Development.3rd.Edition》重读笔记。</p>
+<blockquote>
+<p>The most important step on the road to Linux development is the realization that the kernel is not something for fear.<br>Only through actually reading and experimenting with the code can you ever understand it. The source is freely available, use it!</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>进程 &#x3D; 程序 + 环境</p>
+<h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p><strong>slab 分配器</strong>：通过预先分配和重复使用 <code>task_struct</code>，可以避免动态分配和释放所带来的资源消耗，可以加快进程创建的效率。<br>注意<code>写时拷贝</code>技术的作用是什么？（内核创建子进程时，并不复制整个进程地址空间，而是父子进程共享同一个拷贝。只有当子进程需要写入页的时候，才真正地进行拷贝）。fork 后父子进程的区别仅仅在于 PID、PPID、某些资源和统计量。<br>注意分析 fork 系统调用的流程：<code>fork/clone -&gt; do_fork -&gt; _do_fork -&gt; copy_precess</code>。</p>
+<h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><p>Linux CFS调度策略的特点：</p>
+<ul>
+<li>Nice值并不直接对应于进程的运行时间片（timeslices）。</li>
+<li>Old approaches assign absolute timeslices yields a constant switching rate but variable fairness. <em>The approach taken by CFS  is a radical (for process schedulers) rethinking of timeslice allotment: Do away with timeslices completely and assign each process a proportion of the processor. CFS thus yields constant fairness but a variable switching rate.</em></li>
+</ul>
+<p>CFS不再依赖传统Unix系统的时间片机制，它实现了一种变化的、动态的公平策略而不是静态的不变的公平策略。调度器根据进程的nice值保证其占用处理器资源的比例（但实际比例因系统负载而定）而不是具体的timeslices，nice值作为分配占用CPU资源比例的权重值（weight），但不具有绝对意义，即对同一个进程不同的nice值可能分配相同的比例值。<strong>具体的比例分配要根据系统中所有进程的nice值的相对关系</strong>。<br><em>The nice value, instead of yielding additive increases to timeslices, yield geometric differences.</em><br>CFS计算实际timeslices的方法：CFS定义了目标延迟（targeted latency）的概念来接近完美的多任务系统，更小的target可以获得更好的交互性以及更接近完美的多任务系统，但意味着更昂贵的切换开销和降低系统吞吐率。CFS设置了timeslices的下限（minimum granularity）。<br>CFS is called a <em>fair scheduler</em> because it gives each process a fair share－a proportion－of the processor’s time. CFS不能实现绝对完美的公平，它是一种尽量接近完美的公平（CFS is perfectly fair!）。<br>CFS算法的具体实现要围绕vruntime变量，在一个理想的完美的多任务系统中，所有进程的vruntime值应该是相同的。那么可能要问不同优先级的进程怎么会有相同的运行时间呢？要明白的是vruntime的值是经过处理的（normalized or weighted），它并不代表实际的运行时间。CFS算法的核心就是每次选择vruntime值最小的进程来运行，它利用红黑树结构（rbtree）来管理所有可运行的进程列表，树中节点的key值就是进程的vruntime值，而最小key值的进程位于树中最左边的叶子上。vruntime会被不间断地更新，update_curr函数被调用来完成这项任务，而update_curr会被系统timer调用或者当某个进程任何时候状态发生变化时。<br>schedule()函数是进程调度的主入口。</p>
+<h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>The existence of these interfaces and the fact that applications are not free to directly do whatever they want, is key to providing a stable system.<br>In Linux, system calls are the only means user-space has of interfacing with the kernel; they are the only legal entry point into the kernel other than exceptions and traps.<br>A meme related to interfaces in Unix is “Provide mechanism, not policy.”. In other words, Unix system calls exist to provide a special function in an abstract sense.<br>Linux实现系统调用的方式是利用软中断（software interrupt），在机器代码层面会利用一些特别异常指令，如MIPS的trap、syscall等指令，x86和arm也有类似的指令。在一些x86架构上，软中断的指令为<code>int $0x80</code>，后来提供了专门的<code>sysenter</code>指令。<em>Regardless of how the system call handler is invoked, however, the important notion is that somehow user-space causes an exception or trap to enter the kernel.</em> 然后进入内核空间执行异常Handler，这里的Handler也可以专门命名为syscall Handler。<br>接下来，自然要做的就是将系统调用号及调用参数传递给内核syscall Handler。x86上的做法是将调用号放入特殊的寄存器eax，其他架构类似。参数的传递可以通过寄存器，参数过多时可以使用某个寄存器指向用户空间，在那里可以获得参数。</p>
+<p>Q1:  Are you needlessly limiting the function?<br><strong>Design the system call to be as general as possible.</strong><br><strong>The purpose of the system call will remain constant but its use may change.</strong></p>
+<p>Q2: Is the system call portable?</p>
+<p><strong><code>Provide mechanism, not policy.</code></strong></p>
+<p>内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
+<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br><strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
+<h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2734,41 +2734,28 @@
       </categories>
   </entry>
   <entry>
-    <title>Mersenne Twister Algorithm Analysis</title>
-    <url>/2024/12/22/Mersenne-Twister-Algorithm-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>梅森旋转算法（Mersenne Twister Algorithm）</strong> 是一个伪随机发生算法。由松本真和西村拓士在 1997 年开发，基于有限二进制字段上的矩阵线性递归。虽然在实现上，MT算法使用了<strong>反馈移位寄存器（FSR）</strong>，但注意其不能作为密码学意义上的伪随机数发生器。</p>
-<p>最为广泛使用 Mersenne Twister 的一种算法变体是 <code>MT19937</code>，可以产生 32 位整数序列。</p>
+    <title>N-Body问题的数值模拟</title>
+    <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
 <span id="more"></span>
 
-<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="梅森素数"><a href="#梅森素数" class="headerlink" title="梅森素数"></a>梅森素数</h3><p>如果 p 是素数，我们将 $ 2^p - 1 $ 的一类数记为 $ M_p $，如果 $ M_p $ 也是素数，那么它就被称为 <strong>梅森素数（Mersenne Prime Number）</strong>。</p>
-<p>首先，用因式分解法可以证明，若 $ 2^p - 1 $ 是素数，则 p 也一定是素数，证明如下：<br>首先，易知 k方差的因式分解如下：<br>$$ a^k - 1 &#x3D;  (a - 1)(a^{k-1} + a^{k-2} + … + a + 1) $$</p>
-<p>我们假设 p 不是素数，其因式分解为 $ p &#x3D; sk (s &gt; 1, k &gt; 1)$，则：<br>$$ 2^p - 1 &#x3D; 2^{sk} - 1 &#x3D; ({2^s})^k - 1 &#x3D; (2^s - 1)[({2^s})^{k-1} + ({2^s})^{k-2} + … + 2^s + 1] $$</p>
-<p>即 $ 2^p - 1 $ 可以因式分解为大于 1 的整数，这与其为素数的前提条件矛盾，故原假设不成立，所以 p 是素数。</p>
-<p>但反过来，如果 p 为素数，则 $ 2^p - 1 $ 不一定为素数。目前已经发现 52 个梅森素数，最大的是 $ M_{136279841} $（即 $ 2^{136279841} - 1 $）。</p>
-<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><code>MT19937</code> 算法的周期为 $ 2^{19937}  - 1 $，该算法的优点如下：<br>a. 周期非常长，该周期为梅森素数<br>b. 在 1 &lt;&#x3D; k &lt;&#x3D; 623 都满足 k-分布<br>c. 产生速度快。</p>
-<p>算法分为三个阶段：</p>
-<ul>
-<li>a. 初始化，获得基础的梅森旋转链</li>
-<li>b. 对旋转链进行旋转算法</li>
-<li>c. 对旋转算法所得结果进行处理，提取伪随机数</li>
-</ul>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化 state &#x3D; 0, 初始化向量 iv 含有 n 个元素，每一个元素为一个 word (32位或者64位) 长。其中将 seed 设置为 iv 中的第一个向量，剩下的 n - 1 个 word 按照如下的方式初始化：<br>$$ x_i &#x3D; f \times (x_{i-1} \bigoplus (x_{i-1} &gt;&gt; (w - 2))) + i $$<br>其中 f 为常数 <code>1812433253</code>。</p>
-<p>从而得到一条初始化的梅森链。</p>
-<h3 id="梅森旋转"><a href="#梅森旋转" class="headerlink" title="梅森旋转"></a>梅森旋转</h3><p>对于 k 从 0 到 n - 1:<br>$$ \vec x_k &#x3D; \vec x_{k+m} \bigoplus ((\vec x_k ^{(u)}||\vec x_{k+1} ^{(l)})A) $$<br>其中，$ \vec x_k ^{(u)} $ 代表第 k 个向量的高 $ w - r $ 位，$ \vec x_{k+1} ^{(l)} $ 代表第 k + 1 个向量的低 r 位。A 矩阵定义如下：</p>
-<p>$$A &#x3D; \begin{pmatrix}<br>0&amp;I_{w-1}\\<br>a_{w-1}&amp;(a_{w-2},…,a_0)\\<br>\end{pmatrix}$$</p>
-<p>因此，$ \vec xA $ 可以直接表示为：<br>$$ xA &#x3D; \begin{cases}<br>x &gt;&gt; 1 &amp; x_0 &#x3D; 0 \\<br>(x &gt;&gt; 1) \bigoplus a &amp; x_0 &#x3D; 1<br>\end{cases}$$</p>
-<p>其中 $x_0$ 是向量 $\vec x$的最低位；a 为常量。</p>
-<h3 id="获取随机数"><a href="#获取随机数" class="headerlink" title="获取随机数"></a>获取随机数</h3><p>首先，在梅森链中获取 state 位置的 word，赋值给 x，然后通过下面的方式获取最终的随机数：<br>$$\begin{align}<br>y \equiv x \bigoplus ((x &gt;&gt; u) &amp; d) \\<br>y \equiv y \bigoplus ((y &lt;&lt; s) &amp; b) \\<br>y \equiv y \bigoplus ((y &lt;&lt; t) &amp; c) \\<br>z \equiv y \bigoplus ((y &gt;&gt; l)) \\<br>\end{align}$$</p>
-<p>获取完随机数后，state + 1。</p>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><blockquote>
-<p>参考 <a href="https://blog.acdawn.cn/2024/02/08/Academic/%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9B%B8%E5%85%B3/%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95/">梅森旋转算法</a></p>
+<p>&emsp;&emsp;从历史上看，第一个特殊研究的三体问题是<strong>太阳</strong>、<strong>地球</strong>和<strong>月亮</strong>间的运动。从现代意义上说，它可以指经典力学或量子力学中三个粒子运动的任何问题。</p>
+<blockquote>
+<p>参考 <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题 - wikipedia</a> 。<br>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
 </blockquote>
-<p>32位版本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MT19937</span>:  </span><br><span class="line">    <span class="comment"># w: word 大小  </span></span><br><span class="line">    <span class="comment"># n: 参与梅森旋转的随机数个数  </span></span><br><span class="line">    <span class="comment"># m: 中间词, 在[1,n)  </span></span><br><span class="line">    <span class="comment"># r: [0,w-1)    w, n, m, r = 32, 624, 397, 31  </span></span><br><span class="line">  </span><br><span class="line">    a = <span class="number">0x9908b0df</span>  </span><br><span class="line">    u, d = <span class="number">11</span>, <span class="number">0xffffffff</span>  </span><br><span class="line">    s, b = <span class="number">7</span>, <span class="number">0x9d2c5680</span>  </span><br><span class="line">    t, c = <span class="number">15</span>, <span class="number">0xefc60000</span>  </span><br><span class="line">    l = <span class="number">18</span>  </span><br><span class="line">    f = <span class="number">1812433253</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):  </span><br><span class="line">        seed = <span class="number">0</span>  </span><br><span class="line">        <span class="variable language_">self</span>.state = <span class="number">0</span>  </span><br><span class="line">        <span class="comment"># 初始化，生成n行w列的向量  </span></span><br><span class="line">        <span class="variable language_">self</span>.iv = [<span class="number">0</span>] * <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="variable language_">self</span>.iv[<span class="number">0</span>] = seed  </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="variable language_">self</span>.n):  </span><br><span class="line">            prev = <span class="variable language_">self</span>.iv[i - <span class="number">1</span>]  </span><br><span class="line">            temp = <span class="variable language_">self</span>.f * (prev ^ (prev &gt;&gt; (<span class="variable language_">self</span>.w - <span class="number">2</span>))) + i  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = temp &amp; <span class="number">0xffffffff</span>  <span class="comment"># 转换为int32  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twister</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="comment"># 梅森旋转  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.n):  </span><br><span class="line">            y = (<span class="variable language_">self</span>.iv[i] &amp; <span class="number">0x80000000</span>) + (<span class="variable language_">self</span>.iv[(i + <span class="number">1</span>) % <span class="variable language_">self</span>.n] &amp; <span class="number">0x7fffffff</span>)  </span><br><span class="line">            <span class="keyword">if</span> y % <span class="number">2</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">                y ^= <span class="variable language_">self</span>.a  </span><br><span class="line">            <span class="keyword">else</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = <span class="variable language_">self</span>.iv[(i + <span class="variable language_">self</span>.m) % <span class="variable language_">self</span>.n] ^ y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.state == <span class="number">0</span>:  <span class="comment"># 此处为效率优化，可以不进行判断，每次生成随机数都进行旋转</span></span><br><span class="line">            <span class="variable language_">self</span>.twister()  </span><br><span class="line">  </span><br><span class="line">        y = <span class="variable language_">self</span>.iv[<span class="variable language_">self</span>.state]  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.u) &amp; <span class="variable language_">self</span>.d  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.s) &amp; <span class="variable language_">self</span>.b  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.t) &amp; <span class="variable language_">self</span>.c  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.l)  </span><br><span class="line">  </span><br><span class="line">        <span class="variable language_">self</span>.state = (<span class="variable language_">self</span>.state + <span class="number">1</span>) % <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="keyword">return</span> y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.generate()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:  </span><br><span class="line">    mt = MT19937()  </span><br><span class="line">    tank = <span class="built_in">set</span>()  </span><br><span class="line">    kLen = <span class="number">100000</span>  </span><br><span class="line">    odd = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(kLen):  </span><br><span class="line">        t = mt()  </span><br><span class="line">        odd += <span class="number">1</span> <span class="keyword">if</span> t % <span class="number">2</span> <span class="keyword">else</span> <span class="number">0</span>  </span><br><span class="line">        tank.add(t)  </span><br><span class="line">        <span class="built_in">print</span>(t)  </span><br><span class="line">    <span class="built_in">print</span>(odd / kLen)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;set: <span class="subst">&#123;<span class="built_in">len</span>(tank)&#125;</span>&quot;</span>)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;kLen: <span class="subst">&#123;kLen&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>64位版本：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MT19937x64</span>:  </span><br><span class="line">    w, n, m, r = <span class="number">64</span>, <span class="number">312</span>, <span class="number">156</span>, <span class="number">31</span>  </span><br><span class="line">  </span><br><span class="line">    a = <span class="number">0xb5026f5aa96619e9</span>  </span><br><span class="line">    u, d = <span class="number">29</span>, <span class="number">0x5555555555555555</span>  </span><br><span class="line">    s, b = <span class="number">17</span>, <span class="number">0x71d67fffeda60000</span>  </span><br><span class="line">    t, c = <span class="number">37</span>, <span class="number">0xfff7eee000000000</span>  </span><br><span class="line">    l = <span class="number">43</span>  </span><br><span class="line">    f = <span class="number">6364136223846793005</span>  </span><br><span class="line">    upperMask = <span class="number">0xFFFFFFFF80000000</span>  </span><br><span class="line">    lowerMask = <span class="number">0x7FFFFFFF</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):  </span><br><span class="line">        seed = <span class="number">0</span>  </span><br><span class="line">        <span class="variable language_">self</span>.state = <span class="number">0</span>  </span><br><span class="line">        <span class="comment"># 初始化，生成n行w列的向量  </span></span><br><span class="line">        <span class="variable language_">self</span>.iv = [<span class="number">0</span>] * <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="variable language_">self</span>.iv[<span class="number">0</span>] = seed  </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="variable language_">self</span>.n):  </span><br><span class="line">            prev = <span class="variable language_">self</span>.iv[i - <span class="number">1</span>]  </span><br><span class="line">            temp = <span class="variable language_">self</span>.f * (prev ^ (prev &gt;&gt; (<span class="variable language_">self</span>.w - <span class="number">2</span>))) + i  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = temp &amp; <span class="number">0xffffffffffffffff</span>  <span class="comment"># 转换为int64  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twister</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="comment"># 梅森旋转  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.n):  </span><br><span class="line">            y = (<span class="variable language_">self</span>.iv[i] &amp; <span class="number">0x80000000</span>) + (<span class="variable language_">self</span>.iv[(i + <span class="number">1</span>) % <span class="variable language_">self</span>.n] &amp; <span class="number">0x7fffffff</span>)  </span><br><span class="line">            <span class="keyword">if</span> y % <span class="number">2</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">                y ^= <span class="variable language_">self</span>.a  </span><br><span class="line">            <span class="keyword">else</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = <span class="variable language_">self</span>.iv[(i + <span class="variable language_">self</span>.m) % <span class="variable language_">self</span>.n] ^ y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.state == <span class="number">0</span>:   <span class="comment"># 此处为效率优化，可以不进行判断，每次生成随机数都进行旋转</span></span><br><span class="line">            <span class="variable language_">self</span>.twister()  </span><br><span class="line">  </span><br><span class="line">        y = <span class="variable language_">self</span>.iv[<span class="variable language_">self</span>.state]  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.u) &amp; <span class="variable language_">self</span>.d  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.s) &amp; <span class="variable language_">self</span>.b  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.t) &amp; <span class="variable language_">self</span>.c  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.l)  </span><br><span class="line">  </span><br><span class="line">        <span class="variable language_">self</span>.state = (<span class="variable language_">self</span>.state + <span class="number">1</span>) % <span class="variable language_">self</span>.n  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.generate()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:  </span><br><span class="line">    mt = MT19937x64()  </span><br><span class="line">    tank = <span class="built_in">set</span>()  </span><br><span class="line">    kLen = <span class="number">100000</span>  </span><br><span class="line">    odd = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(kLen):  </span><br><span class="line">        t = mt()  </span><br><span class="line">        odd += <span class="number">1</span> <span class="keyword">if</span> t % <span class="number">2</span> <span class="keyword">else</span> <span class="number">0</span>  </span><br><span class="line">        tank.add(t)  </span><br><span class="line">        <span class="built_in">print</span>(t)  </span><br><span class="line">    <span class="built_in">print</span>(odd / kLen)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;set: <span class="subst">&#123;<span class="built_in">len</span>(tank)&#125;</span>&quot;</span>)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;kLen: <span class="subst">&#123;kLen&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="数学建模"><a href="#数学建模" class="headerlink" title="数学建模"></a>数学建模</h2><h3 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h3><p>假设在时刻 <code>t</code> ，行星 <strong>q</strong>  的位置为 $ s_q(t) $，行星 <strong>k</strong> 的位置为 $ s_k(t) $，则根据牛顿定律，行星 k 作用于行星 q 上的引力为：<br>$$ f_{qk}(t) &#x3D; -\frac {Gm_qm_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } ( s_q(t) - s_k(t) ) $$</p>
+<p>其中， <strong>G</strong> 为 万有引力常量（$ 6.673<em>10^{-11} m^3&#x2F;(kg</em>s^2) $），m 为 行星质量，<strong>s</strong> 和 <strong>f</strong> 均为带方向的<strong>向量</strong>。</p>
+<p>进一步，我们可以计算所有其他行星作用于行星 q 上的引力和（向量和）：<br>$$ F_q(t) &#x3D; \sum_{k&#x3D;0,k\neq q}^{n-1}f_{qk} &#x3D; -Gm_q \sum_{k&#x3D;0,k \neq q} ^ {n-1} \frac {m_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } [s_q(t) - s_k(t)] $$</p>
+<p>最后，我们可以计算行星 q 在时刻 t 时的加速度：<br>$$ a_q(t) &#x3D; -G \sum_{j&#x3D;0,j \neq q}^{n-1} \frac {m_j} { { ( s_q(t) - s_j(t) ) } ^ 3 } [s_q(t) - s_j(t)] $$</p>
+<p>实际上，也可以用下面的等式表示：<br>$$ a_q(t) &#x3D; {s_q}’’(t) &#x3D; \frac {F_q(t)} {m_q} $$</p>
+<h3 id="数值模拟"><a href="#数值模拟" class="headerlink" title="数值模拟"></a>数值模拟</h3><p>如果要求 $ s_q(t) $，直接求解上节最后的<strong>微分公式</strong>是困难的，但是可以使用数值模拟方法来求得其近似值。我们使用最简单的<strong>欧拉方法</strong>，作为数值模拟方法。对于在定义域内连续的函数 $ g(t) $，在其曲线上有点$ (t_0, g(t_0)) $，那么当 $ t &#x3D; t_0 + \Delta{t} $时，<br>$$ y &#x3D; g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>且当 $ \Delta{t} $足够小时：<br>$$ g(t_0 + \Delta(t)) \approx g(t_0) + g’(t_0)(\Delta{t}) $$</p>
+<p>以此，我们可以模拟 $ s_q(t) $和$ v_q(t) $的值。假设，在时刻 0，行星 q 的位置和速度为 $ s_q(0) $ 和 $ v_q(0) $，那么，在时刻 $ \Delta{t} $，其位置和速度为：<br>$$ s_q(\Delta{t}) \approx s_q(0) + \Delta{t}s_q’(0) &#x3D; s_q(0) + \Delta{t}v_q(0) $$</p>
+<p>$$ v_q(\Delta{t}) \approx v_q(0) + \Delta{t}v_q’(0) &#x3D; v_q(0) + \Delta{t}a_q(0) &#x3D; v_q(0) + \Delta{t}\frac{1}{m_q}F_q(0) $$</p>
+<p>当我们求得$s_q(\Delta{t})$ 和 $v_q(\Delta{t})$后，我们可以使用相同的公式计算 $s_q(2\Delta{t})$ 和 $v_q(2\Delta{t})$，以此类推。</p>
+<h2 id="OpenMP"><a href="#OpenMP" class="headerlink" title="OpenMP"></a>OpenMP</h2><h2 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h2><h2 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h2>]]></content>
       <categories>
+        <category>高性能计算</category>
         <category>算法</category>
       </categories>
   </entry>
@@ -2819,28 +2806,41 @@
       </categories>
   </entry>
   <entry>
-    <title>N-Body问题的数值模拟</title>
-    <url>/2023/03/13/N-Body%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题</a> 是一个非常著名的物理问题。在天文学上，它具体指对于<strong>多个</strong>可以通过引力（基于经典牛顿力学）相互作用的天体，预测其中任意一个天体的运动（即在任意时刻的位置和速度）。在化学中，则可以是预测多个相互作用的分子或原子的运动。<br>&emsp;&emsp;当 N&#x3D;2 时的<code>二体问题</code>已经完全解决；但对于 N&#x3D;3 时的<code>三体问题</code>，除了在一些特殊条件下可以得到解析解外，一般的三体问题依然没有解析解。<br>&emsp;&emsp;N-Body 问题的模拟(Solver) 是指对于一组输入初始状态（各粒子的质量、位置和速度），输出在用户指定时刻的状态。我们先关注<strong>牛顿力学下</strong>二维空间的 N-Body 问题，然后再扩展到三维空间。</p>
+    <title>Mersenne Twister Algorithm Analysis</title>
+    <url>/2024/12/22/Mersenne-Twister-Algorithm-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>梅森旋转算法（Mersenne Twister Algorithm）</strong> 是一个伪随机发生算法。由松本真和西村拓士在 1997 年开发，基于有限二进制字段上的矩阵线性递归。虽然在实现上，MT算法使用了<strong>反馈移位寄存器（FSR）</strong>，但注意其不能作为密码学意义上的伪随机数发生器。</p>
+<p>最为广泛使用 Mersenne Twister 的一种算法变体是 <code>MT19937</code>，可以产生 32 位整数序列。</p>
 <span id="more"></span>
 
-<p>&emsp;&emsp;从历史上看，第一个特殊研究的三体问题是<strong>太阳</strong>、<strong>地球</strong>和<strong>月亮</strong>间的运动。从现代意义上说，它可以指经典力学或量子力学中三个粒子运动的任何问题。</p>
-<blockquote>
-<p>参考 <a href="https://encyclopedia.thefreedictionary.com/N-body+problem">N-Body 问题 - wikipedia</a> 。<br>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="梅森素数"><a href="#梅森素数" class="headerlink" title="梅森素数"></a>梅森素数</h3><p>如果 p 是素数，我们将 $ 2^p - 1 $ 的一类数记为 $ M_p $，如果 $ M_p $ 也是素数，那么它就被称为 <strong>梅森素数（Mersenne Prime Number）</strong>。</p>
+<p>首先，用因式分解法可以证明，若 $ 2^p - 1 $ 是素数，则 p 也一定是素数，证明如下：<br>首先，易知 k方差的因式分解如下：<br>$$ a^k - 1 &#x3D;  (a - 1)(a^{k-1} + a^{k-2} + … + a + 1) $$</p>
+<p>我们假设 p 不是素数，其因式分解为 $ p &#x3D; sk (s &gt; 1, k &gt; 1)$，则：<br>$$ 2^p - 1 &#x3D; 2^{sk} - 1 &#x3D; ({2^s})^k - 1 &#x3D; (2^s - 1)[({2^s})^{k-1} + ({2^s})^{k-2} + … + 2^s + 1] $$</p>
+<p>即 $ 2^p - 1 $ 可以因式分解为大于 1 的整数，这与其为素数的前提条件矛盾，故原假设不成立，所以 p 是素数。</p>
+<p>但反过来，如果 p 为素数，则 $ 2^p - 1 $ 不一定为素数。目前已经发现 52 个梅森素数，最大的是 $ M_{136279841} $（即 $ 2^{136279841} - 1 $）。</p>
+<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><code>MT19937</code> 算法的周期为 $ 2^{19937}  - 1 $，该算法的优点如下：<br>a. 周期非常长，该周期为梅森素数<br>b. 在 1 &lt;&#x3D; k &lt;&#x3D; 623 都满足 k-分布<br>c. 产生速度快。</p>
+<p>算法分为三个阶段：</p>
+<ul>
+<li>a. 初始化，获得基础的梅森旋转链</li>
+<li>b. 对旋转链进行旋转算法</li>
+<li>c. 对旋转算法所得结果进行处理，提取伪随机数</li>
+</ul>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化 state &#x3D; 0, 初始化向量 iv 含有 n 个元素，每一个元素为一个 word (32位或者64位) 长。其中将 seed 设置为 iv 中的第一个向量，剩下的 n - 1 个 word 按照如下的方式初始化：<br>$$ x_i &#x3D; f \times (x_{i-1} \bigoplus (x_{i-1} &gt;&gt; (w - 2))) + i $$<br>其中 f 为常数 <code>1812433253</code>。</p>
+<p>从而得到一条初始化的梅森链。</p>
+<h3 id="梅森旋转"><a href="#梅森旋转" class="headerlink" title="梅森旋转"></a>梅森旋转</h3><p>对于 k 从 0 到 n - 1:<br>$$ \vec x_k &#x3D; \vec x_{k+m} \bigoplus ((\vec x_k ^{(u)}||\vec x_{k+1} ^{(l)})A) $$<br>其中，$ \vec x_k ^{(u)} $ 代表第 k 个向量的高 $ w - r $ 位，$ \vec x_{k+1} ^{(l)} $ 代表第 k + 1 个向量的低 r 位。A 矩阵定义如下：</p>
+<p>$$A &#x3D; \begin{pmatrix}<br>0&amp;I_{w-1}\\<br>a_{w-1}&amp;(a_{w-2},…,a_0)\\<br>\end{pmatrix}$$</p>
+<p>因此，$ \vec xA $ 可以直接表示为：<br>$$ xA &#x3D; \begin{cases}<br>x &gt;&gt; 1 &amp; x_0 &#x3D; 0 \\<br>(x &gt;&gt; 1) \bigoplus a &amp; x_0 &#x3D; 1<br>\end{cases}$$</p>
+<p>其中 $x_0$ 是向量 $\vec x$的最低位；a 为常量。</p>
+<h3 id="获取随机数"><a href="#获取随机数" class="headerlink" title="获取随机数"></a>获取随机数</h3><p>首先，在梅森链中获取 state 位置的 word，赋值给 x，然后通过下面的方式获取最终的随机数：<br>$$\begin{align}<br>y \equiv x \bigoplus ((x &gt;&gt; u) &amp; d) \\<br>y \equiv y \bigoplus ((y &lt;&lt; s) &amp; b) \\<br>y \equiv y \bigoplus ((y &lt;&lt; t) &amp; c) \\<br>z \equiv y \bigoplus ((y &gt;&gt; l)) \\<br>\end{align}$$</p>
+<p>获取完随机数后，state + 1。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><blockquote>
+<p>参考 <a href="https://blog.acdawn.cn/2024/02/08/Academic/%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9B%B8%E5%85%B3/%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95/">梅森旋转算法</a></p>
 </blockquote>
-<h2 id="数学建模"><a href="#数学建模" class="headerlink" title="数学建模"></a>数学建模</h2><h3 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h3><p>假设在时刻 <code>t</code> ，行星 <strong>q</strong>  的位置为 $ s_q(t) $，行星 <strong>k</strong> 的位置为 $ s_k(t) $，则根据牛顿定律，行星 k 作用于行星 q 上的引力为：<br>$$ f_{qk}(t) &#x3D; -\frac {Gm_qm_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } ( s_q(t) - s_k(t) ) $$</p>
-<p>其中， <strong>G</strong> 为 万有引力常量（$ 6.673<em>10^{-11} m^3&#x2F;(kg</em>s^2) $），m 为 行星质量，<strong>s</strong> 和 <strong>f</strong> 均为带方向的<strong>向量</strong>。</p>
-<p>进一步，我们可以计算所有其他行星作用于行星 q 上的引力和（向量和）：<br>$$ F_q(t) &#x3D; \sum_{k&#x3D;0,k\neq q}^{n-1}f_{qk} &#x3D; -Gm_q \sum_{k&#x3D;0,k \neq q} ^ {n-1} \frac {m_k} { { ( s_q(t) - s_k(t) ) } ^ 3 } [s_q(t) - s_k(t)] $$</p>
-<p>最后，我们可以计算行星 q 在时刻 t 时的加速度：<br>$$ a_q(t) &#x3D; -G \sum_{j&#x3D;0,j \neq q}^{n-1} \frac {m_j} { { ( s_q(t) - s_j(t) ) } ^ 3 } [s_q(t) - s_j(t)] $$</p>
-<p>实际上，也可以用下面的等式表示：<br>$$ a_q(t) &#x3D; {s_q}’’(t) &#x3D; \frac {F_q(t)} {m_q} $$</p>
-<h3 id="数值模拟"><a href="#数值模拟" class="headerlink" title="数值模拟"></a>数值模拟</h3><p>如果要求 $ s_q(t) $，直接求解上节最后的<strong>微分公式</strong>是困难的，但是可以使用数值模拟方法来求得其近似值。我们使用最简单的<strong>欧拉方法</strong>，作为数值模拟方法。对于在定义域内连续的函数 $ g(t) $，在其曲线上有点$ (t_0, g(t_0)) $，那么当 $ t &#x3D; t_0 + \Delta{t} $时，<br>$$ y &#x3D; g(t_0) + g’(t_0)(\Delta{t}) $$</p>
-<p>且当 $ \Delta{t} $足够小时：<br>$$ g(t_0 + \Delta(t)) \approx g(t_0) + g’(t_0)(\Delta{t}) $$</p>
-<p>以此，我们可以模拟 $ s_q(t) $和$ v_q(t) $的值。假设，在时刻 0，行星 q 的位置和速度为 $ s_q(0) $ 和 $ v_q(0) $，那么，在时刻 $ \Delta{t} $，其位置和速度为：<br>$$ s_q(\Delta{t}) \approx s_q(0) + \Delta{t}s_q’(0) &#x3D; s_q(0) + \Delta{t}v_q(0) $$</p>
-<p>$$ v_q(\Delta{t}) \approx v_q(0) + \Delta{t}v_q’(0) &#x3D; v_q(0) + \Delta{t}a_q(0) &#x3D; v_q(0) + \Delta{t}\frac{1}{m_q}F_q(0) $$</p>
-<p>当我们求得$s_q(\Delta{t})$ 和 $v_q(\Delta{t})$后，我们可以使用相同的公式计算 $s_q(2\Delta{t})$ 和 $v_q(2\Delta{t})$，以此类推。</p>
-<h2 id="OpenMP"><a href="#OpenMP" class="headerlink" title="OpenMP"></a>OpenMP</h2><h2 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h2><h2 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h2>]]></content>
+<p>32位版本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MT19937</span>:  </span><br><span class="line">    <span class="comment"># w: word 大小  </span></span><br><span class="line">    <span class="comment"># n: 参与梅森旋转的随机数个数  </span></span><br><span class="line">    <span class="comment"># m: 中间词, 在[1,n)  </span></span><br><span class="line">    <span class="comment"># r: [0,w-1)    w, n, m, r = 32, 624, 397, 31  </span></span><br><span class="line">  </span><br><span class="line">    a = <span class="number">0x9908b0df</span>  </span><br><span class="line">    u, d = <span class="number">11</span>, <span class="number">0xffffffff</span>  </span><br><span class="line">    s, b = <span class="number">7</span>, <span class="number">0x9d2c5680</span>  </span><br><span class="line">    t, c = <span class="number">15</span>, <span class="number">0xefc60000</span>  </span><br><span class="line">    l = <span class="number">18</span>  </span><br><span class="line">    f = <span class="number">1812433253</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):  </span><br><span class="line">        seed = <span class="number">0</span>  </span><br><span class="line">        <span class="variable language_">self</span>.state = <span class="number">0</span>  </span><br><span class="line">        <span class="comment"># 初始化，生成n行w列的向量  </span></span><br><span class="line">        <span class="variable language_">self</span>.iv = [<span class="number">0</span>] * <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="variable language_">self</span>.iv[<span class="number">0</span>] = seed  </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="variable language_">self</span>.n):  </span><br><span class="line">            prev = <span class="variable language_">self</span>.iv[i - <span class="number">1</span>]  </span><br><span class="line">            temp = <span class="variable language_">self</span>.f * (prev ^ (prev &gt;&gt; (<span class="variable language_">self</span>.w - <span class="number">2</span>))) + i  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = temp &amp; <span class="number">0xffffffff</span>  <span class="comment"># 转换为int32  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twister</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="comment"># 梅森旋转  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.n):  </span><br><span class="line">            y = (<span class="variable language_">self</span>.iv[i] &amp; <span class="number">0x80000000</span>) + (<span class="variable language_">self</span>.iv[(i + <span class="number">1</span>) % <span class="variable language_">self</span>.n] &amp; <span class="number">0x7fffffff</span>)  </span><br><span class="line">            <span class="keyword">if</span> y % <span class="number">2</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">                y ^= <span class="variable language_">self</span>.a  </span><br><span class="line">            <span class="keyword">else</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = <span class="variable language_">self</span>.iv[(i + <span class="variable language_">self</span>.m) % <span class="variable language_">self</span>.n] ^ y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.state == <span class="number">0</span>:  <span class="comment"># 此处为效率优化，可以不进行判断，每次生成随机数都进行旋转</span></span><br><span class="line">            <span class="variable language_">self</span>.twister()  </span><br><span class="line">  </span><br><span class="line">        y = <span class="variable language_">self</span>.iv[<span class="variable language_">self</span>.state]  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.u) &amp; <span class="variable language_">self</span>.d  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.s) &amp; <span class="variable language_">self</span>.b  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.t) &amp; <span class="variable language_">self</span>.c  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.l)  </span><br><span class="line">  </span><br><span class="line">        <span class="variable language_">self</span>.state = (<span class="variable language_">self</span>.state + <span class="number">1</span>) % <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="keyword">return</span> y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.generate()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:  </span><br><span class="line">    mt = MT19937()  </span><br><span class="line">    tank = <span class="built_in">set</span>()  </span><br><span class="line">    kLen = <span class="number">100000</span>  </span><br><span class="line">    odd = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(kLen):  </span><br><span class="line">        t = mt()  </span><br><span class="line">        odd += <span class="number">1</span> <span class="keyword">if</span> t % <span class="number">2</span> <span class="keyword">else</span> <span class="number">0</span>  </span><br><span class="line">        tank.add(t)  </span><br><span class="line">        <span class="built_in">print</span>(t)  </span><br><span class="line">    <span class="built_in">print</span>(odd / kLen)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;set: <span class="subst">&#123;<span class="built_in">len</span>(tank)&#125;</span>&quot;</span>)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;kLen: <span class="subst">&#123;kLen&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>64位版本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MT19937x64</span>:  </span><br><span class="line">    w, n, m, r = <span class="number">64</span>, <span class="number">312</span>, <span class="number">156</span>, <span class="number">31</span>  </span><br><span class="line">  </span><br><span class="line">    a = <span class="number">0xb5026f5aa96619e9</span>  </span><br><span class="line">    u, d = <span class="number">29</span>, <span class="number">0x5555555555555555</span>  </span><br><span class="line">    s, b = <span class="number">17</span>, <span class="number">0x71d67fffeda60000</span>  </span><br><span class="line">    t, c = <span class="number">37</span>, <span class="number">0xfff7eee000000000</span>  </span><br><span class="line">    l = <span class="number">43</span>  </span><br><span class="line">    f = <span class="number">6364136223846793005</span>  </span><br><span class="line">    upperMask = <span class="number">0xFFFFFFFF80000000</span>  </span><br><span class="line">    lowerMask = <span class="number">0x7FFFFFFF</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):  </span><br><span class="line">        seed = <span class="number">0</span>  </span><br><span class="line">        <span class="variable language_">self</span>.state = <span class="number">0</span>  </span><br><span class="line">        <span class="comment"># 初始化，生成n行w列的向量  </span></span><br><span class="line">        <span class="variable language_">self</span>.iv = [<span class="number">0</span>] * <span class="variable language_">self</span>.n  </span><br><span class="line">        <span class="variable language_">self</span>.iv[<span class="number">0</span>] = seed  </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="variable language_">self</span>.n):  </span><br><span class="line">            prev = <span class="variable language_">self</span>.iv[i - <span class="number">1</span>]  </span><br><span class="line">            temp = <span class="variable language_">self</span>.f * (prev ^ (prev &gt;&gt; (<span class="variable language_">self</span>.w - <span class="number">2</span>))) + i  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = temp &amp; <span class="number">0xffffffffffffffff</span>  <span class="comment"># 转换为int64  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">twister</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="comment"># 梅森旋转  </span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="variable language_">self</span>.n):  </span><br><span class="line">            y = (<span class="variable language_">self</span>.iv[i] &amp; <span class="number">0x80000000</span>) + (<span class="variable language_">self</span>.iv[(i + <span class="number">1</span>) % <span class="variable language_">self</span>.n] &amp; <span class="number">0x7fffffff</span>)  </span><br><span class="line">            <span class="keyword">if</span> y % <span class="number">2</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">                y ^= <span class="variable language_">self</span>.a  </span><br><span class="line">            <span class="keyword">else</span>:  </span><br><span class="line">                y &gt;&gt;= <span class="number">1</span>  </span><br><span class="line">            <span class="variable language_">self</span>.iv[i] = <span class="variable language_">self</span>.iv[(i + <span class="variable language_">self</span>.m) % <span class="variable language_">self</span>.n] ^ y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.state == <span class="number">0</span>:   <span class="comment"># 此处为效率优化，可以不进行判断，每次生成随机数都进行旋转</span></span><br><span class="line">            <span class="variable language_">self</span>.twister()  </span><br><span class="line">  </span><br><span class="line">        y = <span class="variable language_">self</span>.iv[<span class="variable language_">self</span>.state]  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.u) &amp; <span class="variable language_">self</span>.d  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.s) &amp; <span class="variable language_">self</span>.b  </span><br><span class="line">        y = y ^ (y &lt;&lt; <span class="variable language_">self</span>.t) &amp; <span class="variable language_">self</span>.c  </span><br><span class="line">        y = y ^ (y &gt;&gt; <span class="variable language_">self</span>.l)  </span><br><span class="line">  </span><br><span class="line">        <span class="variable language_">self</span>.state = (<span class="variable language_">self</span>.state + <span class="number">1</span>) % <span class="variable language_">self</span>.n  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> y  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self</span>):  </span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.generate()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:  </span><br><span class="line">    mt = MT19937x64()  </span><br><span class="line">    tank = <span class="built_in">set</span>()  </span><br><span class="line">    kLen = <span class="number">100000</span>  </span><br><span class="line">    odd = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(kLen):  </span><br><span class="line">        t = mt()  </span><br><span class="line">        odd += <span class="number">1</span> <span class="keyword">if</span> t % <span class="number">2</span> <span class="keyword">else</span> <span class="number">0</span>  </span><br><span class="line">        tank.add(t)  </span><br><span class="line">        <span class="built_in">print</span>(t)  </span><br><span class="line">    <span class="built_in">print</span>(odd / kLen)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;set: <span class="subst">&#123;<span class="built_in">len</span>(tank)&#125;</span>&quot;</span>)  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;kLen: <span class="subst">&#123;kLen&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>高性能计算</category>
         <category>算法</category>
       </categories>
   </entry>
@@ -3526,10 +3526,18 @@
 <blockquote>
 <p>参考 <a href="https://mp.weixin.qq.com/s?__biz=MzI4MzExNzgwNw==&mid=2650117254&idx=3&sn=49a012cb4d0dc0092565173d2de03d10&chksm=f38ea506c4f92c106f5a62418cb70cad082b4e08bbc589b57dee17439108e634c673b1f04599&mpshare=1&scene=23&srcid=#">汽车电子expert成长之路-微信公众号</a></p>
 </blockquote>
-<h2 id="架构和存储器映射"><a href="#架构和存储器映射" class="headerlink" title="架构和存储器映射"></a>架构和存储器映射</h2><p>S32K 系列内核的存储器映射，可以概括如下：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png"></p>
+<h2 id="架构和存储器映射"><a href="#架构和存储器映射" class="headerlink" title="架构和存储器映射"></a>架构和存储器映射</h2><p>S32K1xx（以S32K14x为例）的架构：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k14x_block.png"></p>
+<p>S32K3xx（以S32K312为例）的架构：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k312_block.png"></p>
+<p>S32K 系列内核的存储器映射，可以概括如下：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png"></p>
+<p>图中的 <code>PPB</code> 又可以分为<code>内部 PPB</code>和外部 <code>PPB</code>，前者主要用来访问 <code>ITM/DWT/PFB/MPU/NVIC</code>，后者主要用来访问 <code>ETM/CTI</code>。</p>
 <h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><p>S32K1XX MCU 使用 ARM 的 <code>Cortex M0+</code> （如 S32K118 和 S32K116）和 <code>Cortex M4F</code> （如 S32K14X）核，主频率可以达到最高 48MHZ 和 112MHZ （HSRUN）模式。S32K3 MCU使用 ARM 的 <code>Cortex M7</code> 核（哈佛架构 + 6级超标量流水线 + 分支预测），主频可以达到 120MHZ-240 MHZ。</p>
-<p>但仅仅通过调整 <code>PLL</code> 或者 <code>FLL</code> 产生 CPU 核和内部总线的最高时钟频率就能获得最高性能吗？如果对于计算密集型且不需要考虑 cache 的应用，大概是正确的；但对于大部分应用来说，这样做是不够的。很多应用的性能受到存储、浮点计算、IO等的极大影响，另外我们还要考虑编译器优化、程序链接等软件层面的影响。综合考虑各种软硬方面，开发者才能最大程度地发挥 CPU 核的最大性能。</p>
-<h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
+<p>但仅仅通过调整 <code>PLL</code> 或者 <code>FLL</code> 产生 CPU 核和内部总线的最高时钟频率就能获得最高性能吗？如果对于计算密集型且不需要考虑 cache 的应用，大概是正确的；但对于大部分应用来说，这样做是不够的。很多应用的性能受到存储、cache、浮点计算、IO等的极大影响，另外我们还要考虑编译器优化、程序链接等软件层面的影响。综合考虑各种软硬方面，开发者才能最大程度地发挥 CPU 核的最大性能。</p>
+<h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><p>从前面的 S32K14x MCU 结构图中我们可以看到 Code Bus 上有 4KB 的指令和数据 Cache，注意这里的 Cache 不在 Cortex M4核的内部，但即使如此，Cache 的使用仍然可以很好地改善 Flash&#x2F;SRAM 密集型应用的性能。S32K14x 的 cache 需要在 MCU 启动时打开，具体为配置 <code>LMEM-&gt;PCCCR</code> 寄存器来使能。</p>
+<p>S32K3XX MCU 使用 ARM Cortex-M7 核，该核内也包含了 L1&#x2F;L2 指令和数据 cache。核内的 cahe 与 D-Cache&#x2F;I-Cache 的配置可以通过 <code>SCTLR</code> 寄存器来完成。</p>
+<h2 id="TCM"><a href="#TCM" class="headerlink" title="TCM"></a>TCM</h2><p>从前面 S32K3 系列的架构图中我们可以看到，核对 <code>TCM</code> 的访问不通过 <code>Cache</code>。那么 TCM 和 Cache 的区别在那里呢？</p>
+<p>我们可以从设计目的和使用方式方面来区分，TCM 是专门设计用于处理器内部的高速存储器，包括<code>I-TCM</code>代码区和<code>D-TCM</code>数据区，可以存放<strong>最常用的代码和数据</strong>，用于提高系统的性能。Cache 用于存储最近访问的数据，来减少对外部存储器的访问次数，并提高系统性能；但 Cache 依赖于<code>局部性原理</code>，如果软件设计不是 <code>Cache 友好</code>的，那么就会频繁地发生 Cache 命中失败而访问外部存储器，性能提升受到打折。</p>
+<p>另一个区别是，TCM 是处理器内部的存储器，Cache 需要外部存储器的支持，且需要使用特殊的硬件逻辑来管理缓存。</p>
+<h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
       </categories>
@@ -3629,20 +3637,6 @@
       <categories>
         <category>计算机科学</category>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>SSH 安全登录配置</title>
-    <url>/2024/02/24/SSH%E5%AE%89%E5%85%A8%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenSSH 远程登陆应尽可能避免使用 <strong>口令+密码</strong> 的认证方式，而尽量使用非对称公钥证书进行认证。</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/tang_jian_dong/article/details/124771246">Centos8 ssh 禁用密码登录， 使用证书登录</a></p>
-</blockquote>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-        <category>网络安全</category>
       </categories>
   </entry>
   <entry>
@@ -4762,6 +4756,17 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>伯特兰罗素：《我为什么活着》摘抄</title>
+    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
+    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
+<span id="more"></span>
+<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
     <title>《黑客与画家》读书笔记</title>
     <url>/2017/10/22/%E3%80%8A%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><em>本文是早期读书摘抄笔记2017&#x2F;10&#x2F;22</em></p>
@@ -4786,17 +4791,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       <categories>
         <category>读书笔记</category>
         <category>软件工程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>伯特兰罗素：《我为什么活着》摘抄</title>
-    <url>/2021/01/09/%E4%BC%AF%E7%89%B9%E5%85%B0-%E7%BD%97%E7%B4%A0%EF%BC%9A%E3%80%8A%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B4%BB%E7%9D%80%E3%80%8B%E6%91%98%E6%8A%84/</url>
-    <content><![CDATA[<p><em>该文是其自传序言，可‘感染’其情感和精神之一面。</em></p>
-<span id="more"></span>
-<p>&lt;正文&gt;<br>&emsp;&emsp;对爱情的渴望，对知识的追求，对人类苦难不可遏制的同情，这三种纯洁但无比强烈的感情支配着我的一生。这三种感情就像飓风一样，在深深的苦海上，肆意地把我吹来吹去，吹到濒临绝望的边缘。<br>&emsp;&emsp;我寻求爱情，首先因为爱情给我带来狂喜，它如此强烈，以致于我经常愿意为了几小时的欢愉而牺牲生命中的其他一切。我寻求爱情，其次是因为爱情解除孤寂——那是一颗震颤的心，在世界的边缘，俯瞰那冰冷死寂、深不可测的深渊。我寻求爱情，最后是因为在爱情的结合中，我看到圣贤和诗人们所想象的仙境的神秘缩影。这就是我所寻求的，虽然它对人生似乎过于美好，然而最终我还是得到了它。<br>&emsp;&emsp;我以同样的热情寻求知识，我希望了解人的心灵。我希望知道星星为什么闪闪发光，我试图理解毕达哥拉斯的思想威力，即数字支配着万物流转。这方面我获得一些成就，然而并不多。<br>&emsp;&emsp;爱情和知识，尽可能地把我引上云霄，但同情心总把我带回尘世。痛苦的呼号的回声在我心中回荡，饥饿的儿童，被压迫者折磨的受害者，被儿女视为可厌负担的无助的老人，以及充满孤寂、贫穷和痛苦的整个世界，都是对人类应有生活的嘲讽。我渴望减轻这些不幸，但是我无能为力，而且我自己也深受其害。<br>&emsp;&emsp;这就是我的一生，我觉得我活着值得。如果有机会的话，我还乐意再活一次。</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
       </categories>
   </entry>
   <entry>
@@ -5218,6 +5212,20 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SSH 安全登录配置</title>
+    <url>/2024/02/24/SSH%E5%AE%89%E5%85%A8%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenSSH 远程登陆应尽可能避免使用 <strong>口令+密码</strong> 的认证方式，而尽量使用非对称公钥证书进行认证。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/tang_jian_dong/article/details/124771246">Centos8 ssh 禁用密码登录， 使用证书登录</a></p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>网络安全</category>
       </categories>
   </entry>
 </search>
