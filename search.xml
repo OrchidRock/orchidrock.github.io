@@ -5228,4 +5228,15 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>网络安全</category>
       </categories>
   </entry>
+  <entry>
+    <title>Linux内核的进程调度算法分析</title>
+    <url>/2025/02/27/Linux%E5%86%85%E6%A0%B8%E7%9A%84%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是操作系统的核心概念之一，也是自多任务（分时）处理系统出现以来最成功的抽象概念之一。在多任务并发系统中，对计算、存储、IO等资源的合理、高效分配是决定系统性能和稳定性的关键因素。在复杂的系统中，各种任务对资源的占用种类、时间、实时要求等有着很大的差异，对于执行任务的进程而言，这个问题就等价于如何高效、合理地对进程进行调度。</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
 </search>
