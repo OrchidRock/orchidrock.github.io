@@ -2505,7 +2505,8 @@
 <h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><p>使用 <a href="https://buildroot.org/">Buildroot 工具</a> 来制作根文件系统。官网下载源代码后，编译构建：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig  <span class="comment"># 选择架构和文件系统类型</span></span></span><br></pre></td></tr></table></figure>
 
-<p>BuildRoot 会从源代码构建所以基础软件包，相关来说比较耗时。如果只需要使用非常简单的根文件系统，可以直接使用 <a href="https://www.busybox.net/">busybox</a> 来制作。</p>
+<p>BuildRoot 会从源代码构建所以基础软件包，相对来说比较耗时。使用方法参考<a href="/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/" title="BuildRoot工具介绍">[BuildRoot 工具介绍]</a></p>
+<p>如果只需要使用非常简单的根文件系统，可以直接使用 <a href="https://www.busybox.net/">busybox</a> 来制作。</p>
 <h4 id="准备根目录镜像并初始化"><a href="#准备根目录镜像并初始化" class="headerlink" title="准备根目录镜像并初始化"></a>准备根目录镜像并初始化</h4><p>a. 创建并格式化 img 文件</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=rootfs.img bs=4096 count=1024</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mke2fs rootfs.img</span></span><br></pre></td></tr></table></figure>
 
@@ -5234,6 +5235,9 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是操作系统的核心概念之一，也是自多任务（分时）处理系统出现以来最成功的抽象概念之一。在多任务并发系统中，对计算、存储、IO等资源的合理、高效分配是决定系统性能和稳定性的关键因素。在复杂的系统中，各种任务对资源的占用种类、时间、实时要求等有着很大的差异，对于执行任务的进程而言，这个问题就等价于如何高效、合理地对进程进行调度。</p>
 <span id="more"></span>
 
+<blockquote>
+<p>参考 <a href="https://zhuanlan.zhihu.com/p/460055814">玩转 Linux 内核-进程调度</a></p>
+</blockquote>
 <h2 id="调度算法的常用策略"><a href="#调度算法的常用策略" class="headerlink" title="调度算法的常用策略"></a>调度算法的常用策略</h2><h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><h3 id="基于优先级"><a href="#基于优先级" class="headerlink" title="基于优先级"></a>基于优先级</h3><h3 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h3><h3 id="时间片"><a href="#时间片" class="headerlink" title="时间片"></a>时间片</h3><h2 id="O-N-调度算法"><a href="#O-N-调度算法" class="headerlink" title="O(N) 调度算法"></a>O(N) 调度算法</h2><h2 id="O-1-调度算法"><a href="#O-1-调度算法" class="headerlink" title="O(1) 调度算法"></a>O(1) 调度算法</h2><h2 id="CFS-调度算法"><a href="#CFS-调度算法" class="headerlink" title="CFS 调度算法"></a>CFS 调度算法</h2><blockquote>
 <p>任何进程所获得的处理器时间是由它自己和其他所有可运行进程 nice 值的相对差值决定的。nice 值对时间片的作用不再是算术加权，而是几何加权。任何 nice 值对应的绝对时间不再是一个绝对值，而是处理器的使用比。<br>—— LKD</p>
 </blockquote>
@@ -5246,5 +5250,11 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
       </categories>
+  </entry>
+  <entry>
+    <title>BuildRoot工具介绍</title>
+    <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<span id="more"></span>
+]]></content>
   </entry>
 </search>
