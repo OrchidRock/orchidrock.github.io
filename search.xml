@@ -2432,7 +2432,10 @@
 <p><strong><code>Provide mechanism, not policy.</code></strong></p>
 <p>内核一定会对系统调用的参数进入检查，<em>Note kernel code must never blindly follow a pointer into user-space!</em> 其中之一是对指针的合法性检查，指针所指向的区域必须是用户空间，且是该进程的地址空间，该空间具有相应的操作权限；另外是对合法权限的检查，例如reboot系统调用会检查当前用户是否为root用户。</p>
 <h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>中断控制器可以实现多路复用功能，因为连接到CPU芯片的中断信号线往往只有一条，而外围设备却有很多。<em>The important notion is that a specific interrupt is associated with a specific device, and the kernel knows this. The hardware then issues interrupts to get the kernel’s attention.</em><br>异常（Exception）往往又称为同步中断（synchronous interrupts），比如缺页（Page Fault）及上一节的软中断，它的处理机制和来自硬件的异步中断类似。<br>设备的中断处理程序（interrupt service routine，ISR）是设备驱动的一部分，设备驱动是内核中管理设备的代码。Interrupt Handler运行在一个特殊的context中，叫做interrupt context，在那里，代码不能被阻塞，代码会尽量保持小巧，并保证尽量短时间内完成任务。但当任务很重时，handler必须作出选择，Linux实现了Top Halves和Bottom Halves机制来提供这种选择。仔细思考这种机制，我们会发现它也是某种异步编程机制，繁重的任务Bottom Halves会延迟，并在合适的时候执行。<br>每一个中断类型都有一个中断号，且绑定零个、一个或者多个中断Handler，多个Handler可以共享某个中断线。request_irq负责注册Handler，特别注意的是它可能会睡眠或阻塞。<br>中断控制，便于进程间同步。local_irq_disable 和 local_irq_enable；local_irq_save 和 local_irq_store。中断屏蔽。<br><strong>特别注意中断系统与进程调度间的密切关系。</strong></p>
-<h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
+<h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><blockquote>
+<p>不管是禁止中断还是禁止内核抢占，都没有提供任何保护机制来防止来自其他处理器的并发访问。Linux 支持 SMP，因此，内核代码一般都需要获取某种锁，防止来自其他处理器对共享数据的并发访问，获取这些锁的同时也伴随着禁止本地中断。</p>
+</blockquote>
+<h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2519,6 +2522,10 @@
 <p>d. 新建其他目录（可选）</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> rootfs/&#123;proc,sys,var,run&#125;</span></span><br></pre></td></tr></table></figure>
 
+<p>特别的，<code>/proc</code> 目录中包含了许多内核数据结构的映射，对于调试非常重要。一种方法是使用 qemu 进入 shell 后手动挂载：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t proc none /proc</span></span><br></pre></td></tr></table></figure>
+
+<p>但重启后配置会消失。使用 <code>/etc/fstab</code> 或者 <code>/etc/init.d/rcS</code> 来自动挂载。</p>
 <h4 id="构建-busybox"><a href="#构建-busybox" class="headerlink" title="构建 busybox"></a>构建 busybox</h4><p>下载 <a href="https://www.busybox.net/downloads/">BusyBox 源代码</a> 并验证数字签名后，进行构建：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意修改配置：busybox settings -&gt; build options -&gt; build busybox as a static binary (no share libs)。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果生成的不是静态链接的可执行文件，那么 busybox 就会依赖宿主机上的一些动态链接库，而一个单 linux 内核无法提供这些库。</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> make CONFIG_PREFIX=&lt;rootfs path&gt;/ install</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上述命令将 busybox 安装到已经挂载的 rootfs 根目录中</span></span><br></pre></td></tr></table></figure>
 
@@ -2540,6 +2547,8 @@
 <p>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>
 
+<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>如果要关闭某个函数的编译优化，使用 <code>__attribute__((optimize(0)))</code> 编译器优化选项。如果要关闭某段代码的优化：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">    fun1();</span><br><span class="line"><span class="meta">#prama GCC push_options</span></span><br><span class="line"><span class="meta">#prama GCC optimize (0)</span></span><br><span class="line">    fun2();</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line"><span class="meta">#prama GCC pop_options</span></span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 ]]></content>
@@ -5254,7 +5263,13 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>BuildRoot工具介绍</title>
     <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<span id="more"></span>
-]]></content>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a>类似。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
+<h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
+      <categories>
+        <category>GNU/Linux 操作系统</category>
+      </categories>
   </entry>
 </search>
