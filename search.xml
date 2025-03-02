@@ -2550,7 +2550,9 @@
 <h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>如果要关闭某个函数的编译优化，使用 <code>__attribute__((optimize(0)))</code> 编译器优化选项。如果要关闭某段代码的优化：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">    fun1();</span><br><span class="line"><span class="meta">#prama GCC push_options</span></span><br><span class="line"><span class="meta">#prama GCC optimize (0)</span></span><br><span class="line">    fun2();</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line"><span class="meta">#prama GCC pop_options</span></span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
+<p>如果进入根文件系统后，需要创建文件或者目录，需要在内核启动时设定根文件系统的读写权限：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.... --append &quot;nokaslr root=/dev/vda rw init=/bin/ash&quot; ...</span><br></pre></td></tr></table></figure>
+<p>在 <code>root=/dev/vda</code> 后紧跟 <code>rw</code> 标志。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -3500,7 +3502,7 @@
 <h4 id="姿态估计"><a href="#姿态估计" class="headerlink" title="姿态估计"></a>姿态估计</h4><p>下面的 demo 进行了 17 个点的人体姿态模拟：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rpicam-hello -t 0 --post-process-file /usr/share/rpi-camera-assets/hailo_yolov8_pose.json</span></span><br></pre></td></tr></table></figure>
 <p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/hailo_yolov8_pose.png"></p>
-]]></content>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2>]]></content>
       <categories>
         <category>开源硬件</category>
         <category>人工智能</category>
