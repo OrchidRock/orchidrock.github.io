@@ -2547,6 +2547,12 @@
 <p>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>
 
+<h3 id="构建模块并调试"><a href="#构建模块并调试" class="headerlink" title="构建模块并调试"></a>构建模块并调试</h3><blockquote>
+<p>参考 <img src="https://docs.linuxkernel.org.cn/kbuild/modules.html" alt="构建外部模块"></p>
+</blockquote>
+<p>在编译完内核后，将内核模块安装到 rootfs 的 <code>lib/modules</code> 目录中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make INSTALL_MOD_PATH=rootfs/ modules_install</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>如果要关闭某个函数的编译优化，使用 <code>__attribute__((optimize(0)))</code> 编译器优化选项。如果要关闭某段代码的优化：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">    fun1();</span><br><span class="line"><span class="meta">#prama GCC push_options</span></span><br><span class="line"><span class="meta">#prama GCC optimize (0)</span></span><br><span class="line">    fun2();</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line"><span class="meta">#prama GCC pop_options</span></span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
