@@ -5373,6 +5373,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tasklet -cp 0,1 &lt;pid&gt;</span><br></pre></td></tr></table></figure>
 
 <h3 id="优化中断处理和内核抢占"><a href="#优化中断处理和内核抢占" class="headerlink" title="优化中断处理和内核抢占"></a>优化中断处理和内核抢占</h3><p>可以使用内核参数配置或者修改 <code>/proc/sys/kernel/preempt_disable</code> （该属性已经弃用）来关闭内核抢占，但关闭抢占对稳定性和实时性有负面影响。</p>
+<p>也可以优化进程调度参数</p>
 <h3 id="性能分析工具"><a href="#性能分析工具" class="headerlink" title="性能分析工具"></a>性能分析工具</h3><p>使用 <code>perf</code> 监视系统级性能问题，比如 CPU 缓存缺少、分支预测错误等。<br>安装 <code>perf</code> :</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install linux-perf</span><br></pre></td></tr></table></figure>
 
@@ -5386,8 +5387,16 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">perf report</span><br></pre></td></tr></table></figure>
 
 <p>使用 <code>pref top</code> 命令实时查看当前运行的函数热点。</p>
+<p>使用 <code>vmstat</code> 和 <code>pidstat</code>。</p>
 <h2 id="文件系统性能"><a href="#文件系统性能" class="headerlink" title="文件系统性能"></a>文件系统性能</h2><h3 id="配置文件系统参数以优化I-O性能"><a href="#配置文件系统参数以优化I-O性能" class="headerlink" title="配置文件系统参数以优化I&#x2F;O性能"></a>配置文件系统参数以优化I&#x2F;O性能</h3><p>文件系统参数调整是优化 I&#x2F;O 性能的关键步骤。这些调整可以通过挂载时参数或是在<code>/etc/fstab</code>中进行设置来实现。举例来说，可以调整<code>/etc/fstab</code>中的<code>noatime</code>参数，减少对文件访问时间的记录，从而减少写操作，提高性能。</p>
 <p>此外，<code>/etc/fstab</code>提供了其他一些有用的参数，如<code>commit</code>控制磁盘写入操作的频率，<code>auto</code>或<code>noauto</code>指定是否自动挂载，以及<code>rw</code>或<code>ro</code>指定文件系统挂载为读写或只读模式。</p>
+<p>其他内核参数：</p>
+<ul>
+<li><code>vm.dirty_writeback_centisecs</code>：控制脏页写回磁盘的频率。</li>
+<li><code>vm.dirty_expire_centisecs</code>：控制脏页在内存中保留的时间。</li>
+<li><code>fs.file-max</code> ： 系统中最大打开文件数</li>
+</ul>
+<p>对于写密集型应用，可以减少这两个值，减少数据丢失的风险。</p>
 <h3 id="IO-调度器"><a href="#IO-调度器" class="headerlink" title="IO 调度器"></a>IO 调度器</h3><p>类似 CPU 调度器。另外，在<code>/etc/fstab</code>文件中也可以指定调度器类型：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/dev/sdb1 /var ext4 defaults,deadline 0 2</span><br></pre></td></tr></table></figure>
 
@@ -5398,13 +5407,20 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 </ul>
 <h2 id="网络性能"><a href="#网络性能" class="headerlink" title="网络性能"></a>网络性能</h2><h3 id="网络性能参数"><a href="#网络性能参数" class="headerlink" title="网络性能参数"></a>网络性能参数</h3><p>网络参数控制着操作系统如何处理网络流量。正确的参数设置可以提高数据吞吐量，降低网络延迟，甚至增强网络的鲁棒性。以下是一些关键的网络参数以及它们对性能的影响：</p>
 <ul>
-<li><strong>TCP窗口大小</strong>：控制数据包的发送速率和系统缓冲数据的能力。</li>
-<li><strong>拥塞控制算法</strong>：影响数据在网络中传输的策略，如 TCP 的 CUBIC 或 TCP BBR。</li>
-<li><strong>网络接口队列长度</strong>：调整队列长度可以影响数据包的排队和处理方式。</li>
-<li><strong>IP碎片重组</strong>：影响处理网络数据包分片的方式，进而影响性能。</li>
+<li><p><strong>TCP窗口大小</strong>：控制数据包的发送速率和系统缓冲数据的能力。</p>
+</li>
+<li><p><strong>拥塞控制算法</strong>：影响数据在网络中传输的策略，如 TCP 的 CUBIC 或 TCP BBR。</p>
+</li>
+<li><p><strong>网络接口队列长度</strong>：调整队列长度可以影响数据包的排队和处理方式。</p>
+</li>
+<li><p><strong>IP碎片重组</strong>：影响处理网络数据包分片的方式，进而影响性能。</p>
+</li>
+<li></li>
 </ul>
 <p>使用 <code>stsctl</code> 查看当前的网络参数配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> sysctl -a</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">TCP 窗口大小</span></span><br><span class="line">net.core.rmem_default = 212992</span><br><span class="line">net.core.rmem_max = 212992</span><br><span class="line">net.core.wmem_default = 212992</span><br><span class="line">net.core.wmem_max = 212992</span><br><span class="line">net.ipv4.tcp_rmem = 16384       131072  6291456</span><br><span class="line">net.ipv4.tcp_window_scaling = 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> sysctl -a</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">TCP 窗口大小</span></span><br><span class="line">net.core.rmem_default = 212992</span><br><span class="line">net.core.rmem_max = 212992</span><br><span class="line">net.core.wmem_default = 212992</span><br><span class="line">net.core.wmem_max = 212992</span><br><span class="line">net.ipv4.tcp_rmem = 16384       131072  6291456</span><br><span class="line">net.ipv4.tcp_window_scaling = 1</span><br><span class="line">net.ipv4.tcp_tw_reuse = 2  # 允许重用 TIME_WAIT 状态的连接。对于高并发服务器，可以启用。</span><br><span class="line">net.core.somaxconn = 4096  # 控制系统每个监听套接字的连接队列的最大长度。</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 256 # 控制系统中 SYN 队列的最大长度。对于高并发服务器，可以增加该值，以防止 SYN Flood 攻击。</span><br><span class="line">net.ipv4.tcp_syncookies = 1 # 控制是否启用 SYN Cokkie 机制，用于防止 SYN Flood 攻击。</span><br><span class="line">net.ipv4.tcp_fin_timeout = 60 # 控制 TCP 连接在 FIN_WAIT_2 状态的超时时间，对于高并发服务器，可以减少该值，以快速释放资源。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 
 
 <h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><ul>
@@ -5417,7 +5433,15 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">iperf3 -s -p 5001</span></span><br><span class="line">-----------------------------------------------------------</span><br><span class="line">Server listening on 5001 (test #1)</span><br><span class="line">-----------------------------------------------------------</span><br></pre></td></tr></table></figure>
 
 <p>在客户端连接服务端：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> iperf3 -c 192.168.100.101 -p 5001</span></span><br><span class="line">Connecting to host 192.168.100.101, port 5001</span><br><span class="line">[  5] local 192.168.100.102 port 49482 connected to 192.168.100.101 port 5001</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr  Cwnd</span><br><span class="line">[  5]   0.00-1.00   sec  40.3 MBytes   338 Mbits/sec  1063   59.4 KBytes</span><br><span class="line">[  5]   1.00-2.00   sec  39.4 MBytes   330 Mbits/sec  1195   50.9 KBytes</span><br><span class="line">[  5]   2.00-3.00   sec  39.8 MBytes   334 Mbits/sec  1174   53.7 KBytes</span><br><span class="line">[  5]   3.00-4.00   sec  40.0 MBytes   336 Mbits/sec  1132   36.8 KBytes</span><br><span class="line">[  5]   4.00-5.00   sec  39.3 MBytes   329 Mbits/sec  1165   36.8 KBytes</span><br><span class="line">[  5]   5.00-6.00   sec  39.7 MBytes   333 Mbits/sec  1114   39.6 KBytes</span><br><span class="line">[  5]   6.00-7.00   sec  39.5 MBytes   332 Mbits/sec  1139   67.9 KBytes</span><br><span class="line">[  5]   7.00-8.00   sec  40.0 MBytes   335 Mbits/sec  1241   50.9 KBytes</span><br><span class="line">[  5]   8.00-9.00   sec  39.6 MBytes   332 Mbits/sec  1160   41.0 KBytes</span><br><span class="line">[  5]   9.00-10.00  sec  39.5 MBytes   331 Mbits/sec  1107   39.6 KBytes</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr</span><br><span class="line">[  5]   0.00-10.00  sec   397 MBytes   333 Mbits/sec  11490             sender</span><br><span class="line">[  5]   0.00-10.00  sec   396 MBytes   332 Mbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> iperf3 -c 192.168.100.101 -p 5001</span></span><br><span class="line">Connecting to host 192.168.100.101, port 5001</span><br><span class="line">[  5] local 192.168.100.102 port 49482 connected to 192.168.100.101 port 5001</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr  Cwnd</span><br><span class="line">[  5]   0.00-1.00   sec  40.3 MBytes   338 Mbits/sec  1063   59.4 KBytes</span><br><span class="line">[  5]   1.00-2.00   sec  39.4 MBytes   330 Mbits/sec  1195   50.9 KBytes</span><br><span class="line">[  5]   2.00-3.00   sec  39.8 MBytes   334 Mbits/sec  1174   53.7 KBytes</span><br><span class="line">[  5]   3.00-4.00   sec  40.0 MBytes   336 Mbits/sec  1132   36.8 KBytes</span><br><span class="line">[  5]   4.00-5.00   sec  39.3 MBytes   329 Mbits/sec  1165   36.8 KBytes</span><br><span class="line">[  5]   5.00-6.00   sec  39.7 MBytes   333 Mbits/sec  1114   39.6 KBytes</span><br><span class="line">[  5]   6.00-7.00   sec  39.5 MBytes   332 Mbits/sec  1139   67.9 KBytes</span><br><span class="line">[  5]   7.00-8.00   sec  40.0 MBytes   335 Mbits/sec  1241   50.9 KBytes</span><br><span class="line">[  5]   8.00-9.00   sec  39.6 MBytes   332 Mbits/sec  1160   41.0 KBytes</span><br><span class="line">[  5]   9.00-10.00  sec  39.5 MBytes   331 Mbits/sec  1107   39.6 KBytes</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr</span><br><span class="line">[  5]   0.00-10.00  sec   397 MBytes   333 Mbits/sec  11490             sender</span><br><span class="line">[  5]   0.00-10.00  sec   396 MBytes   332 Mbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br></pre></td></tr></table></figure>
+
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><h3 id="内核安全参数"><a href="#内核安全参数" class="headerlink" title="内核安全参数"></a>内核安全参数</h3><p><code>kernel.randomize_va_space</code> 控制地址空间布局随机化（ASLR）的级别：</p>
+<ul>
+<li>0 ： 关闭 ASLR</li>
+<li>1 :  部分随机数（栈、共享库、堆）</li>
+<li>2 ： 完全随机化（栈、共享库、堆、内存映射）</li>
+</ul>
+]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
