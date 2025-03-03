@@ -2342,11 +2342,17 @@
   </entry>
   <entry>
     <title>Linux Kernel Security Summary</title>
-    <url>/2024/12/23/Linux-Kernel-Security-Summary/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
-]]></content>
+    <url>/2025/02/28/Linux-Kernel-Security-Summary/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>内核安全是系统安全体系中的核心，但系统管理者和内核开发者在刚开始追求性能和功能的时候，却往往会牺牲安全性。但随着 Linux 应用在更广泛和更复杂的系统中，对增强其安全机制的呼声也越来越强烈，也越来越重要。本文根据相关资料就内核安全的诸多方面做一些总结。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0</p>
+</blockquote>
+<h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
         <category>Linux Kernel</category>
       </categories>
   </entry>
@@ -5280,7 +5286,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
 <h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
       <categories>
-        <category>GNU/Linux 操作系统</category>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
