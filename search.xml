@@ -2347,7 +2347,7 @@
 <span id="more"></span>
 
 <blockquote>
-<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0</p>
+<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0<br>参考 <a href="https://blog.csdn.net/shizheng_Li/article/details/145945741">深入剖析Linux sudo的实现原理</a></p>
 </blockquote>
 <h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
 <p>计算机系统应对安全的办法大致有四种：隔离、控制、混淆和监视。—— 《剖析》</p>
@@ -2355,10 +2355,45 @@
 <h2 id="自主访问控制"><a href="#自主访问控制" class="headerlink" title="自主访问控制"></a>自主访问控制</h2><p>自主访问控制是指<strong>由用户决定</strong>制定访问<strong>策略</strong>。</p>
 <p>Unix 的自主访问控制：进程操作文件（<code>r</code>,<code>w</code>, <code>x</code>），<code>root</code> 用户的进程几乎可以做任何事情。</p>
 <p>Linux 的自动访问控制：增加了 <code>ACL (Access Control List)</code>，规定某一个用户或者某一个组的操作许可；而是对特权操作细化，就是 <code>Capabilities</code> ，将属于 <code>root</code> 用户的特权细化为互不相关的几十个能力。</p>
-<h3 id="凭证-Credentials"><a href="#凭证-Credentials" class="headerlink" title="凭证 (Credentials)"></a>凭证 (Credentials)</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	/* Process credentials: */</span><br><span class="line"></span><br><span class="line">	/* Tracer&#x27;s credentials at attach: */</span><br><span class="line">	const struct cred __rcu		*ptracer_cred;</span><br><span class="line"></span><br><span class="line">	/* Objective and real subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*real_cred;</span><br><span class="line"></span><br><span class="line">	/* Effective (overridable) subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*cred;</span><br><span class="line"></span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="凭证-Credentials"><a href="#凭证-Credentials" class="headerlink" title="凭证 (Credentials)"></a>凭证 (Credentials)</h3><p><code>主体（Subjective）</code>凭证和<code>客体（Objective）</code>凭证：进程可以是主体，也可以是客体。</p>
+<blockquote>
+<p>在大多数情况下，主体凭证和客体凭证的值都是相同的，但在某些情况下内核代码会修改当前进程的主体凭证，以获得某种访问权限，待执行完任务后再将主体凭证改回原值。 ——《剖析》</p>
+</blockquote>
+<p>进程 TCB 结构体中和凭证相关的成员：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">  ...</span><br><span class="line">	/* Process credentials: */</span><br><span class="line">	</span><br><span class="line">	const struct cred __rcu		*ptracer_cred;    /* Tracer&#x27;s credentials at attach: */</span><br><span class="line">	const struct cred __rcu		*real_cred;       /* Objective and real subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*cred;            /* Effective (overridable) subjective task credentials (COW): */</span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p><code>struct cred</code> 结构体中包含 <code>ID</code>(gid 和 uid)、<code>能力集</code>、<code>密钥环（keyring）</code>及<code>强制访问控制</code>相关的成员。</p>
+<p>可以读取 <code>/proc/[pid]/status</code> 查看进程凭证。</p>
+<h4 id="关于-uid、euid、suid-和-fuid"><a href="#关于-uid、euid、suid-和-fuid" class="headerlink" title="关于 uid、euid、suid 和 fuid"></a>关于 uid、euid、suid 和 fuid</h4><p><code>euid</code> 和提升权限有关。</p>
+<p>初始时，<code>suid</code> 为 0，当需要提升进程权限时，<code>suid</code> 和 <code>euid</code> 做交换，此时进程拥有特权；执行完特权操作，再将两者做一次交换，进程就失去特权。</p>
+<p><code>gid</code> 和 <code>uid</code> 类似，但 <code>group id</code> 与特权无关，<code>egid</code> 或者别的 <code>gid</code> 为 0，进程不会因此获得特权。</p>
+<p>（内核在判断是否赋予特权时，依据的是 <code>capabilities</code>，不是 <code>uid</code>）。</p>
+<h4 id="相关系统调用"><a href="#相关系统调用" class="headerlink" title="相关系统调用"></a>相关系统调用</h4><p><code>setuid</code> 和 <code>seteuid</code>，调用这些系统调用本身也需要特权。</p>
+<h4 id="sudo-命令的实现原理"><a href="#sudo-命令的实现原理" class="headerlink" title="sudo 命令的实现原理"></a>sudo 命令的实现原理</h4><p>a. 利用 <code>euid</code> 进行临时权限提升</p>
+<p>b. <code>setuid</code>机制</p>
+<p><code>sudo</code>本身是一个二进制可执行文件（通常位于&#x2F;usr&#x2F;bin&#x2F;sudo），它被设置了<code>setuid</code>位。通过<code>ls -l</code>查看，可以看到：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rwsr-xr-x 1 root root  sudo</span><br></pre></td></tr></table></figure>
 
-<h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
+<p>这里的<code>s</code>表示<code>setuid</code>位。当普通用户运行<code>sudo</code>时，进程的<code>EUID</code>会自动变为文件拥有者的<code>UID</code>（即<code>root</code>，UID&#x3D;0），从而具备<code>root</code>权限。</p>
+<p>c. 配置文件解析</p>
+<p><code>sudo</code>启动后，首先以<code>root</code>权限运行，然后解析<code>/etc/sudoers</code>文件，检查调用者的权限。它使用严格的语法解析器，确保规则匹配。</p>
+<p>d. 安全检查</p>
+<p>在执行命令前，<code>sudo</code>会进行多项安全检查，例如验证用户密码、检查命令是否在允许范围内等。这些检查防止了未授权的操作。</p>
+<p>e. 执行目标命令<br><code>sudo</code>通过<code>fork</code>创建一个子进程，并在子进程中调用<code>setuid</code>或<code>seteuid</code>将<code>EUID</code>切换为目标用户ID（通常是<code>root</code>）。然后，它使用<code>execvp</code>或类似函数执行用户指定的命令。</p>
+<h3 id="客体标记和文件属性"><a href="#客体标记和文件属性" class="headerlink" title="客体标记和文件属性"></a>客体标记和文件属性</h3><p>在 <code>struct inode</code> 结构体中保存了文件属性，这些属性包括<code>允许位</code>、<code>属主和属组</code>、<code>ACL相关</code>、<code>强制访问控制</code>等。</p>
+<p>相关的系统调用：<code>chown</code>(需要特权) 、<code>fchown</code>。</p>
+<p>查看：<code>stat</code>、<code>fstat</code> 和 <code>lstat</code> 。</p>
+<p>其他客体：<code>目录</code>（一种特殊的文件）、<code>管道</code>、<code>设备</code>、<code>socket</code>、<code>IPC</code>、<code>Key（密钥）</code>。</p>
+<p>针对 <code>IPC</code> 和 <code>密钥</code>有专门的系统调用查看和修改属性。</p>
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>主体凭证和客体标记都设置好后，就可以通过系统调用完成主体对客体的操作，更重要的是，内核需要在系统调用中判断相应的操作许可，进而实现访问控制。</p>
+<p>操作：<code>读</code>、<code>写</code>、<code>执行</code> 和部分客体特有的操作。</p>
+<h4 id="允许位"><a href="#允许位" class="headerlink" title="允许位"></a>允许位</h4><p>普通文件使用 9 个bit 的允许位。</p>
+<h4 id="设置位"><a href="#设置位" class="headerlink" title="设置位"></a>设置位</h4><p>Unix 在 9 个允许位的基础上增加了允许位 <code>setuid</code>、<code>setgid</code>、<code>set-other-bit or sticky bit</code>，这三个允许位可操作许无关。</p>
+<p><code>setuid</code>的机制 ： 进程调用 <code>execve</code> 执行了允许位 <code>setuid</code> 为 1 的文件后，进程的 <code>euid</code>，还有 Linux 特有的 <code>fsuid</code>，被改变为所执行文件的属主 id，于是，进程可以操作一些之前不能操作的客体。比如 <code>/usr/bin/sudo</code> 文件。</p>
+<p><code>setgid</code>的机制 ： 与 <code>setuid</code> 类似。</p>
+<p><code>sticky bit</code>的机制 ：在 Linux 中不再使用。</p>
+<h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>chmod</code> 和 <code>fchmod</code> 可以修改文件和目录上的允许位。</p>
+<h3 id="ACL（访问控制列表）"><a href="#ACL（访问控制列表）" class="headerlink" title="ACL（访问控制列表）"></a>ACL（访问控制列表）</h3><h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>信息安全</category>
