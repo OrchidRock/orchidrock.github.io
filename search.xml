@@ -2186,19 +2186,19 @@
   <entry>
     <title>Linux Kernel Introduction</title>
     <url>/2023/03/08/Linux-Kernel-Introduction/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://www.kernel.org/">Linux kernel</a> 是开源的<code>单内核</code>(Monolithic Kernel)、<code>模块化</code>和<code>多任务</code>的<code>类Unix</code>操作系统。</p>
-<p>&emsp;&emsp;在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://www.kernel.org/">Linux kernel</a> 是开源的<code>单内核</code>(Monolithic Kernel)、<code>模块化</code>和<code>多任务</code>的<code>类Unix</code>操作系统。</p>
+<p>在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。</p>
 <span id="more"></span>
 
 <blockquote>
 <p>参考 <a href="https://encyclopedia.thefreedictionary.com/linux+kernel">Linux Kernel - wikipedia</a><br>参考《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 <a href="https://0xax.gitbooks.io/linux-insides/content/">linux-insides</a> - By <strong>0xax</strong> | <a href="https://www.bookstack.cn/read/linux-insides-zh/README.md">Linux内核揭秘-中文版</a>。<br>参考 <a href="https://linux-kernel-labs.github.io/">kernel teaching</a></p>
 </blockquote>
-<h2 id="Unix-渊源"><a href="#Unix-渊源" class="headerlink" title="Unix 渊源"></a>Unix 渊源</h2><p>&emsp;&emsp; Unix 系统最初在 1969 年诞生于贝尔实验室。Unix 衍生出了很多变种，例如 <code>OpenBSD</code>等，它的很多设计理念也深刻影响了 GNU&#x2F;Linux（<em>准确来说，主要影响的是内核上层的应用程序和环境</em>） 。更重要的是，<code>Unix</code>有着开放源码和同僚复审的传统，这种理念产生的优势被 Linux 充分的发挥和利用。关于这个主题，可以阅读经典的《The Art of UNIX Programming》 (在 <a href="http://1.117.83.246/index.php/archives/187/">Unix编程艺术笔记</a> 中有一些摘要总结)。</p>
-<p>&emsp;&emsp;Linux 的成长伴随着互联网的崛起，这就使得它与 <code>Unix</code> 在开发模式上有些不同。Linux 几乎是通过来源于”网络部落“的一些“松散”的开发者贡献给世界的，但它现在已经变得十分强大。《大教堂与集市》一书中有详细和精彩的描述。</p>
+<h2 id="Unix-渊源"><a href="#Unix-渊源" class="headerlink" title="Unix 渊源"></a>Unix 渊源</h2><p>Unix 系统最初在 1969 年诞生于贝尔实验室。Unix 衍生出了很多变种，例如 <code>OpenBSD</code>等，它的很多设计理念也深刻影响了 GNU&#x2F;Linux（<em>准确来说，主要影响的是内核上层的应用程序和环境</em>） 。更重要的是，<code>Unix</code>有着开放源码和同僚复审的传统，这种理念产生的优势被 Linux 充分的发挥和利用。关于这个主题，可以阅读经典的《The Art of UNIX Programming》 (在 <a href="http://1.117.83.246/index.php/archives/187/">Unix编程艺术笔记</a> 中有一些摘要总结)。</p>
+<p>Linux 的成长伴随着互联网的崛起，这就使得它与 <code>Unix</code> 在开发模式上有些不同。Linux 几乎是通过来源于”网络部落“的一些“松散”的开发者贡献给世界的，但它现在已经变得十分强大。《大教堂与集市》一书中有详细和精彩的描述。</p>
 <blockquote>
 <p>乐趣是一个符号，意味着效能、效率和高产。 —— TAOUP</p>
 </blockquote>
-<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="内核-用户-API"><a href="#内核-用户-API" class="headerlink" title="内核-用户 API"></a>内核-用户 API</h3><h3 id="内核-用户-ABI"><a href="#内核-用户-ABI" class="headerlink" title="内核-用户 ABI"></a>内核-用户 ABI</h3><p>&emsp;&emsp;当前针对在不同的 <code>GNU/Linux</code>系统间保持应用和二进制兼容的标准是 <strong>LSB(Linux Standard Base)<strong>。LSB 中和内核相关的标准包括：</strong>General ABI</strong>、<strong>System V ABI</strong>、<strong>ELF</strong>和<strong>Processor Specific ABI</strong>。其中，和处理器相关的 ABI 定义了在函数调用时如何传递系统调用号及其他参数（例如，使用寄存器还是栈，以及使用哪些寄存器）。</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="内核-用户-API"><a href="#内核-用户-API" class="headerlink" title="内核-用户 API"></a>内核-用户 API</h3><h3 id="内核-用户-ABI"><a href="#内核-用户-ABI" class="headerlink" title="内核-用户 ABI"></a>内核-用户 ABI</h3><p>当前针对在不同的 <code>GNU/Linux</code>系统间保持应用和二进制兼容的标准是 <strong>LSB(Linux Standard Base)<strong>。LSB 中和内核相关的标准包括：</strong>General ABI</strong>、<strong>System V ABI</strong>、<strong>ELF</strong>和<strong>Processor Specific ABI</strong>。其中，和处理器相关的 ABI 定义了在函数调用时如何传递系统调用号及其他参数（例如，使用寄存器还是栈，以及使用哪些寄存器）。</p>
 <h3 id="系统调用规范"><a href="#系统调用规范" class="headerlink" title="系统调用规范"></a>系统调用规范</h3><p>系统调用和用户空间中的函数调用存在一些不同点，以<code>x86_64</code>架构为例：</p>
 <ol>
 <li>进程内核栈除了需要保存内核空间过程调用外，还需要保存用户空间栈的数据和返回地址，以便 在返回用户空间继续执行。</li>
@@ -2213,19 +2213,20 @@
 <img src="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp" width="70%">
 
 
-<h2 id="内核的整体结构"><a href="#内核的整体结构" class="headerlink" title="内核的整体结构"></a>内核的整体结构</h2><p>&emsp;&emsp; 用一句话来总结内核的角色：<code>内核是最懒的资源管理者</code>。这里的资源可以分为三大类：<code>CPU</code>、<code>内存</code>和 <code>I/O</code>。内核通过抽象这些资源形成<code>进程</code>、<code>线程</code>、<code>文件</code>和<code>虚拟内存</code>等概念。抽象是对抗复杂性的很有效的手段之一。换句话说，内核也可以看作用户进程执行的<code>环境</code>。</p>
-<p>&emsp;&emsp; 内核的<code>懒</code>是它的特点也是对它的要求，特别是对于支持多任务并发的内核来说。除非被唤醒，它应该什么都不做；即使被唤醒，也应该做的尽量少、尽量快，然后继续”睡觉“。这种特性与整个系统并发的效率紧密相关。</p>
-<h3 id="进程-内核模式"><a href="#进程-内核模式" class="headerlink" title="进程&#x2F;内核模式"></a>进程&#x2F;内核模式</h3><p>&emsp;&emsp;将内核唤醒的方式几乎都是事件驱动的，这些事件简单来说分为<code>中断</code>和<code>异常</code>，<code>中断</code>又可以大致分为<code>硬中断</code>和<code>软中断</code>。<code>POSIX</code>定义了系统调用接口 API，系统调用也可以认为是软中断的一种，支持从用户程序唤醒内核，但标准并没有限制内核如何设计。</p>
-<p>&emsp;&emsp;类Unix内核区分<code>内核态</code>和<code>用户态</code>。用户进程几乎不与硬件资源直接交互，而是使用系统调用进入内核态请求资源。</p>
+<h2 id="内核的整体结构"><a href="#内核的整体结构" class="headerlink" title="内核的整体结构"></a>内核的整体结构</h2><p>用一句话来总结内核的角色：<code>内核是最懒的资源管理者</code>。这里的资源可以分为三大类：<code>CPU</code>、<code>内存</code>和 <code>I/O</code>。内核通过抽象这些资源形成<code>进程</code>、<code>线程</code>、<code>文件</code>和<code>虚拟内存</code>等概念。抽象是对抗复杂性的很有效的手段之一。换句话说，内核也可以看作用户进程执行的<code>环境</code>。</p>
+<p>内核的<code>懒</code>是它的特点也是对它的要求，特别是对于支持多任务并发的内核来说。除非被唤醒，它应该什么都不做；即使被唤醒，也应该做的尽量少、尽量快，然后继续”睡觉“。这种特性与整个系统并发的效率紧密相关。</p>
+<h3 id="进程-内核模式"><a href="#进程-内核模式" class="headerlink" title="进程&#x2F;内核模式"></a>进程&#x2F;内核模式</h3><p>将内核唤醒的方式几乎都是事件驱动的，这些事件简单来说分为<code>中断</code>和<code>异常</code>，<code>中断</code>又可以大致分为<code>硬中断</code>和<code>软中断</code>。<code>POSIX</code>定义了系统调用接口 API，系统调用也可以认为是软中断的一种，支持从用户程序唤醒内核，但标准并没有限制内核如何设计。</p>
+<p>类Unix内核区分<code>内核态</code>和<code>用户态</code>。用户进程几乎不与硬件资源直接交互，而是使用系统调用进入内核态请求资源。</p>
 <h3 id="单内核-Monolithic-kernel-与微内核-Microkernel"><a href="#单内核-Monolithic-kernel-与微内核-Microkernel" class="headerlink" title="单内核(Monolithic kernel)与微内核(Microkernel)"></a>单内核(Monolithic kernel)与微内核(Microkernel)</h3><p>可以用下面一张图来描述二者的不同:</p>
 <img src="https://img2.tfd.com/pp/wikiimg.ashx?p=commons%2fthumb%2f6%2f67%2fOS-structure.svg%2f750px-OS-structure.svg.png" width=80%>
 
 <p>很容易看出，微内核更简单、更模块化，但模块间的通信交互开销会更高。另外，微内核的 RAM利用效率会更高，因为不被调用的系统进程可以被<code>换出</code>。Linux 为了既吸收微内核的优势又不影响性能，提供了<code>模块（Module）</code>。模块是一个目标文件，可以在运行时链接到内核或者从内核解除链接。<strong>模块不是作为一个特殊的进程来执行，它代表当前进程在内核态下执行。</strong></p>
-<h3 id="可重入内核"><a href="#可重入内核" class="headerlink" title="可重入内核"></a>可重入内核</h3><p>&emsp;&emsp; 可重入内核也必须是可抢占内核。也就是说，即使当前 CPU 处于内核态，也仍然可以被抢占，这使得内核具有很高的<code>实时性</code>。可重入内核必须引入同步机制来访问共享数据结构。大多数传统的 Unix 内核都是非抢占内核，但 Linux 是可抢占内核，特别在 SMP 系统上，可抢占内核可以获得更好的并行性能。</p>
-<p>&emsp;&emsp;同步机制可以包括<code>禁止中断</code>、<code>信号量</code>、<code>自旋锁（针对SMP系统）</code>。</p>
+<h3 id="可重入内核"><a href="#可重入内核" class="headerlink" title="可重入内核"></a>可重入内核</h3><p>可重入内核也必须是可抢占内核。也就是说，即使当前 CPU 处于内核态，也仍然可以被抢占，这使得内核具有很高的<code>实时性</code>。可重入内核必须引入同步机制来访问共享数据结构。大多数传统的 Unix 内核都是非抢占内核，但 Linux 是可抢占内核，特别在 SMP 系统上，可抢占内核可以获得更好的并行性能。</p>
+<p>同步机制可以包括<code>禁止中断</code>、<code>信号量</code>、<code>自旋锁（针对SMP系统）</code>。</p>
 <h3 id="子系统"><a href="#子系统" class="headerlink" title="子系统"></a>子系统</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_subsystem.png"></p>
-<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>&emsp;&emsp; 我们说内核是最懒的资源管理者，从内核的角度看，进程的目的就是担当分配系统资源（CPU时间、内存）的实体。</p>
-<h3 id="进程描述符"><a href="#进程描述符" class="headerlink" title="进程描述符"></a>进程描述符</h3><p>&emsp;&emsp; 进程的核心数据结构是<code>进程描述符（Process Descriptor, PCB）</code>，它的子段包含了与一个进程相关的所有信息。PCB 是相当复杂的，它不仅包含了很多进程属性的子段，而且包括了指向其他数据结构的指针。其大致结构如下（具体定义位于头文件<code>include/linux/sched.h:624</code>中，以 5.4 版本为例）：</p>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>我们说内核是最懒的资源管理者，从内核的角度看，进程的目的就是担当分配系统资源（CPU时间、内存）的实体。</p>
+<p>Linux 2.6 以后版本中的线程采用<code>NPTL</code>（Native POSIX Thread Library，本地POSIX 线程库）模型，操作速度得以极大提高，相比于Linux 2.4 内核时代的<code>LinuxThreads</code>模型，它也更加遵循<code>POSIX</code>规范的要求。</p>
+<h3 id="进程描述符"><a href="#进程描述符" class="headerlink" title="进程描述符"></a>进程描述符</h3><p>进程的核心数据结构是<code>进程描述符（Process Descriptor, PCB）</code>，它的子段包含了与一个进程相关的所有信息。PCB 是相当复杂的，它不仅包含了很多进程属性的子段，而且包括了指向其他数据结构的指针。其大致结构如下（具体定义位于头文件<code>include/linux/sched.h:624</code>中，以 5.4 版本为例）：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">long</span> state;               <span class="comment">// 进程状态</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_THREAD_INFO_IN_TASK</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span>  <span class="title">thread_info</span>;</span>   <span class="comment">// 进程基本信息</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="type">void</span>  *<span class="built_in">stack</span>;                      <span class="comment">// 指向内核栈</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> <span class="title">mm</span>;</span>               <span class="comment">// 指向进程内存空间描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">real_parent</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">parent</span>;</span>  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">children</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">sibling</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fs_struct</span> * <span class="title">fs</span>              // 文件系统（当前目录）</span></span><br><span class="line"><span class="class">    <span class="keyword">struct</span> <span class="title">files_struct</span> *<span class="title">files</span>;</span>        <span class="comment">// 指向打开文件的描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">signal_struct</span> *<span class="title">signal</span>;</span>      <span class="comment">// 所接收信号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">tasks</span>;</span>            <span class="comment">// 进程链表</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><p>状态转换图：</p>
@@ -2272,8 +2273,9 @@
 <h3 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h3><p>进程切换任务主要由 <code>siwtch_to</code>宏完成，它定义在<code>include/asm-generic/switch-to.h</code>中：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *__<span class="title">switch_to</span>(<span class="keyword">struct</span> <span class="title">task_struct</span> *,</span></span><br><span class="line"><span class="class">				       <span class="keyword">struct</span> <span class="title">task_struct</span> *);</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> switch_to(prev, next, last)					\</span></span><br><span class="line"><span class="meta">	do &#123;								\</span></span><br><span class="line"><span class="meta">		((last) = __switch_to((prev), (next)));			\</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br></pre></td></tr></table></figure>
 
-<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>&emsp;&emsp; Linux 在32位系统使用传统的二级页表，在64位系统使用三级或四级页表。<code>分页</code>是内核与硬件共同协作完成的功能。概括来说，每个进程在自己的地址空间中都有属于自己的多级页表，并且在进程描述符中包含第一级页表的指针。该指针使用时会被写入一个特定的控制寄存器（在 <code>80x86</code>中为<code>cr3</code>控制寄存器）。在进程切换时，控制寄存器的值会被保存到前一个进程的进程描述符中，随后的地址翻译几乎全由硬件完成（<code>MMU</code>）。相关头文件：<code>arch/&lt;ARCH&gt;/include/asm/&#123;page.h, pgtable.h&#125;</code>等。</p>
-<p>&emsp;&emsp;页表的每一项是一个无符号整数，其中包含标志位和（<strong>页或者下一级页表的</strong>）物理地址的高位。对于<code>4k</code>大小的页，页物理地址的低12位为0，所以正好可以放置标志位。重要的几个标志位如下：</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p>从虚拟内存的角度来看，2.6 之后的内核融合了<code>r-map（反向映射）</code>技术，显著改善虚拟内存在一定大小负载下的性能。</p>
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>Linux 在32位系统使用传统的二级页表，在64位系统使用三级或四级页表。<code>分页</code>是内核与硬件共同协作完成的功能。概括来说，每个进程在自己的地址空间中都有属于自己的多级页表，并且在进程描述符中包含第一级页表的指针。该指针使用时会被写入一个特定的控制寄存器（在 <code>80x86</code>中为<code>cr3</code>控制寄存器）。在进程切换时，控制寄存器的值会被保存到前一个进程的进程描述符中，随后的地址翻译几乎全由硬件完成（<code>MMU</code>）。相关头文件：<code>arch/&lt;ARCH&gt;/include/asm/&#123;page.h, pgtable.h&#125;</code>等。</p>
+<p>页表的每一项是一个无符号整数，其中包含标志位和（<strong>页或者下一级页表的</strong>）物理地址的高位。对于<code>4k</code>大小的页，页物理地址的低12位为0，所以正好可以放置标志位。重要的几个标志位如下：</p>
 <table>
 <thead>
 <tr>
@@ -2329,12 +2331,8 @@
 </tr>
 </tbody></table>
 <p><strong>内核页表</strong></p>
-<h3 id="高速缓冲和TLB"><a href="#高速缓冲和TLB" class="headerlink" title="高速缓冲和TLB"></a>高速缓冲和TLB</h3><p>&emsp;&emsp; <code>高速缓存</code>处于内存和寄存器之间，一般使用 SRAM 实现。高速缓存与内存的一致性由 CPU 自动同步；但 <code>TLB</code> 与进程页表的同步需要内核来完成。</p>
-<ul>
-<li>文件系统</li>
-<li>设备驱动</li>
-</ul>
-]]></content>
+<h3 id="高速缓冲和TLB"><a href="#高速缓冲和TLB" class="headerlink" title="高速缓冲和TLB"></a>高速缓冲和TLB</h3><p><code>高速缓存</code>处于内存和寄存器之间，一般使用 SRAM 实现。高速缓存与内存的一致性由 CPU 自动同步；但 <code>TLB</code> 与进程页表的同步需要内核来完成。</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><h2 id="设备驱动"><a href="#设备驱动" class="headerlink" title="设备驱动"></a>设备驱动</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -5292,6 +5290,7 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <li><code>flashrom --programmer=ch341a_spi -c &lt;设备类型&gt; --write &lt;file&gt;</code> 烧录固件</li>
 </ul>
 <h2 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h2><p><code>binwalk</code> :  <code>binwalk -e xxxxx.bin</code></p>
+<h2 id="Flash-操作工具"><a href="#Flash-操作工具" class="headerlink" title="Flash 操作工具"></a>Flash 操作工具</h2><p>安装 <code>mtd-utils</code> 工具</p>
 ]]></content>
       <categories>
         <category>信息安全</category>
@@ -5378,6 +5377,8 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <blockquote>
 <p>参考 <a href="https://zhuanlan.zhihu.com/p/460055814">玩转 Linux 内核-进程调度</a></p>
 </blockquote>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Linux 2.6 以后的内核仍然存在<code>中断</code>、<code>软中断</code>、<code>自旋锁</code>等<code>原子上下文</code>进程无法抢占执行的情况，这是 Linux 内核本身只提供<code>软实时能力</code>的原因。</p>
+<p>如果给 Linux 内核打上 <code>RT-Preempt</code> 补丁，则<code>中断</code>和<code>软中断</code>都被<strong>线程化</strong>了，<code>自旋锁</code>也被<code>互斥体</code>替换，Linux 内核变得能支持<code>硬实时</code>。</p>
 <h2 id="调度算法的常用策略"><a href="#调度算法的常用策略" class="headerlink" title="调度算法的常用策略"></a>调度算法的常用策略</h2><h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><h3 id="基于优先级"><a href="#基于优先级" class="headerlink" title="基于优先级"></a>基于优先级</h3><h3 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h3><h3 id="时间片"><a href="#时间片" class="headerlink" title="时间片"></a>时间片</h3><h2 id="O-N-调度算法"><a href="#O-N-调度算法" class="headerlink" title="O(N) 调度算法"></a>O(N) 调度算法</h2><h2 id="O-1-调度算法"><a href="#O-1-调度算法" class="headerlink" title="O(1) 调度算法"></a>O(1) 调度算法</h2><h2 id="CFS-调度算法"><a href="#CFS-调度算法" class="headerlink" title="CFS 调度算法"></a>CFS 调度算法</h2><blockquote>
 <p>任何进程所获得的处理器时间是由它自己和其他所有可运行进程 nice 值的相对差值决定的。nice 值对时间片的作用不再是算术加权，而是几何加权。任何 nice 值对应的绝对时间不再是一个绝对值，而是处理器的使用比。<br>—— LKD</p>
 </blockquote>
