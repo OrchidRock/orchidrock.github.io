@@ -4374,9 +4374,10 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>Wireless Network Security Analysis</title>
     <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文就无线网络安全协议（如 WEP、WPA&#x2F;WPA2 等）的流程、安全性等做一些总结。</p>
+<span id="more"></span>
 
-<h3 id="STA-与-AP-建立连接的过程"><a href="#STA-与-AP-建立连接的过程" class="headerlink" title="STA 与 AP 建立连接的过程"></a>STA 与 AP 建立连接的过程</h3><p><img src="/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png"></p>
+<h2 id="无线网络"><a href="#无线网络" class="headerlink" title="无线网络"></a>无线网络</h2><h3 id="STA-与-AP-建立连接的过程"><a href="#STA-与-AP-建立连接的过程" class="headerlink" title="STA 与 AP 建立连接的过程"></a>STA 与 AP 建立连接的过程</h3><p><img src="/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png"></p>
 <h2 id="无线局域网的安全问题"><a href="#无线局域网的安全问题" class="headerlink" title="无线局域网的安全问题"></a>无线局域网的安全问题</h2><ul>
 <li>信道干扰。攻击层次位于物理层，WLAN 的频段是公开的，因此 Attacker 很容易通过发射同频段的噪声信号实现信道干扰。</li>
 <li>窃听和嗅探。</li>
