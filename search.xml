@@ -2347,7 +2347,7 @@
 <span id="more"></span>
 
 <blockquote>
-<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0<br>参考 <a href="https://blog.csdn.net/shizheng_Li/article/details/145945741">深入剖析Linux sudo的实现原理</a></p>
+<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0<br>参考 <a href="https://blog.csdn.net/shizheng_Li/article/details/145945741">深入剖析Linux sudo的实现原理</a><br>参考 <a href="https://blog.csdn.net/xiao_yi_xiao/article/details/117735278">Linux ACL访问控制权限</a></p>
 </blockquote>
 <h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
 <p>计算机系统应对安全的办法大致有四种：隔离、控制、混淆和监视。—— 《剖析》</p>
@@ -2388,12 +2388,81 @@
 <h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>主体凭证和客体标记都设置好后，就可以通过系统调用完成主体对客体的操作，更重要的是，内核需要在系统调用中判断相应的操作许可，进而实现访问控制。</p>
 <p>操作：<code>读</code>、<code>写</code>、<code>执行</code> 和部分客体特有的操作。</p>
 <h4 id="允许位"><a href="#允许位" class="headerlink" title="允许位"></a>允许位</h4><p>普通文件使用 9 个bit 的允许位。</p>
-<h4 id="设置位"><a href="#设置位" class="headerlink" title="设置位"></a>设置位</h4><p>Unix 在 9 个允许位的基础上增加了允许位 <code>setuid</code>、<code>setgid</code>、<code>set-other-bit or sticky bit</code>，这三个允许位可操作许无关。</p>
+<h4 id="设置位"><a href="#设置位" class="headerlink" title="设置位"></a>设置位</h4><p>Unix 在 9 个允许位的基础上增加了允许位 <code>setuid</code>、<code>setgid</code>、<code>set-other-bit or sticky bit</code>，这三个允许位与操作许无关。</p>
 <p><code>setuid</code>的机制 ： 进程调用 <code>execve</code> 执行了允许位 <code>setuid</code> 为 1 的文件后，进程的 <code>euid</code>，还有 Linux 特有的 <code>fsuid</code>，被改变为所执行文件的属主 id，于是，进程可以操作一些之前不能操作的客体。比如 <code>/usr/bin/sudo</code> 文件。</p>
 <p><code>setgid</code>的机制 ： 与 <code>setuid</code> 类似。</p>
 <p><code>sticky bit</code>的机制 ：在 Linux 中不再使用。</p>
 <h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>chmod</code> 和 <code>fchmod</code> 可以修改文件和目录上的允许位。</p>
-<h3 id="ACL（访问控制列表）"><a href="#ACL（访问控制列表）" class="headerlink" title="ACL（访问控制列表）"></a>ACL（访问控制列表）</h3><h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
+<h3 id="ACL（访问控制列表）"><a href="#ACL（访问控制列表）" class="headerlink" title="ACL（访问控制列表）"></a>ACL（访问控制列表）</h3><p><code>ACL</code> 只作用于文件和目录。在普通权限中，用户对文件只有三种身份，就是属主、属组和其他；但在实际场景中，这三种身份是不够的，Linux 使用 ACL 对此进行了扩展，来实现更细粒度的访问控制。</p>
+<p>在很多 Linux 系统上，<code>ACL</code> 权限默认是开启的，可以通过查看根分区文件系统信息进行确认：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> dumpe2fs -h /dev/sdx</span></span><br><span class="line">...</span><br><span class="line">Filesystem flags:         unsigned_directory_hash</span><br><span class="line">Default mount options:    user_xattr acl</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>在 <code>Default mount options</code> 中可以看到是否开启 <code>ACL</code> 权限。</p>
+<h4 id="扩展属性"><a href="#扩展属性" class="headerlink" title="扩展属性"></a>扩展属性</h4><p>在 <code>inode</code> 结构体中有指向和 <code>ACL</code> 相关的扩展属性<code>i_acl</code> 及 <code>i_default_acl</code> 的指针。</p>
+<p>这两个属性的类型是 <code>struct posix_acl</code>，它是一个变长数组。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span> &#123;</span></span><br><span class="line">	<span class="type">short</span>			e_tag;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">short</span>		e_perm;</span><br><span class="line">	<span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">		<span class="type">kuid_t</span>		e_uid;</span><br><span class="line">		<span class="type">kgid_t</span>		e_gid;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl</span> &#123;</span></span><br><span class="line">	<span class="type">refcount_t</span>		a_refcount;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">rcu_head</span>		<span class="title">a_rcu</span>;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		a_count;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span>	<span class="title">a_entries</span>[0];</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>struct posix_acl_entry</code> 可以记录一个用户或者一个组的操作许可，也就实现了细粒度访问控制。</p>
+<h4 id="系统调用-1"><a href="#系统调用-1" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>setxattr</code> 、 <code>getxattr</code>、<code>removexattr</code> 等</p>
+<h4 id="权限设置指导"><a href="#权限设置指导" class="headerlink" title="权限设置指导"></a>权限设置指导</h4><p>a.  查看 <code>ACL</code> 权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl &lt;file&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>b.  设置 <code>ACL</code> 权限到特定用户</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chown</span> root:my_group tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 700 tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> useradd test_user</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m u:test_user:rx tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+
+<p>c.  设置 <code>ACL</code> 权限到特定用户组</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> groupadd test_group</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m g:test_group:rwx tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">group:test_group:rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+
+<p>d. 删除 <code>ACL</code> 权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x u:test_user tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x g:test_group tmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除所有权限</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> serfacl -b tmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Capabilities（能力）"><a href="#Capabilities（能力）" class="headerlink" title="Capabilities（能力）"></a>Capabilities（能力）</h3><p><strong>特权机制</strong>：一些操作无法纳入允许位控制，如重启系统或者设置系统时间；另外一类是超越允许位控制。</p>
+<blockquote>
+<p>如果没有设计特权机制，为了解决设置系统时间这类任务，必须要引入新的客体类型，或者引入一种新的文件类型（如 SELinux）。 —— 《剖析》</p>
+</blockquote>
+<p>Linux 参考 <code>IEEE 1003.1e</code> 和 <code>IEEE 1003.2c</code> 实现了自己的能力机制。</p>
+<h4 id="能力分类"><a href="#能力分类" class="headerlink" title="能力分类"></a>能力分类</h4><ul>
+<li>文件：如 <code>chown</code>、<code>dac_override</code>、<code>fowner</code> 等。</li>
+<li>进程：如 <code>kill</code>、<code>setuid</code> 和 <code>setgid</code>及 <code>setpcap</code> 、<code>sys_chroot</code> 、<code>sys_nice</code> 等。</li>
+<li>网络：如 <code>net_bind_service</code>（绑定系统特权端口）、<code>net_admin</code> 和 <code>net_raw</code> 等。</li>
+<li>ipc: 如 <code>ipc_lock</code>(不受 rlimit 锁定内存限制)</li>
+<li>系统：如 <code>block_suspend</code>、<code>sys_admin</code>、<code>sys_boot</code>、<code>sys_module</code>、<code>sys_time</code>、<code>sys_resource</code> 和 <code>wake_alarm</code> 等。</li>
+<li>设备：如 <code>mknod</code></li>
+<li>审计：如 <code>audit_write</code> 和 <code>audit_control</code></li>
+<li>强制访问控制（MAC）</li>
+</ul>
+<h4 id="能力集合"><a href="#能力集合" class="headerlink" title="能力集合"></a>能力集合</h4><p><code>struct cred</code> 结构体中可以看到多个能力集：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cred</span> &#123;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_inheritable; <span class="comment">/* caps our children can inherit */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_permitted;	<span class="comment">/* caps we&#x27;re permitted */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_effective;	<span class="comment">/* caps we can actually use */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_bset;	<span class="comment">/* capability bounding set */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_ambient;	<span class="comment">/* Ambient capability set */</span></span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Ambient</code> 和 <code>Inheritable</code> 集合的意义就在于可以帮助我们在进程树或 <code>namespace</code> 的范围内创建一个允许任意进程使用某些 <code>capabilities</code> 的环境。</p>
+<h4 id="能力机制"><a href="#能力机制" class="headerlink" title="能力机制"></a>能力机制</h4><blockquote>
+<p>Linux 内核在做特权判断时，判断的是进程凭证中的有效能力集中是否具备所要求的能力。—— 《剖析》</p>
+</blockquote>
+<blockquote>
+<p>进程在execve 后的允许能力集有两个来源，一个是进程的可继承能力集和文件的可继承能力集的交集，另一个是文件的允许能力集和进程的限制能力集的交集。—— 《剖析》</p>
+</blockquote>
+<p><code>capget</code> 和 <code>capset</code> 系统调用。</p>
+<h4 id="向后兼容"><a href="#向后兼容" class="headerlink" title="向后兼容"></a>向后兼容</h4><blockquote>
+<p>Linux 内核判断进程是否进行特权操作的唯一标准就是相关的能力是否在进程的有效能力集中。Linux 内核中没有任何依据用户 id 进行授权的逻辑。</p>
+</blockquote>
+<blockquote>
+<p>为了做到向后兼容，内核在涉及用户id 变化的系统调用中（setuid、seteuid、setreuid、setresuid、setfsuid）增加了调整进程的能力集的逻辑。</p>
+</blockquote>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>通过查看 <code>/proc/self/status</code> 中的 <code>CapEff</code> 项获取当前进程的有效能力集：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status| grep Cap</span></span><br><span class="line">CapInh: 0000000000000000</span><br><span class="line">CapPrm: 0000000000000000</span><br><span class="line">CapEff: 0000000000000000</span><br><span class="line">CapBnd: 000001ffffffffff</span><br><span class="line">CapAmb: 0000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>capsh</code> 解析16进制数中每个 1 bit所对应的能力：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> capsh --decode=000001ffffffffff</span></span><br><span class="line">0x000001ffffffffff=cap_chown,cap_dac_override,cap_dac_read_search ...</span><br></pre></td></tr></table></figure>
+
+<p><code>ping</code> 命令没有使用<code>能力</code>，而是使用了 <code>setuid</code> 允许位来做特权提升。可以自行编译 ping 来使用<code>能力</code>：</p>
+<p>新编译的 <code>ping</code> 并没有设置 <code>suid</code>:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ls</span> -l builddir/ping/ping</span></span><br><span class="line">-rwxr-xr-x 1 mimose mimose 311960  3月 4日 12:30 builddir/ping/ping</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">setcap</span> <span class="string">&#x27;cap_net_raw+p&#x27;</span> builddir/ping/ping</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">getcap</span> builddir/ping/ping</span></span><br><span class="line">builddir/ping/ping cap_net_raw=p</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考 <a href="https://blog.csdn.net/demon7552003/article/details/117161829">Linux Capabilities 入门教程</a></p>
+</blockquote>
+<h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>信息安全</category>
