@@ -2349,7 +2349,16 @@
 <blockquote>
 <p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0</p>
 </blockquote>
-<h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
+<p>计算机系统应对安全的办法大致有四种：隔离、控制、混淆和监视。—— 《剖析》</p>
+</blockquote>
+<h2 id="自主访问控制"><a href="#自主访问控制" class="headerlink" title="自主访问控制"></a>自主访问控制</h2><p>自主访问控制是指<strong>由用户决定</strong>制定访问<strong>策略</strong>。</p>
+<p>Unix 的自主访问控制：进程操作文件（<code>r</code>,<code>w</code>, <code>x</code>），<code>root</code> 用户的进程几乎可以做任何事情。</p>
+<p>Linux 的自动访问控制：增加了 <code>ACL (Access Control List)</code>，规定某一个用户或者某一个组的操作许可；而是对特权操作细化，就是 <code>Capabilities</code> ，将属于 <code>root</code> 用户的特权细化为互不相关的几十个能力。</p>
+<h3 id="凭证-Credentials"><a href="#凭证-Credentials" class="headerlink" title="凭证 (Credentials)"></a>凭证 (Credentials)</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	/* Process credentials: */</span><br><span class="line"></span><br><span class="line">	/* Tracer&#x27;s credentials at attach: */</span><br><span class="line">	const struct cred __rcu		*ptracer_cred;</span><br><span class="line"></span><br><span class="line">	/* Objective and real subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*real_cred;</span><br><span class="line"></span><br><span class="line">	/* Effective (overridable) subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*cred;</span><br><span class="line"></span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>信息安全</category>
