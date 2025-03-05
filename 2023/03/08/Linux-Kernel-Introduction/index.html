@@ -35,8 +35,9 @@
 <meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_mm.png">
 <meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_vfs.png">
 <meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_dev.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_char_device.png">
 <meta property="article:published_time" content="2023-03-08T08:36:00.000Z">
-<meta property="article:modified_time" content="2025-03-05T10:29:29.236Z">
+<meta property="article:modified_time" content="2025-03-05T13:46:28.700Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp">
@@ -149,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unix-%E6%B8%8A%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">Unix 渊源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-API"><span class="nav-number">3.1.</span> <span class="nav-text">内核-用户 API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-ABI"><span class="nav-number">3.2.</span> <span class="nav-text">内核-用户 ABI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">3.3.</span> <span class="nav-text">系统调用规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">内核的整体结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">进程&#x2F;内核模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%86%85%E6%A0%B8-Monolithic-kernel-%E4%B8%8E%E5%BE%AE%E5%86%85%E6%A0%B8-Microkernel"><span class="nav-number">4.2.</span> <span class="nav-text">单内核(Monolithic kernel)与微内核(Microkernel)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E5%86%85%E6%A0%B8"><span class="nav-number">4.3.</span> <span class="nav-text">可重入内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.4.</span> <span class="nav-text">子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">进程描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">5.3.</span> <span class="nav-text">进程标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%A0%88"><span class="nav-number">5.4.</span> <span class="nav-text">内核栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84%E7%BB%87"><span class="nav-number">5.5.</span> <span class="nav-text">进程组织</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">5.6.</span> <span class="nav-text">进程切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="nav-number">6.2.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">6.3.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%86%B2%E5%92%8CTLB"><span class="nav-number">6.4.</span> <span class="nav-text">高速缓冲和TLB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">7.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VFS"><span class="nav-number">7.1.</span> <span class="nav-text">VFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">8.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">8.1.</span> <span class="nav-text">体系结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8"><span class="nav-number">9.</span> <span class="nav-text">设备驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#udev"><span class="nav-number">9.1.</span> <span class="nav-text">udev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B"><span class="nav-number">9.2.</span> <span class="nav-text">设备模型</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unix-%E6%B8%8A%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">Unix 渊源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-API"><span class="nav-number">3.1.</span> <span class="nav-text">内核-用户 API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-ABI"><span class="nav-number">3.2.</span> <span class="nav-text">内核-用户 ABI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">3.3.</span> <span class="nav-text">系统调用规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">内核的整体结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">进程&#x2F;内核模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%86%85%E6%A0%B8-Monolithic-kernel-%E4%B8%8E%E5%BE%AE%E5%86%85%E6%A0%B8-Microkernel"><span class="nav-number">4.2.</span> <span class="nav-text">单内核(Monolithic kernel)与微内核(Microkernel)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E5%86%85%E6%A0%B8"><span class="nav-number">4.3.</span> <span class="nav-text">可重入内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.4.</span> <span class="nav-text">子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">进程描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">5.3.</span> <span class="nav-text">进程标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%A0%88"><span class="nav-number">5.4.</span> <span class="nav-text">内核栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84%E7%BB%87"><span class="nav-number">5.5.</span> <span class="nav-text">进程组织</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">5.6.</span> <span class="nav-text">进程切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="nav-number">6.2.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">6.3.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%86%B2%E5%92%8CTLB"><span class="nav-number">6.4.</span> <span class="nav-text">高速缓冲和TLB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">7.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VFS"><span class="nav-number">7.1.</span> <span class="nav-text">VFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">8.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">8.1.</span> <span class="nav-text">体系结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8"><span class="nav-number">9.</span> <span class="nav-text">设备驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#udev"><span class="nav-number">9.1.</span> <span class="nav-text">udev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B"><span class="nav-number">9.2.</span> <span class="nav-text">设备模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87"><span class="nav-number">9.3.</span> <span class="nav-text">字符设备</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -259,7 +260,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-03-05 18:29:29" itemprop="dateModified" datetime="2025-03-05T18:29:29+08:00">2025-03-05</time>
+      <time title="修改时间：2025-03-05 21:46:28" itemprop="dateModified" datetime="2025-03-05T21:46:28+08:00">2025-03-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -282,14 +283,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>9k</span>
+      <span>9.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>15 分钟</span>
+      <span>16 分钟</span>
     </span>
 </div>
 
@@ -459,6 +460,14 @@
 <blockquote>
 <p>总线、驱动和设备最终都会落实为<code>sysfs</code>中的 1 个目录，因为进一步追踪代码会发现，它们实际上都可以认为是<code>kobject</code>的派生类，<code>kobject</code>可看作是所有<code>总线</code>、<code>设备</code>和<code>驱动</code>的抽象基类，1 个<code>kobject</code>对应<code>sysfs</code>中的 1 个目录。<code>总线</code>、<code>设备</code>和<code>驱动</code>的各个 <code>attibute</code> 则直接落实为 <code>sysfs</code> 中的一个文件，<code>attribute</code> 会伴随着<code>show()</code> 和 <code>store()</code> 这两个函数。</p>
 </blockquote>
+<h3 id="字符设备"><a href="#字符设备" class="headerlink" title="字符设备"></a>字符设备</h3><p><code>struct cdev</code> 结构体描述了一个字符设备。</p>
+<p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_char_device.png"></p>
+<p><strong>a. 加载和卸载函数</strong></p>
+<p>在加载函数中应该实现设备号的申请和 <code>cdev</code> 的注册，而在卸载函数中应该实现设备号的释放和 <code>cdev</code> 的注销。</p>
+<p><strong>b. file_operations 结构体中的成员函数</strong></p>
+<p><code>file_operations</code> 结构体中的成员函数是字符设备驱动与内核虚拟文件的接口。</p>
+<p>特别注意的是，在这些接口中，很多需要进行内核空间与用户空间的数据拷贝，内核必须检查用户空间缓冲区的合法性显得尤其重要，很多内核漏洞都是因为忽略这一检查造成的。攻击者可以伪造一片内核空间的缓冲区地址传入系统调用的接口，让内核对这个 evil 指针指向的内核空间填充数据。</p>
+<p>内核在实现 <code>copy_from_user()</code> 和 <code>copy_to_user()</code> 等函数时会调用 <code>access_ok()</code> 函数，该函数会做用户空间地址合法性检查。</p>
 
     </div>
 
@@ -520,13 +529,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">302k</span>
+    <span title="站点总字数">303k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:24</span>
+    <span title="站点阅读时长">8:25</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
