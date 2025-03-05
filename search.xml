@@ -2348,8 +2348,8 @@
 <p><strong>内核页表</strong></p>
 <h3 id="高速缓冲和TLB"><a href="#高速缓冲和TLB" class="headerlink" title="高速缓冲和TLB"></a>高速缓冲和TLB</h3><p><code>高速缓存</code>处于内存和寄存器之间，一般使用 SRAM 实现。高速缓存与内存的一致性由 CPU 自动同步；但 <code>TLB</code> 与进程页表的同步需要内核来完成。</p>
 <h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><h3 id="VFS"><a href="#VFS" class="headerlink" title="VFS"></a>VFS</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_vfs.png"></p>
-<h2 id="设备驱动"><a href="#设备驱动" class="headerlink" title="设备驱动"></a>设备驱动</h2><p>内核一般要做到<code>drivers</code>与<code>arch</code>的软件架构分离，驱动中不包含板级信息，让驱动跨平台。同时内核的通用部分（如<code>kernel</code>、<code>fs</code>、<code>ipc</code>、<code>net</code> 等）则与具体的硬件（<code>arch</code> 和<code>drivers</code>）剥离。</p>
-<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3>]]></content>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><h2 id="设备驱动"><a href="#设备驱动" class="headerlink" title="设备驱动"></a>设备驱动</h2><p>内核一般要做到<code>drivers</code>与<code>arch</code>的软件架构分离，驱动中不包含板级信息，让驱动跨平台。同时内核的通用部分（如<code>kernel</code>、<code>fs</code>、<code>ipc</code>、<code>net</code> 等）则与具体的硬件（<code>arch</code> 和<code>drivers</code>）剥离。</p>
+]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -2381,7 +2381,7 @@
 <h2 id="内核同步机制"><a href="#内核同步机制" class="headerlink" title="内核同步机制"></a>内核同步机制</h2><blockquote>
 <p>不管是禁止中断还是禁止内核抢占，都没有提供任何保护机制来防止来自其他处理器的并发访问。Linux 支持 SMP，因此，内核代码一般都需要获取某种锁，防止来自其他处理器对共享数据的并发访问，获取这些锁的同时也伴随着禁止本地中断。</p>
 </blockquote>
-<h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
+<h3 id="RCU"><a href="#RCU" class="headerlink" title="RCU"></a>RCU</h3><h2 id="定时器和时间管理"><a href="#定时器和时间管理" class="headerlink" title="定时器和时间管理"></a>定时器和时间管理</h2><p>内核为什么需要timer interrupt? 一个Tickless的操作系统可以起到降低功耗的作用!<br>Jiffies记录的是自启动后tick的个数，每一秒有HZ个jiffies，注意jiffies要标记为volatile变量。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2579,7 +2579,7 @@
   <entry>
     <title>Linux kernel User Guide</title>
     <url>/2023/03/09/Linux-kernel-User-Guide/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp;本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
 <blockquote>
 <p>参考 <a href="https://docs.kernel.org/admin-guide/index.html">The Linux kernel user’s and administrator’s guide</a>。</p>
 </blockquote>
@@ -2624,7 +2624,7 @@
 <p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
 <p>然后修改 <code>grub</code> 配置文件</p>
 <h3 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h3><p><code>$ sudo make modules_install</code></p>
-<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>&emsp;&emsp;我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
+<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
 <h3 id="模块参数"><a href="#模块参数" class="headerlink" title="模块参数"></a>模块参数</h3><p>模块的参数可以通过内核命令行设置，例如：<br><code>usbcore.blinkenlights=1</code></p>
 <p>也可以使用 <code>modprobe</code> ：<br><code>modprobe usbcore blinkenlights=1</code></p>
 <p>使用 <code>modinfo info &lt;module_name&gt;</code> 可以获取可加载模块的参数列表。对于可加载模块，当被载入内核时，会将所有参数映射为 <code>/proc/modules/&#123;module_name&#125;/parameters/</code> 中的文件，这使得用户可以直接修改该文件来设置模块参数。</p>
@@ -2633,7 +2633,7 @@
 <li>对于带空格的字符串使用双引号，例如<code>param=&quot;spaces in here&quot;</code></li>
 <li></li>
 </ul>
-<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>&emsp;&emsp;使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
+<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
 <h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2><blockquote>
 <p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a><br>参考 <a href="https://www.kernel.org/doc/html/v6.13-rc6/dev-tools/gdb-kernel-debugging.html">Debugging kernel and modules via gdb</a></p>
 </blockquote>
@@ -2685,7 +2685,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>
 
 <h3 id="构建模块并调试"><a href="#构建模块并调试" class="headerlink" title="构建模块并调试"></a>构建模块并调试</h3><blockquote>
-<p>参考 <img src="https://docs.linuxkernel.org.cn/kbuild/modules.html" alt="构建外部模块"></p>
+<p>参考 <a href="https://docs.linuxkernel.org.cn/kbuild/modules.html">构建外部模块</a></p>
 </blockquote>
 <p>在编译完内核后，将内核模块安装到 rootfs 的 <code>lib/modules</code> 目录中：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make INSTALL_MOD_PATH=rootfs/ modules_install</span></span><br></pre></td></tr></table></figure>
@@ -2696,6 +2696,7 @@
 <p>如果进入根文件系统后，需要创建文件或者目录，需要在内核启动时设定根文件系统的读写权限：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.... --append &quot;nokaslr root=/dev/vda rw init=/bin/ash&quot; ...</span><br></pre></td></tr></table></figure>
 <p>在 <code>root=/dev/vda</code> 后紧跟 <code>rw</code> 标志。</p>
+<p>如果要 <code>init</code> 进程在进入 shell 前做一些其他任务，则启动参数<code>init</code>可以使用  <code>/linuxrc</code>，并在根文件系统中创建 <code>/etc/init.d/rcS</code> 可执行脚本，在脚本中可以编写启动其他用户进程。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -3880,7 +3881,10 @@
 <h2 id="TCM"><a href="#TCM" class="headerlink" title="TCM"></a>TCM</h2><p>从前面 S32K3 系列的架构图中我们可以看到，核对 <code>TCM</code> 的访问不通过 <code>Cache</code>。那么 TCM 和 Cache 的区别在那里呢？</p>
 <p>我们可以从设计目的和使用方式方面来区分，TCM 是专门设计用于处理器内部的高速存储器，包括<code>I-TCM</code>代码区和<code>D-TCM</code>数据区，可以存放<strong>最常用的代码和数据</strong>，用于提高系统的性能。Cache 用于存储最近访问的数据，来减少对外部存储器的访问次数，并提高系统性能；但 Cache 依赖于<code>局部性原理</code>，如果软件设计不是 <code>Cache 友好</code>的，那么就会频繁地发生 Cache 命中失败而访问外部存储器，性能提升受到打折。</p>
 <p>另一个区别是，TCM 是处理器内部的存储器，Cache 需要外部存储器的支持，且需要使用特殊的硬件逻辑来管理缓存。</p>
-<h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
+<h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><p>由于目前主流的 ARM 芯片都自带<code>VFP</code>或者<code>NEON</code>等浮点处理单元（FPU），所以对<code>硬浮点</code>的需求就更加强烈。Linux 的浮点处理可以采用<code>完全软浮点</code>，也可以采用与软浮点兼容，但是使用 FPU 硬件的<code>softfp</code>，以及完全硬浮点。具体的<code>ABI</code>（Application Binary Interface，应<br>用程序二进制接口）通过<code>-mfloat-abi=</code> 参数指定，3 种情况下的参数分别是<code>-mfloat-abi=soft/softfp/hard</code>。</p>
+<p><code>softfp</code> 使用了硬件的 FPU，但是函数的参数仍然使用整型寄存器来传递，<code>hard</code> 完全硬浮点则直接使用 FPU 的寄存器传递参数。</p>
+<p>在启用 FPU 的前提下，编译器在做激进的优化时，会使用浮点寄存器来进行整型数据的拷贝等操作，具体的话，会使用 <code>vstr.64</code> 和 <code>vldr.64</code> 浮点指令。</p>
+<h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
       </categories>
