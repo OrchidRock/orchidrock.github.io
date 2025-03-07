@@ -225,7 +225,7 @@
   <entry>
     <title>BuildRoot工具介绍</title>
     <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a>类似。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a> 类似。</p>
 <span id="more"></span>
 
 <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
@@ -3403,7 +3403,7 @@
   <entry>
     <title>OpenWRT for Raspberry Pi Model 3</title>
     <url>/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="http://1.117.83.246/index.php/archives/233/">OpenWrt Introduction</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a href="/2022/07/02/OpenWrt-Introduction/" title="OpenWrt Introduction">[OpenWrt Introduction]</a> 中我们对 OpenWrt 的特性、目标、架构以及构建系统做了介绍。本文将更注重实践，一步步构建 OpenWrt 使其移植到 <code>树莓派 Model 3B</code> 开发板。虽然我们可以直接下载编译好的固件，但也会失去自己动手做的乐趣。</p>
 <span id="more"></span>
 
 <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>&emsp;&emsp; 构建系统依赖一些软件包，这些软件包在大部分 Linux 发行版系统上已经安装。但如果一部分依赖没有安装，构建会失败，这时候需要根据错误信息发现未安装的依赖包。</p>
