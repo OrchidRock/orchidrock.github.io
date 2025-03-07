@@ -22,23 +22,23 @@
     <meta name="description" content="概述本文章是整理基于TM4C123G开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SmartCar 项目">
-<meta property="og:url" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+<meta property="og:url" content="https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/">
 <meta property="og:site_name" content="StoneTough">
 <meta property="og:description" content="概述本文章是整理基于TM4C123G开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png">
+<meta property="og:image" content="https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/ek-tm4c123gxl-top.png">
 <meta property="article:published_time" content="2021-04-20T04:16:45.000Z">
 <meta property="article:modified_time" content="2025-03-07T04:49:59.389Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png">
+<meta name="twitter:image" content="https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/ek-tm4c123gxl-top.png">
 
 
-<link rel="canonical" href="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+<link rel="canonical" href="https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/04/20/SmartCarProject/","path":"2021/04/20/SmartCarProject/","title":"SmartCar 项目"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/","path":"2021/04/20/SmartCar-项目/","title":"SmartCar 项目"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>SmartCar 项目 | StoneTough</title>
@@ -215,7 +215,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -301,7 +301,7 @@
 <li>增加WIFI模块，可以通过远程控制</li>
 <li>增加摄像头模块，可以进行视频采集和监控</li>
 </ul>
-<h2 id="使用的硬件模组"><a href="#使用的硬件模组" class="headerlink" title="使用的硬件模组"></a>使用的硬件模组</h2><h3 id="TM4C123G-微控制器开发版"><a href="#TM4C123G-微控制器开发版" class="headerlink" title="TM4C123G 微控制器开发版"></a>TM4C123G 微控制器开发版</h3><p><img src="/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png"></p>
+<h2 id="使用的硬件模组"><a href="#使用的硬件模组" class="headerlink" title="使用的硬件模组"></a>使用的硬件模组</h2><h3 id="TM4C123G-微控制器开发版"><a href="#TM4C123G-微控制器开发版" class="headerlink" title="TM4C123G 微控制器开发版"></a>TM4C123G 微控制器开发版</h3><p><img src="/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/ek-tm4c123gxl-top.png"></p>
 <h3 id="红外对管距离传感器-3个"><a href="#红外对管距离传感器-3个" class="headerlink" title="红外对管距离传感器 3个"></a>红外对管距离传感器 3个</h3><p>分别位于车体的前部、左部和右部</p>
 <h3 id="红外线接收器和遥控器"><a href="#红外线接收器和遥控器" class="headerlink" title="红外线接收器和遥控器"></a>红外线接收器和遥控器</h3><h3 id="L298N电机驱动模块"><a href="#L298N电机驱动模块" class="headerlink" title="L298N电机驱动模块"></a>L298N电机驱动模块</h3><p>L298N电机驱动</p>
 <h3 id="摄像头和WIFI模组"><a href="#摄像头和WIFI模组" class="headerlink" title="摄像头和WIFI模组"></a>摄像头和WIFI模组</h3><h3 id="L298N电机驱动"><a href="#L298N电机驱动" class="headerlink" title="L298N电机驱动"></a>L298N电机驱动</h3><p>L298N电机驱动</p>
