@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述本文章是整理基于TM4C123G开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SmartCar 项目">
+<meta property="og:url" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述本文章是整理基于TM4C123G开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png">
+<meta property="article:published_time" content="2021-04-20T04:16:45.000Z">
+<meta property="article:modified_time" content="2025-03-07T04:49:59.389Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/04/20/SmartCarProject/","path":"2021/04/20/SmartCarProject/","title":"SmartCar 项目"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SmartCar 项目 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E7%9B%AE%E6%A0%87"><span class="nav-number">2.</span> <span class="nav-text">功能目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%9A%84%E7%A1%AC%E4%BB%B6%E6%A8%A1%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">使用的硬件模组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TM4C123G-%E5%BE%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E5%BC%80%E5%8F%91%E7%89%88"><span class="nav-number">3.1.</span> <span class="nav-text">TM4C123G 微控制器开发版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A2%E5%A4%96%E5%AF%B9%E7%AE%A1%E8%B7%9D%E7%A6%BB%E4%BC%A0%E6%84%9F%E5%99%A8-3%E4%B8%AA"><span class="nav-number">3.2.</span> <span class="nav-text">红外对管距离传感器 3个</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A2%E5%A4%96%E7%BA%BF%E6%8E%A5%E6%94%B6%E5%99%A8%E5%92%8C%E9%81%A5%E6%8E%A7%E5%99%A8"><span class="nav-number">3.3.</span> <span class="nav-text">红外线接收器和遥控器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L298N%E7%94%B5%E6%9C%BA%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97"><span class="nav-number">3.4.</span> <span class="nav-text">L298N电机驱动模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%91%84%E5%83%8F%E5%A4%B4%E5%92%8CWIFI%E6%A8%A1%E7%BB%84"><span class="nav-number">3.5.</span> <span class="nav-text">摄像头和WIFI模组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L298N%E7%94%B5%E6%9C%BA%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.6.</span> <span class="nav-text">L298N电机驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E6%9C%89%E5%89%8D%E5%90%8E%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%B0%8F%E8%BD%A6"><span class="nav-number">3.7.</span> <span class="nav-text">带有前后直流电机的模型小车</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B9%B3%E5%8F%B0"><span class="nav-number">4.</span> <span class="nav-text">软件平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">代码结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main%E5%87%BD%E6%95%B0%E4%B8%BB%E7%BB%93%E6%9E%84"><span class="nav-number">5.1.</span> <span class="nav-text">main函数主结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BF%80%E6%B4%BBgrader%E5%92%8C%E8%AE%BE%E7%BD%AE%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F"><span class="nav-number">5.1.1.</span> <span class="nav-text">激活grader和设置系统时钟</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96IO%E7%AB%AF%E5%8F%A3%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8%E5%8F%8A%E4%B8%AD%E6%96%AD"><span class="nav-number">5.1.2.</span> <span class="nav-text">初始化IO端口和定时器及中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="nav-number">5.1.3.</span> <span class="nav-text">初始化和直流电机相关的端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%AE%9A%E6%97%B6%E5%99%A8Timer0%E5%92%8C%E4%B8%AD%E6%96%AD%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.1.4.</span> <span class="nav-text">前置电机定时器Timer0和中断初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%AE%9A%E6%97%B6%E5%99%A8-Systick-%E5%92%8C%E4%B8%AD%E6%96%AD%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.1.5.</span> <span class="nav-text">后置电机定时器 Systick 和中断初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-IRremote-%E6%A8%A1%E5%9D%97"><span class="nav-number">5.1.6.</span> <span class="nav-text">初始化 IRremote 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E7%BA%A2%E5%A4%96%E7%BA%BF%E8%B7%9D%E7%A6%BB%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%8A%E4%B8%AD%E6%96%AD"><span class="nav-number">5.1.7.</span> <span class="nav-text">初始化和红外线距离传感器相关的端口及中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E4%B8%AD%E6%96%AD%E4%BD%BF%E8%83%BD"><span class="nav-number">5.1.8.</span> <span class="nav-text">全局中断使能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E4%B8%BB%E5%BE%AA%E7%8E%AF%EF%BC%9A"><span class="nav-number">5.1.9.</span> <span class="nav-text">进入主循环：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">5.2.</span> <span class="nav-text">其他子函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%81%9C%E6%AD%A2-Motor-Back-Stop-%E5%87%BD%E6%95%B0"><span class="nav-number">5.2.1.</span> <span class="nav-text">后置电机停止 Motor_Back_Stop 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E8%BF%90%E8%A1%8C"><span class="nav-number">5.2.2.</span> <span class="nav-text">后置电机运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%87%8F%E9%80%9F"><span class="nav-number">5.2.3.</span> <span class="nav-text">后置电机减速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%8A%A0%E9%80%9F"><span class="nav-number">5.2.4.</span> <span class="nav-text">后置电机加速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E7%94%B5%E6%9C%BA%E5%8F%8D%E5%90%91%E6%97%8B%E8%BD%AC"><span class="nav-number">5.2.5.</span> <span class="nav-text">后置电机反向旋转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A6%E5%8F%B3%E8%BD%AC%E5%BC%AF"><span class="nav-number">5.2.6.</span> <span class="nav-text">左右转弯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E8%BD%AC%E5%90%91"><span class="nav-number">5.2.7.</span> <span class="nav-text">停止转向</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD"><span class="nav-number">5.3.</span> <span class="nav-text">高级功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%91%84%E5%83%8F%E5%A4%B4"><span class="nav-number">5.3.1.</span> <span class="nav-text">摄像头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8WIFI%E6%A8%A1%E7%BB%84%E8%81%94%E7%BD%91"><span class="nav-number">5.3.2.</span> <span class="nav-text">使用WIFI模组联网</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/04/20/SmartCarProject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SmartCar 项目 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SmartCar 项目
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-20 12:16:45" itemprop="dateCreated datePublished" datetime="2021-04-20T12:16:45+08:00">2021-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-07 12:49:59" itemprop="dateModified" datetime="2025-03-07T12:49:59+08:00">2025-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文章是整理基于<code>TM4C123G</code>开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="功能目标"><a href="#功能目标" class="headerlink" title="功能目标"></a>功能目标</h2><p>首先我们定义我们初步要达到的功能目标：</p>
+<ul>
+<li>支持自动左右转向，当遇到障碍物时可以转向或者倒</li>
+<li>支持加速和减速，自动模式或者手动模式</li>
+<li>支持红外线遥控，可以手动遥控左右转向、倒退&#x2F;前进以及加减速</li>
+</ul>
+<p>高级功能：</p>
+<ul>
+<li>增加WIFI模块，可以通过远程控制</li>
+<li>增加摄像头模块，可以进行视频采集和监控</li>
+</ul>
+<h2 id="使用的硬件模组"><a href="#使用的硬件模组" class="headerlink" title="使用的硬件模组"></a>使用的硬件模组</h2><h3 id="TM4C123G-微控制器开发版"><a href="#TM4C123G-微控制器开发版" class="headerlink" title="TM4C123G 微控制器开发版"></a>TM4C123G 微控制器开发版</h3><p><img src="/2021/04/20/SmartCarProject/ek-tm4c123gxl-top.png"></p>
+<h3 id="红外对管距离传感器-3个"><a href="#红外对管距离传感器-3个" class="headerlink" title="红外对管距离传感器 3个"></a>红外对管距离传感器 3个</h3><p>分别位于车体的前部、左部和右部</p>
+<h3 id="红外线接收器和遥控器"><a href="#红外线接收器和遥控器" class="headerlink" title="红外线接收器和遥控器"></a>红外线接收器和遥控器</h3><h3 id="L298N电机驱动模块"><a href="#L298N电机驱动模块" class="headerlink" title="L298N电机驱动模块"></a>L298N电机驱动模块</h3><p>L298N电机驱动</p>
+<h3 id="摄像头和WIFI模组"><a href="#摄像头和WIFI模组" class="headerlink" title="摄像头和WIFI模组"></a>摄像头和WIFI模组</h3><h3 id="L298N电机驱动"><a href="#L298N电机驱动" class="headerlink" title="L298N电机驱动"></a>L298N电机驱动</h3><p>L298N电机驱动</p>
+<h3 id="带有前后直流电机的模型小车"><a href="#带有前后直流电机的模型小车" class="headerlink" title="带有前后直流电机的模型小车"></a>带有前后直流电机的模型小车</h3><p>前部电机控制方向，后部电机负责前进和倒退</p>
+<p>初步功能实现后：<br>L298N电机驱动</p>
+<h2 id="软件平台"><a href="#软件平台" class="headerlink" title="软件平台"></a>软件平台</h2><p>  使用 <code>Keil uVersion IDE</code>.</p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="main函数主结构"><a href="#main函数主结构" class="headerlink" title="main函数主结构"></a>main函数主结构</h3><p>首先我们实现程序的主结构，它包含如下步骤：</p>
+<h4 id="激活grader和设置系统时钟"><a href="#激活grader和设置系统时钟" class="headerlink" title="激活grader和设置系统时钟"></a>激活grader和设置系统时钟</h4><p>设置系统时钟的方法是配置<code>PLL</code>，<code>TM4C123G</code>使用<code>16M</code>的主振荡器，具体配置<code>PLL</code>的方法在上一章中已经介绍。我们这里只需要直接调用接口：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TexaS_INIT(SW_PIN_PE210, LED_PIN_PB543210);</span><br></pre></td></tr></table></figure>
+
+<p>它会设置系统时钟为 <code>80M Hz</code>.</p>
+<h4 id="初始化IO端口和定时器及中断"><a href="#初始化IO端口和定时器及中断" class="headerlink" title="初始化IO端口和定时器及中断"></a>初始化IO端口和定时器及中断</h4><p>首先初始化 <code>TM4C123G</code> 板上自带的<code>RGB LED</code>端口为数字输出端口，它分别对应<code>pin</code>口为<code>PF1（R）</code>、<code>PF2（B)</code>、<code>PF3（G）</code>,具体的函数定义在后面加入，这里只需要明白它做了什么。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RGB_LED_Init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化和直流电机相关的端口"><a href="#初始化和直流电机相关的端口" class="headerlink" title="初始化和直流电机相关的端口"></a>初始化和直流电机相关的端口</h4><p>设置<code>PD0</code>，<code>PD1</code>，<code>PD2</code>，<code>PD3</code>为数字输出端口，并设置其初始值为<code>0</code>；设置<code>PE5</code>为数字输出端口，并设初始值为<code>1</code>。上述5个端口都使用<code>8mA</code>驱动，具体如何用于控制电机后面会进行描述。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Motor_Port_Init()</span><br></pre></td></tr></table></figure>
+
+<h4 id="前置电机定时器Timer0和中断初始化"><a href="#前置电机定时器Timer0和中断初始化" class="headerlink" title="前置电机定时器Timer0和中断初始化"></a>前置电机定时器Timer0和中断初始化</h4><p>我们在这里初始化<code>Timer0A</code>定时器，优先级为<code>2</code>，它的 <code>IRQ</code> 编号为19，<code>ISR</code>为<code>Timer0A_Handler</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Motro_Front_Init()</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机定时器-Systick-和中断初始化"><a href="#后置电机定时器-Systick-和中断初始化" class="headerlink" title="后置电机定时器 Systick 和中断初始化"></a>后置电机定时器 Systick 和中断初始化</h4><p>我们设置 <code>SysTick</code> 定时器，优先级为<code>2</code>，<code>ISR</code> 为<code>SysTick_Handler</code>，<code>SysTick</code>中断不需要中断确认<code>(ack)</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Motro_Back_Init();</span><br></pre></td></tr></table></figure>
+
+<p>我们在使用定时器的目的是使用 <code>PWM</code> 来驱动电机，使其可以加速或者减速, 定时器可以帮助我们生成不同占空比的<code>PWM</code>，对于后置电机占空比由 <code>BACK_L</code>和 <code>BACK_H</code> 变量控制，这两个变量交替作为<code>SysTick</code>的初始计数器值。<code>PD0</code>和<code>PD1</code>端口与<code>LN298</code>模块相连，在<code>SysTick_Handler</code>中会向<code>PDO</code>和<code>PD1</code>输出 <code>0</code> 或者 <code>1</code>，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">SysTick_Handler</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> bitmap = <span class="number">0x01</span> &lt;&lt; reversal;</span><br><span class="line">    <span class="keyword">if</span>(GPIO_PORTD_DATA_R &amp; bitmap)&#123; <span class="comment">// toggle ENA</span></span><br><span class="line">        GPIO_PORTD_DATA_R &amp;= ~bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_L<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        GPIO_PORTD_DATA_R |= bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_H<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>reversal</code>用来控制电机反向旋转；<code>NVIC_ST_RELOAD_R</code>寄存器存有 <code>SysTick</code> 的计数器初始值。</p>
+<h4 id="初始化-IRremote-模块"><a href="#初始化-IRremote-模块" class="headerlink" title="初始化 IRremote 模块"></a>初始化 IRremote 模块</h4><p>该模块负责红外遥控，主要包括<code>NEC</code>协议的解析等。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IRremote_init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化和红外线距离传感器相关的端口及中断"><a href="#初始化和红外线距离传感器相关的端口及中断" class="headerlink" title="初始化和红外线距离传感器相关的端口及中断"></a>初始化和红外线距离传感器相关的端口及中断</h4><p>我们设置<code>PA4</code>，<code>PA5</code>，<code>PA6</code>为数字输入端口，并设置为双边缘触发中断，优先级为<code>1</code>，<code>IRQ</code>为 <code>0</code>，它们分别对应前方、左方和右方的传感器。连接到响应端口，当有信号到来时，会触发中断，进而执行 <code>GPIOPortA_Handler ISR</code>。在 <code>ISR</code> 中首先进行中断确认，然后会获取<code>3</code>个端口的数据值，根据数据值来判断当前小车前、左和右方是否有障碍物，会根据具体情况进行后退、转向或者加速等。在<code>IR_sensor_Init</code>中会时设置延迟定时器<code>TIMER1A</code>，但不能启动定时器，该定时器在<code>GPIOPortA_Handler</code>中启动，并根据具体参数设置延迟时间。在延迟期间，<code>GPIOPortA_Handler</code>不再处理来自传感器的数据而是直接返回。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IR_sensor_Init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="全局中断使能"><a href="#全局中断使能" class="headerlink" title="全局中断使能"></a>全局中断使能</h4><p>调用如下接口：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EnableInterrupts();</span><br></pre></td></tr></table></figure>
+
+<p>其具体实现通过汇编代码表示为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EnableInterrupts    CPSID    I ; set I = 1</span><br><span class="line">                    BX    LR </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="进入主循环："><a href="#进入主循环：" class="headerlink" title="进入主循环："></a>进入主循环：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (IRreceived()) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> data_value;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> count = <span class="number">1</span>&lt;&lt;<span class="number">15</span>;</span><br><span class="line">        data_value = getIRresult();</span><br><span class="line"></span><br><span class="line">        swicth(data_value) &#123;</span><br><span class="line">            <span class="comment">// ....</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (count) &#123;count--;&#125;</span><br><span class="line">    resumeIRremote(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主循环主要是监听红外遥控命令来作出反应。</p>
+<h3 id="其他子函数"><a href="#其他子函数" class="headerlink" title="其他子函数"></a>其他子函数</h3><h4 id="后置电机停止-Motor-Back-Stop-函数"><a href="#后置电机停止-Motor-Back-Stop-函数" class="headerlink" title="后置电机停止 Motor_Back_Stop 函数"></a>后置电机停止 Motor_Back_Stop 函数</h4><p>该函数通过禁止 <code>SysTick</code> 定时器和设置 <code>PD0</code> 和 <code>PD1</code> 端口为 <code>0</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Stop</span><span class="params">()</span>&#123;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0</span>;      <span class="comment">// disable SysTick</span></span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x03</span>; <span class="comment">// make PD0(IN1),PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机运行"><a href="#后置电机运行" class="headerlink" title="后置电机运行"></a>后置电机运行</h4><p>重新使能 <code>SysTick</code> 并设置 <code>PD0</code> 和 <code>PD1</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Run</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// e`nable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x01</span>; <span class="comment">// make PD0(IN1) high</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x02</span>; <span class="comment">// make PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机减速"><a href="#后置电机减速" class="headerlink" title="后置电机减速"></a>后置电机减速</h4><p>通过调节 <code>Bask_L</code> 和 <code>Back_H</code> 全局变量来实现，我们只能这两个变量会与 <code>SysTick</code> 定时器合作完成 <code>PWM</code> 控制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SlowDown</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">         <span class="keyword">if</span>(back_L&gt;<span class="number">8000</span>) back_L = back_L - <span class="number">8000</span>; <span class="comment">//slow down</span></span><br><span class="line">        &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机加速"><a href="#后置电机加速" class="headerlink" title="后置电机加速"></a>后置电机加速</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SpeedUp</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">         <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(back_L&lt;<span class="number">72000</span>) back_L = back_L + <span class="number">8000</span>; <span class="comment">// speed up</span></span><br><span class="line">         &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机反向旋转"><a href="#后置电机反向旋转" class="headerlink" title="后置电机反向旋转"></a>后置电机反向旋转</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Reversal</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">1</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// enable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x01</span>; <span class="comment">// IN1 low</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x02</span>; <span class="comment">// IN2 high</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="左右转弯"><a href="#左右转弯" class="headerlink" title="左右转弯"></a>左右转弯</h4><p>左右转弯通过 <code>PWM</code> 控制前置电机完成，它要重新使能<code>Timer0A</code>定时器，因为在停止转向函数中该定时器会被禁止。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Turn_Left</span><span class="params">()</span>&#123;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x04</span>; <span class="comment">// PD2(IN3)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x08</span>; <span class="comment">// PD3 (IN4)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Turn_Right</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//TIMER0_CTL_R |= 0x00000001;</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x08</span>; <span class="comment">// PD3(IN4)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x04</span>; <span class="comment">// PD2 (IN3)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="停止转向"><a href="#停止转向" class="headerlink" title="停止转向"></a>停止转向</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void Turn_Stop()&#123;</span><br><span class="line">    TIMER0_CTL_R &amp;= ~0x00000001;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~0x0c; // make PD2(IN3),PD3(IN4) low</span><br><span class="line">    turning = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h3><h4 id="摄像头"><a href="#摄像头" class="headerlink" title="摄像头"></a>摄像头</h4><h4 id="使用WIFI模组联网"><a href="#使用WIFI模组联网" class="headerlink" title="使用WIFI模组联网"></a>使用WIFI模组联网</h4>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D/" rel="prev" title="嵌入式系统介绍">
+                  <i class="fa fa-angle-left"></i> 嵌入式系统介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/30/LFS-2-PiLFS%E9%A1%B9%E7%9B%AE/" rel="next" title="LFS 2: PiLFS项目">
+                  LFS 2: PiLFS项目 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">311k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:38</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
