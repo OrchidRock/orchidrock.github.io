@@ -2397,6 +2397,14 @@
 <li>匹配 <code>ID</code> 表（即 <code>platform_device</code> 设备名是否出现在 <code>platform driver</code> 的 <code>ID</code> 表中）</li>
 <li>匹配 <code>platform_device</code> 设备名和驱动的名字。</li>
 </ul>
+<p>在设备驱动中引入 <code>platform</code> 的概念至少有如下好处：</p>
+<ul>
+<li>使设备被挂载在一个总线上，符合 Linux 2.6 以后内核的设备模型。</li>
+<li>隔离 <code>BSP</code> 和 <code>驱动</code>。在 <code>BSP</code> 中定义 <code>platform</code> 设备和设备所使用的资源、设备的具体配置信息，而在驱动中，只需要通过调用 <code>API</code> 去获取资源和数据。使得驱动具有更好的可扩展性和跨平台性。</li>
+<li>让一个驱动支持多个设备实例。</li>
+</ul>
+<p>这中分层设计类似于面向对象的编程模型。</p>
+<h4 id="Linux-内核输入子系统"><a href="#Linux-内核输入子系统" class="headerlink" title="Linux 内核输入子系统"></a>Linux 内核输入子系统</h4><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_input_subsystem.png"></p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2718,7 +2726,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t proc none /proc</span></span><br></pre></td></tr></table></figure>
 
 <p>也可以手动挂载 <code>sysfs</code> 文件系统：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t sysfs sysfs /sysfs</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t sysfs sysfs /sys</span></span><br></pre></td></tr></table></figure>
 
 <p>但重启后配置会消失。使用 <code>/etc/fstab</code> 或者 <code>/etc/init.d/rcS</code> 来自动挂载。</p>
 <h4 id="构建-busybox"><a href="#构建-busybox" class="headerlink" title="构建 busybox"></a>构建 busybox</h4><p>下载 <a href="https://www.busybox.net/downloads/">BusyBox 源代码</a> 并验证数字签名后，进行构建：</p>
@@ -2729,6 +2737,9 @@
 
 <h4 id="使用-qemu-验证"><a href="#使用-qemu-验证" class="headerlink" title="使用 qemu 验证"></a>使用 qemu 验证</h4><p>在 树莓派5 ARM64 架构下验证：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意使用制作的 rootfs.img 镜像文件</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">root=/dev/vda 使用 vda 关键字，而不是 ram 或者 sda</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">init=/bin/ash 这里使用 ash 作为内核启动后第一个运行的用户程序</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"> qemu-system-aarch64 -M virt -cpu cortex-a72 -kernel  <span class="built_in">arch</span>/arm64/boot/Image -drive format=raw,file=rootfs.img,media=disk -append <span class="string">&quot;root=/dev/vda init=/bin/ash&quot;</span> -serial stdio -display none</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">[    0.853700] EXT4-fs (vda): mounted filesystem without journal. Opts: (null)</span><br><span class="line">[    0.854244] VFS: Mounted root (ext4 filesystem) readonly on device 254:0.</span><br><span class="line">[    0.859716] devtmpfs: mounted</span><br><span class="line">[    0.893438] Freeing unused kernel memory: 5056K</span><br><span class="line">[    0.894555] Run /bin/ash as init process</span><br><span class="line">/bin/ash: can&#x27;t access tty; job control turned off</span><br><span class="line">~ # ls</span><br><span class="line">bin         linuxrc     proc        sbin        usr</span><br><span class="line">dev         lost+found  run         sys         var</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>vexpress-a9</code> 架构下验证：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel <span class="built_in">arch</span>/arm/boot/zImage \</span></span><br><span class="line"><span class="language-bash">-dtb <span class="built_in">arch</span>/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic \</span></span><br><span class="line"><span class="language-bash">-append <span class="string">&quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot;</span> -sd rootfs.img</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
@@ -3493,110 +3504,6 @@
       </categories>
   </entry>
   <entry>
-    <title>OpenWrt Introduction</title>
-    <url>/2022/07/02/OpenWrt-Introduction/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://openwrt.org/">OpenWrt</a> 是针对嵌入式设备（特别是无线路由器）的 <code>Linux</code> 系统。<code>OpenWrt</code>使用带有包管理的完全可写的文件系统，这与静态、封闭的固件不同。<code>OpenWrt</code> 可以使用户获得更大的自由来进行个性化的配置（包括应用软件包的选择）、对系统及底层硬件资源完全的掌握。从安全的角度讲，用户可以自己检测固件是否包含安全漏洞或者后门（backdoor）程序，<code>OpenWrt</code> 的更新相对原固件更加及时，安全问题会更快地发现并解决。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://openwrt.org/docs/guide-developer/start">OpenWrt Developer Guide</a></p>
-</blockquote>
-<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>最新版本：<code>22.03.3</code></p>
-<h2 id="设备支持和软件包"><a href="#设备支持和软件包" class="headerlink" title="设备支持和软件包"></a>设备支持和软件包</h2><h3 id="设备支持"><a href="#设备支持" class="headerlink" title="设备支持"></a>设备支持</h3><p><code>OpenWrt</code> 支持超过 65+ Target&#x2F;Soc，覆盖的指令集架构包括 <code>ARM</code>、<code>MIPS</code>、<code>MIPS64</code>、<code>PPC</code>、<code>X86</code> 和 <code>x86_64</code> 。</p>
-<p>设备存储容量要求：</p>
-<ul>
-<li>最小 4M 的 Flash（不支持 GUI），8M 更好（支持 GUI）；</li>
-<li>最小 32M 的 RAM，64M 更好。</li>
-</ul>
-<p>如果使用 18.06 或 更高的 OpenWrt 版本，上述 <code>4/32</code> 的最小要求可能无法满足，参看 <code>4/32</code>警告。</p>
-<p><a href="https://openwrt.org/toh/start">ToH</a> 中列举了当前支持的设备列表，根据厂商及型号索引相关支持信息。用户可以更新该列表，加入已经过测试的新设备。</p>
-<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>现在最新 21.02 版本的软件包仓库: <a href="https://openwrt.org/packages/index/start">Package Index</a></p>
-<p>这些软件包(1000+)可以用来扩展系统的功能，它包括一些分类：管理类（Administration）、语言类（Languages）、库（Libraries）、基础系统（Base System）、引导（BootLoader）、固件（Firmware）、网络类（Network）和 工具类（Utilties）等等。</p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>OpenWrt 的整体架构和其他 Linux 发行版系统类似，基本上采用 <code>软件包+包管理器+内核</code> 的结构。</p>
-<p>OpenWrt 的软件包在源代码中基本上只有一个 <code>Makefile</code> 文件，其中包含软件包上游的信息以及 OpenWrt 自己所作的修改。这与<code>ArchLinux</code>的做法类似。所有的软件包都使用 OpenWrt 自己的工具链进行编译，但工具链本身需要先通过用户(<code>Host</code>)系统上的编译工具链生成。所以 OpenWrt 的工具链实际上是交叉编译工具链。在 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 0: LFS 项目介绍]</a> 中有更多关于交叉编译的细节。</p>
-<p>OpenWrt 使用 <code>opkg</code> 包管理器。其软件仓库分为 <code>base</code> 和 <code>luci</code>、<code>packages</code>、<code>routing</code>、<code>telephony</code>。<code>base</code> 为主仓库，由核心开发人员维护；后面 4 个仓库称为 <code>package feeds</code>，它们由社区维护，每个包都有一个维护者。<code>package feed</code>系统很容易扩展，用户可以将自己的包放入官方的<code>feed</code>中或者根据自己手头特殊的固件来定制化<code>feed</code>（将包放到自己的下载服务器中）。</p>
-<p>软件包的版本号：<code>上游主版本号-OpenWrt子版本号</code>，子版本号代表 OpenWrt 对该上游软件包进行了修改或者包装（与 debian 系统类似）。</p>
-<p>内核本身也可以看作一个软件包，虽然它的编译相对来说更加复杂，但<code>Makefile</code>中的结构和其他软件包基本上都是相同的。</p>
-<h2 id="源代码结构"><a href="#源代码结构" class="headerlink" title="源代码结构"></a>源代码结构</h2><p>OpenWrt 的源代码仓库：</p>
-<ul>
-<li>GitWeb - OpenWrt 的 <code>master</code> git仓库</li>
-<li>GitHub - 持续更新的 GitWeb 的镜像仓库</li>
-</ul>
-<p>目录结构：</p>
-<ul>
-<li>&#x2F;config : menuconfig 的配置文件</li>
-<li>&#x2F;include: 属于主仓库的软件包的<code>makefile</code>和<code>configuration</code></li>
-<li>&#x2F;scripts: 构建过程中使用的脚本（Perl、Python 和 shell 等）</li>
-<li>&#x2F;target: <code>Buildroot</code>构建<code>imagebuild</code>、<code>kernel</code>、<code>sdk</code>和<code>toolchain</code>的<code>makefile</code>和<code>configuration</code></li>
-<li>&#x2F;toolchain: 构建交叉编译工具链的<code>makefile</code>和<code>configuration</code></li>
-<li>&#x2F;tool: 构建过程中使用的工具的<code>makefile</code>和<code>configuration</code></li>
-</ul>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>在第3节中说，OpenWrt 的工具链为交叉编译工具链，因为大部分目标设备的CPU 架构都与 Host 系统不同。对于用户来说，可以手动构建自己的工具链，然后构建 OpenWrt，但这种做法相对困难且很容易出错。</p>
-<p>OpenWrt 的构建系统采取了不同的方法：它构建任何一部分都是从零开始、下载、打补丁和编译，包括交叉工具链也是如此。简单地说，OpenWrt 的构建系统不包含任何二进制代码或者源代码，它安全自动化的下载、针对给定的平台打补丁、针对给定的平台进行编译。另外，用户通过修改模板，进而改变这个过程中任何一步的行为。</p>
-<h3 id="构建系统所工作的主要目录"><a href="#构建系统所工作的主要目录" class="headerlink" title="构建系统所工作的主要目录"></a>构建系统所工作的主要目录</h3><ul>
-<li><p><strong>tools</strong>: 构建 <code>toolchain</code>、<code>packages</code>或<code>image generator</code>所使用的基本软件（例如<code>Autoconf</code>和<code>Automake</code>等）；虽然这些基本软件会有一部分已经安装在<code>Host</code>系统上，但 OpenWrt 选择编译自己的工具软件，这使得它不需要担心<code>Host</code>系统可能存在的版本不兼容问题。</p>
-</li>
-<li><p><strong>toolchain</strong>: 包括<code>编译器</code>、<code>链接器</code>、<code>汇编器</code>、<code>运行时库</code>和<code>通用工具</code>；构建过程中会生成两个其他目录 <code>toolchainbuild&#123;arch&#125;</code> 和 <code>stagingdir&#123;arch&#125;</code>；前者是构建<code>临时目录</code>，后者是工具链的<code>安装目录</code>。</p>
-</li>
-<li><p><strong>target</strong>: 包含针对特定嵌入式平台的补丁或者配置选项；例如<code>target/linux</code>子目录又根据不同的嵌入式平台进行划分，在某个嵌入式平台的目录中包含了对 Linux 内核的补丁和内核配置；类似的，<code>target/imagebuilder</code>子目录描述了如何针对特定平台打包固件。</p>
-</li>
-<li><p><strong>package</strong>: 打包后的软件包，后缀名为<code>ipk</code>（就像如果使用<code>debian</code>包格式，后缀名为<code>deb</code>）</p>
-</li>
-<li><p><strong>dl</strong>: 构建过程中下载的源代码等会放到该目录。</p>
-</li>
-</ul>
-<p>在<code>target</code>和<code>package</code>步骤中，也会生成临时构建目录<code>build_&#123;arch&#125;</code>。</p>
-<p>在主目录下会生成 <code>build_dir</code> 和 <code>staging_dir</code> 目录，<code>build_dir</code>用来解压下载后的软件包源码，然后编译它；<code>staging_dir</code>用来作为所有已编译好的程序的安装目录，它们可以用来构建其他软件包或者集成到最后的固件中。<code>build_dir</code>分为几个子目录：</p>
-<ul>
-<li><strong>build_dir&#x2F;host</strong>：所有将会运行在 Host系统上的工具，例如<code>sed</code>和<code>flex</code>等。</li>
-<li><strong>build_dir&#x2F;hostpkg:</strong></li>
-<li><strong>build_dir&#x2F;toolchain-xxxxxxx</strong> ：所有运行在<code>Host</code>系统上的交叉编译工具链、Linux内核，以及被运行在<code>Target</code>系统上的工具多需要链接的库，例如<code>musl</code>和<code>uClibc</code>（两者都是针对嵌入式设备的 C 库）等。</li>
-<li><strong>build_dir&#x2F;target-xxxxxxx</strong>：运行在<code>Target</code>系统上的软件。</li>
-</ul>
-<p><code>staging_dir</code> 目录也分类类似的几个子目录：</p>
-<ul>
-<li><strong>staging_dir&#x2F;host</strong> ：一个小型的 Linux 根目录，包括运行在 Host上的工具，其中有些工具符号链接到 Host 系统上已经安装的相同工具。</li>
-<li><strong>staging_dir&#x2F;hostpkg</strong>：</li>
-<li><strong>staging_dir&#x2F;toolchain-xxxxxxx</strong>：一个小型的 Linux 根目录，包含运行在 Host 上的交叉编译工具链，例如 aarch64-openwrt-linux-musl-gcc。</li>
-<li><strong>staging_dir&#x2F;target-xxxxxxx&#x2F;root-xxxx</strong>：一个 Linux 根目录，并且是最后生成固件的根文件系统的基础。</li>
-</ul>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>很容易移植软件。</li>
-<li>使用 <code>kconfig</code> 来配置相关特性。</li>
-<li>提供内置的交叉编译工具链。</li>
-<li>处理标准的下载、打补丁、配置、编译和打包工作流。</li>
-<li>对一些损坏的包提供一些通用的<code>fixups</code>。</li>
-</ul>
-<h3 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h3><p>a. tools</p>
-<p>b. toolchain&#x2F;binutils - 交叉汇编器、交叉连接器等</p>
-<p>c. toolchain&#x2F;gcc - 交叉编译器（我们在LFS 0: LFS 项目介绍中介绍过，gcc 的构建需要多次 Pass）</p>
-<p>d. target&#x2F;linux - 内核模块</p>
-<p>e. package - core(即base)仓库和feed仓库软件包</p>
-<p>f. target&#x2F;linux - 内核镜像</p>
-<p>g. target&#x2F;imagebuilder - 生成固件</p>
-<h3 id="补丁管理"><a href="#补丁管理" class="headerlink" title="补丁管理"></a>补丁管理</h3><h3 id="Buildroot"><a href="#Buildroot" class="headerlink" title="Buildroot"></a>Buildroot</h3><h2 id="简单实践"><a href="#简单实践" class="headerlink" title="简单实践"></a>简单实践</h2><h3 id="所用路由器配置"><a href="#所用路由器配置" class="headerlink" title="所用路由器配置"></a>所用路由器配置</h3><p>Flash芯片： <code>cFeon QN32B-104HIP</code> 32M 容量<br>微处理器 A：<code>MediaTek MT7628DBN</code>，该处理器的相关属性如下：</p>
-<ul>
-<li>CPU: 32位 MIPS 24K™CPU核</li>
-<li>时钟频率：580 MHZ</li>
-<li>I-Cache, D-Cache : 64kb, 32kb</li>
-<li>Memeory: 16bits</li>
-<li>RF : 2T2R 802.11n 2.4 GHz</li>
-<li>USB: 2.0</li>
-<li>DRAM ： 8M</li>
-</ul>
-<p>微处理器 B: <code>MediaTek MT7613BEN</code>，该处理器的相关属性如下：</p>
-<ul>
-<li>5G WIFI 芯片</li>
-<li>64M RAM</li>
-</ul>
-<p>MT7628 原理图：<br><img src="/2022/07/02/OpenWrt-Introduction/mt7628_arch.png"></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>嵌入式系统和IOT</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Perl简明手册</title>
     <url>/2022/04/14/Perl%E7%AE%80%E6%98%8E%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
@@ -4201,89 +4108,6 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>SmartCar 项目</title>
-    <url>/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文章是整理基于<code>TM4C123G</code>开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。</p>
-<span id="more"></span>
-
-<h2 id="功能目标"><a href="#功能目标" class="headerlink" title="功能目标"></a>功能目标</h2><p>首先我们定义我们初步要达到的功能目标：</p>
-<ul>
-<li>支持自动左右转向，当遇到障碍物时可以转向或者倒</li>
-<li>支持加速和减速，自动模式或者手动模式</li>
-<li>支持红外线遥控，可以手动遥控左右转向、倒退&#x2F;前进以及加减速</li>
-</ul>
-<p>高级功能：</p>
-<ul>
-<li>增加WIFI模块，可以通过远程控制</li>
-<li>增加摄像头模块，可以进行视频采集和监控</li>
-</ul>
-<h2 id="使用的硬件模组"><a href="#使用的硬件模组" class="headerlink" title="使用的硬件模组"></a>使用的硬件模组</h2><h3 id="TM4C123G-微控制器开发版"><a href="#TM4C123G-微控制器开发版" class="headerlink" title="TM4C123G 微控制器开发版"></a>TM4C123G 微控制器开发版</h3><p><img src="/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/ek-tm4c123gxl-top.png"></p>
-<h3 id="红外对管距离传感器-3个"><a href="#红外对管距离传感器-3个" class="headerlink" title="红外对管距离传感器 3个"></a>红外对管距离传感器 3个</h3><p>分别位于车体的前部、左部和右部</p>
-<h3 id="红外线接收器和遥控器"><a href="#红外线接收器和遥控器" class="headerlink" title="红外线接收器和遥控器"></a>红外线接收器和遥控器</h3><h3 id="L298N电机驱动模块"><a href="#L298N电机驱动模块" class="headerlink" title="L298N电机驱动模块"></a>L298N电机驱动模块</h3><p>L298N电机驱动</p>
-<h3 id="摄像头和WIFI模组"><a href="#摄像头和WIFI模组" class="headerlink" title="摄像头和WIFI模组"></a>摄像头和WIFI模组</h3><h3 id="L298N电机驱动"><a href="#L298N电机驱动" class="headerlink" title="L298N电机驱动"></a>L298N电机驱动</h3><p>L298N电机驱动</p>
-<h3 id="带有前后直流电机的模型小车"><a href="#带有前后直流电机的模型小车" class="headerlink" title="带有前后直流电机的模型小车"></a>带有前后直流电机的模型小车</h3><p>前部电机控制方向，后部电机负责前进和倒退</p>
-<p>初步功能实现后：<br>L298N电机驱动</p>
-<h2 id="软件平台"><a href="#软件平台" class="headerlink" title="软件平台"></a>软件平台</h2><p>  使用 <code>Keil uVersion IDE</code>.</p>
-<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="main函数主结构"><a href="#main函数主结构" class="headerlink" title="main函数主结构"></a>main函数主结构</h3><p>首先我们实现程序的主结构，它包含如下步骤：</p>
-<h4 id="激活grader和设置系统时钟"><a href="#激活grader和设置系统时钟" class="headerlink" title="激活grader和设置系统时钟"></a>激活grader和设置系统时钟</h4><p>设置系统时钟的方法是配置<code>PLL</code>，<code>TM4C123G</code>使用<code>16M</code>的主振荡器，具体配置<code>PLL</code>的方法在上一章中已经介绍。我们这里只需要直接调用接口：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">TexaS_INIT(SW_PIN_PE210, LED_PIN_PB543210);</span><br></pre></td></tr></table></figure>
-
-<p>它会设置系统时钟为 <code>80M Hz</code>.</p>
-<h4 id="初始化IO端口和定时器及中断"><a href="#初始化IO端口和定时器及中断" class="headerlink" title="初始化IO端口和定时器及中断"></a>初始化IO端口和定时器及中断</h4><p>首先初始化 <code>TM4C123G</code> 板上自带的<code>RGB LED</code>端口为数字输出端口，它分别对应<code>pin</code>口为<code>PF1（R）</code>、<code>PF2（B)</code>、<code>PF3（G）</code>,具体的函数定义在后面加入，这里只需要明白它做了什么。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RGB_LED_Init();</span><br></pre></td></tr></table></figure>
-
-<h4 id="初始化和直流电机相关的端口"><a href="#初始化和直流电机相关的端口" class="headerlink" title="初始化和直流电机相关的端口"></a>初始化和直流电机相关的端口</h4><p>设置<code>PD0</code>，<code>PD1</code>，<code>PD2</code>，<code>PD3</code>为数字输出端口，并设置其初始值为<code>0</code>；设置<code>PE5</code>为数字输出端口，并设初始值为<code>1</code>。上述5个端口都使用<code>8mA</code>驱动，具体如何用于控制电机后面会进行描述。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motor_Port_Init()</span><br></pre></td></tr></table></figure>
-
-<h4 id="前置电机定时器Timer0和中断初始化"><a href="#前置电机定时器Timer0和中断初始化" class="headerlink" title="前置电机定时器Timer0和中断初始化"></a>前置电机定时器Timer0和中断初始化</h4><p>我们在这里初始化<code>Timer0A</code>定时器，优先级为<code>2</code>，它的 <code>IRQ</code> 编号为19，<code>ISR</code>为<code>Timer0A_Handler</code>。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motro_Front_Init()</span><br></pre></td></tr></table></figure>
-
-<h4 id="后置电机定时器-Systick-和中断初始化"><a href="#后置电机定时器-Systick-和中断初始化" class="headerlink" title="后置电机定时器 Systick 和中断初始化"></a>后置电机定时器 Systick 和中断初始化</h4><p>我们设置 <code>SysTick</code> 定时器，优先级为<code>2</code>，<code>ISR</code> 为<code>SysTick_Handler</code>，<code>SysTick</code>中断不需要中断确认<code>(ack)</code>。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motro_Back_Init();</span><br></pre></td></tr></table></figure>
-
-<p>我们在使用定时器的目的是使用 <code>PWM</code> 来驱动电机，使其可以加速或者减速, 定时器可以帮助我们生成不同占空比的<code>PWM</code>，对于后置电机占空比由 <code>BACK_L</code>和 <code>BACK_H</code> 变量控制，这两个变量交替作为<code>SysTick</code>的初始计数器值。<code>PD0</code>和<code>PD1</code>端口与<code>LN298</code>模块相连，在<code>SysTick_Handler</code>中会向<code>PDO</code>和<code>PD1</code>输出 <code>0</code> 或者 <code>1</code>，如下所示：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">SysTick_Handler</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> bitmap = <span class="number">0x01</span> &lt;&lt; reversal;</span><br><span class="line">    <span class="keyword">if</span>(GPIO_PORTD_DATA_R &amp; bitmap)&#123; <span class="comment">// toggle ENA</span></span><br><span class="line">        GPIO_PORTD_DATA_R &amp;= ~bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_L<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        GPIO_PORTD_DATA_R |= bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_H<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>reversal</code>用来控制电机反向旋转；<code>NVIC_ST_RELOAD_R</code>寄存器存有 <code>SysTick</code> 的计数器初始值。</p>
-<h4 id="初始化-IRremote-模块"><a href="#初始化-IRremote-模块" class="headerlink" title="初始化 IRremote 模块"></a>初始化 IRremote 模块</h4><p>该模块负责红外遥控，主要包括<code>NEC</code>协议的解析等。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">IRremote_init();</span><br></pre></td></tr></table></figure>
-
-<h4 id="初始化和红外线距离传感器相关的端口及中断"><a href="#初始化和红外线距离传感器相关的端口及中断" class="headerlink" title="初始化和红外线距离传感器相关的端口及中断"></a>初始化和红外线距离传感器相关的端口及中断</h4><p>我们设置<code>PA4</code>，<code>PA5</code>，<code>PA6</code>为数字输入端口，并设置为双边缘触发中断，优先级为<code>1</code>，<code>IRQ</code>为 <code>0</code>，它们分别对应前方、左方和右方的传感器。连接到响应端口，当有信号到来时，会触发中断，进而执行 <code>GPIOPortA_Handler ISR</code>。在 <code>ISR</code> 中首先进行中断确认，然后会获取<code>3</code>个端口的数据值，根据数据值来判断当前小车前、左和右方是否有障碍物，会根据具体情况进行后退、转向或者加速等。在<code>IR_sensor_Init</code>中会时设置延迟定时器<code>TIMER1A</code>，但不能启动定时器，该定时器在<code>GPIOPortA_Handler</code>中启动，并根据具体参数设置延迟时间。在延迟期间，<code>GPIOPortA_Handler</code>不再处理来自传感器的数据而是直接返回。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">IR_sensor_Init();</span><br></pre></td></tr></table></figure>
-
-<h4 id="全局中断使能"><a href="#全局中断使能" class="headerlink" title="全局中断使能"></a>全局中断使能</h4><p>调用如下接口：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">EnableInterrupts();</span><br></pre></td></tr></table></figure>
-
-<p>其具体实现通过汇编代码表示为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EnableInterrupts    CPSID    I ; set I = 1</span><br><span class="line">                    BX    LR </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="进入主循环："><a href="#进入主循环：" class="headerlink" title="进入主循环："></a>进入主循环：</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (IRreceived()) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> data_value;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> count = <span class="number">1</span>&lt;&lt;<span class="number">15</span>;</span><br><span class="line">        data_value = getIRresult();</span><br><span class="line"></span><br><span class="line">        swicth(data_value) &#123;</span><br><span class="line">            <span class="comment">// ....</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (count) &#123;count--;&#125;</span><br><span class="line">    resumeIRremote(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>主循环主要是监听红外遥控命令来作出反应。</p>
-<h3 id="其他子函数"><a href="#其他子函数" class="headerlink" title="其他子函数"></a>其他子函数</h3><h4 id="后置电机停止-Motor-Back-Stop-函数"><a href="#后置电机停止-Motor-Back-Stop-函数" class="headerlink" title="后置电机停止 Motor_Back_Stop 函数"></a>后置电机停止 Motor_Back_Stop 函数</h4><p>该函数通过禁止 <code>SysTick</code> 定时器和设置 <code>PD0</code> 和 <code>PD1</code> 端口为 <code>0</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Stop</span><span class="params">()</span>&#123;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0</span>;      <span class="comment">// disable SysTick</span></span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x03</span>; <span class="comment">// make PD0(IN1),PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="后置电机运行"><a href="#后置电机运行" class="headerlink" title="后置电机运行"></a>后置电机运行</h4><p>重新使能 <code>SysTick</code> 并设置 <code>PD0</code> 和 <code>PD1</code>:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Run</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// e`nable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x01</span>; <span class="comment">// make PD0(IN1) high</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x02</span>; <span class="comment">// make PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="后置电机减速"><a href="#后置电机减速" class="headerlink" title="后置电机减速"></a>后置电机减速</h4><p>通过调节 <code>Bask_L</code> 和 <code>Back_H</code> 全局变量来实现，我们只能这两个变量会与 <code>SysTick</code> 定时器合作完成 <code>PWM</code> 控制。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SlowDown</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">         <span class="keyword">if</span>(back_L&gt;<span class="number">8000</span>) back_L = back_L - <span class="number">8000</span>; <span class="comment">//slow down</span></span><br><span class="line">        &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="后置电机加速"><a href="#后置电机加速" class="headerlink" title="后置电机加速"></a>后置电机加速</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SpeedUp</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">         <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(back_L&lt;<span class="number">72000</span>) back_L = back_L + <span class="number">8000</span>; <span class="comment">// speed up</span></span><br><span class="line">         &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="后置电机反向旋转"><a href="#后置电机反向旋转" class="headerlink" title="后置电机反向旋转"></a>后置电机反向旋转</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Reversal</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">1</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// enable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x01</span>; <span class="comment">// IN1 low</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x02</span>; <span class="comment">// IN2 high</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="左右转弯"><a href="#左右转弯" class="headerlink" title="左右转弯"></a>左右转弯</h4><p>左右转弯通过 <code>PWM</code> 控制前置电机完成，它要重新使能<code>Timer0A</code>定时器，因为在停止转向函数中该定时器会被禁止。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Turn_Left</span><span class="params">()</span>&#123;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x04</span>; <span class="comment">// PD2(IN3)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x08</span>; <span class="comment">// PD3 (IN4)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Turn_Right</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//TIMER0_CTL_R |= 0x00000001;</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x08</span>; <span class="comment">// PD3(IN4)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x04</span>; <span class="comment">// PD2 (IN3)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="停止转向"><a href="#停止转向" class="headerlink" title="停止转向"></a>停止转向</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void Turn_Stop()&#123;</span><br><span class="line">    TIMER0_CTL_R &amp;= ~0x00000001;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~0x0c; // make PD2(IN3),PD3(IN4) low</span><br><span class="line">    turning = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h3><h4 id="摄像头"><a href="#摄像头" class="headerlink" title="摄像头"></a>摄像头</h4><h4 id="使用WIFI模组联网"><a href="#使用WIFI模组联网" class="headerlink" title="使用WIFI模组联网"></a>使用WIFI模组联网</h4>]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
@@ -4920,6 +4744,110 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </tags>
   </entry>
   <entry>
+    <title>OpenWrt Introduction</title>
+    <url>/2022/07/02/OpenWrt-Introduction/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://openwrt.org/">OpenWrt</a> 是针对嵌入式设备（特别是无线路由器）的 <code>Linux</code> 系统。<code>OpenWrt</code>使用带有包管理的完全可写的文件系统，这与静态、封闭的固件不同。<code>OpenWrt</code> 可以使用户获得更大的自由来进行个性化的配置（包括应用软件包的选择）、对系统及底层硬件资源完全的掌握。从安全的角度讲，用户可以自己检测固件是否包含安全漏洞或者后门（backdoor）程序，<code>OpenWrt</code> 的更新相对原固件更加及时，安全问题会更快地发现并解决。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://openwrt.org/docs/guide-developer/start">OpenWrt Developer Guide</a></p>
+</blockquote>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>最新版本：<code>22.03.3</code></p>
+<h2 id="设备支持和软件包"><a href="#设备支持和软件包" class="headerlink" title="设备支持和软件包"></a>设备支持和软件包</h2><h3 id="设备支持"><a href="#设备支持" class="headerlink" title="设备支持"></a>设备支持</h3><p><code>OpenWrt</code> 支持超过 65+ Target&#x2F;Soc，覆盖的指令集架构包括 <code>ARM</code>、<code>MIPS</code>、<code>MIPS64</code>、<code>PPC</code>、<code>X86</code> 和 <code>x86_64</code> 。</p>
+<p>设备存储容量要求：</p>
+<ul>
+<li>最小 4M 的 Flash（不支持 GUI），8M 更好（支持 GUI）；</li>
+<li>最小 32M 的 RAM，64M 更好。</li>
+</ul>
+<p>如果使用 18.06 或 更高的 OpenWrt 版本，上述 <code>4/32</code> 的最小要求可能无法满足，参看 <code>4/32</code>警告。</p>
+<p><a href="https://openwrt.org/toh/start">ToH</a> 中列举了当前支持的设备列表，根据厂商及型号索引相关支持信息。用户可以更新该列表，加入已经过测试的新设备。</p>
+<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>现在最新 21.02 版本的软件包仓库: <a href="https://openwrt.org/packages/index/start">Package Index</a></p>
+<p>这些软件包(1000+)可以用来扩展系统的功能，它包括一些分类：管理类（Administration）、语言类（Languages）、库（Libraries）、基础系统（Base System）、引导（BootLoader）、固件（Firmware）、网络类（Network）和 工具类（Utilties）等等。</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>OpenWrt 的整体架构和其他 Linux 发行版系统类似，基本上采用 <code>软件包+包管理器+内核</code> 的结构。</p>
+<p>OpenWrt 的软件包在源代码中基本上只有一个 <code>Makefile</code> 文件，其中包含软件包上游的信息以及 OpenWrt 自己所作的修改。这与<code>ArchLinux</code>的做法类似。所有的软件包都使用 OpenWrt 自己的工具链进行编译，但工具链本身需要先通过用户(<code>Host</code>)系统上的编译工具链生成。所以 OpenWrt 的工具链实际上是交叉编译工具链。在 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 0: LFS 项目介绍]</a> 中有更多关于交叉编译的细节。</p>
+<p>OpenWrt 使用 <code>opkg</code> 包管理器。其软件仓库分为 <code>base</code> 和 <code>luci</code>、<code>packages</code>、<code>routing</code>、<code>telephony</code>。<code>base</code> 为主仓库，由核心开发人员维护；后面 4 个仓库称为 <code>package feeds</code>，它们由社区维护，每个包都有一个维护者。<code>package feed</code>系统很容易扩展，用户可以将自己的包放入官方的<code>feed</code>中或者根据自己手头特殊的固件来定制化<code>feed</code>（将包放到自己的下载服务器中）。</p>
+<p>软件包的版本号：<code>上游主版本号-OpenWrt子版本号</code>，子版本号代表 OpenWrt 对该上游软件包进行了修改或者包装（与 debian 系统类似）。</p>
+<p>内核本身也可以看作一个软件包，虽然它的编译相对来说更加复杂，但<code>Makefile</code>中的结构和其他软件包基本上都是相同的。</p>
+<h2 id="源代码结构"><a href="#源代码结构" class="headerlink" title="源代码结构"></a>源代码结构</h2><p>OpenWrt 的源代码仓库：</p>
+<ul>
+<li>GitWeb - OpenWrt 的 <code>master</code> git仓库</li>
+<li>GitHub - 持续更新的 GitWeb 的镜像仓库</li>
+</ul>
+<p>目录结构：</p>
+<ul>
+<li>&#x2F;config : menuconfig 的配置文件</li>
+<li>&#x2F;include: 属于主仓库的软件包的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;scripts: 构建过程中使用的脚本（Perl、Python 和 shell 等）</li>
+<li>&#x2F;target: <code>Buildroot</code>构建<code>imagebuild</code>、<code>kernel</code>、<code>sdk</code>和<code>toolchain</code>的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;toolchain: 构建交叉编译工具链的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;tool: 构建过程中使用的工具的<code>makefile</code>和<code>configuration</code></li>
+</ul>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>在第3节中说，OpenWrt 的工具链为交叉编译工具链，因为大部分目标设备的CPU 架构都与 Host 系统不同。对于用户来说，可以手动构建自己的工具链，然后构建 OpenWrt，但这种做法相对困难且很容易出错。</p>
+<p>OpenWrt 的构建系统采取了不同的方法：它构建任何一部分都是从零开始、下载、打补丁和编译，包括交叉工具链也是如此。简单地说，OpenWrt 的构建系统不包含任何二进制代码或者源代码，它安全自动化的下载、针对给定的平台打补丁、针对给定的平台进行编译。另外，用户通过修改模板，进而改变这个过程中任何一步的行为。</p>
+<h3 id="构建系统所工作的主要目录"><a href="#构建系统所工作的主要目录" class="headerlink" title="构建系统所工作的主要目录"></a>构建系统所工作的主要目录</h3><ul>
+<li><p><strong>tools</strong>: 构建 <code>toolchain</code>、<code>packages</code>或<code>image generator</code>所使用的基本软件（例如<code>Autoconf</code>和<code>Automake</code>等）；虽然这些基本软件会有一部分已经安装在<code>Host</code>系统上，但 OpenWrt 选择编译自己的工具软件，这使得它不需要担心<code>Host</code>系统可能存在的版本不兼容问题。</p>
+</li>
+<li><p><strong>toolchain</strong>: 包括<code>编译器</code>、<code>链接器</code>、<code>汇编器</code>、<code>运行时库</code>和<code>通用工具</code>；构建过程中会生成两个其他目录 <code>toolchainbuild&#123;arch&#125;</code> 和 <code>stagingdir&#123;arch&#125;</code>；前者是构建<code>临时目录</code>，后者是工具链的<code>安装目录</code>。</p>
+</li>
+<li><p><strong>target</strong>: 包含针对特定嵌入式平台的补丁或者配置选项；例如<code>target/linux</code>子目录又根据不同的嵌入式平台进行划分，在某个嵌入式平台的目录中包含了对 Linux 内核的补丁和内核配置；类似的，<code>target/imagebuilder</code>子目录描述了如何针对特定平台打包固件。</p>
+</li>
+<li><p><strong>package</strong>: 打包后的软件包，后缀名为<code>ipk</code>（就像如果使用<code>debian</code>包格式，后缀名为<code>deb</code>）</p>
+</li>
+<li><p><strong>dl</strong>: 构建过程中下载的源代码等会放到该目录。</p>
+</li>
+</ul>
+<p>在<code>target</code>和<code>package</code>步骤中，也会生成临时构建目录<code>build_&#123;arch&#125;</code>。</p>
+<p>在主目录下会生成 <code>build_dir</code> 和 <code>staging_dir</code> 目录，<code>build_dir</code>用来解压下载后的软件包源码，然后编译它；<code>staging_dir</code>用来作为所有已编译好的程序的安装目录，它们可以用来构建其他软件包或者集成到最后的固件中。<code>build_dir</code>分为几个子目录：</p>
+<ul>
+<li><strong>build_dir&#x2F;host</strong>：所有将会运行在 Host系统上的工具，例如<code>sed</code>和<code>flex</code>等。</li>
+<li><strong>build_dir&#x2F;hostpkg:</strong></li>
+<li><strong>build_dir&#x2F;toolchain-xxxxxxx</strong> ：所有运行在<code>Host</code>系统上的交叉编译工具链、Linux内核，以及被运行在<code>Target</code>系统上的工具多需要链接的库，例如<code>musl</code>和<code>uClibc</code>（两者都是针对嵌入式设备的 C 库）等。</li>
+<li><strong>build_dir&#x2F;target-xxxxxxx</strong>：运行在<code>Target</code>系统上的软件。</li>
+</ul>
+<p><code>staging_dir</code> 目录也分类类似的几个子目录：</p>
+<ul>
+<li><strong>staging_dir&#x2F;host</strong> ：一个小型的 Linux 根目录，包括运行在 Host上的工具，其中有些工具符号链接到 Host 系统上已经安装的相同工具。</li>
+<li><strong>staging_dir&#x2F;hostpkg</strong>：</li>
+<li><strong>staging_dir&#x2F;toolchain-xxxxxxx</strong>：一个小型的 Linux 根目录，包含运行在 Host 上的交叉编译工具链，例如 aarch64-openwrt-linux-musl-gcc。</li>
+<li><strong>staging_dir&#x2F;target-xxxxxxx&#x2F;root-xxxx</strong>：一个 Linux 根目录，并且是最后生成固件的根文件系统的基础。</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>很容易移植软件。</li>
+<li>使用 <code>kconfig</code> 来配置相关特性。</li>
+<li>提供内置的交叉编译工具链。</li>
+<li>处理标准的下载、打补丁、配置、编译和打包工作流。</li>
+<li>对一些损坏的包提供一些通用的<code>fixups</code>。</li>
+</ul>
+<h3 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h3><p>a. tools</p>
+<p>b. toolchain&#x2F;binutils - 交叉汇编器、交叉连接器等</p>
+<p>c. toolchain&#x2F;gcc - 交叉编译器（我们在LFS 0: LFS 项目介绍中介绍过，gcc 的构建需要多次 Pass）</p>
+<p>d. target&#x2F;linux - 内核模块</p>
+<p>e. package - core(即base)仓库和feed仓库软件包</p>
+<p>f. target&#x2F;linux - 内核镜像</p>
+<p>g. target&#x2F;imagebuilder - 生成固件</p>
+<h3 id="补丁管理"><a href="#补丁管理" class="headerlink" title="补丁管理"></a>补丁管理</h3><h3 id="Buildroot"><a href="#Buildroot" class="headerlink" title="Buildroot"></a>Buildroot</h3><h2 id="简单实践"><a href="#简单实践" class="headerlink" title="简单实践"></a>简单实践</h2><h3 id="所用路由器配置"><a href="#所用路由器配置" class="headerlink" title="所用路由器配置"></a>所用路由器配置</h3><p>Flash芯片： <code>cFeon QN32B-104HIP</code> 32M 容量<br>微处理器 A：<code>MediaTek MT7628DBN</code>，该处理器的相关属性如下：</p>
+<ul>
+<li>CPU: 32位 MIPS 24K™CPU核</li>
+<li>时钟频率：580 MHZ</li>
+<li>I-Cache, D-Cache : 64kb, 32kb</li>
+<li>Memeory: 16bits</li>
+<li>RF : 2T2R 802.11n 2.4 GHz</li>
+<li>USB: 2.0</li>
+<li>DRAM ： 8M</li>
+</ul>
+<p>微处理器 B: <code>MediaTek MT7613BEN</code>，该处理器的相关属性如下：</p>
+<ul>
+<li>5G WIFI 芯片</li>
+<li>64M RAM</li>
+</ul>
+<p>MT7628 原理图：<br><img src="/2022/07/02/OpenWrt-Introduction/mt7628_arch.png"></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
     <title>vim配置及命令手册</title>
     <url>/2022/04/29/vim%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;vim是著名编辑器<code>vi</code>的变种，相比<code>vi</code>而言，提供了更多扩展，包括插件结构等。vim可以打造成IDE前端，但在Unix&#x2F;Linux环境中，标准的IDE并不是开发人员的首选；而可以灵活整合各种语言和工具的vim与<code>emacs</code>则是Unix&#x2F;Linux下开发人员的主要选择。<br>&emsp;&emsp;下文中的快捷键都可以重新绑定，但默认的绑定设置大部分都是最方便的选择，遵循传统可以有利于协作开发。<br>&emsp;&emsp;<strong>下文中快捷键中带<code>+</code>号的组合键代表同时按下，不带<code>+</code>号的顺序按下。组合键有些会用空格分隔，这样做是为了使得描述更清晰直接，此时空格并不是组合键的一部分；如果有些快捷键中包含空格，下文会以<code>&lt;Space&gt;</code>来表示。另外，<code>（n）</code>表示实际的按键是整数数字，而不是字母<code>n</code>。</strong></p>
@@ -4958,6 +4886,89 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SmartCar 项目</title>
+    <url>/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文章是整理基于<code>TM4C123G</code>开发板的智能小车的项目笔记，它会包括整个项目的开发流程及相关技术知识等，但它没有任何工程学上的目标，只是一种学习或者说一种动手设计的乐趣。</p>
+<span id="more"></span>
+
+<h2 id="功能目标"><a href="#功能目标" class="headerlink" title="功能目标"></a>功能目标</h2><p>首先我们定义我们初步要达到的功能目标：</p>
+<ul>
+<li>支持自动左右转向，当遇到障碍物时可以转向或者倒</li>
+<li>支持加速和减速，自动模式或者手动模式</li>
+<li>支持红外线遥控，可以手动遥控左右转向、倒退&#x2F;前进以及加减速</li>
+</ul>
+<p>高级功能：</p>
+<ul>
+<li>增加WIFI模块，可以通过远程控制</li>
+<li>增加摄像头模块，可以进行视频采集和监控</li>
+</ul>
+<h2 id="使用的硬件模组"><a href="#使用的硬件模组" class="headerlink" title="使用的硬件模组"></a>使用的硬件模组</h2><h3 id="TM4C123G-微控制器开发版"><a href="#TM4C123G-微控制器开发版" class="headerlink" title="TM4C123G 微控制器开发版"></a>TM4C123G 微控制器开发版</h3><p><img src="/2021/04/20/SmartCar-%E9%A1%B9%E7%9B%AE/ek-tm4c123gxl-top.png"></p>
+<h3 id="红外对管距离传感器-3个"><a href="#红外对管距离传感器-3个" class="headerlink" title="红外对管距离传感器 3个"></a>红外对管距离传感器 3个</h3><p>分别位于车体的前部、左部和右部</p>
+<h3 id="红外线接收器和遥控器"><a href="#红外线接收器和遥控器" class="headerlink" title="红外线接收器和遥控器"></a>红外线接收器和遥控器</h3><h3 id="L298N电机驱动模块"><a href="#L298N电机驱动模块" class="headerlink" title="L298N电机驱动模块"></a>L298N电机驱动模块</h3><p>L298N电机驱动</p>
+<h3 id="摄像头和WIFI模组"><a href="#摄像头和WIFI模组" class="headerlink" title="摄像头和WIFI模组"></a>摄像头和WIFI模组</h3><h3 id="L298N电机驱动"><a href="#L298N电机驱动" class="headerlink" title="L298N电机驱动"></a>L298N电机驱动</h3><p>L298N电机驱动</p>
+<h3 id="带有前后直流电机的模型小车"><a href="#带有前后直流电机的模型小车" class="headerlink" title="带有前后直流电机的模型小车"></a>带有前后直流电机的模型小车</h3><p>前部电机控制方向，后部电机负责前进和倒退</p>
+<p>初步功能实现后：<br>L298N电机驱动</p>
+<h2 id="软件平台"><a href="#软件平台" class="headerlink" title="软件平台"></a>软件平台</h2><p>  使用 <code>Keil uVersion IDE</code>.</p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><h3 id="main函数主结构"><a href="#main函数主结构" class="headerlink" title="main函数主结构"></a>main函数主结构</h3><p>首先我们实现程序的主结构，它包含如下步骤：</p>
+<h4 id="激活grader和设置系统时钟"><a href="#激活grader和设置系统时钟" class="headerlink" title="激活grader和设置系统时钟"></a>激活grader和设置系统时钟</h4><p>设置系统时钟的方法是配置<code>PLL</code>，<code>TM4C123G</code>使用<code>16M</code>的主振荡器，具体配置<code>PLL</code>的方法在上一章中已经介绍。我们这里只需要直接调用接口：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">TexaS_INIT(SW_PIN_PE210, LED_PIN_PB543210);</span><br></pre></td></tr></table></figure>
+
+<p>它会设置系统时钟为 <code>80M Hz</code>.</p>
+<h4 id="初始化IO端口和定时器及中断"><a href="#初始化IO端口和定时器及中断" class="headerlink" title="初始化IO端口和定时器及中断"></a>初始化IO端口和定时器及中断</h4><p>首先初始化 <code>TM4C123G</code> 板上自带的<code>RGB LED</code>端口为数字输出端口，它分别对应<code>pin</code>口为<code>PF1（R）</code>、<code>PF2（B)</code>、<code>PF3（G）</code>,具体的函数定义在后面加入，这里只需要明白它做了什么。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RGB_LED_Init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化和直流电机相关的端口"><a href="#初始化和直流电机相关的端口" class="headerlink" title="初始化和直流电机相关的端口"></a>初始化和直流电机相关的端口</h4><p>设置<code>PD0</code>，<code>PD1</code>，<code>PD2</code>，<code>PD3</code>为数字输出端口，并设置其初始值为<code>0</code>；设置<code>PE5</code>为数字输出端口，并设初始值为<code>1</code>。上述5个端口都使用<code>8mA</code>驱动，具体如何用于控制电机后面会进行描述。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motor_Port_Init()</span><br></pre></td></tr></table></figure>
+
+<h4 id="前置电机定时器Timer0和中断初始化"><a href="#前置电机定时器Timer0和中断初始化" class="headerlink" title="前置电机定时器Timer0和中断初始化"></a>前置电机定时器Timer0和中断初始化</h4><p>我们在这里初始化<code>Timer0A</code>定时器，优先级为<code>2</code>，它的 <code>IRQ</code> 编号为19，<code>ISR</code>为<code>Timer0A_Handler</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motro_Front_Init()</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机定时器-Systick-和中断初始化"><a href="#后置电机定时器-Systick-和中断初始化" class="headerlink" title="后置电机定时器 Systick 和中断初始化"></a>后置电机定时器 Systick 和中断初始化</h4><p>我们设置 <code>SysTick</code> 定时器，优先级为<code>2</code>，<code>ISR</code> 为<code>SysTick_Handler</code>，<code>SysTick</code>中断不需要中断确认<code>(ack)</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Motro_Back_Init();</span><br></pre></td></tr></table></figure>
+
+<p>我们在使用定时器的目的是使用 <code>PWM</code> 来驱动电机，使其可以加速或者减速, 定时器可以帮助我们生成不同占空比的<code>PWM</code>，对于后置电机占空比由 <code>BACK_L</code>和 <code>BACK_H</code> 变量控制，这两个变量交替作为<code>SysTick</code>的初始计数器值。<code>PD0</code>和<code>PD1</code>端口与<code>LN298</code>模块相连，在<code>SysTick_Handler</code>中会向<code>PDO</code>和<code>PD1</code>输出 <code>0</code> 或者 <code>1</code>，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">SysTick_Handler</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> bitmap = <span class="number">0x01</span> &lt;&lt; reversal;</span><br><span class="line">    <span class="keyword">if</span>(GPIO_PORTD_DATA_R &amp; bitmap)&#123; <span class="comment">// toggle ENA</span></span><br><span class="line">        GPIO_PORTD_DATA_R &amp;= ~bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_L<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        GPIO_PORTD_DATA_R |= bitmap;</span><br><span class="line">        NVIC_ST_RELOAD_R = back_H<span class="number">-1</span>; <span class="comment">// reload value for low phase</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>reversal</code>用来控制电机反向旋转；<code>NVIC_ST_RELOAD_R</code>寄存器存有 <code>SysTick</code> 的计数器初始值。</p>
+<h4 id="初始化-IRremote-模块"><a href="#初始化-IRremote-模块" class="headerlink" title="初始化 IRremote 模块"></a>初始化 IRremote 模块</h4><p>该模块负责红外遥控，主要包括<code>NEC</code>协议的解析等。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">IRremote_init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化和红外线距离传感器相关的端口及中断"><a href="#初始化和红外线距离传感器相关的端口及中断" class="headerlink" title="初始化和红外线距离传感器相关的端口及中断"></a>初始化和红外线距离传感器相关的端口及中断</h4><p>我们设置<code>PA4</code>，<code>PA5</code>，<code>PA6</code>为数字输入端口，并设置为双边缘触发中断，优先级为<code>1</code>，<code>IRQ</code>为 <code>0</code>，它们分别对应前方、左方和右方的传感器。连接到响应端口，当有信号到来时，会触发中断，进而执行 <code>GPIOPortA_Handler ISR</code>。在 <code>ISR</code> 中首先进行中断确认，然后会获取<code>3</code>个端口的数据值，根据数据值来判断当前小车前、左和右方是否有障碍物，会根据具体情况进行后退、转向或者加速等。在<code>IR_sensor_Init</code>中会时设置延迟定时器<code>TIMER1A</code>，但不能启动定时器，该定时器在<code>GPIOPortA_Handler</code>中启动，并根据具体参数设置延迟时间。在延迟期间，<code>GPIOPortA_Handler</code>不再处理来自传感器的数据而是直接返回。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">IR_sensor_Init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="全局中断使能"><a href="#全局中断使能" class="headerlink" title="全局中断使能"></a>全局中断使能</h4><p>调用如下接口：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">EnableInterrupts();</span><br></pre></td></tr></table></figure>
+
+<p>其具体实现通过汇编代码表示为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EnableInterrupts    CPSID    I ; set I = 1</span><br><span class="line">                    BX    LR </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="进入主循环："><a href="#进入主循环：" class="headerlink" title="进入主循环："></a>进入主循环：</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (IRreceived()) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> data_value;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> count = <span class="number">1</span>&lt;&lt;<span class="number">15</span>;</span><br><span class="line">        data_value = getIRresult();</span><br><span class="line"></span><br><span class="line">        swicth(data_value) &#123;</span><br><span class="line">            <span class="comment">// ....</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (count) &#123;count--;&#125;</span><br><span class="line">    resumeIRremote(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主循环主要是监听红外遥控命令来作出反应。</p>
+<h3 id="其他子函数"><a href="#其他子函数" class="headerlink" title="其他子函数"></a>其他子函数</h3><h4 id="后置电机停止-Motor-Back-Stop-函数"><a href="#后置电机停止-Motor-Back-Stop-函数" class="headerlink" title="后置电机停止 Motor_Back_Stop 函数"></a>后置电机停止 Motor_Back_Stop 函数</h4><p>该函数通过禁止 <code>SysTick</code> 定时器和设置 <code>PD0</code> 和 <code>PD1</code> 端口为 <code>0</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Stop</span><span class="params">()</span>&#123;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0</span>;      <span class="comment">// disable SysTick</span></span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x03</span>; <span class="comment">// make PD0(IN1),PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机运行"><a href="#后置电机运行" class="headerlink" title="后置电机运行"></a>后置电机运行</h4><p>重新使能 <code>SysTick</code> 并设置 <code>PD0</code> 和 <code>PD1</code>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Run</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">0</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// e`nable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x01</span>; <span class="comment">// make PD0(IN1) high</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x02</span>; <span class="comment">// make PD1(IN2) low</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机减速"><a href="#后置电机减速" class="headerlink" title="后置电机减速"></a>后置电机减速</h4><p>通过调节 <code>Bask_L</code> 和 <code>Back_H</code> 全局变量来实现，我们只能这两个变量会与 <code>SysTick</code> 定时器合作完成 <code>PWM</code> 控制。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SlowDown</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">         <span class="keyword">if</span>(back_L&gt;<span class="number">8000</span>) back_L = back_L - <span class="number">8000</span>; <span class="comment">//slow down</span></span><br><span class="line">        &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机加速"><a href="#后置电机加速" class="headerlink" title="后置电机加速"></a>后置电机加速</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_SpeedUp</span><span class="params">(<span class="type">int</span> n)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(NVIC_ST_CTRL_R != <span class="number">0x0</span>)&#123;</span><br><span class="line">         <span class="keyword">while</span>((n--)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(back_L&lt;<span class="number">72000</span>) back_L = back_L + <span class="number">8000</span>; <span class="comment">// speed up</span></span><br><span class="line">         &#125;</span><br><span class="line">         back_H = <span class="number">80000</span> - back_L;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后置电机反向旋转"><a href="#后置电机反向旋转" class="headerlink" title="后置电机反向旋转"></a>后置电机反向旋转</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Motor_Back_Reversal</span><span class="params">()</span>&#123;</span><br><span class="line">    reversal = <span class="number">1</span>;</span><br><span class="line">    NVIC_ST_CTRL_R = <span class="number">0x07</span>; <span class="comment">// enable SysTick with core clock and interrupts</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x01</span>; <span class="comment">// IN1 low</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x02</span>; <span class="comment">// IN2 high</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="左右转弯"><a href="#左右转弯" class="headerlink" title="左右转弯"></a>左右转弯</h4><p>左右转弯通过 <code>PWM</code> 控制前置电机完成，它要重新使能<code>Timer0A</code>定时器，因为在停止转向函数中该定时器会被禁止。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Turn_Left</span><span class="params">()</span>&#123;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x04</span>; <span class="comment">// PD2(IN3)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x08</span>; <span class="comment">// PD3 (IN4)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Turn_Right</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//TIMER0_CTL_R |= 0x00000001;</span></span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~<span class="number">0x08</span>; <span class="comment">// PD3(IN4)</span></span><br><span class="line">    GPIO_PORTD_DATA_R |= <span class="number">0x04</span>; <span class="comment">// PD2 (IN3)</span></span><br><span class="line">    TIMER0_CTL_R |= <span class="number">0x00000001</span>;</span><br><span class="line">    turning =<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="停止转向"><a href="#停止转向" class="headerlink" title="停止转向"></a>停止转向</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void Turn_Stop()&#123;</span><br><span class="line">    TIMER0_CTL_R &amp;= ~0x00000001;</span><br><span class="line">    GPIO_PORTD_DATA_R &amp;= ~0x0c; // make PD2(IN3),PD3(IN4) low</span><br><span class="line">    turning = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h3><h4 id="摄像头"><a href="#摄像头" class="headerlink" title="摄像头"></a>摄像头</h4><h4 id="使用WIFI模组联网"><a href="#使用WIFI模组联网" class="headerlink" title="使用WIFI模组联网"></a>使用WIFI模组联网</h4>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
       </categories>
   </entry>
   <entry>
