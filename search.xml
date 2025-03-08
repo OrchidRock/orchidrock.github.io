@@ -2390,6 +2390,13 @@
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bus_type</span> <span class="title">platform_bus_type</span> =</span> &#123;</span><br><span class="line">	.name		= <span class="string">&quot;platform&quot;</span>,</span><br><span class="line">	.dev_groups	= platform_dev_groups,</span><br><span class="line">	.match		= platform_match,</span><br><span class="line">	.uevent		= platform_uevent,</span><br><span class="line">	.dma_configure	= platform_dma_configure,</span><br><span class="line">	.pm		= &amp;platform_dev_pm_ops,</span><br><span class="line">&#125;;</span><br><span class="line">EXPORT_SYMBOL_GPL(platform_bus_type);</span><br></pre></td></tr></table></figure>
 
 <p>其中 <code>match()</code> 函数用于确定 <code>platform_device</code> 和 <code>platform_driver</code> 的匹配。</p>
+<p>四种匹配方法：</p>
+<ul>
+<li>基于设备树风格的匹配 </li>
+<li>基于 <code>ACPI</code> 风格的匹配</li>
+<li>匹配 <code>ID</code> 表（即 <code>platform_device</code> 设备名是否出现在 <code>platform driver</code> 的 <code>ID</code> 表中）</li>
+<li>匹配 <code>platform_device</code> 设备名和驱动的名字。</li>
+</ul>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2680,6 +2687,15 @@
 <p>参考 <a href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a><br>参考 <a href="https://www.kernel.org/doc/html/v6.13-rc6/dev-tools/gdb-kernel-debugging.html">Debugging kernel and modules via gdb</a></p>
 </blockquote>
 <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code>  或者对于 ARM 架构：<code>$ sudo apt-get install qemu-system-arm</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
+<h3 id="U-Boot"><a href="#U-Boot" class="headerlink" title="U-Boot"></a>U-Boot</h3><p><code>U-Boot</code> 主要用于嵌入式 Linux 系统的 <code>bootloader</code>，编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://gitee.com/mirrors/u-boot.git</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> u-boot</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_ca9x4_defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -j8</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>qemu</code> 虚拟机：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-arm -M vexpress-a9 -m 256 -kernel u-boot -nographic</span></span><br><span class="line">U-Boot 2025.04-rc3-00052-g0fd7ee0306a8 (Mar 08 2025 - 17:55:54 +0800)</span><br><span class="line"></span><br><span class="line">DRAM:  256 MiB</span><br><span class="line">WARNING: Caches not enabled</span><br><span class="line">Core:  23 devices, 11 uclasses, devicetree: embed</span><br><span class="line">Flash: 128 MiB</span><br><span class="line">MMC:   mmci@5000: 0</span><br><span class="line">Loading Environment from Flash... *** Warning - bad CRC, using default environment</span><br><span class="line"></span><br><span class="line">In:    uart@9000</span><br><span class="line">Out:   uart@9000</span><br><span class="line">Err:   uart@9000</span><br><span class="line">Net:   eth0: ethernet@3,02000000</span><br><span class="line">Hit any key to stop autoboot:  0</span><br><span class="line">=&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考 <a href="https://geekdaxue.co/read/barret@xhw7bc/dp7crb">基于 QEMU 的 ARM 仿真</a> 。</p>
+</blockquote>
 <h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。另外取消 <code>Kernel Features -&gt; Randomize the address of the kernel image</code> 配置项。</p>
 <h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><p>使用 <a href="https://buildroot.org/">Buildroot 工具</a> 来制作根文件系统。官网下载源代码后，编译构建：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig  <span class="comment"># 选择架构和文件系统类型</span></span></span><br></pre></td></tr></table></figure>
