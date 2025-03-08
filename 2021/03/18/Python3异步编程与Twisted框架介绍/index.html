@@ -27,7 +27,7 @@
 <meta property="og:description" content="概述异步编程模型在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-18T09:32:00.000Z">
-<meta property="article:modified_time" content="2025-03-07T13:19:44.631Z">
+<meta property="article:modified_time" content="2025-03-07T14:11:45.859Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 
@@ -139,7 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">异步编程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Select-%E5%92%8C-Poll"><span class="nav-number">3.</span> <span class="nav-text">Select 和 Poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asyncio"><span class="nav-number">4.</span> <span class="nav-text">Asyncio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Twisted-%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">Twisted 框架</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">异步编程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Select-%E5%92%8C-Poll"><span class="nav-number">3.</span> <span class="nav-text">Select 和 Poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIO"><span class="nav-number">4.</span> <span class="nav-text">AIO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asyncio"><span class="nav-number">5.</span> <span class="nav-text">Asyncio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Twisted-%E6%A1%86%E6%9E%B6"><span class="nav-number">6.</span> <span class="nav-text">Twisted 框架</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -249,7 +249,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-03-07 21:19:44" itemprop="dateModified" datetime="2025-03-07T21:19:44+08:00">2025-03-07</time>
+      <time title="修改时间：2025-03-07 22:11:45" itemprop="dateModified" datetime="2025-03-07T22:11:45+08:00">2025-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -268,7 +268,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
+      <span>2.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -293,6 +293,9 @@
 <p>异步模型同样也是基于同样的思想，发掘和利用程序的并行性，特别是I&#x2F;O类程序（I&#x2F;O bound program）。参考krondo的 <a target="_blank" rel="noopener" href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction Part1</a> ,那里对该主题有更详细具体的描述。</p>
 <h3 id="Select-和-Poll"><a href="#Select-和-Poll" class="headerlink" title="Select 和 Poll"></a>Select 和 Poll</h3><p>在 <code>Unix/Linux</code> 传统的<code>非阻塞 IO</code>编程中，<code>select()</code>、<code>poll()</code> 和 <code>epoll()</code> 函数是最重要的系统调用。但三个函数的性能是不一样的，<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/ols/2004/ols2004v1-pages-215-226.pdf">Comparing and Evaluating epoll, select, and poll Event Mechanisms</a> 文档对比了三者的性能。一般来说，当涉及的 <code>fd</code> 数量较少的时候，使用 <code>select</code> 是合适的；如果涉及的<code>fd</code>很多，如高性能网络服务器中，适合使用 <code>epoll</code> 。</p>
 <p><code>非阻塞 IO</code> 不完全等于<code>异步 IO</code>。如果要使用<code>异步 IO</code>，<code>Unix/Linux</code>可以使用<code>基于信号的异步通知</code>机制。</p>
+<h3 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h3><p>Linux 的 <code>AIO</code> 是一种异常 IO 机制，有多种实现方式。其中一种实现是在用户空间的 <code>glibc</code> 库中实现的，它本质上是借用了多线程模型，用开启新的线程以同步的方法来做 I&#x2F;O，新的 <code>AIO</code> 辅助线程以 <code>pthread_cond_signal()</code> 的形式进行线程间的同步。</p>
+<p><code>Linux AIO</code> 也可以由内核空间实现，相比而言，要比 <code>glibc</code> 实现的方案有更好的性能。在用户空间，一般要结合 <code>libaio</code> 进行内核 <code>AIO</code> 的系统调用。</p>
+<p>选择正确的 <code>I/O</code> 模型对系统性能的影响很大，关于该问题可以参阅著名的 <a target="_blank" rel="noopener" href="http://www.kegel.com/c10k.html">C10K 问题</a>，它特指服务器同时支持成千上万客户端的问题。</p>
 <h3 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h3><p>python asyncio库是一种在单线程、单进程下的异步模型，它的用户可以显示控制（context switching）程序的工作流，特别是当有多个任务协作进行时。这种特性是指它可以停止程序某部分的执行（往往是该部分因等待I&#x2F;O事件而阻塞），但保存其调用时的状态信息，然后在未来需要的时候重新进入这个状态，在这之前，主程序可以切换到其他任务。而在多线程与多进程的模型下，任务的切换由操作系统控制，用户无法对何时切换、切换的顺序等作出预测，另外线程或者进程间的通信和同步也是不小的编程负担。</p>
 <p>在使用asyncio库以前，要首先理解什么是事件循环（event loop），循环是我们将时间引入计算机后必然的产物。在现实世界中，我们看待对象的方式都是和时间有关的，在不同的时间有不同的状态，在计算机中，要表现对象的状态随时间的变化，就必须引入状态变量以及对状态变量的访问和修改机制。在一个并发的程序系统中，不同部分都有着自己的状态，而且它们之间会相互影响，通过事件循环的方式我们可以将逻辑上的并行工作流映射到对现实世界抽象的单一的时间流中。</p>
 <p>任何一个asyncio程序都必须要生成一个event loop对象，每一个任务由coroutine对象表示。我们将coroutine对象想象‘挂在’（hook）或者说注册到（register）event loop上，如果某个coroutine 阻塞了，event loop就会跳过它执行其他任务，但event loop会监控它的状态，等到它从阻塞中唤醒时就从阻塞的地方重新执行它。</p>
