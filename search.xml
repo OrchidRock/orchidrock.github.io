@@ -2381,6 +2381,15 @@
 <p><code>file_operations</code> 结构体中的成员函数是字符设备驱动与内核虚拟文件的接口。</p>
 <p>特别注意的是，在这些接口中，很多需要进行内核空间与用户空间的数据拷贝，内核必须检查用户空间缓冲区的合法性显得尤其重要，很多内核漏洞都是因为忽略这一检查造成的。攻击者可以伪造一片内核空间的缓冲区地址传入系统调用的接口，让内核对这个 evil 指针指向的内核空间填充数据。</p>
 <p>内核在实现 <code>copy_from_user()</code> 和 <code>copy_to_user()</code> 等函数时会调用 <code>access_ok()</code> 函数，该函数会做用户空间地址合法性检查。</p>
+<h3 id="Linux-驱动的软件架构"><a href="#Linux-驱动的软件架构" class="headerlink" title="Linux 驱动的软件架构"></a>Linux 驱动的软件架构</h3><p>Linux 设备驱动非常重视软件的可重用和跨平台能力，驱动和硬件平台信息应该解耦。Linux 设备、驱动和总线结合起来可以做到这一点。另外 Linux 也采用分层机制，将驱动层中通用的部分提炼为一个中间层，减少驱动层的复杂性。</p>
+<p>设备和驱动的分离：<br><img src="/2023/03/08/Linux-Kernel-Introduction/linux_bus_dev_dri.png"></p>
+<p>Linux 驱动的分层：<br><img src="/2023/03/08/Linux-Kernel-Introduction/linux_driver_layers.png"></p>
+<p><strong>分隔</strong>：<br><img src="/2023/03/08/Linux-Kernel-Introduction/software_NN_1N.png">  </p>
+<p>Linux 为 SoC 内存空间的外设（SoC中集成的独立外设控制器）发明了一种虚拟的总线，称为 <code>platform</code> 总线，相应的设备称为 <code>platform_device</code>，而驱动称为 <code>platform_driver</code>（与 <code>i2c_driver</code>、<code>spi_driver</code>、<code>usb_driver</code>、<code>pci_driver</code> 对等）。</p>
+<p>如前文所述，系统也为 <code>platform</code> 总线定义了 <code>bus_type</code> 的实例 <code>platform_bus_type</code> ，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bus_type</span> <span class="title">platform_bus_type</span> =</span> &#123;</span><br><span class="line">	.name		= <span class="string">&quot;platform&quot;</span>,</span><br><span class="line">	.dev_groups	= platform_dev_groups,</span><br><span class="line">	.match		= platform_match,</span><br><span class="line">	.uevent		= platform_uevent,</span><br><span class="line">	.dma_configure	= platform_dma_configure,</span><br><span class="line">	.pm		= &amp;platform_dev_pm_ops,</span><br><span class="line">&#125;;</span><br><span class="line">EXPORT_SYMBOL_GPL(platform_bus_type);</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>match()</code> 函数用于确定 <code>platform_device</code> 和 <code>platform_driver</code> 的匹配。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
