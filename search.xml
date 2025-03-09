@@ -2405,6 +2405,12 @@
 </ul>
 <p>这中分层设计类似于面向对象的编程模型。</p>
 <h4 id="Linux-内核输入子系统"><a href="#Linux-内核输入子系统" class="headerlink" title="Linux 内核输入子系统"></a>Linux 内核输入子系统</h4><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_input_subsystem.png"></p>
+<p>驱动的核心层的职责：</p>
+<ul>
+<li>对上提供接口。file_operations 的接口被中间层完成，各种 IO 模型也被处理。</li>
+<li>中间层实现通用逻辑。</li>
+<li>对下定义框架。底层的驱动不需要关心 Linux 内核 <code>VFS</code> 的接口和各种可能的 IO 模型，而只需要处理和硬件相关的访问。</li>
+</ul>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
