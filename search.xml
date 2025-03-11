@@ -2411,6 +2411,7 @@
 <li>中间层实现通用逻辑。</li>
 <li>对下定义框架。底层的驱动不需要关心 Linux 内核 <code>VFS</code> 的接口和各种可能的 IO 模型，而只需要处理和硬件相关的访问。</li>
 </ul>
+<p>主机驱动和外设驱动分离的核心思想。</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
@@ -2683,6 +2684,9 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cc1: error: code model kernel does not support PIC mode</span><br></pre></td></tr></table></figure>
 <p>则可以修改内核源码中的 <code>Makefile</code> 文件，添加<code>-fno-pie</code> 到变量 <code>KBUILD_CFLAGS</code> 。</p>
 <p>很多编译问题都可以在<a href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
+<h2 id="其他架构"><a href="#其他架构" class="headerlink" title="其他架构"></a>其他架构</h2><p>如果要交叉构建基于 <code>vexpress-a9</code> 架构：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- menuconfig   <span class="comment"># 注意配置 DEBUG_PLL 和 EARLY_PRINTK</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -j8</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
 <p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
 <p>然后修改 <code>grub</code> 配置文件</p>
@@ -2749,6 +2753,7 @@
 
 <p>在 <code>vexpress-a9</code> 架构下验证：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel <span class="built_in">arch</span>/arm/boot/zImage \</span></span><br><span class="line"><span class="language-bash">-dtb <span class="built_in">arch</span>/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic \</span></span><br><span class="line"><span class="language-bash">-append <span class="string">&quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot;</span> -sd rootfs.img</span></span><br></pre></td></tr></table></figure>
+
 
 <h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
@@ -3987,6 +3992,12 @@
 <p>配置路由优先级（使用 <code>NetworkManager</code>）：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"> <span class="built_in">sudo</span> nmcli d modify wlan0 ipv4.route-metric 100</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"> <span class="built_in">sudo</span> nmcli d modify eth0 ipv4.route-metric 800</span></span><br></pre></td></tr></table></figure>
 
+<p>硬件相关，使用 <code>ethtool</code> 工具：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sduo ethtool eth0  <span class="comment"># 查看网卡的信息</span></span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="网络测速"><a href="#网络测速" class="headerlink" title="网络测速"></a>网络测速</h4><blockquote>
+<p>参考 <a href="https://ncosbit.net/posts/2024-07-11-net-testing/">Raspberry Pi5 网卡测试</a></p>
+</blockquote>
 <h3 id="远程桌面"><a href="#远程桌面" class="headerlink" title="远程桌面"></a>远程桌面</h3><p>a. 使用 <code>raspi-config</code> 使能 <code>VNC</code>，打开 VNC 服务器。<br>b. 在客户机安装 <code>tigervnc-viewer</code> VNC 客户端。</p>
 <h2 id="AI-测试"><a href="#AI-测试" class="headerlink" title="AI 测试"></a>AI 测试</h2><h3 id="硬件准备"><a href="#硬件准备" class="headerlink" title="硬件准备"></a>硬件准备</h3><p><img src="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/aihal_plus.png"></p>
 <p>a. 连接 Raspberry 5 开发板、摄像头以及 <a href="https://www.raspberrypi.com/documentation/accessories/ai-hat-plus.html#ai-hat-plus-installation">AI HAT+</a>。注意在连接前，检查固件版本是否最最新的：<code>$ sudo rpi-eeprom-update</code>。</p>
