@@ -5879,7 +5879,11 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <url>/2025/03/14/%E5%9B%9B%E8%BD%B4%E9%A3%9E%E8%A1%8C%E5%99%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
 
-]]></content>
+<h3 id="关于手柄"><a href="#关于手柄" class="headerlink" title="关于手柄"></a>关于手柄</h3><p>在 Linux 系统上一般会生成 <code>/dev/input/js0</code> 的设备，直接读取该字符设备的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">cat</span> /dev/input/js0 | hexdump</span></span><br><span class="line">0000000 893c 0f5d 0000 0081 893c 0f5d 0000 0181</span><br><span class="line">0000010 893c 0f5d 0000 0281 893c 0f5d 0000 0381</span><br><span class="line">0000020 893c 0f5d 0000 0481 893c 0f5d 0000 0581</span><br><span class="line">0000030 893c 0f5d 0000 0681 893c 0f5d 0000 0781</span><br><span class="line">0000040 893c 0f5d 0000 0881 893c 0f5d 0000 0981</span><br><span class="line">0000050 893c 0f5d 0000 0a81 893c 0f5d 0000 0082</span><br><span class="line">0000060 893c 0f5d 0000 0182 893c 0f5d 8001 0282</span><br><span class="line">0000070 893c 0f5d 0000 0382 893c 0f5d 0000 0482</span><br><span class="line">0000080 893c 0f5d 8001 0582 893c 0f5d 0000 0682</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用测试套件 <code>joystick</code> 中的命令 <code>jstest</code> 来进行测试，可以将读取的数据对应到具体的按钮：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> jstest /dev/input/js0</span></span><br><span class="line">Driver version is 2.1.0.</span><br><span class="line">Joystick (Microsoft X-Box 360 pad) has 8 axes (X, Y, Z, Rx, Ry, Rz, Hat0X, Hat0Y)</span><br><span class="line">and 11 buttons (BtnA, BtnB, BtnX, BtnY, BtnTL, BtnTR, BtnSelect, BtnStart, BtnMode, BtnThumbL, BtnThumbR).</span><br><span class="line">Testing ... (interrupt to exit)</span><br><span class="line">Axes:  0:     0  1:     0  2:-32767  3:     0  4:     0  5:-32767  6:     0  7:     0 Buttons:  0:off  1:off  2:off  3:off  4:off  5:off  6:off  7:off  8:off  9:off 10:off</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
         <category>四轴飞行器</category>
