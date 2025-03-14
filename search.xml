@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Birthday Attack for Hash Function Analysis</title>
-    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
-<span id="more"></span>
-
-<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
-<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
-<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
-<p>然后 $ P &#x3D; 1 - P’ $。</p>
-<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
-<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
-<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
-<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
-<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
-<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
-<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
-<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
-<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
-]]></content>
+    <title>AOSP Introduction</title>
+    <url>/2025/03/11/AOSP-Introduction/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+<h2 id="For-Raspi5"><a href="#For-Raspi5" class="headerlink" title="For Raspi5"></a>For Raspi5</h2>]]></content>
       <categories>
-        <category>信息安全</category>
-        <category>密码学</category>
+        <category>GNU/Linux操作系统</category>
+        <category>Android</category>
       </categories>
   </entry>
   <entry>
@@ -220,6 +205,31 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Birthday Attack for Hash Function Analysis</title>
+    <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
+<span id="more"></span>
+
+<h2 id="生日悖论问题"><a href="#生日悖论问题" class="headerlink" title="生日悖论问题"></a>生日悖论问题</h2><p><code>生日悖论（Birthday Paradox）</code>可以表述为：不少于 23 个人中至少有两人生日相同的概率大于 50%。这个数学事实非常反直觉，因为这个概率比人们想象的要高得多。</p>
+<p>假设有 n 个人，那么至少有两个人生日相同的概率可以使用下面的公式计算：<br>$$ P(n) &#x3D; 1 - \frac {365!} {(365-n)! * {365} ^ n} $$</p>
+<p>这个公式可以通过计算逆问题得到：计算 n 个人中没有两个人生日相同的概率 P’。 P’ 的计算很容易使用排列组合公式获得：<br>$$ P’ &#x3D; \frac { A_{365} ^ n } { 365 ^ n } &#x3D; \frac {365!} {(365 - n)! * {365 ^ n}} $$</p>
+<p>然后 $ P &#x3D; 1 - P’ $。</p>
+<p>当 n &#x3D; 23 时，$ P \approx 50 % $<br>当 n &#x3D; 30 时，$ P \approx 70 % $<br>当 n &#x3D; 40 时，$ P \approx 90 % $<br>当 n &#x3D; 50 时，$ P \approx 97 % $</p>
+<p>生日悖论普遍应用于检测散列函数：N bit 的散列函数可能发生的碰撞测试次数不是 $ 2 ^ N $ 而是 $ 2 ^ {N &#x2F; 2} $。</p>
+<h2 id="生日攻击"><a href="#生日攻击" class="headerlink" title="生日攻击"></a>生日攻击</h2><p>生日攻击一般应用在数字签名中。数字签名通常首先对消息明文计算 HASH ，然后对这个 HASH 进行签名。为了抵御生日攻击，需要规定签名方案所使用的散列函数的输出长度足够大，以使生日攻击在计算上不可行。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>上节中的公式可以进一步推导成一般性的、便于计算的形式。<br>根据泰勒公式，指数函数 $ e^x $ 可以用多项式展开：<br>$$ e^x &#x3D; \sum_{k&#x3D;0}^\infty\frac{x^k}{k!} &#x3D; 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + … $$</p>
+<p>如果 x 是一个极小的值，那么可以得到下面的近似公式：<br>$$ e^x \approx 1 + x $$</p>
+<p>现在将生日问题中的 $ \frac{1}{365} $ 代入: $ e^{-\frac{1}{365}} \approx 1 - \frac{1}{365} $</p>
+<p>因此，生日问题的概率公式，可以转化为：<br>$$\begin{align}<br>P’ &amp;\approx 1 \cdot e^{-\frac{1}{365}} \cdot e^{-\frac{2}{365}} … \cdot e^{-\frac{n-1}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)&#x2F;2}{365}} \\<br>&amp;&#x3D; e ^ {- \frac{n(n-1)}{730}}\\<br>\end{align}$$</p>
+<p>所以：<br>$$ P &#x3D; 1 - P’ \approx 1 - e ^ {- \frac{n(n-1)}{730}} $$</p>
+<p>假设 d 为 取消空间（在生日问题中 d &#x3D; 365），就可以得到一般化公式：<br>$$ P(n,d) \approx 1 - e ^ {- \frac{n(n-1)}{2d}} $$</p>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+        <category>密码学</category>
       </categories>
   </entry>
   <entry>
@@ -2576,8 +2586,8 @@
 <h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2><h3 id="Linux-CVE"><a href="#Linux-CVE" class="headerlink" title="Linux CVE"></a>Linux CVE</h3><p><a href="https://www.cvedetails.com/product/47/Linux-Linux-Kernel.html">Linux CVE 列表</a></p>
 ]]></content>
       <categories>
-        <category>信息安全</category>
         <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
         <category>Linux Kernel</category>
       </categories>
   </entry>
@@ -3464,8 +3474,8 @@
 <h4 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h4><p><code>gpg --output &lt;签名文件&gt; --sign &lt;原文件&gt; </code><br><code>gpg --output &lt;签名文件&gt; --clearsign &lt;原文件&gt;</code> (不压缩)<br><code>gpg --output &lt;签名文件&gt; --detach-sig &lt;原文件&gt;</code> (只有签名)<br><code>gpg --verify &lt;签名文件&gt;</code> 验证签名</p>
 ]]></content>
       <categories>
-        <category>信息安全</category>
         <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
       </categories>
   </entry>
   <entry>
@@ -5562,6 +5572,25 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>四轴飞行器基础知识总结</title>
+    <url>/2025/03/14/%E5%9B%9B%E8%BD%B4%E9%A3%9E%E8%A1%8C%E5%99%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>四轴飞行器（Quadrotor）是一种多旋翼飞行器。四轴飞行器的四个螺旋桨都是电机直连的简单机构，十字形的布局允许飞行器通过改变电机转速获得旋转机身的力，从而调整自身姿态。本文就基本原理做一些总结，并以 <code>esp-drone</code> 开源项目作为示例。</p>
+<span id="more"></span>
+
+<h2 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h2><p>使用大疆的 <code>Fight Simulator</code> 模拟器。</p>
+<p><img src="/2025/03/14/%E5%9B%9B%E8%BD%B4%E9%A3%9E%E8%A1%8C%E5%99%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/dji_flight_simulation.png"></p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p><code>ESP-Drone</code> 是基于乐鑫 <code>ESP32/ESP32-S2/ESP32-S3</code> 开发的小型无人机解决方案，可使用手机 APP 或游戏手柄通过 <code>Wi-Fi</code> 网络进行连接和控制。</p>
+<h3 id="关于手柄"><a href="#关于手柄" class="headerlink" title="关于手柄"></a>关于手柄</h3><p>在 Linux 系统上一般会生成 <code>/dev/input/js0</code> 的设备，直接读取该字符设备的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">cat</span> /dev/input/js0 | hexdump</span></span><br><span class="line">0000000 893c 0f5d 0000 0081 893c 0f5d 0000 0181</span><br><span class="line">0000010 893c 0f5d 0000 0281 893c 0f5d 0000 0381</span><br><span class="line">0000020 893c 0f5d 0000 0481 893c 0f5d 0000 0581</span><br><span class="line">0000030 893c 0f5d 0000 0681 893c 0f5d 0000 0781</span><br><span class="line">0000040 893c 0f5d 0000 0881 893c 0f5d 0000 0981</span><br><span class="line">0000050 893c 0f5d 0000 0a81 893c 0f5d 0000 0082</span><br><span class="line">0000060 893c 0f5d 0000 0182 893c 0f5d 8001 0282</span><br><span class="line">0000070 893c 0f5d 0000 0382 893c 0f5d 0000 0482</span><br><span class="line">0000080 893c 0f5d 8001 0582 893c 0f5d 0000 0682</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用测试套件 <code>joystick</code> 中的命令 <code>jstest</code> 来进行测试，可以将读取的数据对应到具体的按钮：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> jstest /dev/input/js0</span></span><br><span class="line">Driver version is 2.1.0.</span><br><span class="line">Joystick (Microsoft X-Box 360 pad) has 8 axes (X, Y, Z, Rx, Ry, Rz, Hat0X, Hat0Y)</span><br><span class="line">and 11 buttons (BtnA, BtnB, BtnX, BtnY, BtnTL, BtnTR, BtnSelect, BtnStart, BtnMode, BtnThumbL, BtnThumbR).</span><br><span class="line">Testing ... (interrupt to exit)</span><br><span class="line">Axes:  0:     0  1:     0  2:-32767  3:     0  4:     0  5:-32767  6:     0  7:     0 Buttons:  0:off  1:off  2:off  3:off  4:off  5:off  6:off  7:off  8:off  9:off 10:off</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>四轴飞行器</category>
+      </categories>
+  </entry>
+  <entry>
     <title>基于 4G 模组的 GPS 小型定位器</title>
     <url>/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN<br>模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。</p>
@@ -5862,31 +5891,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>AOSP Introduction</title>
-    <url>/2025/03/11/AOSP-Introduction/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
-<h2 id="For-Raspi5"><a href="#For-Raspi5" class="headerlink" title="For Raspi5"></a>For Raspi5</h2>]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Android</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>四轴飞行器基础知识总结</title>
-    <url>/2025/03/14/%E5%9B%9B%E8%BD%B4%E9%A3%9E%E8%A1%8C%E5%99%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
-
-<h3 id="关于手柄"><a href="#关于手柄" class="headerlink" title="关于手柄"></a>关于手柄</h3><p>在 Linux 系统上一般会生成 <code>/dev/input/js0</code> 的设备，直接读取该字符设备的内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">cat</span> /dev/input/js0 | hexdump</span></span><br><span class="line">0000000 893c 0f5d 0000 0081 893c 0f5d 0000 0181</span><br><span class="line">0000010 893c 0f5d 0000 0281 893c 0f5d 0000 0381</span><br><span class="line">0000020 893c 0f5d 0000 0481 893c 0f5d 0000 0581</span><br><span class="line">0000030 893c 0f5d 0000 0681 893c 0f5d 0000 0781</span><br><span class="line">0000040 893c 0f5d 0000 0881 893c 0f5d 0000 0981</span><br><span class="line">0000050 893c 0f5d 0000 0a81 893c 0f5d 0000 0082</span><br><span class="line">0000060 893c 0f5d 0000 0182 893c 0f5d 8001 0282</span><br><span class="line">0000070 893c 0f5d 0000 0382 893c 0f5d 0000 0482</span><br><span class="line">0000080 893c 0f5d 8001 0582 893c 0f5d 0000 0682</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用测试套件 <code>joystick</code> 中的命令 <code>jstest</code> 来进行测试，可以将读取的数据对应到具体的按钮：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> jstest /dev/input/js0</span></span><br><span class="line">Driver version is 2.1.0.</span><br><span class="line">Joystick (Microsoft X-Box 360 pad) has 8 axes (X, Y, Z, Rx, Ry, Rz, Hat0X, Hat0Y)</span><br><span class="line">and 11 buttons (BtnA, BtnB, BtnX, BtnY, BtnTL, BtnTR, BtnSelect, BtnStart, BtnMode, BtnThumbL, BtnThumbR).</span><br><span class="line">Testing ... (interrupt to exit)</span><br><span class="line">Axes:  0:     0  1:     0  2:-32767  3:     0  4:     0  5:-32767  6:     0  7:     0 Buttons:  0:off  1:off  2:off  3:off  4:off  5:off  6:off  7:off  8:off  9:off 10:off</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>嵌入式系统和IOT</category>
-        <category>四轴飞行器</category>
       </categories>
   </entry>
 </search>
