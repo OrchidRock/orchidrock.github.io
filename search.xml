@@ -5864,4 +5864,24 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>读书笔记</category>
       </categories>
   </entry>
+  <entry>
+    <title>AOSP Introduction</title>
+    <url>/2025/03/11/AOSP-Introduction/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
+<h2 id="For-Raspi5"><a href="#For-Raspi5" class="headerlink" title="For Raspi5"></a>For Raspi5</h2>]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>四轴飞行器基础知识总结</title>
+    <url>/2025/03/14/%E5%9B%9B%E8%BD%B4%E9%A3%9E%E8%A1%8C%E5%99%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<span id="more"></span>
+]]></content>
+      <categories>
+        <category>嵌入式系统和IOT</category>
+        <category>四轴飞行器</category>
+      </categories>
+  </entry>
 </search>
