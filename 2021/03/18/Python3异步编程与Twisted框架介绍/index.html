@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述异步编程模型在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python3异步编程与Twisted框架介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述异步编程模型在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-18T09:32:00.000Z">
+<meta property="article:modified_time" content="2025-03-07T14:11:45.859Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/","path":"2021/03/18/Python3异步编程与Twisted框架介绍/","title":"Python3异步编程与Twisted框架介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python3异步编程与Twisted框架介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">异步编程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Select-%E5%92%8C-Poll"><span class="nav-number">3.</span> <span class="nav-text">Select 和 Poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIO"><span class="nav-number">4.</span> <span class="nav-text">AIO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asyncio"><span class="nav-number">5.</span> <span class="nav-text">Asyncio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Twisted-%E6%A1%86%E6%9E%B6"><span class="nav-number">6.</span> <span class="nav-text">Twisted 框架</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2021/03/18/Python3%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E4%B8%8ETwisted%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python3异步编程与Twisted框架介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python3异步编程与Twisted框架介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-18 17:32:00" itemprop="dateCreated datePublished" datetime="2021-03-18T17:32:00+08:00">2021-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-07 22:11:45" itemprop="dateModified" datetime="2025-03-07T22:11:45+08:00">2025-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><h3 id="异步编程模型"><a href="#异步编程模型" class="headerlink" title="异步编程模型"></a>异步编程模型</h3><p>在早期的计算机那里，我们可以看到只有单一的工作流（workflow），因此它也只能解决某类问题，当某个任务存在多个工作流时或者说它可以分解成多个工作流时，这种单一的方法就不能有效地解决问题了。当我们仔细观察现实世界的任务时，特别是大型任务时，就会发现它从来都不是完全顺序执行的，总有任务的某些部分是并行的，这是一种树状的工作流。发掘和利用并行性是提高任务执行效率的非常重要的手段，而计算机对现实世界的抽象也就无法回避现实世界存在的这样的基本问题。</p>
+<span id="more"></span>
+
+
+<p>计算机发展过程中引入了ECF（Exceptional Control Flow）机制，这种机制反映的是一种通用的思想，因此它存在于现代计算机内部的各个层次，比如：硬件层的中断信号、操作系统层的软中断信号、进程间信号通信和进程间切换等。C++&#x2F;Java&#x2F;Python 这些现代编程语言中tay&#x2F;exception&#x2F;catch机制也是同样思想的一种表现。ECF机制使得我们可以对现实世界更好的抽象与模拟，它反映了在计算机中引入我们对时间、空间、通信和事件的理解。</p>
+<p>异步模型同样也是基于同样的思想，发掘和利用程序的并行性，特别是I&#x2F;O类程序（I&#x2F;O bound program）。参考krondo的 <a target="_blank" rel="noopener" href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction Part1</a> ,那里对该主题有更详细具体的描述。</p>
+<h3 id="Select-和-Poll"><a href="#Select-和-Poll" class="headerlink" title="Select 和 Poll"></a>Select 和 Poll</h3><p>在 <code>Unix/Linux</code> 传统的<code>非阻塞 IO</code>编程中，<code>select()</code>、<code>poll()</code> 和 <code>epoll()</code> 函数是最重要的系统调用。但三个函数的性能是不一样的，<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/ols/2004/ols2004v1-pages-215-226.pdf">Comparing and Evaluating epoll, select, and poll Event Mechanisms</a> 文档对比了三者的性能。一般来说，当涉及的 <code>fd</code> 数量较少的时候，使用 <code>select</code> 是合适的；如果涉及的<code>fd</code>很多，如高性能网络服务器中，适合使用 <code>epoll</code> 。</p>
+<p><code>非阻塞 IO</code> 不完全等于<code>异步 IO</code>。如果要使用<code>异步 IO</code>，<code>Unix/Linux</code>可以使用<code>基于信号的异步通知</code>机制。</p>
+<h3 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h3><p>Linux 的 <code>AIO</code> 是一种异常 IO 机制，有多种实现方式。其中一种实现是在用户空间的 <code>glibc</code> 库中实现的，它本质上是借用了多线程模型，用开启新的线程以同步的方法来做 I&#x2F;O，新的 <code>AIO</code> 辅助线程以 <code>pthread_cond_signal()</code> 的形式进行线程间的同步。</p>
+<p><code>Linux AIO</code> 也可以由内核空间实现，相比而言，要比 <code>glibc</code> 实现的方案有更好的性能。在用户空间，一般要结合 <code>libaio</code> 进行内核 <code>AIO</code> 的系统调用。</p>
+<p>选择正确的 <code>I/O</code> 模型对系统性能的影响很大，关于该问题可以参阅著名的 <a target="_blank" rel="noopener" href="http://www.kegel.com/c10k.html">C10K 问题</a>，它特指服务器同时支持成千上万客户端的问题。</p>
+<h3 id="Asyncio"><a href="#Asyncio" class="headerlink" title="Asyncio"></a>Asyncio</h3><p>python asyncio库是一种在单线程、单进程下的异步模型，它的用户可以显示控制（context switching）程序的工作流，特别是当有多个任务协作进行时。这种特性是指它可以停止程序某部分的执行（往往是该部分因等待I&#x2F;O事件而阻塞），但保存其调用时的状态信息，然后在未来需要的时候重新进入这个状态，在这之前，主程序可以切换到其他任务。而在多线程与多进程的模型下，任务的切换由操作系统控制，用户无法对何时切换、切换的顺序等作出预测，另外线程或者进程间的通信和同步也是不小的编程负担。</p>
+<p>在使用asyncio库以前，要首先理解什么是事件循环（event loop），循环是我们将时间引入计算机后必然的产物。在现实世界中，我们看待对象的方式都是和时间有关的，在不同的时间有不同的状态，在计算机中，要表现对象的状态随时间的变化，就必须引入状态变量以及对状态变量的访问和修改机制。在一个并发的程序系统中，不同部分都有着自己的状态，而且它们之间会相互影响，通过事件循环的方式我们可以将逻辑上的并行工作流映射到对现实世界抽象的单一的时间流中。</p>
+<p>任何一个asyncio程序都必须要生成一个event loop对象，每一个任务由coroutine对象表示。我们将coroutine对象想象‘挂在’（hook）或者说注册到（register）event loop上，如果某个coroutine 阻塞了，event loop就会跳过它执行其他任务，但event loop会监控它的状态，等到它从阻塞中唤醒时就从阻塞的地方重新执行它。</p>
+<p>coroutine之间可以形成链状结构，即某一个coroutine的数据依赖于另一个coroutine，这种结构可以使用await关键字实现。call_soon、call_at和call_later API可以在特定的时间执行某个callback函数，Future对象可以用来异步获取任务的执行结果，其本身可以注册一些回调函数，这些 回调函数会在Future对象的结果设置后被调用。在Twisted框架中，它也是有着非常重要的作用。关于event loop清晰详细的描述，krondo的文章<a target="_blank" rel="noopener" href="https://wiki.jikexueyuan.com/project/twisted-intro/">Twisted Introduction</a> 可以作为很好的参考。</p>
+<p>asyncio虽然是单线程的应用，但它仍然是并发的程序，它同样要面对并发的同步问题。asyncio可以使用类似与线程和进程的同步原语（Synchronization Primitives），比如锁（Lock）、事件（Event）、条件变量（Condition）和安全队列（safed queueu）。</p>
+<h3 id="Twisted-框架"><a href="#Twisted-框架" class="headerlink" title="Twisted 框架"></a>Twisted 框架</h3><p>Twisted是事件驱动的网络框架，其实现了反映堆模式（reactor），并支持多种协议和服务。总结来说，Twisted是将程序构建在reactor驱动的一系列异步回调链上，所以可以认为reactor是最顶层的代码，而用户的代码却是最底层，这与同步程序正好相反。Twisted中异步函数通常会返回一个Deferred对象，它类似于python的coroutine与generator。一个Deferred对象代表了一个‘异步的结果’或者说‘结果还没有到来’，异步函数会负责（通过启动一系列事件）当结果到来时相应地激活（那些事件来激活Deferred）Deferred中的callback链或者errback链。和具体可参考<a target="_blank" rel="noopener" href="https://krondo.com/in-which-we-begin-at-the-beginning/">Twisted Introduction</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/17/Python3%E6%9F%90%E4%BA%9B%E5%BC%BA%E5%A4%A7%E7%9A%84%E7%89%B9%E6%80%A7%E4%B8%8ELisp%E7%9A%84%E5%85%B3%E7%B3%BB/" rel="prev" title="Python3某些强大的特性与Lisp的关系">
+                  <i class="fa fa-angle-left"></i> Python3某些强大的特性与Lisp的关系
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/27/%E9%BB%91%E5%AE%A2%E6%96%87%E5%8C%96/" rel="next" title="黑客文化">
+                  黑客文化 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，everything is a object，类也不例外。当把类看作对象时，类也是可以是被动态创建的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。type 是 python 内置的元类，用户也可以创建自己的元类。  本文主要翻译自 Python Metaclass by">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 元类">
+<meta property="og:url" content="https://orchidrock.github.io/2022/11/20/Python-%E5%85%83%E7%B1%BB/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，everything is a object，类也不例外。当把类看作对象时，类也是可以是被动态创建的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。type 是 python 内置的元类，用户也可以创建自己的元类。  本文主要翻译自 Python Metaclass by">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-20T03:15:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.616Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/11/20/Python-%E5%85%83%E7%B1%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/11/20/Python-%E5%85%83%E7%B1%BB/","path":"2022/11/20/Python-元类/","title":"Python 元类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Python 元类 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E7%B1%BB-VS-%E6%97%A7%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">新类 VS 旧类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-%E5%92%8C-Class"><span class="nav-number">3.</span> <span class="nav-text">Type 和 Class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%AE%9A%E4%B9%89%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">动态定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">4.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">4.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="nav-number">4.3.</span> <span class="nav-text">示例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B4"><span class="nav-number">4.4.</span> <span class="nav-text">示例4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">自定义元类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E7%9C%9F%E7%9A%84%E5%BF%85%E8%A6%81%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">是否真的必要？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/20/Python-%E5%85%83%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Python 元类 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python 元类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-20 11:15:00" itemprop="dateCreated datePublished" datetime="2022-11-20T11:15:00+08:00">2022-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; Python 是内置面向对象编程（OOP）的语言。在 Python 中，<strong>everything is a object</strong>，类也不例外。当把类看作对象时，类也是可以是被<code>动态创建</code>的。元类（Metaclass）就可以动态创建类对象，可以称它为“类工厂”。<code>type</code> 是 python 内置的元类，用户也可以创建自己的元类。</p>
+<blockquote>
+<p>本文主要翻译自 <a target="_blank" rel="noopener" href="https://realpython.com/python-metaclasses/">Python Metaclass</a> by John Sturtz 。</p>
+</blockquote>
+<span id="more"></span>
+
+<p>元类是非常难掌握的 OOP 概念，它隐藏在所有 Python 代码下面，甚至在你<strong>没有意识</strong>到它的存在的地方。在大多数情况下，你都<strong>不需要</strong>或者<strong>极少需要</strong>考虑它的存在。</p>
+<p>自定义元类的做法是有些争议的，就像 Tim Peter 建议的那样：</p>
+<blockquote>
+<p>元类是比99%的用户本应该担心的更深的魔法。当你想弄清楚是否需要使用它们时，那你就不需要它们（那些实际用到它们的人都清楚地知道需要它们，而不需要解释原因）。<br>—— Tim Peters</p>
+</blockquote>
+<p>然后，理解 Python 元类还是值得的，因为它通常可以更好地帮助理解 Python 类的内部实现。<br>你绝不知道：可能在某一天发现使用自定义元类就是你需要的。</p>
+<h2 id="新类-VS-旧类"><a href="#新类-VS-旧类" class="headerlink" title="新类 VS 旧类"></a>新类 VS 旧类</h2><p>在新类中，统一了 <code>class</code> 和 <code>type</code>的概念。如果一个 <code>obj</code> 时一个新类的实例（instance），那么<code>type(obj)</code> 和 <code>obj.__class__</code>是相同的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>obj = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>obj.__class__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Foo&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(obj)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Foo&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>obj.__class__ <span class="keyword">is</span> <span class="built_in">type</span>(obj)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Type-和-Class"><a href="#Type-和-Class" class="headerlink" title="Type 和 Class"></a>Type 和 Class</h2><p>在 Python3 中，所有的类都是新类，因此，互换地引用对象的类型（object’s type）和对象的类是合理的。</p>
+<p>类也是对象，那么类也有它自己的类型(type)，那么类的类型是什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(x)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Foo&#x27;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(Foo)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>类 <code>Foo</code> 的类型是 <code>type</code>，通常情况下，所有新类的类型都是 <code>type</code>，包括用户十分熟悉的内置类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">int</span>, <span class="built_in">float</span>, <span class="built_in">dict</span>, <span class="built_in">list</span>, <span class="built_in">tuple</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="built_in">type</span>(t))</span><br><span class="line">...</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>type</code> 的类型是它自己：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(<span class="built_in">type</span>)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;type&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>type</code>是元类，其他类是它的实例。</p>
+<h2 id="动态定义类"><a href="#动态定义类" class="headerlink" title="动态定义类"></a>动态定义类</h2><p>内置的 <code>type()</code> 当被传递一个参数时，它返回参数对象的类型，对于新类，它通常和对象的 <code>__class__</code>属性是相同的。<br>但也可以向 <code>type()</code>传递三个参数 <code>type(&lt;name&gt;, &lt;bases&gt;, &lt;dct&gt;)</code>:</p>
+<ul>
+<li><code>name</code> 代表类名，另外该名字会成为类的 <code>__name__</code> 属性。</li>
+<li><code>bases</code> 代表父类的元组，它会成为类的 <code>__bases__</code> 属性。</li>
+<li><code>dct</code> 代表类的命名空间字典，其中包含了类体，它会作为类的 <code>__dict__</code> 属性。</li>
+</ul>
+<p>这样调用<code>type()</code>函数会返回<code>type</code>元类的实例，或者说它动态创建了一个新的类。</p>
+<p>在下面的每个示例中都包含两个代码片段，上面的一个使用 <code>type()</code>动态创建类，下面的一个使用<code>class</code>语句定义类，这两个片段在功能上是等价的。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>在这个例子中，<code>type()</code>函数的 <code>bases</code> 和 <code>dct</code> 参数都为空：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Foo = <span class="built_in">type</span>(<span class="string">&#x27;Foo&#x27;</span>, (), &#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">&lt;__main__.Foo <span class="built_in">object</span> at <span class="number">0x04CFAD50</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">&lt;__main__.Foo <span class="built_in">object</span> at <span class="number">0x0370AD50</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>在这里，<code>bases</code> 参数是一个单成员元组，该成员 <code>Foo</code> 作为所创建类的父类。另外，在命名空间中设置了属性 <code>attr</code>并初始化 100：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Bar = <span class="built_in">type</span>(<span class="string">&#x27;Bar&#x27;</span>, (Foo,), <span class="built_in">dict</span>(attr=<span class="number">100</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Bar()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.__class__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Bar&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.__class__.__bases__</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Foo&#x27;</span>&gt;,)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Bar</span>(<span class="title class_ inherited__">Foo</span>):</span><br><span class="line"><span class="meta">... </span>    attr = <span class="number">100</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Bar()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.__class__</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Bar&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.__class__.__bases__</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;__main__.Foo&#x27;</span>&gt;,)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Foo = <span class="built_in">type</span>(</span><br><span class="line"><span class="meta">... </span>    <span class="string">&#x27;Foo&#x27;</span>,</span><br><span class="line"><span class="meta">... </span>    (),</span><br><span class="line"><span class="meta">... </span>    &#123;</span><br><span class="line"><span class="meta">... </span>        <span class="string">&#x27;attr&#x27;</span>: <span class="number">100</span>,</span><br><span class="line"><span class="meta">... </span>        <span class="string">&#x27;attr_val&#x27;</span>: <span class="keyword">lambda</span> x : x.attr</span><br><span class="line"><span class="meta">... </span>    &#125;</span><br><span class="line"><span class="meta">... </span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line"><span class="meta">... </span>    attr = <span class="number">100</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">def</span> <span class="title function_">attr_val</span>(<span class="params">self</span>):</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> <span class="variable language_">self</span>.attr</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</span><br><span class="line"><span class="number">100</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h3><h2 id="自定义元类"><a href="#自定义元类" class="headerlink" title="自定义元类"></a>自定义元类</h2><p>考虑下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = Foo()</span><br></pre></td></tr></table></figure>
+<p>当解释器解析 <code>Foo()</code> 时，将会发生下面的动作：</p>
+<ul>
+<li><code>Foo</code>的父类的 <code>__call__</code> 方法会被调用。在这里 <code>Foo</code> 的父类是 <code>type</code>，因此<code>type</code>的 <code>__call__</code>方法被调用。</li>
+<li><code>__call__()</code>方法依次调用下面的方法：<ul>
+<li><strong>new</strong>()</li>
+<li><strong>init</strong>()</li>
+</ul>
+</li>
+</ul>
+<p>如果<code>Foo</code>没有定义 <code>__new__()</code> 和 <code>__init__()</code>，其祖先的默认方法会被调用。<code>Foo</code> 可以通过定义这些函数来自定义自己实例化的行为。如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">new</span>(<span class="params">cls</span>):</span><br><span class="line"><span class="meta">... </span>    x = <span class="built_in">object</span>.__new__(cls)</span><br><span class="line"><span class="meta">... </span>    x.attr = <span class="number">100</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> x</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Foo.__new__ = new</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>g = Foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>g.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，每次实例化 <code>Foo</code>类时，都会默认初始化一个 <code>attr</code> 属性为100。（通常，这种代码都出现在 <code>__init__</code>方法中而不是<code>__new__</code>中。这个例子仅仅作为一个 demo。）</p>
+<p>如果你想要同样自定义类（例如 Foo）的创建行为，可以自定义 Foo 的类型的 <code>__new__</code>方法。但直接重新对 <code>type</code> 的 <code>__new__()</code> 方法进行赋值是不允许的。</p>
+<p>一种方案是自定义元类，该元类继承自 <code>type</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Meta</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, name, bases, dct</span>):</span><br><span class="line"><span class="meta">... </span>        x = <span class="built_in">super</span>().__new__(cls, name, bases, dct)</span><br><span class="line"><span class="meta">... </span>        x.attr = <span class="number">100</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> x</span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>现在 <code>Meta</code> 也是元类，接下来完成另外一半：定义一个新类 <code>Foo</code> 并指定它的元类上面自定义的 <code>Meta</code>，而不是标准的 <code>type</code>。如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">class</span> <span class="title class_">Foo</span>(metaclass=Meta):</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Foo.attr</span><br><span class="line"><span class="number">100</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当然，任何采取上面同样定义的类都默认包含属性 <code>attr</code>。一个类函数可以作为创建对象的模板，一个元类函数则可以作为创建类的模板。元类也可以被称为 <strong>类工厂</strong>。</p>
+<h2 id="是否真的必要？"><a href="#是否真的必要？" class="headerlink" title="是否真的必要？"></a>是否真的必要？</h2><p>实际上，第4节中的实现可以采用其他方案，例如类继承和类修饰符。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通常情况下，创建自定义元类都是不必要的。如果对于当前问题存在更简单的解决方式，那么很可能就应该使用这种方式。但理解元类仍然是有利于你去理解python的类机制，并可以判断什么时候元类可以作为一个真正合适的工具来使用。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/06/LLVM-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" rel="prev" title="LLVM 项目介绍">
+                  <i class="fa fa-angle-left"></i> LLVM 项目介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/27/Python%E6%8F%8F%E8%BF%B0%E5%99%A8%E4%BB%8B%E7%BB%8D/" rel="next" title="Python描述器介绍">
+                  Python描述器介绍 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

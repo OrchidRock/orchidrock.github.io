@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; WatchDog 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。&emsp;&emsp; 在正常操作期间，计算机周期性的重置 WatchDog 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置WatchDog失败，WatchDog就会超时并且会生成超时信号。这个信号可以被用于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="嵌入式系统中的WatchDog">
+<meta property="og:url" content="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; WatchDog 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。&emsp;&emsp; 在正常操作期间，计算机周期性的重置 WatchDog 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置WatchDog失败，WatchDog就会超时并且会生成超时信号。这个信号可以被用于">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png">
+<meta property="article:published_time" content="2023-05-04T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.556Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/","path":"2023/05/04/嵌入式系统中的WatchDog/","title":"嵌入式系统中的WatchDog"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>嵌入式系统中的WatchDog | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6-WatchDog"><span class="nav-number">2.</span> <span class="nav-text">硬件 WatchDog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-WatchDog-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">为什么需要 WatchDog 定时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-WatchDog"><span class="nav-number">4.</span> <span class="nav-text">配置 WatchDog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%AF%B9-WatchDog-%E7%9A%84%E9%85%8D%E7%BD%AE%E8%BF%9B%E8%A1%8C%E9%87%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">什么时候对 WatchDog 的配置进行重置?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WatchDog-%E8%B6%85%E6%97%B6%E5%90%8E%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88"><span class="nav-number">4.2.</span> <span class="nav-text">WatchDog 超时后会发生什么?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WatchDog-%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">WatchDog 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%BA%A7-WatchDog"><span class="nav-number">5.1.</span> <span class="nav-text">单级 WatchDog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BA%A7-WatchDog"><span class="nav-number">5.2.</span> <span class="nav-text">多级 WatchDog</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="嵌入式系统中的WatchDog | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          嵌入式系统中的WatchDog
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-04 08:00:00" itemprop="dateCreated datePublished" datetime="2023-05-04T08:00:00+08:00">2023-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <strong>WatchDog</strong> 是一种软件或硬件定时器，用于检测计算机故障或者从故障中恢复。它还可以用于保护计算机免受出错程序或者恶意程序的破坏。<br>&emsp;&emsp; 在正常操作期间，计算机周期性的重置 <code>WatchDog</code> 以防止它超时（“elapsing”）。如果因为硬件故障或者软件错误导致重置<code>WatchDog</code>失败，<code>WatchDog</code>就会超时并且会生成超时信号。这个信号可以被用于重新初始化系统到正确、安全的状态。</p>
+<span id="more"></span>
+
+<p>&emsp;&emsp; 对于一些特殊的硬件设备（例如远程空间探测器），如果系统出现故障，想要通过人工手动恢复几乎是不可能的，这时候设备需要“自力更生”，<code>WatchDog</code>定时器就可以派上用场了。另外，在运行不受信任的代码时，也可以使用 <code>WatchDog</code>，以限制该代码对 CPU 的使用时间，从而防止某些类型的<code>拒绝服务攻击（DOS Attack）</code>。</p>
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://interrupt.memfault.com/blog/firmware-watchdog-best-practices">《A Guide to Watchdog Timers for Embedded Systems》</a> - By <strong>Chris Coleman</strong>.<br>参考  <a target="_blank" rel="noopener" href="https://encyclopedia.thefreedictionary.com/Watchdog+timer">Wikipedia - WatchDog timer</a>.</p>
+</blockquote>
+<h2 id="硬件-WatchDog"><a href="#硬件-WatchDog" class="headerlink" title="硬件 WatchDog"></a>硬件 WatchDog</h2><p>&emsp;&emsp; 许多芯片厂商在他们的 MCU 中包含了一个分立的 RTL 模块，称为”WatchDog 定时器”。该外围设备（peripheral）由一个随时钟周期信号自动递减的计数器组成，当计数器到达零时，硬件将自动重置（Reset）设备。</p>
+<p>&emsp;&emsp; <code>WatchDog 定时器</code>通常在默认情况下是禁用的，程序员有责任对其进行配置并且在软件中对其使能（enable）。一旦使能后，软件需要周期性地重置计数器，以防止设备被重启（Reset）。这个操作通常被称为“喂（Feeding）”、 “踢（Kicking）” 或者 “拍（Patting）” 狗。这样做的理由是，如果软件不能够重置 WatchDog 定时器，表明系统没有处于预期的运行状态，这时就需要将系统重置到正常状态。</p>
+<h2 id="为什么需要-WatchDog-定时器"><a href="#为什么需要-WatchDog-定时器" class="headerlink" title="为什么需要 WatchDog 定时器"></a>为什么需要 WatchDog 定时器</h2><p>&emsp;&emsp; 嵌入式系统在很多情况下都会被挂起（Hang），最常见的情况列举如下：</p>
+<ul>
+<li>内存已损坏，代码陷于无限循环中（infinite loop）。</li>
+<li>一个硬件组件（例如 HRM、加速度计或者 NOR Flash芯片）被卡住（wedged），不能响应请求。</li>
+<li>一个或者多个任务进入死锁（互斥体被按照错误的顺序占用或者没有被释放）。</li>
+<li>一个高优先级的 RTOS 任务占用了太多 CPU 时间，导致低优先级任务饥饿。</li>
+</ul>
+<p>对于嵌入式系统，<strong>应该</strong>在适当的位置包含 WatchDog 定时器子系统。这是识别系统挂起并收集足够信息以从根本上解决潜在问题（issue）并提供修复的最佳方法。</p>
+<h2 id="配置-WatchDog"><a href="#配置-WatchDog" class="headerlink" title="配置 WatchDog"></a>配置 WatchDog</h2><h3 id="什么时候对-WatchDog-的配置进行重置"><a href="#什么时候对-WatchDog-的配置进行重置" class="headerlink" title="什么时候对 WatchDog 的配置进行重置?"></a>什么时候对 WatchDog 的配置进行重置?</h3><p>通过情况下，有下面两种选择：</p>
+<ul>
+<li>WatchDog 可以被 使能(enable) 或者禁用（disable）多次，并且在每次重启时<strong>必须</strong>被配置。</li>
+<li>WatchDog 只能被配置和使能一次。一旦被使能后，只有特定类型的重置才能禁用（disable）WatchDog.</li>
+</ul>
+<h3 id="WatchDog-超时后会发生什么"><a href="#WatchDog-超时后会发生什么" class="headerlink" title="WatchDog 超时后会发生什么?"></a>WatchDog 超时后会发生什么?</h3><p>通常的选择有下面几种：</p>
+<ul>
+<li>当 WatchDog 超时后，硬件将立即对系统进行重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>接近超时时</strong>触发中断；在中断处理程序中，软件可以决定“喂狗”来防止系统被重置（Reset）。</li>
+<li>可以使能中断，并且当 WatchDog <strong>超时时</strong>触发中断；MCU 将分配软件额外的一些时钟周期来做一些清理，然后重置系统。但这种做法往往是令人失望的，除非软件<strong>非常小心地</strong>分配清理工作执行所需的时钟周期数，否则硬件很可能在清理工作未完成前重置系统。</li>
+</ul>
+<h2 id="WatchDog-类型"><a href="#WatchDog-类型" class="headerlink" title="WatchDog 类型"></a>WatchDog 类型</h2><h3 id="单级-WatchDog"><a href="#单级-WatchDog" class="headerlink" title="单级 WatchDog"></a>单级 WatchDog</h3><p>Watchdog 定时器可以有多种配置，而且许多允许修改其配置。MCU 通常有一个集成的 Watchdog 。在其他计算机设备中，Watchdog 可能直接位于在 CPU 附近且直接相连的芯片中，或者位于计算机机箱中的外部扩展卡中。Watchdog 可以和 CPU 共用同一个时钟信号，如下图所示，或者它们可以有独立的时钟信号。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/SimpleWatchdogTimer.png"></p>
+<h3 id="多级-WatchDog"><a href="#多级-WatchDog" class="headerlink" title="多级 WatchDog"></a>多级 WatchDog</h3><p>多级 Watchdog 计时器通常由多个计时器级联而成。</p>
+<p><img src="/2023/05/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84WatchDog/Watchdog3stage.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/25/MicroPython%E4%BB%8B%E7%BB%8D/" rel="prev" title="MicroPython介绍">
+                  <i class="fa fa-angle-left"></i> MicroPython介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/05/14/ESP32-%E6%A8%A1%E7%BB%84/" rel="next" title="ESP32 模组">
+                  ESP32 模组 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; LLVM IR 是基于 SSA 的 中间代码表示格式。它提供安全类型、底层操作、灵活性及完全性（能够自描述”所有”高级语言）。它也是 LLVM 编译框架中各个阶段间通用的代码表示形式。 &emsp;&emsp; LLVM IR 可以使用三种不同的格式：in-memory、on-disk bitcode和汇编文本格式。本文就第三种格式的 LLVM IR 做一些总结，更多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLVM 1: IR 汇编语言参考">
+<meta property="og:url" content="https://orchidrock.github.io/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; LLVM IR 是基于 SSA 的 中间代码表示格式。它提供安全类型、底层操作、灵活性及完全性（能够自描述”所有”高级语言）。它也是 LLVM 编译框架中各个阶段间通用的代码表示形式。 &emsp;&emsp; LLVM IR 可以使用三种不同的格式：in-memory、on-disk bitcode和汇编文本格式。本文就第三种格式的 LLVM IR 做一些总结，更多">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-18T14:25:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.568Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/","path":"2023/02/18/LLVM-1-IR-汇编语言参考/","title":"LLVM 1: IR 汇编语言参考"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LLVM 1: IR 汇编语言参考 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">高级结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-%E6%A8%A1%E5%9D%97"><span class="nav-number">3.1.</span> <span class="nav-text">Module(模块)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">链接类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">3.3.</span> <span class="nav-text">调用规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">3.4.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.</span> <span class="nav-text">线程本地存储模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%8A%A2%E5%8D%A0%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="nav-number">3.6.</span> <span class="nav-text">运行时抢占说明符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.7.</span> <span class="nav-text">结构类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">3.8.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">3.9.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alias-%E5%92%8C-IFunc"><span class="nav-number">3.10.</span> <span class="nav-text">Alias 和 IFunc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#COMDATS"><span class="nav-number">3.11.</span> <span class="nav-text">COMDATS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E5%85%83%E6%95%B0%E6%8D%AE"><span class="nav-number">3.12.</span> <span class="nav-text">命名元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%B1%9E%E6%80%A7"><span class="nav-number">3.13.</span> <span class="nav-text">参数属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC-%E7%AD%96%E7%95%A5%E5%90%8D"><span class="nav-number">3.14.</span> <span class="nav-text">GC 策略名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prologue-%E6%95%B0%E6%8D%AE"><span class="nav-number">3.15.</span> <span class="nav-text">Prologue 数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E7%BB%84"><span class="nav-number">3.16.</span> <span class="nav-text">属性组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%B1%9E%E6%80%A7"><span class="nav-number">3.17.</span> <span class="nav-text">函数属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%83%E5%B1%80"><span class="nav-number">3.18.</span> <span class="nav-text">数据布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E4%B8%89%E5%85%83%E7%BB%84%E4%BF%A1%E6%81%AF"><span class="nav-number">3.19.</span> <span class="nav-text">目标三元组信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%88%AB%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-number">3.20.</span> <span class="nav-text">指针别名规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E6%8D%95%E8%8E%B7"><span class="nav-number">3.21.</span> <span class="nav-text">指针捕获</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">类型系统</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LLVM 1: IR 汇编语言参考 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LLVM 1: IR 汇编语言参考
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-18 22:25:00" itemprop="dateCreated datePublished" datetime="2023-02-18T22:25:00+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">编译器</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/LLVM-Project/" itemprop="url" rel="index"><span itemprop="name">LLVM Project</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <code>LLVM IR</code> 是基于 <strong>SSA</strong> 的 中间代码表示格式。它提供安全类型、底层操作、灵活性及完全性（能够自描述”所有”高级语言）。它也是 LLVM 编译框架中各个阶段间通用的代码表示形式。</p>
+<p>&emsp;&emsp; LLVM IR 可以使用三种不同的格式：<code>in-memory</code>、<code>on-disk bitcode</code>和<code>汇编文本格式</code>。本文就第三种格式的 LLVM IR 做一些总结，更多信息见参考链接。</p>
+<span id="more"></span>
+
+
+<blockquote>
+<p>参考<a target="_blank" rel="noopener" href="https://llvm.org/docs/LangRef.html">LLVM Language Reference Manual</a>。<br>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29674357/article/details/78731713">LLVM SSA 介绍</a>。</p>
+</blockquote>
+<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>&emsp;&emsp; LLVM 区分两种基本类型标识符：全局标识符和局部标识符。全局标识符（函数和全局变量）以<code>@</code>开头，局部标识符以<code>%</code>开头。另外在格式上又可以分为三类：</p>
+<ul>
+<li>命名标识符：带有<code>@</code>或<code>%</code>前缀的字符串，如<code>%foo</code>、<code>@bar123</code>等。</li>
+<li>非命名标识符：带有<code>@</code>或<code>%</code>前缀的数字，如<code>%2</code>、<code>@42</code>等。</li>
+<li>常量（<code>Constant</code>）</li>
+</ul>
+<p>所有<strong>保留字</strong>都不带<code>%</code>或<code>@</code>前缀，所有不会与变量标识符冲突。这些保留字包括操作类型关键字（如<code>add</code>、<code>bitcast</code>、<code>ret</code>等）、原语类型（如<code>void</code>、<code>i32</code>等）及其他。</p>
+<p>所有以 <code>!</code>开头的为 <code>Metadata 标识符</code>。</p>
+<p>另外，注释信息以 <code>;</code> 开头。</p>
+<h2 id="高级结构"><a href="#高级结构" class="headerlink" title="高级结构"></a>高级结构</h2><h3 id="Module-模块"><a href="#Module-模块" class="headerlink" title="Module(模块)"></a>Module(模块)</h3><p>LLVM 程序由各个<code>Module</code>组成，它是输入程序转换为 IR 后的顶层单元。<code>Module</code>包括函数、全局变量和符号表。不同的 <strong>Modules</strong> 可以被 <code>LLVM Linker</code>链接到一起。下面以 <strong>HelloWorld</strong>模块示例：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; Declare the string constant as a global constant.</span></span><br><span class="line"><span class="title">@.str</span> <span class="operator">=</span> <span class="keyword">private</span> <span class="keyword">unnamed_addr</span> <span class="keyword">constant</span> [<span class="number">13</span> <span class="keyword">x</span> <span class="type">i8</span>] <span class="keyword">c</span><span class="string">&quot;hello world\0A<span class="char escape_">\00</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">; External declaration of the puts function</span></span><br><span class="line"><span class="keyword">declare</span> <span class="type">i32</span> <span class="title">@puts</span>(<span class="type">ptr</span> <span class="keyword">nocapture</span>) <span class="keyword">nounwind</span></span><br><span class="line"></span><br><span class="line"><span class="comment">; Definition of main function</span></span><br><span class="line"><span class="keyword">define</span> <span class="type">i32</span> <span class="title">@main</span>() &#123;</span><br><span class="line">  <span class="comment">; Call puts function to write out the string to stdout.</span></span><br><span class="line">  <span class="keyword">call</span> <span class="type">i32</span> <span class="title">@puts</span>(<span class="type">ptr</span> <span class="title">@.str</span>)</span><br><span class="line">  <span class="keyword">ret</span> <span class="type">i32</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>.str</code>、<code>puts</code>和<code>main</code>为全局变量，全局变量均为指针，并指向一个内存位置。任何全局变量都必须指定<code>链接类型（Linkage Type）</code>，如<code>.str</code>指定为<code>private</code>。</p>
+<h3 id="链接类型"><a href="#链接类型" class="headerlink" title="链接类型"></a>链接类型</h3><ul>
+<li><code>private</code>： 这类全局变量只能被当前模块内的对象访问，且在与其他模块链接时可能会被重命名。另外，它不会出现在 Object 文件的任何符号表中。</li>
+<li><code>internal</code> ：与 <code>private</code>类似，但会作为局部符号出现在符号表中，它对应于 C 语言中使用 <code>static</code>声明的变量或函数。</li>
+<li><code>available_externally</code>：从链接器角度看，该类型等价于<code>external</code>类型。它可以允许被优化或者内联。该类型变量不会被发送到 Object 文件，而只会被优化器使用。</li>
+<li><code>linkonce</code>：可以用于实现<strong>内联</strong>、<strong>模板</strong>等高级语言特性。未被引用的<code>linkonce</code>变量会被废弃。另外，使用<code>linkonce</code>类型的函数<strong>并不一定</strong>允许优化器内联它的函数体（Body）到引用它的地方，因为优化器可能<strong>并不知道</strong>当前函数体就是最后的定义，也不知道将来是否会被更强的定义覆盖。如果要使能内联或者其他优化，可以使用<code>linkonce_odr</code>链接类型。</li>
+<li><code>weak</code>：在<strong>merge</strong>语义上与<code>linkonce</code>相同，除了未被引用的<code>weak</code>全局变量<strong>不会</strong>被废弃。</li>
+<li><code>common</code>：大多数情况下类似于<code>weak</code>，但它用于 C 语言中未初始化的全局变量定义，例如 <code>int x;</code>。<code>common</code>类型的符号在<strong>merge</strong>时的行为与<code>weak</code>类型符号相同，而且在未被引用时，<strong>可能不会</strong>被删除。<code>common</code>类变量必须声明<code>零初始化器(Zero Initializer)</code>。</li>
+<li><code>appending</code>：该类型可能只能应用于数组指针。</li>
+<li><code>extern_weak</code>：</li>
+<li><code>linkonce_odr, weak_odr</code>：该类型的变量只允许等价的全局变量可以被合并。</li>
+<li><code>external</code>：默认链接类型，该类型变量对外部可见，并可以在链接阶段用于外部符号解析。</li>
+</ul>
+<p>任何<strong>声明的全局变量或函数</strong>（与<strong>定义</strong>区分）具有除<code>external</code>或<code>extern_weak</code>之外的任何链接类型都是非法的。</p>
+<h3 id="调用规范"><a href="#调用规范" class="headerlink" title="调用规范"></a>调用规范</h3><p>LLVM 支持多种调用规范：</p>
+<ul>
+<li><code>ccc</code> : 默认类型，匹配 C 语言的调用规范。它支持<code>varargs</code>函数调用，并在一定程度上容许函数原型声明和函数定义间的不匹配。</li>
+<li><code>fastcc</code>：该类型尝试使得函数调用尽量快速完成，它允许目标使用任何技巧来加速函数调用（它可以不遵循当前平台的 ABI 规范）。它不支持<code>varargs</code>函数调用，并要求函数声明和定义的完全匹配。</li>
+<li><code>coldcc</code>：用于很少被执行的函数调用。</li>
+<li><code>cc 10</code>：<strong>GHC（Glasgow Haskell Compiler ）</strong> 规范，它使用寄存器传递所有参数，通过禁止使用 <code>CSR（Callee-Saved-Registers）</code> 来达到该目的。该规范只在一些特殊情况下使用。另外，它支持 <code>tailcall（尾调用）</code> 优化。目前只有 X86 有限地支持该规范。</li>
+<li><code>cc 11</code>：<strong>HiPE（ High-Performance Erlang）</strong> 规范，它使用（相比于 <code>ccc</code> 规范）更多的寄存器来传递参数，并且没有定义 <code>CSR</code>。它使用和<code>GHC</code>规范相同的 <em>register pinning</em> 机制，用于将频繁访问的运行时组件固定到特定的硬件寄存器。目前只有 X86 支持该规范。</li>
+<li><code>webkit_jscc</code>：<strong>WebKit</strong>的 <strong>JavaScript</strong> 调用规范。它已经被 <code>WebKit FTL JIT</code>实现。它将参数从右到左依次保存到栈上，然后通过平台特定的返回寄存器返回结果值。</li>
+<li><code>anyregcc</code>：该规范使用寄存器传递参数，但允许动态分配所用寄存器。</li>
+<li><code>preserve_mostcc</code>：该规范尝试尽量使得调用者的代码尽量少地被干扰。它与 <code>ccc</code> 规范在参数和返回值传递方式上是相同的，但使用不同的 <strong>caller&#x2F;callee-saved 寄存器</strong> 集合，这使得可以减轻调用者在<em>保存&#x2F;恢复大量寄存器</em>操作上的开销。该规范与<code>coldcc</code>相比，更多地被用于频繁调用的函数。目前，它仍然是实验性的，但在未来会作为<code>Object-C Runtime</code>的调用规范。</li>
+<li><code>preserve_allcc</code>：该规范比 <code>preserve_mostcc</code> 更进一步地减少调用者代码所受到的干扰。</li>
+<li><code>cxx_fast_tlscc</code>：</li>
+<li><code>tailcc</code>：该规范确保在尾部的函数调用可以进行<strong>尾调用优化</strong>。<strong>尾调用优化</strong>就是直接使用被调用者的<strong>栈帧</strong>替代调用者的<strong>栈帧</strong>，这样可以节省内存，但需要确保被调用者不再引用调用者内部的变量。</li>
+<li><code>swiftcc</code>：<code>swift</code>语言的调用规范。</li>
+<li><code>cc &lt;n&gt;</code>：使用编号为 <code>n</code> 的调用规范。</li>
+</ul>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>LLVM 支持下面几种<code>可见性样式（Visibility Styles）</code>：</p>
+<ul>
+<li><code>default</code>：</li>
+<li><code>hidden</code>：通常，<code>hidden</code>代表该符号不会被放到动态符号表中。</li>
+<li><code>protected</code>：</li>
+</ul>
+<p>任何使用<code>private</code>或<code>internal</code>链接类型的符号的可见性都为<code>default</code>。</p>
+<h3 id="线程本地存储模型"><a href="#线程本地存储模型" class="headerlink" title="线程本地存储模型"></a>线程本地存储模型</h3><p><code>TLS(Thread Local Stroage)</code> 是指一个变量可以被定义为 <code>thread_local</code>，即它不会被线程共享（每个线程都会有一个该变量的拷贝），也就不存在线程间数据竞争问题。TLS 不一定被所有目标平台支持，另外，它包括以下几种模型：</p>
+<ul>
+<li><code>localdynamic</code> ： 只在当前共享库中使用的变量。</li>
+<li><code>initialexec</code>：在模块中不会被动态载入的变量。</li>
+<li><code>localexec</code> ： 在可执行文件中定义且只在其中使用的变量。</li>
+</ul>
+<p>默认使用 <code>general dynamic</code>模型。</p>
+<p>对于 <code>pthread</code> 库，可以使用相应的 API 来使用 TLS。<br>对于 GCC 可以使用语言级别的特殊语法，如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__thread <span class="type">int</span> i;</span><br><span class="line"><span class="keyword">extern</span> __thread <span class="class"><span class="keyword">struct</span> <span class="title">state</span> <span class="title">s</span>;</span></span><br><span class="line"><span class="type">static</span> __thread <span class="type">char</span> *p</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行时抢占说明符"><a href="#运行时抢占说明符" class="headerlink" title="运行时抢占说明符"></a>运行时抢占说明符</h3><p><code>Runtime Preemption Specifiers</code> 主要用于全局变量、函数和别名（alias），它有下面的类型：</p>
+<ul>
+<li><code>dso_preemptable</code>：默认类型。表示函数或者变量在运行时会被外部的链接单元替换。</li>
+<li><code>dso_local</code> ：表示函数或变量将解析为同一链接单元中的符号。即使定义不在此编译单元内，也将生成直接访问，例如使用 <code>declare</code>声明的函数。</li>
+</ul>
+<h3 id="结构类型"><a href="#结构类型" class="headerlink" title="结构类型"></a>结构类型</h3><p>LLVM IR 支持定义 C 语言中的结构体<code>struct</code>类型；同样的，C++ 中的<code>类(class)</code>也可以使用相同的底层原语。<code>structure types</code> 包括 <code>identified</code>和<code>literal</code>类型。示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span><span class="type">int</span> X; <span class="type">int</span> Y&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="type">int</span> value;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">next</span>;</span>  </span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> <span class="title">Root</span> =</span> &#123;<span class="number">0</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> <span class="title">Origin</span> =</span> &#123;<span class="number">0</span>, <span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>转换为 LLVM IR 后：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">%struct.Node</span> <span class="operator">=</span> <span class="keyword">type</span> &#123; <span class="type">i32</span><span class="punctuation">,</span> <span class="variable">%struct.Node</span>* &#125;</span><br><span class="line"><span class="variable">%struct.Point</span> <span class="operator">=</span> <span class="keyword">type</span> &#123; <span class="type">i32</span><span class="punctuation">,</span> <span class="type">i32</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="title">@Root</span> <span class="operator">=</span> dso_local <span class="keyword">global</span> <span class="variable">%struct.Node</span> <span class="keyword">zeroinitializer</span><span class="punctuation">,</span> <span class="keyword">align</span> <span class="number">8</span></span><br><span class="line"><span class="title">@Origin</span> <span class="operator">=</span> dso_local <span class="keyword">global</span> <span class="variable">%struct.Point</span> <span class="keyword">zeroinitializer</span><span class="punctuation">,</span> <span class="keyword">align</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><p>结合前面的叙述以及本节内容，我们可以总结全局变量的几个特性：</p>
+<ul>
+<li>全局变量存储在<strong>编译阶段</strong>分配的区域内（例如<code>.data</code>段），<strong>也可以显式地指定某个段</strong>。</li>
+<li>全局变量的<strong>定义</strong>必须初始化，但对于<strong>声明</strong>的全局变量（在其他模块中定义）可以不用初始化。</li>
+<li>全局变量可以指定一个<code>链接类型</code>（如果没有声明，则使用默认类型）。</li>
+<li>全局变量可以指定一个<code>运行时抢占说明符</code>。</li>
+<li>全局变量可以指定<strong>数据对齐格式</strong>，使用<code>align &lt;n&gt;</code>。</li>
+<li>全局变量可以指定为<code>constant</code>，代表该变量的值不会被修改。</li>
+<li>全局变量总是定义一个指针指向它的内容（content）。</li>
+<li>全局变量可以指定为<code>unnamed_addr</code>，表明地址并不重要，仅指内容。两个该类型变量如果拥有相同地初始化器（或相同地定义）可以进行合并。</li>
+<li>全局变量可以指定为<code>local_unnamed_addr</code>，表明地址在<code>Module</code>内不重要。</li>
+<li>全局变量可以被声明为驻留在目标特定的已经编号的地址空间中。</li>
+<li>全局变量可以指定全局属性（<code>#&lt;n&gt;</code>），或者一个附加的元数据列表。</li>
+<li>变量和别名可以指定 TLS 模型。</li>
+<li>全局变量（或者全局数组的成员）不能是<code>可扩展向量类型</code>，因为它们的大小在编译阶段未知。</li>
+</ul>
+<p>语法表示</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@&lt;GlobalVarName&gt; <span class="operator">=</span> [Linkage] [PreemptionSpecifier] [Visibility]</span><br><span class="line">                   [DLLStorageClass] [ThreadLocal]</span><br><span class="line">                   [(<span class="keyword">unnamed_addr</span>|local_unnamed_addr)] [AddrSpace]</span><br><span class="line">                   [ExternallyInitialized]</span><br><span class="line">                   &lt;<span class="keyword">global</span> | <span class="keyword">constant</span>&gt; &lt;Type&gt; [&lt;InitializerConstant&gt;]</span><br><span class="line">                   [<span class="punctuation">,</span> <span class="keyword">section</span> <span class="string">&quot;name&quot;</span>] [<span class="punctuation">,</span> partition <span class="string">&quot;name&quot;</span>]</span><br><span class="line">                   [<span class="punctuation">,</span> comdat [($name)]] [<span class="punctuation">,</span> <span class="keyword">align</span> &lt;Alignment&gt;]</span><br><span class="line">                   [<span class="punctuation">,</span> no_sanitize_address] [<span class="punctuation">,</span> no_sanitize_hwaddress]</span><br><span class="line">                   [<span class="punctuation">,</span> sanitize_address_dyninit] [<span class="punctuation">,</span> sanitize_memtag]</span><br><span class="line">                   (<span class="punctuation">,</span> <span class="title">!name</span> <span class="title">!N</span>)*</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一些示例：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">@G</span> <span class="operator">=</span> <span class="keyword">addrspace</span>(<span class="number">5</span>) <span class="keyword">constant</span> <span class="type">float</span> <span class="number">1.0</span><span class="punctuation">,</span> <span class="keyword">section</span> <span class="string">&quot;foo&quot;</span><span class="punctuation">,</span> <span class="keyword">align</span> <span class="number">4</span></span><br><span class="line"><span class="title">@G</span> <span class="operator">=</span> <span class="keyword">external</span> <span class="keyword">global</span> <span class="type">i32</span></span><br><span class="line"><span class="title">@G</span> <span class="operator">=</span> <span class="keyword">thread_local</span>(<span class="keyword">initialexec</span>) <span class="keyword">global</span> <span class="type">i32</span> <span class="number">0</span><span class="punctuation">,</span> <span class="keyword">align</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数定义语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> [linkage] [PreemptionSpecifier] [visibility] [DLLStorageClass]</span><br><span class="line">       [cconv] [<span class="keyword">ret</span> attrs]</span><br><span class="line">       &lt;ResultType&gt; @&lt;FunctionName&gt; ([argument list])</span><br><span class="line">       [(<span class="keyword">unnamed_addr</span>|local_unnamed_addr)] [AddrSpace] [fn Attrs]</span><br><span class="line">       [<span class="keyword">section</span> <span class="string">&quot;name&quot;</span>] [partition <span class="string">&quot;name&quot;</span>] [comdat [($name)]] [<span class="keyword">align</span> N]</span><br><span class="line">       [<span class="keyword">gc</span>] [<span class="keyword">prefix</span> Constant] [prologue Constant] [<span class="keyword">personality</span> Constant]</span><br><span class="line">       (<span class="title">!name</span> <span class="title">!N</span>)* &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数声明语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> [linkage] [visibility] [DLLStorageClass]</span><br><span class="line">        [cconv] [<span class="keyword">ret</span> attrs]</span><br><span class="line">        &lt;ResultType&gt; @&lt;FunctionName&gt; ([argument list])</span><br><span class="line">        [(<span class="keyword">unnamed_addr</span>|local_unnamed_addr)] [<span class="keyword">align</span> N] [<span class="keyword">gc</span>]</span><br><span class="line">        [<span class="keyword">prefix</span> Constant] [prologue Constant]</span><br></pre></td></tr></table></figure>
+
+<p>函数定义由单个或多个<code>基本块</code>组成，它们构成了函数的 <code>CFG（控制流图）</code>。每个基本块可以在开头显式地声明一个<code>label</code>，如果没有指定，LLVM会自动为其分配一个非命名标识符作为<code>label</code>。</p>
+<p>如果没有指定地址空间，则默认设置为<code>布局字符串</code>中指定的程序地址空间（“A”、“G”或“P”）。</p>
+<h3 id="Alias-和-IFunc"><a href="#Alias-和-IFunc" class="headerlink" title="Alias 和 IFunc"></a>Alias 和 IFunc</h3><h3 id="COMDATS"><a href="#COMDATS" class="headerlink" title="COMDATS"></a>COMDATS</h3><p><code>COMDAT</code> 段被多个目标文件所定义的辅助段。该段的作用是将在多个已编译模块中重复的代码和数据的逻辑块组合在一起。COMDAT 在 C++ 的<strong>虚函数表</strong>和<strong>模板</strong>的编译链接中，起着非常重要的作用。</p>
+<p>例如，在头文件<code>myclass.h</code>中定义了模板类<code>MyClass&lt;T&gt;</code>，然后 <code>x.cpp</code> 和 <code>y.cpp</code> 都包含了该头文件，并且都使用<code>int</code>实例化这个模板类，即在<code>x.o</code>和<code>y.o</code>中都有<code>MyClass&lt;int&gt;</code>的实例代码。但可执行文件中只需要一份代码即可，因此在链接时会有一个重复代码消除的步骤。</p>
+<p>LLVM 定义 <code>COMDAT</code> 的语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&lt;Name&gt; <span class="operator">=</span> comdat SelectionKind</span><br></pre></td></tr></table></figure>
+
+<p><code>Name</code> 代表 <code>comdat key</code>，在两个 Object 文件中相同 <code>comdat key</code> 的 COMDAT 段将会被合并，合并的方式由 <code>SelectionKind</code> 指定。它包括下面几种：</p>
+<ul>
+<li><code>any</code>：任意选择</li>
+<li><code>exactmatch</code>：任意选择，但段中必须包含相同的数据。</li>
+<li><code>largest</code></li>
+<li><code>nodeduplicate</code></li>
+<li><code>samesize</code></li>
+</ul>
+<p>目前，<code>ELF</code> 只支持<code>any</code>和<code>nodeduplicate</code>，<code>COFF</code>支持所有类型。</p>
+<h3 id="命名元数据"><a href="#命名元数据" class="headerlink" title="命名元数据"></a>命名元数据</h3><p>语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; Some unnamed metadata nodes, </span></span><br><span class="line"><span class="comment">; which are referenced by the named metadata.</span></span><br><span class="line"><span class="title">!0</span> <span class="operator">=</span> !&#123;!<span class="string">&quot;zero&quot;</span>&#125;</span><br><span class="line"><span class="title">!1</span> <span class="operator">=</span> !&#123;!<span class="string">&quot;one&quot;</span>&#125;</span><br><span class="line"><span class="title">!2</span> <span class="operator">=</span> !&#123;!<span class="string">&quot;two&quot;</span>&#125;</span><br><span class="line"><span class="comment">; A named metadata.</span></span><br><span class="line"><span class="title">!name</span> <span class="operator">=</span> !&#123;<span class="title">!0</span><span class="punctuation">,</span> <span class="title">!1</span><span class="punctuation">,</span> <span class="title">!2</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>DWARF</code> 调试数据可以使用<code>Metadata</code>表示。</p>
+<h3 id="参数属性"><a href="#参数属性" class="headerlink" title="参数属性"></a>参数属性</h3><p>函数的返回类型和参数类型都可以关联一组<code>参数属性（Parameter Attributes）</code>。参数属性是函数的一部分，而不是函数类型的一部分。一些示例如下：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="type">i32</span> <span class="title">@printf</span>(<span class="type">ptr</span> <span class="keyword">noalias</span> <span class="keyword">nocapture</span><span class="punctuation">,</span> ...)</span><br><span class="line"><span class="keyword">declare</span> <span class="type">i32</span> <span class="title">@atoi</span>(<span class="type">i8</span> <span class="keyword">zeroext</span>)</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">signext</span> <span class="type">i8</span> <span class="title">@returns_signed_char</span>()</span><br></pre></td></tr></table></figure>
+<p>目前支持的参数属性如下：</p>
+<ul>
+<li><code>signext</code>：指示<code>代码生成器</code> 进行符号扩展。</li>
+<li><code>zeroext</code>：指示<code>代码生成器</code> 进行零扩展。</li>
+<li><code>inreg</code>：</li>
+<li><code>byval(&lt;ty&gt;)</code>：按值传递参数</li>
+<li><code>byref(&lt;ty&gt;)</code>：按引用传递参数</li>
+<li><code>noalias</code>:</li>
+<li><code>nocapture</code>: 表明<strong>被调用函数</strong>不能<a target="_blank" rel="noopener" href="https://llvm.org/docs/LangRef.html#pointercapture">捕获指针</a>。</li>
+<li><code>nonnull</code>：表明参数或返回指针非空。</li>
+<li><code>readonly</code>:</li>
+<li><code>writeonly</code>：</li>
+</ul>
+<p>注意与下文中的<em>函数属性</em>区分。</p>
+<h3 id="GC-策略名"><a href="#GC-策略名" class="headerlink" title="GC 策略名"></a>GC 策略名</h3><p>在上文中提及，在函数定义和声明中可以指定 <code>gc</code>。其语法为:</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="keyword">gc</span> <span class="string">&quot;name&quot;</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 <a target="_blank" rel="noopener" href="https://llvm.org/docs/GarbageCollection.html#builtin-gc-strategies">LLVM 内置的 GC 策略名</a> ，或者使用插件提供的策略名。LLVM 本身不包含 GC 支持，它局限于生成特定的机器代码，该机器代码可以与外部提供的 GC 交互。</p>
+<h3 id="Prologue-数据"><a href="#Prologue-数据" class="headerlink" title="Prologue 数据"></a>Prologue 数据</h3><p><code>Prologue</code> 属性使得允许在函数开头插入任意代码。它可以用来实现函数<code>hot-patching</code>和<code>instrumentation</code>。Prologue 数据基本上都是和具体目标相关的。</p>
+<h3 id="属性组"><a href="#属性组" class="headerlink" title="属性组"></a>属性组</h3><p>在 LLVM IR 中可能有多个对象使用相同的属性集，使用属性组，可以使得 IR 减少冗余，更加具有可读性。示例如下：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; Target-independent attributes:</span></span><br><span class="line"><span class="keyword">attributes</span> <span class="variable">#0</span> <span class="operator">=</span> &#123; <span class="keyword">alwaysinline</span> <span class="keyword">alignstack</span><span class="operator">=</span><span class="number">4</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">; Target-dependent attributes:</span></span><br><span class="line"><span class="keyword">attributes</span> <span class="variable">#1</span> <span class="operator">=</span> &#123; <span class="string">&quot;no-sse&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">; Function @f has attributes: alwaysinline, alignstack=4, and &quot;no-sse&quot;.</span></span><br><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="variable">#0</span> <span class="variable">#1</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数属性"><a href="#函数属性" class="headerlink" title="函数属性"></a>函数属性</h3><p>示例如下：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="keyword">noinline</span> &#123; ... &#125;</span><br><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="keyword">alwaysinline</span> &#123; ... &#125;</span><br><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="keyword">alwaysinline</span> <span class="keyword">optsize</span> &#123; ... &#125;</span><br><span class="line"><span class="keyword">define</span> <span class="type">void</span> <span class="title">@f</span>() <span class="keyword">optsize</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p><code>函数属性</code>是函数的一部分，而不是函数类型的一部分，即具有不同<code>函数属性</code>的函数可以具有相同的函数类型。</p>
+<p>目前支持的函数类型种类如下：</p>
+<ul>
+<li><code>alignstack(&lt;n&gt;)</code>：</li>
+<li><code>alwaysinline</code>：</li>
+<li><code>allockind(&quot;KIND&quot;)</code>：</li>
+<li><code>alwaysinline</code> ：指示内联器总是<strong>尝试</strong>内联该函数。</li>
+<li><code>cold</code>:</li>
+<li><code>hot</code>:</li>
+<li><code>noinline</code>：指示内联器绝不会内联该函数。</li>
+<li><code>noreturn</code>:</li>
+<li><code>norecurse</code>:</li>
+<li><code>nosync</code>:</li>
+<li><code>nounwind</code>: 表明函数绝不会抛出异常。</li>
+<li><code>optnone</code>: 表明除了<strong>过程间优化 Pass</strong>，其他<em>大多数</em><strong>优化 Pass</strong> 都应该跳过该函数。</li>
+<li><code>speculative_load_hardening</code>: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/571395488">消减幽灵攻击</a>。</li>
+<li><code>ssp</code>: 表明该函数需要<code>emit</code>**栈溢出保护器(Stack Sashing Protector)**。</li>
+<li><code>uwtable</code>：</li>
+<li><code>mustprogress</code></li>
+</ul>
+<h3 id="数据布局"><a href="#数据布局" class="headerlink" title="数据布局"></a>数据布局</h3><p>语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target</span> <span class="keyword">datalayout</span> <span class="operator">=</span> <span class="string">&quot;layout specification&quot;</span></span><br></pre></td></tr></table></figure>
+<p><em>布局规范</em>包含一个子规范列表，子规范之间通过<code>&#39;-&#39;</code>符号分隔，例如：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target</span> <span class="keyword">datalayout</span> <span class="operator">=</span> <span class="string">&quot;e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128&quot;</span></span><br></pre></td></tr></table></figure>
+<p>子规范类型如下：</p>
+<ul>
+<li><code>E</code>：目标以<strong>大端</strong>格式进行数据布局。</li>
+<li><code>e</code>：目标以<strong>小端</strong>格式进行数据布局。</li>
+<li><code>S&lt;size&gt;</code> ：指定栈的<code>natural 对齐</code>，以<code>bit</code>为单位。</li>
+<li><code>P&lt;address space&gt;</code>：指定程序code 所在的地址空间。</li>
+<li><code>G&lt;address space&gt;</code>：指定全局变量所在的地址空间，如果没有指定，则默认为 <code>0</code> 。</li>
+<li><code>A&lt;address space&gt;</code>：指定由<code>alloca</code>创建的对象所在的地址空间，默认为<code>0</code>。</li>
+<li><code>p[n]:&lt;size&gt;:&lt;abi&gt;[:&lt;pref&gt;][:&lt;idx&gt;]</code>：指定地址空间<code>n</code>的指针类型的大小<code>size</code>和对齐。</li>
+<li><code>i&lt;size&gt;:&lt;abi&gt;[:&lt;pref&gt;]</code>：指定<code>size</code>大小的整数的对齐方式。</li>
+<li><code>v&lt;size&gt;:&lt;abi&gt;[:&lt;pref&gt;]</code>：指定<code>size</code>大小的向量（vector）的对齐方式。</li>
+<li><code>f&lt;size&gt;:&lt;abi&gt;[:&lt;pref&gt;]</code>：指定<code>size</code>大小的浮点数的对齐方式。</li>
+<li><code>a:&lt;abi&gt;[:&lt;pref&gt;]</code>：指定聚合类型对象的对齐方式。</li>
+<li><code>F&lt;type&gt;&lt;abi&gt;</code>：指定函数指针的对齐方式。</li>
+<li><code>m:&lt;mangling&gt;</code>：指定<code>Name Mangling</code>的方式，具体有以下几种：<ul>
+<li><code>e</code>：使用<code>ELF</code>方式，对于私有符号使用<code>.L</code>前缀。</li>
+</ul>
+</li>
+<li><code>n&lt;size1&gt;:&lt;size2&gt;:&lt;size3&gt;...</code>：指定目标 CPU 所支持的整数的类型。</li>
+</ul>
+<h3 id="目标三元组信息"><a href="#目标三元组信息" class="headerlink" title="目标三元组信息"></a>目标三元组信息</h3><p>语法：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target</span> <span class="keyword">triple</span> <span class="operator">=</span> <span class="string">&quot;x86_64-pc-linux-gnu&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>格式：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ARCHITECTURE-VENDOR-OPERATING_SYSTEM</span><br><span class="line">ARCHITECTURE-VENDOR-OPERATING_SYSTEM-ENVIRONMENT</span><br></pre></td></tr></table></figure>
+
+<h3 id="指针别名规则"><a href="#指针别名规则" class="headerlink" title="指针别名规则"></a>指针别名规则</h3><h3 id="指针捕获"><a href="#指针捕获" class="headerlink" title="指针捕获"></a>指针捕获</h3><p>给定一个函数调用，而且一个指针作为该调用的参数或者存储在该调用之前的内存中，如果该调用拷贝该指针的任一部分到该函数外部的某个地方，则称该函数<code>捕获</code>该指针。</p>
+<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/" rel="prev" title="LLVM 0: 构建步骤及目录结构">
+                  <i class="fa fa-angle-left"></i> LLVM 0: 构建步骤及目录结构
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/24/LLVM-2-Backend/" rel="next" title="LLVM 2: Backend">
+                  LLVM 2: Backend <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

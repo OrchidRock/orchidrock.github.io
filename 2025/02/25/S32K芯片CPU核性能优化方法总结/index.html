@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
+<meta property="og:type" content="article">
+<meta property="og:title" content="S32K芯片CPU核性能优化方法总结">
+<meta property="og:url" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k14x_block.png">
+<meta property="og:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k312_block.png">
+<meta property="og:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png">
+<meta property="article:published_time" content="2025-02-25T05:00:50.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.696Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k14x_block.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/","path":"2025/02/25/S32K芯片CPU核性能优化方法总结/","title":"S32K芯片CPU核性能优化方法总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>S32K芯片CPU核性能优化方法总结 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%92%8C%E5%AD%98%E5%82%A8%E5%99%A8%E6%98%A0%E5%B0%84"><span class="nav-number">2.</span> <span class="nav-text">架构和存储器映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E9%A2%91%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text">时钟频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE-Cache"><span class="nav-number">4.</span> <span class="nav-text">指令和数据 Cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCM"><span class="nav-number">5.</span> <span class="nav-text">TCM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E5%B7%A5%E4%BD%9C%E9%A2%91%E7%8E%87"><span class="nav-number">6.</span> <span class="nav-text">Flash 的工作频率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-%E7%9A%84%E6%8C%87%E4%BB%A4%E5%92%8C%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96"><span class="nav-number">7.</span> <span class="nav-text">Flash 的指令和数据预取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="nav-number">8.</span> <span class="nav-text">编译器优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%AE%B5%E7%9A%84%E5%B8%83%E5%B1%80"><span class="nav-number">9.</span> <span class="nav-text">内存段的布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A1%AC%E4%BB%B6-FPU"><span class="nav-number">10.</span> <span class="nav-text">使用硬件 FPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8%E6%80%A7%E8%83%BD%EF%BC%88%E6%A0%B8%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%89"><span class="nav-number">11.</span> <span class="nav-text">多核性能（核间通信）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">12.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="S32K芯片CPU核性能优化方法总结 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          S32K芯片CPU核性能优化方法总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-02-25 13:00:50" itemprop="dateCreated datePublished" datetime="2025-02-25T13:00:50+08:00">2025-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MCU 是随着大规模集成电路的出现及其发展，将 CPU 核、存储器、定时器以及各种输入输出模块（外设）通过总线互联并集成到一起的微型计算机。MCU 的性能也随着半导体工业的发展越来越强大，其应用场景也越来越广泛。对于开发者来说，在一些特殊应用场景中需要最大程度地发挥 MCU 中 CPU 核的性能，这就需要开发者对所用 MCU 的架构、总线及各模块特性等有深入的了解。本文以 NXP 的 S32K1XX&#x2F;S32K3XX 系列 MCU为例， 并参考一些资料对此进行了总结。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI4MzExNzgwNw==&mid=2650117254&idx=3&sn=49a012cb4d0dc0092565173d2de03d10&chksm=f38ea506c4f92c106f5a62418cb70cad082b4e08bbc589b57dee17439108e634c673b1f04599&mpshare=1&scene=23&srcid=#">汽车电子expert成长之路-微信公众号</a></p>
+</blockquote>
+<h2 id="架构和存储器映射"><a href="#架构和存储器映射" class="headerlink" title="架构和存储器映射"></a>架构和存储器映射</h2><p>S32K1xx（以S32K14x为例）的架构：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k14x_block.png"></p>
+<p>S32K3xx（以S32K312为例）的架构：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k312_block.png"></p>
+<p>S32K 系列内核的存储器映射，可以概括如下：<br><img src="/2025/02/25/S32K%E8%8A%AF%E7%89%87CPU%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/s32k_memory_map.png"></p>
+<p>图中的 <code>PPB</code> 又可以分为<code>内部 PPB</code>和外部 <code>PPB</code>，前者主要用来访问 <code>ITM/DWT/PFB/MPU/NVIC</code>，后者主要用来访问 <code>ETM/CTI</code>。</p>
+<h2 id="时钟频率"><a href="#时钟频率" class="headerlink" title="时钟频率"></a>时钟频率</h2><p>S32K1XX MCU 使用 ARM 的 <code>Cortex M0+</code> （如 S32K118 和 S32K116）和 <code>Cortex M4F</code> （如 S32K14X）核，主频率可以达到最高 48MHZ 和 112MHZ （HSRUN）模式。S32K3 MCU使用 ARM 的 <code>Cortex M7</code> 核（哈佛架构 + 6级超标量流水线 + 分支预测），主频可以达到 120MHZ-240 MHZ。</p>
+<p>但仅仅通过调整 <code>PLL</code> 或者 <code>FLL</code> 产生 CPU 核和内部总线的最高时钟频率就能获得最高性能吗？如果对于计算密集型且不需要考虑 cache 的应用，大概是正确的；但对于大部分应用来说，这样做是不够的。很多应用的性能受到存储、cache、浮点计算、IO等的极大影响，另外我们还要考虑编译器优化、程序链接等软件层面的影响。综合考虑各种软硬方面，开发者才能最大程度地发挥 CPU 核的最大性能。</p>
+<h2 id="指令和数据-Cache"><a href="#指令和数据-Cache" class="headerlink" title="指令和数据 Cache"></a>指令和数据 Cache</h2><p>从前面的 S32K14x MCU 结构图中我们可以看到 Code Bus 上有 4KB 的指令和数据 Cache，注意这里的 Cache 不在 Cortex M4核的内部，但即使如此，Cache 的使用仍然可以很好地改善 Flash&#x2F;SRAM 密集型应用的性能。S32K14x 的 cache 需要在 MCU 启动时打开，具体为配置 <code>LMEM-&gt;PCCCR</code> 寄存器来使能。</p>
+<p>S32K3XX MCU 使用 ARM Cortex-M7 核，该核内也包含了 L1&#x2F;L2 指令和数据 cache。核内的 cahe 与 D-Cache&#x2F;I-Cache 的配置可以通过 <code>SCTLR</code> 寄存器来完成。</p>
+<h2 id="TCM"><a href="#TCM" class="headerlink" title="TCM"></a>TCM</h2><p>从前面 S32K3 系列的架构图中我们可以看到，核对 <code>TCM</code> 的访问不通过 <code>Cache</code>。那么 TCM 和 Cache 的区别在那里呢？</p>
+<p>我们可以从设计目的和使用方式方面来区分，TCM 是专门设计用于处理器内部的高速存储器，包括<code>I-TCM</code>代码区和<code>D-TCM</code>数据区，可以存放<strong>最常用的代码和数据</strong>，用于提高系统的性能。Cache 用于存储最近访问的数据，来减少对外部存储器的访问次数，并提高系统性能；但 Cache 依赖于<code>局部性原理</code>，如果软件设计不是 <code>Cache 友好</code>的，那么就会频繁地发生 Cache 命中失败而访问外部存储器，性能提升受到打折。</p>
+<p>另一个区别是，TCM 是处理器内部的存储器，Cache 需要外部存储器的支持，且需要使用特殊的硬件逻辑来管理缓存。</p>
+<h2 id="Flash-的工作频率"><a href="#Flash-的工作频率" class="headerlink" title="Flash 的工作频率"></a>Flash 的工作频率</h2><h2 id="Flash-的指令和数据预取"><a href="#Flash-的指令和数据预取" class="headerlink" title="Flash 的指令和数据预取"></a>Flash 的指令和数据预取</h2><h2 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h2><h2 id="内存段的布局"><a href="#内存段的布局" class="headerlink" title="内存段的布局"></a>内存段的布局</h2><h2 id="使用硬件-FPU"><a href="#使用硬件-FPU" class="headerlink" title="使用硬件 FPU"></a>使用硬件 FPU</h2><p>由于目前主流的 ARM 芯片都自带<code>VFP</code>或者<code>NEON</code>等浮点处理单元（FPU），所以对<code>硬浮点</code>的需求就更加强烈。Linux 的浮点处理可以采用<code>完全软浮点</code>，也可以采用与软浮点兼容，但是使用 FPU 硬件的<code>softfp</code>，以及完全硬浮点。具体的<code>ABI</code>（Application Binary Interface，应<br>用程序二进制接口）通过<code>-mfloat-abi=</code> 参数指定，3 种情况下的参数分别是<code>-mfloat-abi=soft/softfp/hard</code>。</p>
+<p><code>softfp</code> 使用了硬件的 FPU，但是函数的参数仍然使用整型寄存器来传递，<code>hard</code> 完全硬浮点则直接使用 FPU 的寄存器传递参数。</p>
+<p>在启用 FPU 的前提下，编译器在做激进的优化时，会使用浮点寄存器来进行整型数据的拷贝等操作，具体的话，会使用 <code>vstr.64</code> 和 <code>vldr.64</code> 浮点指令。</p>
+<h2 id="多核性能（核间通信）"><a href="#多核性能（核间通信）" class="headerlink" title="多核性能（核间通信）"></a>多核性能（核间通信）</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/02/24/%E5%8A%9F%E8%83%BD%E5%AE%89%E5%85%A8%E6%A0%87%E5%87%86-ISO26262-%E4%B8%AD%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" rel="prev" title="功能安全标准 ISO26262 中的硬件安全机制">
+                  <i class="fa fa-angle-left"></i> 功能安全标准 ISO26262 中的硬件安全机制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/27/Linux%E5%86%85%E6%A0%B8%E7%9A%84%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" rel="next" title="Linux内核的进程调度算法分析">
+                  Linux内核的进程调度算法分析 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

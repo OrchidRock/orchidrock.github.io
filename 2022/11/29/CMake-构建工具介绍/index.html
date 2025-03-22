@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; CMake 是跨平台的编译、构建工具，它主要被设计为各种Ｍakefile方言的生成器。CMake 可以生成各种编译系统，例如 Ninja，也可以生成各种 IDE 的工程文件，例如 Visual Studio 和 Xcode。&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMake 构建工具介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; CMake 是跨平台的编译、构建工具，它主要被设计为各种Ｍakefile方言的生成器。CMake 可以生成各种编译系统，例如 Ninja，也可以生成各种 IDE 的工程文件，例如 Visual Studio 和 Xcode。&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-29T01:49:48.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.564Z">
+<meta property="article:author" content="顽石">
+<meta property="article:tag" content="微型语言">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/","path":"2022/11/29/CMake-构建工具介绍/","title":"CMake 构建工具介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CMake 构建工具介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8-CMake"><span class="nav-number">2.</span> <span class="nav-text">为什么使用 CMake</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MakeFile-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">MakeFile 的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8-Autoconf"><span class="nav-number">2.2.</span> <span class="nav-text">为什么不使用 Autoconf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8-JAM%EF%BC%8Cqmake%EF%BC%8CSCons-%E6%88%96%E8%80%85-ANT"><span class="nav-number">2.3.</span> <span class="nav-text">为什么不使用 JAM，qmake，SCons 或者 ANT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="nav-number">2.4.</span> <span class="nav-text">为什么不使用脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake-%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">CMake 的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake-%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">CMake 构建系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9B%AE%E6%A0%87"><span class="nav-number">4.1.</span> <span class="nav-text">二进制目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E8%A7%84%E8%8C%83%E5%92%8C%E4%BD%BF%E7%94%A8%E8%A6%81%E6%B1%82"><span class="nav-number">4.2.</span> <span class="nav-text">构建规范和使用要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4"><span class="nav-number">4.3.</span> <span class="nav-text">其他命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.</span> <span class="nav-text">条件语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">自定义函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E7%BC%96%E8%AF%91%E4%BF%A1%E6%81%AF"><span class="nav-number">7.</span> <span class="nav-text">输出编译信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">8.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#enable-testing"><span class="nav-number">8.1.</span> <span class="nav-text">enable_testing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add-test"><span class="nav-number">8.2.</span> <span class="nav-text">add_test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-tests-properties"><span class="nav-number">8.3.</span> <span class="nav-text">set_tests_properties</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85"><span class="nav-number">9.</span> <span class="nav-text">打包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9E%84%E5%BB%BA%E5%8F%98%E9%87%8F"><span class="nav-number">10.</span> <span class="nav-text">常用构建变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">11.</span> <span class="nav-text">命令行参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF"><span class="nav-number">12.</span> <span class="nav-text">模板</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/11/29/CMake-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CMake 构建工具介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CMake 构建工具介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-29 09:49:48" itemprop="dateCreated datePublished" datetime="2022-11-29T09:49:48+08:00">2022-11-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">构建工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a target="_blank" rel="noopener" href="http://cmake.org/">CMake</a> 是跨平台的编译、构建工具，它主要被设计为各种<code>Ｍakefile</code>方言的<strong>生成器</strong>。CMake 可以生成各种编译系统，例如 <code>Ninja</code>，也可以生成各种 IDE 的工程文件，例如 <code>Visual Studio</code> 和 <code>Xcode</code>。<br>&emsp;&emsp; Cmake 被广泛用于 C&#x2F;C++ 语言，但也可以构建使用其他语言的源代码。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://cmake.org/documentation/">CMake - Documentation</a> 文档。<br>参考 <a target="_blank" rel="noopener" href="https://github.com/Akagi201/learning-cmake/blob/master/docs/mastering-cmake.pdf">Mastering CMake: A Cross-Platform Build System</a> By Ken Martin &amp; Bill Hoffman</p>
+</blockquote>
+<h2 id="为什么使用-CMake"><a href="#为什么使用-CMake" class="headerlink" title="为什么使用 CMake"></a>为什么使用 CMake</h2><h3 id="MakeFile-的问题"><a href="#MakeFile-的问题" class="headerlink" title="MakeFile 的问题"></a>MakeFile 的问题</h3><ul>
+<li>对于比较复杂庞大的软件系统，手写 MakeFile 过于复杂繁琐，维护困难。</li>
+<li>与平台环境耦合性强，跨平台性不足</li>
+</ul>
+<h3 id="为什么不使用-Autoconf"><a href="#为什么不使用-Autoconf" class="headerlink" title="为什么不使用 Autoconf"></a>为什么不使用 Autoconf</h3><h3 id="为什么不使用-JAM，qmake，SCons-或者-ANT"><a href="#为什么不使用-JAM，qmake，SCons-或者-ANT" class="headerlink" title="为什么不使用 JAM，qmake，SCons 或者 ANT"></a>为什么不使用 JAM，qmake，SCons 或者 ANT</h3><h3 id="为什么不使用脚本"><a href="#为什么不使用脚本" class="headerlink" title="为什么不使用脚本"></a>为什么不使用脚本</h3><h2 id="CMake-的特性"><a href="#CMake-的特性" class="headerlink" title="CMake 的特性"></a>CMake 的特性</h2><p><strong>使用 CMake 与直接编写 Makefile 相比到底有哪些优势呢？</strong><br>CMake 是 Makefile 生成器，它包含了大部分关于 Makefile 的知识，而直接掌握这些知识需要一段时间（可能很长）经验的积累。</p>
+<ul>
+<li><strong>跨平台性</strong>：同一个源代码工程可以构建到不同的平台，从 Android，iOS 到高性能计算平台（包括构建、打包、安装和测试）。</li>
+<li><strong>高效率</strong>：CMake 可以描述复杂工程各子模块的精确依赖关系（支持并行构建），并进行最小化构建。</li>
+<li><strong>外部构建</strong>(out-of-source build)：在单独的构建目录中存放临时文件，不影响源代码目录。</li>
+<li><strong>以目标（target）为中心的方法论</strong>：</li>
+<li><strong>支持多种后端（生成器）</strong>：CMake 支持生成多种构建工具脚本，包括 Visual Studio，Xcode，ninja，make 和 VSCode。  </li>
+<li><strong>自定义命令</strong>：可以自定义命令去生成文件，或者完成用户自定义的任务。</li>
+<li><strong>可复用性强</strong>: CMake可以从构建中导出和导入目标，以允许重用软件。</li>
+<li><strong>组件化&#x2F;模块化</strong>：</li>
+<li>支持多种构建模式</li>
+</ul>
+<h2 id="CMake-构建系统"><a href="#CMake-构建系统" class="headerlink" title="CMake 构建系统"></a>CMake 构建系统</h2><p>&emsp;&emsp;基于 CMake 的构建系统由一系列高级逻辑目标（<code>target</code>）构成的，这些目标对应于可执行目标文件、库文件或者包含自定义命令的自定义目标（<code>custom target</code>）。各个目标间的依赖关系会在构建系统中指明，并依此来决定构建顺序和重新构建的规则。</p>
+<h3 id="二进制目标"><a href="#二进制目标" class="headerlink" title="二进制目标"></a>二进制目标</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>命令</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>库</td>
+<td><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/add_library.html#command:add_library">add_library()</a></td>
+<td><code>add_library(mylib mylib.cxx)</code></td>
+</tr>
+<tr>
+<td>可执行文件</td>
+<td><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/add_executable.html#command:add_executable">add_executable()</a></td>
+<td><code>add_executable(demo2 demo2.c)</code></td>
+</tr>
+<tr>
+<td>自定义目标</td>
+<td><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/add_custom_command.html#command:add_custom_command">add_custom_command()</a></td>
+<td>add_custom_command(OUTPUT demo2.h<br>COMMAND demo2 demo2.h<br>DEPENDS demo2)</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>add_library() 支持生成多种类型的“库”，如 <code>SHARED</code>、<code>STATIC</code>、<code>MODULE</code>、<code>OBJECT</code>。具体用法参考<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/manual/cmake-buildsystem.7.html#id14">官方文档</a>。</li>
+</ul>
+<p>将库链接到可执行文件：<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/target_link_libraries.html#command:target_link_libraries">target_link_libraries()</a>，例如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_link_libraries</span>(demo2 PRIVATE mylib)</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建规范和使用要求"><a href="#构建规范和使用要求" class="headerlink" title="构建规范和使用要求"></a>构建规范和使用要求</h3><p>&emsp;&emsp;以库目标为例，其构建时需要指定一些规范：头文件路径、编译选项和宏定义等；当其他目标（<code>consumers</code>）使用（如链接）该库时，则必须满足使用要求，这些要求可能是必须包含某个头文件或者必须打开某个编译选项。</p>
+<p>相关命令表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/target_include_directories.html#command:target_include_directories">target_include_directories()</a></td>
+<td align="left">可认为等价于GCC的 <code>-I</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/v3.24/command/target_compile_definitions.html#command:target_compile_definitions">target_compile_definitions()</a></td>
+<td align="left">可认为等价于GCC的 <code>-D</code> 选项</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left">set_property()</td>
+<td align="left">None</td>
+<td align="left">None</td>
+</tr>
+</tbody></table>
+<p>命令模式：</p>
+<ul>
+<li><code>PUBLIC</code>：</li>
+<li><code>PRIVATE</code>：</li>
+<li><code>INTERFACE</code>：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有 archive 源文件在编译时带有 -DBUILDING_WITH_LZMA</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive PRIVATE BUILDING_WITH_LZMA)</span><br><span class="line"></span><br><span class="line"><span class="comment"># archive 源文件在编译时不会带有 -DUSING_ARCHIVE_LIB，而对于链接archive库的目标</span></span><br><span class="line"><span class="comment">#，其源文件编译时会带有 -DUSING_ARCHIVE_LIB，例如下面的 consumer 目标。</span></span><br><span class="line"><span class="keyword">target_compile_definitions</span>(archive INTERFACE USING_ARCHIVE_LIB)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(consumer)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(consumer archive)</span><br></pre></td></tr></table></figure>
+
+<p>使用要求的传播（Transitive Usage Requirements）：</p>
+<ul>
+<li><code>target_link_libraries()</code>命令的不同模式可以控制某个库的使用要求是否可以沿<strong>依赖链</strong>传递。</li>
+</ul>
+<p>使用生成器表达式（Generator Expressions）: 有些构建规范只能在generate-time获得或者需要有条件地获得。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(lib1Version2 SHARED lib1_v2.cpp)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 PROPERTY</span><br><span class="line">  INTERFACE_CONTAINER_SIZE_REQUIRED <span class="number">200</span>)</span><br><span class="line"><span class="keyword">set_property</span>(<span class="keyword">TARGET</span> lib1Version2 APPEND PROPERTY</span><br><span class="line">  COMPATIBLE_INTERFACE_NUMBER_MAX CONTAINER_SIZE_REQUIRED</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(exe1 exe1.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(exe1 lib1Version2)</span><br><span class="line"><span class="keyword">target_compile_definitions</span>(exe1 PRIVATE</span><br><span class="line">    CONTAINER_SIZE=$&lt;TARGET_PROPERTY:CONTAINER_SIZE_REQUIRED&gt;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 <code>find_package</code> 命令是非常便利的</strong>，它会生成对应依赖包的编译选项，例如头文件路径。经常使用的变量如下：</p>
+<ul>
+<li><code>&lt;package&gt;_&lt;lang&gt;_INCLUDE_DIRS</code>: 头文件路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_LIBRARIES</code>: 共享库路径</li>
+<li><code>&lt;package&gt;_&lt;lang&gt;_VERSION</code>:</li>
+</ul>
+<p>可以参考 <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/module/FindMPI.html">FindMPI - Cmake</a> 作为一个例子。</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">set</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">option (ccmake)</td>
+<td align="left">如果需要在源代码文件中引用该选项，a: 在 CMakeLists.txt 中 使用 <code>configure_file</code>；b: 使用 <code>target_compile_options</code>。</td>
+</tr>
+<tr>
+<td align="left">list</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">target_compile_options()</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">set_target_properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">configure_file</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">add_subdirectory</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><h2 id="输出编译信息"><a href="#输出编译信息" class="headerlink" title="输出编译信息"></a>输出编译信息</h2><p><code>make VERBOSE=1</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>集成 <code>CTest</code></p>
+<h3 id="enable-testing"><a href="#enable-testing" class="headerlink" title="enable_testing"></a>enable_testing</h3><h3 id="add-test"><a href="#add-test" class="headerlink" title="add_test"></a>add_test</h3><h3 id="set-tests-properties"><a href="#set-tests-properties" class="headerlink" title="set_tests_properties"></a>set_tests_properties</h3><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>集成 <code>CPack</code></p>
+<h2 id="常用构建变量"><a href="#常用构建变量" class="headerlink" title="常用构建变量"></a>常用构建变量</h2><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CMAKE_PREFIX_PATH</strong></td>
+<td>依赖包路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_MODULE_PATH</strong></td>
+<td>CMake扩展模块所在路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_INSTALL_PREFIX</strong></td>
+<td>当执行<strong>install</strong> 目标时的安装路径</td>
+</tr>
+<tr>
+<td><strong>CMAKE_BUILD_TYPE</strong></td>
+<td>构建类型，例如<code>Debug</code>或<code>Release</code></td>
+</tr>
+<tr>
+<td><strong>BUILD_SHARED_LIBS</strong></td>
+<td>指定<code>add_library()</code>生成静态库还是动态库</td>
+</tr>
+</tbody></table>
+<p>上述变量可以通过<code>option()</code>或者 <code>ccmake</code>工具设置，或者通过命令行设置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>打印变量列表<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-variable-list</span></span><br></pre></td></tr></table></figure></li>
+<li>打印命令列表<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake --help-command-list</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>.<span class="number">1</span>)</span><br><span class="line"><span class="keyword">project</span>(myproject VERSION <span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>()</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E5%9E%8B%E8%AF%AD%E8%A8%80/" rel="tag"># 微型语言</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/27/CPython-Internals-0-%E9%85%8D%E7%BD%AE%E5%92%8C%E6%9E%84%E5%BB%BA/" rel="prev" title="CPython Internals 0: 配置和构建">
+                  <i class="fa fa-angle-left"></i> CPython Internals 0: 配置和构建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/01/Chris-Lattner%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E9%BB%84%E9%87%91%E6%97%B6%E4%BB%A3/" rel="next" title="Chris Lattner：编译器的黄金时代">
+                  Chris Lattner：编译器的黄金时代 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

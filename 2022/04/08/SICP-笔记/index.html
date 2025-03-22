@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第一章 构造过程抽象 程序设计基本元素：基本表达形式、组合的方法、抽象的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SICP 笔记">
+<meta property="og:url" content="https://orchidrock.github.io/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="第一章 构造过程抽象 程序设计基本元素：基本表达形式、组合的方法、抽象的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-08T00:28:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.616Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/","path":"2022/04/08/SICP-笔记/","title":"SICP 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SICP 笔记 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E6%9E%84%E9%80%A0%E8%BF%87%E7%A8%8B%E6%8A%BD%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">第一章 构造过程抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%9E%84%E5%BB%BA%E6%95%B0%E6%8D%AE%E6%8A%BD%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">第二章 构建数据抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%A8%A1%E5%9D%97%E5%8C%96%E3%80%81%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%8A%B6%E6%80%81"><span class="nav-number">3.</span> <span class="nav-text">第三章 模块化、对象和状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%85%83%E8%AF%AD%E8%A8%80%E6%8A%BD%E8%B1%A1"><span class="nav-number">4.</span> <span class="nav-text">第四章 元语言抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E5%AF%84%E5%AD%98%E5%99%A8%E6%9C%BA%E5%99%A8%E9%87%8C%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">5.</span> <span class="nav-text">第五章 寄存器机器里的计算</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SICP 笔记 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SICP 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-08 08:28:00" itemprop="dateCreated datePublished" datetime="2022-04-08T08:28:00+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">计算机科学</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="第一章-构造过程抽象"><a href="#第一章-构造过程抽象" class="headerlink" title="第一章 构造过程抽象"></a>第一章 构造过程抽象</h3><ul>
+<li><strong>程序设计基本元素：基本表达形式、组合的方法、抽象的方法。</strong></li>
+</ul>
+<span id="more"></span>
+
+<p>（在计算模型中，全局环境的概念非常重要，它代表着计算机可以维护某种存储能力。在图灵机模型和早期大型机中都将内部存储能力作为通用型计算机的核心特点。）</p>
+<ul>
+<li><p><strong>一般而言，我们应将递归看作一种处理层次型结构（像树这样的结构）极强有力的技术。</strong>事实上，“值向上穿行”形式的求值形式是一类更一般计算过程的一个例子。这种计算过程称为<strong>树形积累</strong>。</p>
+</li>
+<li><p>环境所扮演的角色就是用于确定表达式中符号的意义。<br>（在形式代数中，任何符号都没有绝对的意义，它也不代表真理，它只是逻辑的信徒。在Lisp中，任何符号在环境中都有值对应，只是有些符号的值是它本身，有些是内部提供的基本过程，而有些则是用户自定义的。）</p>
+</li>
+<li><p><strong>语法糖衣</strong>：Lisp的语法非常简单，也就是说，对各种表达式的求值规则都可以描述为一个简单的通用规则和一组针对不同的特殊形式（例如define）的专门规则。<strong>语法的糖衣会导致分号的癌症。</strong><br>（Lisp简单的语法使得它获得了强大的表达复杂语义的能力。）</p>
+</li>
+<li><p><strong>过程定义是一种强大的抽象技术。</strong>数学函数和计算机过程的重要差异是，计算机过程必须是有效可行的（即可以转换为递归模型）。通俗地讲，它要给出行动性的‘怎么做’的知识。<br>（在几乎所有的现代编程语言中，都包含过程定义的能力，或者称为函数定义。可以定义子过程使得计算机编程的抽象能力大大提高。但最早期的一些大型机，例如ENIAC，都不能调用子过程，只能顺序执行设定好的程序。而图灵在ACE的方案设计中就已经引入了子过程特性。）</p>
+</li>
+<li><p><strong>代换模型：正则序和应用序</strong><br>（<strong>归约</strong> 是一种通用的方法论，它体现了人类的认知规律。将复杂问题规约为简单问题的组合是计算机编程的核心思维模型。）</p>
+</li>
+<li><p><strong>条件表达式和谓词</strong><br>（条件分支的特性是计算机模拟人类智能必不可少的能力。人类的智能很大程序上体现在判断决策、自主控制、修改现有观念状态等思维方式上，条件分支可以使得计算机拥有判断决策和修改自身的能力。）</p>
+</li>
+<li><p><strong>过程作为黑箱抽象</strong>，使用者不需要关心过程内部的实现细节。过程所使用的形式参数是局部变量或者称为约束变量。一个过程的定义约束了它的所有形式参数。（形式参数的作用域是这个过程的体。作用域的概念在几乎所有现代编程语言中都是基础核心的概念。）</p>
+</li>
+<li><p><strong>内部定义和块结构</strong>。(块结构是构造大型复杂程序的基础)</p>
+</li>
+<li><p><strong>线性递归和线性迭代</strong>。（两者的区别可以看作是计算状态的保存位置不同；另外在硬件实现方式上，递归需要一种称为栈的辅助数据结构。）<strong>尾递归</strong>：对于一个使用递归过程描述的迭代计算过程，尾递归总能在常量空间中来完成它；相比而言，没有实现尾递归的编译器就只能在线性空间中完成它。有了尾递归的实现，我们可以利用常规的过程调用机制表述迭代，这会使得各种复杂的专用迭代结构（如while、for、until和do等）变成不过是一些语法糖衣了。<strong>树形递归</strong>：<br>（在自然界中，到处都可以看出类似递归的结构，如贝壳的纹路，树枝的形态，种子等。）</p>
+</li>
+<li><p><strong>高阶函数 Lambda表达式</strong>:高阶过程的重要性就在于使我们能显式地用程序设计语言的要素去描述这些抽象,使我们能像操作其他计算元素一样去操作它们。</p>
+</li>
+<li><p><strong>第一级状态</strong>：</p>
+<ul>
+<li>可以用变量命名；</li>
+<li>可以提供给过程作为参数；</li>
+<li>可以由过程作为参数返回；</li>
+<li>可以包含在数据结构中。<br>Lisp给予过程完全的第一级状态。<br>(Lambda表达式和闭包的概念有着紧密的联系。将过程作为参数或者过程的返回值，可以获得更强大的抽象能力。)</li>
+</ul>
+</li>
+</ul>
+<h3 id="第二章-构建数据抽象"><a href="#第二章-构建数据抽象" class="headerlink" title="第二章 构建数据抽象"></a>第二章 构建数据抽象</h3><ul>
+<li>复合数据的使用可以进一步提高程序的模块性。这种将程序中处理数据对象表示的部分与处理数据对象的使用部分相互隔离的技术非常具有一般性，形成了一种称为<strong>数据抽象</strong>的强有力的方法学。</li>
+<li>把对于具体表示方式的依赖性限制到少数几个界面（interface）过程，不但对修改程序有帮助，同时也有助于程序的设计。因为这种做法使我们能保留考虑不同实现方式的灵活性。……数据抽象方式使我们能够推迟决策（比如系统性能方面的优化）的时间，而不会阻碍系统其他部分的工作进程。</li>
+<li><strong>闭包</strong>：用于组合数据对象的黏合剂不但能用于组合基本的数据对象,同样也可以用于复合的数据对象。另一关键思想是，复合数据对象能够成为以混合与匹配的方式组合程序模块的方便界面（interface）。（Lisp中cons的闭包性质使得它可以用优雅简单的方式构造层次型数据。另外在自然界中都可以看到类似的结构。）<br>（对于编译器或者解释器来说，程序语言的任何语句都可以认为是符号表达式。）</li>
+<li><strong>序对</strong>的实现模糊了数据与过程的界限，也就是，这种基础数据结构的内部可以完全是过程的形式。（Lisp的过程具有第一级状态，过程体本身其实也是一种存储信息的结构，广泛地讲，任何一种过程都包含信息，而数据是信息的可存储并可访问的一种形式）。与Lisp及其序对不同，C&#x2F;Pascal&#x2F;Fortran&#x2F;Basic这些语言都没有内部的通用型粘接剂，因此无法以统一的方式去操作复合数据。（或许C&#x2F;Pascal的程序员会说，Lisp程序员是从来不考虑效率的理想主义者。）</li>
+<li>（丘奇计数中去除了整数一般所认为的现实意义，即单纯表示数据，而是将其抽象为一种计数的过程。）</li>
+<li><strong>序列（List）</strong></li>
+<li>对表的映射: map是一种很重要的结构，不仅因为它代表了一种公共模式，而且因为它建立了一种处理表的高层抽象。从作用上看，map帮我们建起了一层抽象屏障，将实现表变换的过程的实现，与如何提取表中元素以及组织结果的细节隔离开。</li>
+<li><strong>树</strong>：递归是处理树结构的一种很自然的工具。</li>
+<li><strong>List作为一种约定的接口</strong>：（流处理、枚举器、过滤器、累加器等）<strong>将程序表示为一些针对序列的操作，这样做的价值就在于能帮助我们得到模块化的程序设计，也就是说，得到由一些比较独立的片段的组合构成的设计。通过提供一个标准部件的库，并使这些部件都有着一些能以各种灵活方式相互连接的界面（接口），将进一步推动人们去做模块化的设计。在工程设计中，模块化结构是控制复杂性的一种威力强大的策略。</strong></li>
+<li>八皇后谜题（eight-queen-puzzle）</li>
+<li><strong>分层设计</strong>:一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言。构造各个层次的方式，就是设法组合起作为这一层次中部件的各种基本元素，而这样构造出来的部件又可以作为另一个层次里的基本元素。在分层设计中，每个层次上所用的语言都提供了一些基本元素、组合手段，还有对该层次中的适当细节作抽象的手段。</li>
+<li><strong>数据抽象屏障是控制复杂性的强有力工具。</strong></li>
+<li>数据导向和消息传递：消息传递设计的特点是将数据对象设想为一个实体（与面向对象的程序设计中的类class相似）</li>
+<li><strong>在大型系统中,处理好一大批相互有关的类型而同时又能保持模块性,这是非常困难的问题。</strong>（面向对象语言中的类与其相关的继承概念被用来描述不同类型的对象之间的关系，被用来建立抽象、代码重用和模块化设计。但正是这种对类型之间通用性的处理带来了面向对象语言的大部分复杂性，错综复杂的各种类之间的关系成为程序员的噩梦。或许，这种问题是无法仅仅通过计算机语言设计的方式合理处理的。）</li>
+</ul>
+<h3 id="第三章-模块化、对象和状态"><a href="#第三章-模块化、对象和状态" class="headerlink" title="第三章 模块化、对象和状态"></a>第三章 模块化、对象和状态</h3><ul>
+<li>(除了抽象的手段外，我们还需要帮助我们构造起模块化的大型系统的策略。)</li>
+<li><strong>对象与流</strong>：当我们对现实世界的系统进行模拟时，我们可以采取两种策略：第一种是以对象为中心，将大型系统看作一系列对象，特别重要的时，它们的状态会随着时间而变化；另一种则是将注意力集中在流过系统的信息流上。对象策略的实现需要与时间搏斗，它需要我们抛弃老旧的代换模型，而代之更机械式、理论上更难把握的<strong>环境模型</strong>；而流方式则能够用于<strong>松懈</strong>我们的模型中对时间的模拟与计算机求值过程中的各种事件发生的顺序。</li>
+<li><strong>局部状态变量和赋值运算符</strong>：由对象组成的系统中，各对象既独立又相互作用，对象的状态是模拟现实世界中&lt;本体&gt;存在的重要概念。（<strong>状态必须是有限的</strong>，且从某种角度来看，对象的同一性问题就和不同年龄的人是否是同一个人的问题一样难以解答。）set!赋值运算的环境模型解释</li>
+<li>赋值的利益：从rand过程（实现蒙特卡洛模拟）来看，从一个复杂计算过程中一部分的观点来看，其他部分都在随着时间变化，它们隐藏起自己的随时间变化的内部状态。通过局部状态变量模拟系统的状态，对变量的赋值模拟状态的变化。总结来看，与所有状态都必须显式地操作和传递额外参数的方式相比，通过引进赋值和将状态隐藏在局部变量中的技术，我们能够以一种更模块化的方式构造系统。（蒙特卡洛模拟的收敛效率很低）</li>
+<li>赋值的代价：不用任何赋值的程序设计称为<strong>函数式程序设计</strong>。变量所代表的不再是一个简单的名字，而是索引着一个位置，而这个位置所保存的值是可以改变的。<strong>同一和变化</strong>：赋值打破了<strong>引用透明性</strong>，使得同一的问题非常复杂。<strong>命令式程序设计</strong>带来的更困难的问题是它强迫人们去考虑赋值的相对顺序，特别在并发程序中，这个问题会更加得困难。</li>
+<li>环境模型：看作一系列frame连接组成的序对表。每个frame看作一系列约束的表格。</li>
+<li>用变动数据作模拟：可以大大增加序对的表达能力，使得我们可以构造出序列和树之外的其他数据结构（如队列、二维表和堆）。<strong>共享和相等</strong>：set-car!和set-cdr!可以修改序对所指向的数据对象，这些数据对象可以与其他序对共享，但赋值操作利用共享所带来的危险则是隐晦和难以跟踪。</li>
+<li>队列和表格</li>
+<li>数字电路模拟器、约束系统</li>
+<li>并发性、时间和通信：这里的基本现象是不同进程之间的同步，建立起共享状态，或迫使进程之间通信所产生的事件按照某种特定的顺序进行。从本质上看，在并发控制中，任何时间概念都必然与通信有内在的密切联系。</li>
+<li><strong>流</strong>：使用时间函数来描述对象的状态随时间的变化，而函数本身是没有变化的。时间函数可以用一个（可能无穷的）序列去模拟。流，可以被看作一个序列，但不能简单用表来实现，我们需要引进延时求值的技术。流是一种非常巧妙的想法，使我们可能利用各种序列操作，但又不会带来序列作为表去操作而引起的代价。因为流的构造和使用能够交替进行，而这种交错又是完全透明的。作为一种数据抽象，流和表完全一样，它们的不同点就在于元素的求值时间。对于常规的表，其car和cdr都是在构造时求值；而对于流，其cdr则是在选取的时候才去求值。（延时求值的技术也被现代编程语言所采用，如python）。流的实现需要cons的特殊形式，这种特殊形式与常规过程不同，它不会立即求出所有参数的值。</li>
+<li>无穷流，隐式地定义流：流计算模式可以方便地解决数列、级数等问题。同时可以系统地将迭代操作过程表示为流过程。（累加型迭代就是根据初始猜测值不断迭代获得下一个猜测值，直到猜测值足够好，这个过程完全可以通过流才实现，而不使用赋值或者局部变量。）（相同的问题如果不采用流过程则难以解决，例如对无穷数列和无穷级数的操作。另外，在使用表作为通用接口时，表的传输和构造需要大量的空间，特别是当表非常大时，程序的计算效率也会大大降低，而使用流则可以根据需要生成数据，而不是一次性得到所有数据。）</li>
+<li>我们可以用一个<strong>序列加速器</strong>对流做一个变换，这种加速器可以将一个逼近序列变换为另一个新序列，该新序列也收敛到与原序列同样的值，只是收敛速度更快。<strong>如果不使用流，我们也可以实现这些加速技术，但流的描述方式特别优美和方便，因为整个状态序列就像一个数据结构一样，可以通过一集统一的操作直接地随意使用。</strong></li>
+<li>将流作为信号，可以方便地开发信号处理系统。</li>
+<li>函数式程序的模块化和对象的模块化：流模型可以提供等价的模块化，同时也不必使用赋值。流实现了一个具有良好定义的数学函数，其行为根本不会变化，但用户看到的却是在这里与一个改变着的状态交互。<strong>正是由于用户方的时态的存在，为这个系统赋予了状态特性。</strong>（<strong>但是，函数式程序在处理非确定性时有着本质的困难，而非确定性在处理并发方面是本质的。</strong>）</li>
+<li>我们将这一世界模拟为一集相互分离的、受时间约束的、具有状态的相互交流的对象，或者可以将它模拟为单一的、无时间也无状态的统一体。每种观点都有强有力的优势，但就其自身而言，又没有一种方式能够完全令人满意。我们还在等待一个大统一的出现。</li>
+<li>对象模型对世界的近似在于将其分割为独立的片段，函数式模型则不是沿着对象间的边界去做模块化。当“对象”间不共享的状态远远大于它们所共享的状态时，对象模型就特别好用。</li>
+</ul>
+<h3 id="第四章-元语言抽象"><a href="#第四章-元语言抽象" class="headerlink" title="第四章 元语言抽象"></a>第四章 元语言抽象</h3><ul>
+<li><strong>建立新语言是在工程设计中控制复杂性的一种威力强大的策略</strong>，我们常常能通过采用一种新语言而提升处理复杂问题的能力，因为新语言可能使我们以一种完全不同的方式，利用不同的原语，不同的组合方式和抽象方式去描述所面对的问题，而这些都是为了手头的问题而专门打造的。</li>
+<li><strong>求值器的作用：</strong>求值器的工作并不是去描述语言的基本过程，而是提供一套连接方式，提供一些组合手段和抽象手段，借助于它们将基本过程联系起来，形成一个语言：<ul>
+<li>帮助我们处理嵌套表达式</li>
+<li>使我们可以使用变量</li>
+<li>使我们可以定义复合过程、</li>
+<li>提供一些特殊形式，它们的求值方式与普通过程调用不同</li>
+</ul>
+</li>
+<li>我们把求值器看作是一部非常特殊的机器，它要求以一部机器的描述作为输入。给定了一个输入后，求值器就能够规划自己的行为，模拟被描述机器的执行过程。<strong>按照这一观点，我们的求值器可看作一种通用机器。</strong>（<strong>这其中反映了可计算性的概念，即任一个求值器都可以模拟其他的求值器，或者说只要一个求值器是图灵机等价的，它就可以作为通用机。</strong>）求值器本身可以很简单，但却可以模拟比自身还要复杂的各种程序。<strong>用户程序被看作是求值器的数据。</strong></li>
+<li><strong>图灵停机定理</strong>：给定一任意的图灵机程序P和一组任意的输入数据I，不存在单个的图灵机程序，它在有限多步后停机，并告诉我们P是否结束输入数据I的处理。</li>
+<li><strong>惰性求值</strong>: 如果在某个参数还没有完成求值之前就进入一个过程的体,我们就说这一过程相对于该参数是<strong>非严格</strong>的；如果在进入某个人过程体之前某个参数已经完成求值，我们就说该过程相对于这个参数是<strong>严格</strong>的。</li>
+<li>将流作为惰性表：利用惰性求值，表和流就完全一样了，所以也就需要任何特殊形式了，也不需要区分表操作或者流操作。将cons实现为非严格的过程即可。</li>
+<li><strong>非确定计算</strong>：非确定求值器支持一种假象：时间是有分支的，而我们的程序里保存着所有可能的不同执行历史。在遇到一个死胡同时，我们总可以回到以前的某个选择点，并沿着另一个分支继续下去。实现非确定程序设计的amb思想是John McCarthy在1961年第一次提出的。（这是一种将自动搜索策略结合进程序设计的方式。）</li>
+<li>逻辑谜题、自然语言分析</li>
+<li><strong>逻辑程序设计</strong>：将逻辑直接作为程序设计语言并将计算作为受控推理的一种程序设计技术。对于传统的程序设计来说，算法的逻辑意义往往被程序复杂的控制成分所掩盖，使程序的正确性难以得到证明。科瓦尔斯基对传统的算法或对用通常高级语言编写的程序提出了一个著名的分析公式，即算法&#x3D;逻辑+控制。其基本思想是要从根本上改变程序设计的方法：用户只需要编写程序的逻辑部分（逻辑程序设计之名由此而来），而系统中的解释程序则实施控制部分的职能。（参看Prolog语言）</li>
+</ul>
+<h3 id="第五章-寄存器机器里的计算"><a href="#第五章-寄存器机器里的计算" class="headerlink" title="第五章 寄存器机器里的计算"></a>第五章 寄存器机器里的计算</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/18/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6%E8%AE%BE%E5%A4%87%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96%E5%92%8C%E5%88%86%E6%9E%90/" rel="prev" title="智能硬件设备固件提取和分析">
+                  <i class="fa fa-angle-left"></i> 智能硬件设备固件提取和分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/" rel="next" title="Unix编程艺术笔记">
+                  Unix编程艺术笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

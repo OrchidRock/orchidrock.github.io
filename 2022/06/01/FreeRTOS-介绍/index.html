@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp;FreeRTOS 是实时操作系统(RTOS)的一种，它非常小巧，被专门设计运行在 MCU 上。FreeRTOS (kernel) 只提供核心的实时调度、内部任务通信、定时器和同步原语，所以更准确地说它是一个实时内核。它的一些特性包括：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeRTOS 介绍">
+<meta property="og:url" content="https://orchidrock.github.io/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp;FreeRTOS 是实时操作系统(RTOS)的一种，它非常小巧，被专门设计运行在 MCU 上。FreeRTOS (kernel) 只提供核心的实时调度、内部任务通信、定时器和同步原语，所以更准确地说它是一个实时内核。它的一些特性包括：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.freertos.org/fr-content-src/uploads/2018/07/tskstate.gif">
+<meta property="article:published_time" content="2022-06-01T08:56:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.620Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.freertos.org/fr-content-src/uploads/2018/07/tskstate.gif">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/","path":"2022/06/01/FreeRTOS-介绍/","title":"FreeRTOS 介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FreeRTOS 介绍 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86-Fundamentals"><span class="nav-number">2.</span> <span class="nav-text">基本原理(Fundamentals)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1-Multitasking"><span class="nav-number">2.1.</span> <span class="nav-text">多任务(Multitasking)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6-Scheduling"><span class="nav-number">2.2.</span> <span class="nav-text">调度(Scheduling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2-Context-Switching"><span class="nav-number">2.3.</span> <span class="nav-text">上下文切换(Context Switching)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E5%BA%94%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">实时应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E8%B0%83%E5%BA%A6"><span class="nav-number">2.5.</span> <span class="nav-text">实时调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tasks"><span class="nav-number">3.</span> <span class="nav-text">Tasks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E3%80%81%E4%BA%92%E6%96%A5%E9%87%8F%E5%92%8C%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">队列、互斥量和信号量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5"><span class="nav-number">5.</span> <span class="nav-text">任务通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E5%92%8C%E6%B6%88%E6%81%AF%E7%BC%93%E5%AD%98"><span class="nav-number">6.</span> <span class="nav-text">流和消息缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">7.</span> <span class="nav-text">软定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87"><span class="nav-number">8.</span> <span class="nav-text">代码组织</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E5%88%B6"><span class="nav-number">9.</span> <span class="nav-text">定制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">10.</span> <span class="nav-text">静态内存分配和动态内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">11.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B"><span class="nav-number">12.</span> <span class="nav-text">栈使用以及内存溢出检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMP%E6%94%AF%E6%8C%81"><span class="nav-number">13.</span> <span class="nav-text">SMP支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4"><span class="nav-number">14.</span> <span class="nav-text">内存保护</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%EF%BC%88TLS%EF%BC%89"><span class="nav-number">15.</span> <span class="nav-text">线程本地存储（TLS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86"><span class="nav-number">16.</span> <span class="nav-text">延迟中断处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%84-Event-Groups"><span class="nav-number">17.</span> <span class="nav-text">事件组(Event Groups)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QEMU-%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">18.</span> <span class="nav-text">QEMU 模拟器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FreeRTOS 介绍 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FreeRTOS 介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-01 16:56:00" itemprop="dateCreated datePublished" datetime="2022-06-01T16:56:00+08:00">2022-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;<a target="_blank" rel="noopener" href="https://www.freertos.org/zh-cn-cmn-s/">FreeRTOS</a> 是<code>实时操作系统(RTOS)</code>的一种，它非常小巧，被专门设计运行在 MCU 上。<code>FreeRTOS (kernel)</code> 只提供核心的<strong>实时调度</strong>、<strong>内部任务通信</strong>、<strong>定时器</strong>和<strong>同步原语</strong>，所以更准确地说它是一个实时内核。它的一些特性包括：</p>
+<span id="more"></span>
+
+<ul>
+<li>支持40多种架构，为这些不同架构和开发工具提供同一的解决方案。</li>
+<li>可靠，可裁减、简单易用。</li>
+<li>包含丰富的特性和活跃的持续开发。</li>
+<li>资源占用非常小。通常，一个二进制的 kernel image 只占用 6k-12k 字节。</li>
+<li>非常简单小巧。内核的核心部分只包含 3 个 C 文件(<code>tasks.c</code>、<code>queue.c</code>和<code>list.c</code>)。</li>
+<li>完全 <strong>free</strong> 。</li>
+<li>可以迁移到 <a target="_blank" rel="noopener" href="https://www.highintegritysystems.com/">SafeRTOS</a>。</li>
+<li>稳定且仍在增长的用户群。</li>
+<li>详细完整的示例以及支持论坛。</li>
+</ul>
+<blockquote>
+<p>下文部分参考 <a target="_blank" rel="noopener" href="https://www.freertos.org/RTOS.html">FreeRTOS - 官方文档</a>。</p>
+</blockquote>
+<h3 id="基本原理-Fundamentals"><a href="#基本原理-Fundamentals" class="headerlink" title="基本原理(Fundamentals)"></a>基本原理(Fundamentals)</h3><h4 id="多任务-Multitasking"><a href="#多任务-Multitasking" class="headerlink" title="多任务(Multitasking)"></a>多任务(Multitasking)</h4><p>多任务是现代操作系统的基本特性，它是一种降低系统设计复杂性的抽象方法：</p>
+<ul>
+<li>多任务和任务间内部通信特性可以使得复杂应用被分解为更小、更易管理的子应用。</li>
+<li>这种任务的划分便于进行软件测试，团队协作和代码重用。</li>
+<li>任务间复杂的时序或执行顺序问题可以交给操作系统来完成。</li>
+</ul>
+<h4 id="调度-Scheduling"><a href="#调度-Scheduling" class="headerlink" title="调度(Scheduling)"></a>调度(Scheduling)</h4><p>&emsp;&emsp;调度模块是<code>多任务 os </code>的核心，调度算法及实现的优劣直接影响系统的多方面性能，比如吞吐率、实时性、可靠性等。不同的场景可能会采取不同的调度策略(Policy)。对于非实时（no-realtime）多用户系统，每个任务被分配 <em>接近公平</em> 的CPU资源，高优先级的任务可以获得 <em>软实时</em> 能力，及操作系统会尽量优先执行该任务，但不保证满足该任务的时间延迟或者响应要求。<strong>RTOS</strong> 则提供 <em>硬实时</em> 特性，它保证满足任务的严格的时间约束、响应及可预测的行为。</p>
+<h4 id="上下文切换-Context-Switching"><a href="#上下文切换-Context-Switching" class="headerlink" title="上下文切换(Context Switching)"></a>上下文切换(Context Switching)</h4><p>&emsp;&emsp;每个任务都是任务代码和任务环境的一种抽象，任务环境就是当前任务所占用的资源：包括寄存器、RAM(栈)、ROM、IO端口等。所以当一个任务被内核暂停（suspended）前，内核会负责保存任务的执行环境，当该任务重新调度执行时，再进行恢复。这种机制形成一种每个任务都独占计算资源的假象。切换的效率以及频率会影响系统的实时性能。<br>&emsp;&emsp; <strong>注意上下文切换与中断的区别，上下文切换可能由中断触发，例如SysTick，但在其他情况下，可由用户编写软件来完成，即它可以是一种软件特性。</strong></p>
+<h4 id="实时应用"><a href="#实时应用" class="headerlink" title="实时应用"></a>实时应用</h4><p>&emsp;&emsp;在现实世界，很多事件必须在严格时间内获得响应，这个时间称为 <strong>deadline</strong>，实时&#x2F;嵌入式系统的调度策略则是必须满足事件的 <strong>deadline</strong> 。实时调度策略首先可以是基于 <strong>优先级</strong>的，高优先级任务可以<strong>抢占</strong>低优先级任务，而相同优先级的任务则进行 “公平” 调度。优先级的分配一般由用户完成。例如，<code>EDF</code> 调度算法是一种基本的实时调度算法，它优先调度 <strong>deadline</strong> 最早的任务，但该算法需要已知所有任务的 <strong>deadline</strong>。</p>
+<h4 id="实时调度"><a href="#实时调度" class="headerlink" title="实时调度"></a>实时调度</h4><h3 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h3><p>FreeRTOS 的任务类似于非RTOS（例如<code>Linux</code>）中的线程，每个任务都有自己独立的栈，但可以同步访问共享数据（例如信号量、共享队列、互斥锁、事件组等）。内核调度器负责在不同任务间进行切换。每个任务在内核中都对应一个 <code>TCB</code> 数据结构，<code>TCB</code>中会包含任务的栈指针、优先级、状态、计数器等信息，这些信息可以被调度器使用，来进行任务切换。</p>
+<p><strong>状态：</strong><br>任务的状态转换如下：</p>
+<img src="https://www.freertos.org/fr-content-src/uploads/2018/07/tskstate.gif" width="50%">  
+
+<p><strong>优先级：</strong><br>任务的优先级范围是：<code>0</code> - <code>configMAX_PRIORITIES - 1</code>，<strong>值越小优先级也越小。</strong>** idle task**的优先级为0。</p>
+<p><code>要特别注意任务优先级和中断优先级的区别:</code></p>
+<ul>
+<li>任务是一种<strong>软件特性</strong>，它的优先级由应用开发者指定，并由软件算法（调度器）来决定哪一个任务进入<code>Running</code>状态。它和 正在运行 FreeRTOS 的硬件无关。</li>
+<li><code>ISR</code> 虽然使用软件编写，但却是<strong>硬件特性</strong>，因为硬件将控制哪一个 ISR 运行以及什么时候运行。以 TM4C123GH6PM 为例，它包含很多中断事件，例如 <code>GPIO</code>、<code>UART</code>、<code>Timer</code>、<code>ADC/DAC</code>、<code>SysTick</code>、<code>PWM</code>等，这些事件的中断优先级由 NVIC 等相关寄存器设置和管理。任何一个任务只有在当前没有 <code>ISR</code> 运行的情况下才能运行，<strong>即最低优先级的中断也可以抢占最高优先级的任务，反之不行。</strong></li>
+</ul>
+<p><strong>调度:</strong><br>单核下默认的调度策略：</p>
+<ul>
+<li>优先级固定：任务的优先级一旦确认就不再改变；相比而言，Linux 内核采用一种<code>动态优先级策略</code>，动态优先级有很多优点，但稍显复杂。</li>
+<li>可抢占：优先级高的任务总是可以抢占优先级低的任务。</li>
+<li>时间片：对于优先级相同的任务，调度器会在每个 tick 中断时进行切换。相邻 tick 中断的时间间隔称为一个时间片。</li>
+</ul>
+<p>&emsp;&emsp;抢占策略容易产生<strong>饥饿</strong>问题，即低优先级任务可能长时间不能被调度。在Linux系统上，使用 <strong>Aged</strong>策略来解决饥饿问题，但 FreeRTOS 将问题的解决交给用户：高优先级的任务在等待事件时要<code>主动放弃 CPU（Blocked）</code>，而不是<code>忙等（Busy-loop-wait）</code>。当事件发生时，可以利用任务间通信机制和同步原语来唤醒高优先级任务。这种模型称为<strong>事件驱动</strong>编程模型。</p>
+<p>AMP下调度策略：每个 core 上运行单独的 FreeRTOS 实例，因此每个 core 的调度策略与上面相同。</p>
+<p>SMP下调度策略：SMP下只有单个 FreeRTOS 实例，因此调度策略与上面大体相同，只是允许多个任务进入 <code>Running</code> 状态，这些任务或被分配到不同的 core 上运行。，高优先级任务和低优先级任务可能在不同 core 上<strong>并行</strong>执行。在SMP下，任务可以设置 <code>configUSE_CORE_AFFINITY</code> 来强制自己在特定 core 上运行。</p>
+<p><strong>空闲任务：</strong><br>&emsp;&emsp;<strong>Idle Task</strong> 是 FreeRTOS 启动调度时自动生成的任务，确保当前至少有一个任务可以运行。该任务的优先级最低，它负责回收被删除任务的内存。其他任务也可以设定为与空闲任务相同的优先级，但这些任务的行为可以通过配置 <code>configIDLE_SHOULD_YIELD</code> 来调整。但很多情况下，尽量将任务的优先级设置高于空闲任务的优先级。如果用户想要一些应用运行在最低优先级，则有两种选择，一是使用空闲任务挂钩 <code>void vApplicationIdleHook( void )</code>，<strong>该回调函数不能阻塞</strong>；二是生成最小优先级的新任务，但这种做法更加消耗内存。</p>
+<h3 id="队列、互斥量和信号量"><a href="#队列、互斥量和信号量" class="headerlink" title="队列、互斥量和信号量"></a>队列、互斥量和信号量</h3><p>&emsp;&emsp;<code>queue</code> 是主要的任务间通信形式，可以把它看作线程安全的 <code>FIFO</code>。消息是被拷贝进入 <code>queue</code> 的，而不是仅仅在<code>queue</code>中放入消息数据的引用。</p>
+<ul>
+<li>小的消息可以直接包含在 c 变量中，这些变量可以直接被发送到 queue 或者从 queue 中读取，不需要中间过程。</li>
+<li>变量本身仍可以马上重用，因为它先前的数据已经拷贝到 queue 中。</li>
+<li>当然，queue 也可以传递指针或者引用，特别是当指针指向的数据块较大时，例如 UDP 网络数据包。</li>
+<li>queue 内存的分配完全交由内核管理。</li>
+<li>支持可变字节的消息，queue 支持特殊的结构体，该结构体中可以存放消息的具体大小。</li>
+<li>支持不同类型的消息，这由特殊的结构体来支持。消息的解析也根据消息类型来进行。</li>
+<li>这种实现适合在带有内存保护的环境中使用。通过 queue 可以在不同保护区内传递消息，因为 queue 工作在内核特权级别，它可以进入所有保护区。</li>
+<li>使得 API 更简单。</li>
+</ul>
+<p>&emsp;&emsp;任务读空 queue 或者写已经满的 queue 都会阻塞（进入 <code>Blocked状态</code>）。当有多个任务阻塞在 queue 上时，高优先级的任务在 queue 可访问时首先被唤醒。</p>
+<p>&emsp;&emsp;<code>二进制信号量</code>可以用于任务间同步，更重要的是任务不会在信号量上忙等，如果信号量被占用，任务会在信号量上阻塞（Blcoked），进而不再占用CPU资源。<br><code>计数信号量</code>用于多个共享资源的访问，也可以用于特殊的读者-写者问题。</p>
+<p>&emsp;&emsp;<code>互斥体</code>是包含优先级继承机制的二进制信号量，<strong>互斥体更适合用于资源的互斥访问</strong>。（互斥体的优先级集成机制可以解决可能发生的<strong>死锁</strong>问题。）即一个高优先级的任务在某个互斥体上阻塞，因为该互斥体已经被一个低优先级的任务占用，那么占用者的优先级会被临时提高到阻塞者的优先级。这样做可以尽量减少高优先级任务的阻塞时间，也可以尽量减少低优先级任务的“优先级反转”。</p>
+<p>注意，<code>queue</code> 和<code>二进制信号量</code>也可以用于中断与任务间通信，但在中断中,同步原语 API 函数要使用以 <code>FromISR</code> 结尾的。<br><code>互斥体</code>不应该在中断中使用。&#96;</p>
+<h3 id="任务通知"><a href="#任务通知" class="headerlink" title="任务通知"></a>任务通知</h3><p>&emsp;&emsp;每个任务都有一组任务通知（<em>task notifications</em>），每个任务通知都有一个通知状态，<em>pending</em>或者<em>no-pending</em>。事件可以直接发送到任务通知，此时任务通知的状态变为<em>pending</em>，而不用通过中间机制，即如 queue。任务可以阻塞在某个通知上，直到该通知状态因事件而变为<em>pending</em>。注意，任务在任何时间只能阻塞在一个通知上。</p>
+<p>任务通知相比其他中间机制有着性能优势，但使用时也有下面的限制：</p>
+<ul>
+<li><strong>事件的接收者只有一个</strong>。</li>
+<li><strong>当接收者阻塞在通知上时，发送者在发送未完成前不能阻塞</strong>。</li>
+</ul>
+<p>在下面的场景,则不能使用任务通知:</p>
+<ul>
+<li>向 ISR 发送事件或者数据</li>
+<li>当有多个事件接收者时</li>
+</ul>
+<h3 id="流和消息缓存"><a href="#流和消息缓存" class="headerlink" title="流和消息缓存"></a>流和消息缓存</h3><p>&emsp;&emsp;<code>Stream 缓存</code>用于任务间或者任务与中断间通信，它被优化用于<code>单写者-单读者场景</code>。但对于多个写任务或者多个读任务，它不是线程安全的。<strong>流</strong>是面向字节的，即可以读写任意长度的字节，类似于<code>socket</code>。<code>Stream 缓存</code>使用任务通知，因此调用其 API 函数会使得任务阻塞，也会改变该任务的任务通知的状态。<br>&emsp;&emsp;<code>Trigger Level</code>被阻塞任务设置，如果一个读任务阻塞在空的 Stream 上，除非 Strem 中有这么多字节，该阻塞任务不会被唤醒。当然，如果任务在调用 API 函数时设置了超时值，超时后仍然没有满足<code>Trigger Level</code>，那么 API 返回当前已经可用的字节数据。</p>
+<p>&emsp;&emsp;<code>Message缓存</code>工作在<code>Stream缓存</code>的上层，它是面向消息的，且消息的长度可变。</p>
+<p>&emsp;&emsp;<code>在中断中，API函数要使用以 &quot;FromISR&quot; 结尾的。</code></p>
+<h3 id="软定时器"><a href="#软定时器" class="headerlink" title="软定时器"></a>软定时器</h3><p>&emsp;&emsp; FreeRTOS 的软定时器的回调函数<strong>不工作</strong>在中断上下文中，而是<strong>工作</strong>在 <em>Timer service Task</em> 的上下文中。这与很多定时器的机制不太相同。当然，回调函数不同阻塞。<code>Timer</code> 的很多 API 都是利用一个 queue 来向<em>Timer service Task</em> 发送命令，这个 queue 是私有的，其他任务不能直接访问。Timer 需要在使用前进行配置，比如 <em>Timer service Task</em> 的优先级、私有命令 queue 的长度、栈大小。<em>one-shot</em>定时器只执行一次，<em>auto-loaded</em>定时器是周期性定时器。<br>&emsp;&emsp;<strong>要特别注意<code>软Timer</code>和<code>硬Timer</code>的区别</strong>。</p>
+<h3 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h3><h3 id="定制"><a href="#定制" class="headerlink" title="定制"></a>定制</h3><p><code>FreeRTOSConfig.h</code>中包含所有的定制选项，任何应用都要包含该文件。这些配置选项包括：</p>
+<ul>
+<li>抢占调度或者协作调度、任务最大优先级、时间片、<strong>内核中断优先级</strong></li>
+<li>一些回调函数：内存分配失败回调、Daemon任务启动回调、Tick回调</li>
+<li>内部时钟频率以及 Tick 变量大小</li>
+<li>Tick 中断频率</li>
+<li>软定时器、定时器 daemon 任务的优先级、定时器命令队列长度、Daemon任务的栈深度</li>
+<li>最小的栈空间、栈溢出检查、栈深度类型、栈类型</li>
+<li>使能任务通知、互斥体、递归互斥体、计数信号量、队列</li>
+<li>静态内存分配（如果设置则必须手动为 <code>Idle任务</code> 和<code>Timer任务</code>实现内存分配函数）</li>
+<li>动态内存分配、堆大小、堆类型（FreeRTOS 堆或者用户堆）</li>
+<li>SMP支持</li>
+<li>面向特定架构的选项</li>
+<li>其他</li>
+</ul>
+<p><strong>任何使用 FreeRTOS API 的中断都必须设置与内核相同的优先级（configKERNEL_INTERRUPT_PRIORITY）。</strong></p>
+<h3 id="静态内存分配和动态内存分配"><a href="#静态内存分配和动态内存分配" class="headerlink" title="静态内存分配和动态内存分配"></a>静态内存分配和动态内存分配</h3><p>动态分配的特性：</p>
+<ul>
+<li>可以很大程度上较少内存的使用</li>
+<li>对象生成函数更加简单</li>
+<li>用户不需要自己分配内存，对象由内核动态生成，如：task、软timer、队列、事件组、信号量、互斥体等。</li>
+<li>可以动态监控堆大小进而进行优化</li>
+<li>对象释放后，所占用的内存可以重用</li>
+<li>可选的动态内存分配策略</li>
+</ul>
+<p>静态分配的特性：</p>
+<ul>
+<li>对象可以放置在特定的内存位置</li>
+<li>最大内存空间可以在链接时决定</li>
+<li>不需要处理内存分配错误的处理</li>
+<li>其他</li>
+</ul>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>&emsp;&emsp;FreeRTOS 的内存管理比较灵活，它没有设置单一的分配策略，而是将内存分配模块放到可移植层，即用户可以根据自己的实际情况使用不同的分配策略。</p>
+<ul>
+<li><strong>heap_1.c</strong>：最简单，内存一旦分配不允许释放。适用于：不需要释放对象的应用；行为确定（执行时间总是很稳定）和不会导致内存碎片化的应用；不需要或者不允许动态内存分配到应用。</li>
+<li><strong>heap_2.c</strong>：使用<strong>Best fit 算法</strong>，允许分配的内存被释放。适用于动态内存分配大小总是不变的任务（且重复生成和释放对象），否则如果内存分配大小比较随机或者不稳定，则很容易导致内存碎片化。这种实现并不是确定性（deterministic）的，但比一些标准的 malloc实现更有效。</li>
+<li><strong>heap_3.c</strong>：malloc和free的包装器，使其线程安全。这种实现也不是确定性的，而且需要编译库（例如libc）的支持，也可能增加内核代码的大小。</li>
+<li><strong>heap_4.c</strong>：使用<strong>first fit算法</strong>，而且它会自动将紧邻的空闲区进行合并（使用一些合并算法。）适用于重复性生成和释放对象的应用，与<code>heap_2.c</code>中的实现相比，内存分配大小比较随机时，它的内存碎片化问题大大改善。它也不是确定性的，但比一些标准的 malloc 实现更有效。</li>
+<li><strong>heap_5.c</strong>：使用<strong>first fit算法</strong>和<strong>合并算法</strong>，但允许堆分配在不连续的内存区域。</li>
+</ul>
+<h3 id="栈使用以及内存溢出检测"><a href="#栈使用以及内存溢出检测" class="headerlink" title="栈使用以及内存溢出检测"></a>栈使用以及内存溢出检测</h3><p>&emsp;&emsp;每个任务的栈可以动态分配或者静态分配。内存溢出检测可以在开发与测试阶段使用。方法：</p>
+<ul>
+<li>由内核在上下文切换的时候检测任务的栈指针是否在合法的栈空间。如果超出了合法空间，一个回调函数将被调用。这种方法不保证可以捕获所有的栈溢出。</li>
+<li>使用已知的值初始化栈，并且在上下文切换的时候检测栈空间的最后16个字节是否被重写，如果被重写，一个回调函数会被调用。这种方法类似于 <strong>金丝雀法</strong>。这种方法同样不保证可以捕获所有的栈溢出。</li>
+</ul>
+<h3 id="SMP支持"><a href="#SMP支持" class="headerlink" title="SMP支持"></a>SMP支持</h3><p>&emsp;&emsp;FreeRTOS API在单核和SMP下基本上是相同的，除了在SMP下增加了对core亲和性及抢占使能的API。在单核和SMP下编程，有些微妙的不同，例如在单核下可以通过设置不同的优先级来完成互斥访问，而在SMP下就不能成立了，因为不同优先级的任务可以并行运行，对共享资源的访问不再是互斥的。在这种情况下，用户可以采取的方法：一是使用同步原语进行互斥访问；二是强制相关任务不能并行，即让它们在同一个core上运行；三是配置FreeRTOS，使得只有相同优先级的任务才能并行，这样做或许使得某些core空闲而降低系统整体吞吐率。另外在SMP下，多个ISR或者ISR与任务间也可能并行，因此需要确保互斥访问。</p>
+<h3 id="内存保护"><a href="#内存保护" class="headerlink" title="内存保护"></a>内存保护</h3><p>FreeRTOS为下面的架构提供官方的MPU单元：</p>
+<ul>
+<li>ARMv7-M (Cortex-M3，Cortex-M4 和 Cortex-M7 微控制器)</li>
+<li>ARMv8-M (Cortex-M23 and Cortex-M33 microcontroller) 核</li>
+</ul>
+<p>MPU的使用可以使系统获得更多安全特性，但也使得系统设计变得复杂。使用MPU可以将信任的代码与不信任的第三方代码分别运行在不同的内存空间。FreeRTOS的MPU模块支持将任务分为特权任务和非特权任务，特权任务可以访问整个内存空间，而非特权任务只能访问自己的栈空间和用户指定的其他有限的空间</p>
+<h3 id="线程本地存储（TLS）"><a href="#线程本地存储（TLS）" class="headerlink" title="线程本地存储（TLS）"></a>线程本地存储（TLS）</h3><p>&emsp;&emsp;在单线程应用中，使用全局变量是方便的，但在多线程应用中，使用全局环境在很多时候是不适合的，每个线程都可能需要有自己独有的变量，这些变量可以存放在线程的控制块内。FreeRTOS使用线程本地存储指针数组来实现TLS。</p>
+<h3 id="延迟中断处理"><a href="#延迟中断处理" class="headerlink" title="延迟中断处理"></a>延迟中断处理</h3><p>&emsp;&emsp;延迟中断处理大都适用于大数据传输的场景，这种场景下，如果所有的数据传输均在ISR中完成，则会使得系统实时性变差，也会使得系统变得脆弱。延迟中断处理是指ISR会唤醒一个任务，并让该任务去执行繁重的工作，自己可以很快退出。这种机制类似于Linux中断处理的 <em>top half</em> 和  <em>bottom half</em> 之分。</p>
+<p>&emsp;&emsp; 延迟中断处理可以通过二进制信号量或者计数信号量等同步原语来实现。延迟中断处理可以使用单独的一个task或者使用 daemon task（使用 <em>xTimerPendFunctionCallFromISR</em>  API）。<strong>注意如果要使用队列，则必须视情况而定，如果数据接收频率很快，则队列不太适用，此时应使用DMA或者RAM buffer来提高效率和性能。</strong></p>
+<p>&emsp;&emsp;*<em>特别注意：在ISR中调用 <em>_FromISR 函数可能会使得某个高优先级任务退出阻塞状态，这要不要进行上下文切换要视情况而定。注意使用 xHigherPriorityTaskWoken 参数。调用portYIELD_FROM_ISR 或者 portEND_SWITCHING_ISR函数，根据xHigherPriorityTaskWoken参数的值决定是否切换。</em></em></p>
+<h3 id="事件组-Event-Groups"><a href="#事件组-Event-Groups" class="headerlink" title="事件组(Event Groups)"></a>事件组(Event Groups)</h3><p>&emsp;&emsp;<strong>Event Groups</strong> 有着和queue与信号量不同的特性:</p>
+<ul>
+<li>允许阻塞任务等待一个或者多个事件的发生</li>
+<li>允许同时对多个任务解除阻塞，当这些任务正在等待同一个事件或者同一组事件</li>
+</ul>
+<p>这些特性对于<strong>多对多</strong>的模型很有用。另外，事件组可以减少内存消耗，比多个二进制信号量可以完全由一个事件组来替代。</p>
+<h3 id="QEMU-模拟器"><a href="#QEMU-模拟器" class="headerlink" title="QEMU 模拟器"></a>QEMU 模拟器</h3><p>以MPS2为例，参考下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ qemu-system-arm -machine mps2-an385 -cpu cortex-m3 -kernel [path-to]/RTOSDemo.out -monitor none -nographic -serial stdio -s -S</span><br></pre></td></tr></table></figure>
+<p>其中<code>[path-to]RTOSDemo.out</code>为编译 demo 生成的固件；<code>-s</code> 选项用于 gdb 调试，是选项<code>-gdb tcp:1234</code>的缩写形式。</p>
+<p>然后安装  <strong>gdb-multiarch</strong> 包，安装后调用<code>gdb-multiarch</code> 打开新的会话：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ gdb-multiarch</span><br><span class="line">gdb&gt; set architecture armv5te</span><br><span class="line">gdb&gt; target remote localhost:1234</span><br><span class="line">gdb&gt; continue</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/20/ESP8266-NodeMCU-%E4%BB%8B%E7%BB%8D/" rel="prev" title="ESP8266 NodeMCU 介绍">
+                  <i class="fa fa-angle-left"></i> ESP8266 NodeMCU 介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/02/OpenWrt-Introduction/" rel="next" title="OpenWrt Introduction">
+                  OpenWrt Introduction <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

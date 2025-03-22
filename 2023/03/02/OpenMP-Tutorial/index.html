@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; OpenMP 可以认为是用于共享内存型并行编程 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。  参考 《Introduction to Par">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenMP Tutorial">
+<meta property="og:url" content="https://orchidrock.github.io/2023/03/02/OpenMP-Tutorial/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; OpenMP 可以认为是用于共享内存型并行编程 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。  参考 《Introduction to Par">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-02T04:01:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.688Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/03/02/OpenMP-Tutorial/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/03/02/OpenMP-Tutorial/","path":"2023/03/02/OpenMP-Tutorial/","title":"OpenMP Tutorial"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OpenMP Tutorial | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenMP-Vs-Pthreads"><span class="nav-number">2.</span> <span class="nav-text">OpenMP Vs Pthreads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">简单使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%A4%8D%E6%9D%82%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">一个复杂例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">5.</span> <span class="nav-text">变量的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8parallel-for-%E6%8C%87%E4%BB%A4"><span class="nav-number">6.</span> <span class="nav-text">使用parallel for 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E5%8C%96%E6%8E%92%E5%BA%8F%E7%A8%8B%E5%BA%8F"><span class="nav-number">6.1.</span> <span class="nav-text">并行化排序程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%B0%83%E5%BA%A6"><span class="nav-number">7.</span> <span class="nav-text">循环调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5"><span class="nav-number">8.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cache%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">9.</span> <span class="nav-text">Cache一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">10.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-directive-%E5%92%8C-clause"><span class="nav-number">11.</span> <span class="nav-text">其他 directive 和 clause</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#directive"><span class="nav-number">11.1.</span> <span class="nav-text">directive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clause"><span class="nav-number">11.2.</span> <span class="nav-text">clause</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/03/02/OpenMP-Tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="OpenMP Tutorial | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenMP Tutorial
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-02 12:01:00" itemprop="dateCreated datePublished" datetime="2023-03-02T12:01:00+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">高性能计算</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a target="_blank" rel="noopener" href="https://www.openmp.org/">OpenMP</a> 可以认为是用于<code>共享内存型并行编程</code> 的 API 接口，“MP” 是多处理（”multiprocessing”）的缩写。因此，OpenMP 被用于这样的系统：任何进程或线程都可以潜在地访问所有可用的内存资源。当我们使用 OpenMP 编程时，我们可以将系统看作 CPUs 的集合，这些 CPU 都可以访问内存。</p>
+<blockquote>
+<p>参考 《Introduction to ParallelProgramming》 by Peter Pacheco.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="OpenMP-Vs-Pthreads"><a href="#OpenMP-Vs-Pthreads" class="headerlink" title="OpenMP Vs Pthreads"></a>OpenMP Vs Pthreads</h2><p>&emsp;&emsp; 尽管 <code>Pthreads</code> 也用于共享内存式的编程，但它和 OpenMP 有些不同：</p>
+<ul>
+<li>Pthreads 要求用户<strong>显示定义</strong>每个线程的行为；OpenMP 只用<strong>声明</strong>目标代码块需要并行，具体的行为交给编译器和运行时环境完成。</li>
+<li>Pthreads 可以作为与主程序进行链接的<strong>库</strong>，使用 C 编译器编译即可；但 OpenMP 需要编译器的额外支持，因此使用不支持 OpenMP 的 C 编译器来编译 OpenMP 程序不会获得预想的并行执行行为。</li>
+<li>Pthreads 更加底层，赋予用户控制线程行为细节的能力，但也给用户增加了编程负担；OpenMP 使得并行编程更加简单，但控制底层线程行为的能力较弱。</li>
+</ul>
+<p>&emsp;&emsp;对于大型的高性能程序，学术界和工业界的很多人都相信使用 Pthreads API 是非常困难的。OpenMP 被显式设计为一种更高层的 API，使得用户可以<strong>增量式</strong>地将串行程序并行化。</p>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><p>&emsp;&emsp; OpenMP 使用 “基于声明式” 的API，在C&#x2F;C++语言中表现为使用预处理指令 <code>#pragma</code>。 #pragma 所定义的很多指示字是编译器特有的，在不同的编译器间是不可移植的。预处理期将忽略它不认识的 #pragma 指令，不同的编译器可能以不同的方式解释同一条 #pragma 指令。对于 OpenMP, 使用 <code>#pragma omp</code> 作为声明的前缀。</p>
+<p><strong>一个简单的 HelloWorld 程序 omp_hello.c：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _OPENMP</span></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&lt;omp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _OPENMP</span></span><br><span class="line">    <span class="type">int</span> my_rank = omp_get_thread_num();</span><br><span class="line">    <span class="type">int</span> thread_count = omp_get_num_threads();</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="type">int</span> my_rank = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> thread_count = <span class="number">1</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello from thread %d of %d\n&quot;</span>, my_rank, thread_count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> thread_count = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> omp parallel num_threads(thread_count)</span></span><br><span class="line">    hello();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>带有 <code>-fopenmp</code> 选项进行编译：</p>
+<p><code>$ gcc -g -Wall -fopenmp -o omp_hello omp_hello.c</code></p>
+<p>运行（指定4个线程）：<br><code>$ ./omp_hello 4</code></p>
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hello from thread 0 of 4</span><br><span class="line">Hello from thread 3 of 4</span><br><span class="line">Hello from thread 2 of 4</span><br><span class="line">Hello from thread 1 of 4</span><br></pre></td></tr></table></figure>
+
+<p>由于 4 个线程竞争使用 <em>stdout</em> ，所以上述输出顺序不一定与线程的编号一致，当再次执行时，输出顺序就可能不同。</p>
+<p>使用 <code>single</code> 声明可以指定代码只能被一个线程执行。</p>
+<p>在上述代码中，<code>#pragma omp</code>声明中 <code>parallel</code> 指令表示紧跟的结构块（structured block）需要被多个线程执行。结构块可以是单个语句或者只有一个入口和出口组合语句（类似于编译理论中的“基本块”），即它不包括分支语句，也不是任何分支语句的目标。</p>
+<p><code>num_threads</code> 被称为子句（clause），它可以修改 <code>parallel</code> 指令的默认行为。</p>
+<p>上述声明所代表的底层行为到底是怎么样的呢？<br>首先当主线程（Master）运行到 <code>parallel</code> 指令时，会生成 thread_cnt-1 个从线程（Slave），然后每个线程都会执行结构块中的代码，最后当某个线程执行完成后，会等待其他线程完成。当所有线程完成后，从线程会被终结，主线程继续执行结构块之后的代码。Master线程和所有Slave线程组成一个 team 。</p>
+<h2 id="一个复杂例子"><a href="#一个复杂例子" class="headerlink" title="一个复杂例子"></a>一个复杂例子</h2><p>&emsp;&emsp; 该节以计算某个函数 f 在区间 [a,b] 上的积分为例。我们使用梯形公式：<br>令 $ h &#x3D; \frac{(b-a)}{n} $ （n 代表将定义域分为等长区间的个数）：<br>$$ S &#x3D; h[\frac{f(x_0)}{2} + f(x_1) + f(x_2)+\cdots+\frac{f(x_n)}{2}] $$</p>
+<p>calc 函数代表每个线程需要执行的结构块，它会根据当前线程的编号执行对应的子任务，其结果被写入 <em>group_result_ptr</em> 变量。<em>group_result_ptr</em> 变量必须进行互斥访问，可以使用 <code>#pragma omp critical</code> 来声明。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x* x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">calc</span> <span class="params">(<span class="type">double</span> a, <span class="type">double</span> b, <span class="type">int</span> n, <span class="type">double</span> *global_result_p)</span>&#123;</span><br><span class="line">    <span class="type">double</span> h, x, my_result;</span><br><span class="line">    <span class="type">double</span> local_a, local_b;</span><br><span class="line">    <span class="type">int</span> i, local_n;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> my_rank = omp_get_thread_num();</span><br><span class="line">    <span class="type">int</span> thread_count = omp_get_num_threads();</span><br><span class="line"></span><br><span class="line">    h = (b-a) / n;</span><br><span class="line">    local_n = n / thread_count;</span><br><span class="line">    local_a = a + my_rank*local_n*h;</span><br><span class="line">    local_b = local_a + local_n*h;</span><br><span class="line">    </span><br><span class="line">    my_result = (f(local_a) + f(local_b)) / <span class="number">2.0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;= local_n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        x = local_a  + i * h;</span><br><span class="line">        my_result += f(x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    my_result = my_result*h;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp critical</span></span><br><span class="line">    *global_result_p += my_result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们定义 <code>f(x) = x*x</code> 来作为待积分的函数，main 函数如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">double</span> global_result = <span class="number">0.0</span>;</span><br><span class="line">    <span class="type">double</span> a, b;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">int</span> thread_count;</span><br><span class="line">    </span><br><span class="line">    thread_count = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Enter a, b, and n: \n&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%lf %lf %d&quot;</span>, &amp;a, &amp;b, &amp;n);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp parallel num_threads(thread_count)</span></span><br><span class="line">    calc(a, b, n, &amp;global_result);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;With n = %d trapezoids, our estimate\n&quot;</span>, n);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;of the integral from %f to %f = %.14e\n&quot;</span>,a, b, global_result);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main 函数与第2节中的代码基本相同，这里<code>calc</code>函数被声明需要并行执行。</p>
+<p>编译后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./trap 4</span></span><br><span class="line">Enter a, b, and n: </span><br><span class="line">3 6 100</span><br><span class="line">With n = 100 trapezoids, our estimate</span><br><span class="line">of the integral from 3.000000 to 6.000000 = 6.30004500000000e+01</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>精确值为 63，上面的输出结果是合适的，如果增加n值，会得到更精确的积分结果。</p>
+<h2 id="变量的作用域"><a href="#变量的作用域" class="headerlink" title="变量的作用域"></a>变量的作用域</h2><p><strong>还原（reduction）、还原变量及还原操作符（reduction operator）</strong><br><strong>还原子句</strong>： <code>reduction(&lt;operator&gt; : &lt;variable list&gt;)</code></p>
+<p>使用 <code>private(var1,var2,...)</code> 子句可以声明某些变量位于私有域中。<br>使用 <code>shared(var1, var2,...)</code> 子句可以声明某些变量位于共享域中。</p>
+<h2 id="使用parallel-for-指令"><a href="#使用parallel-for-指令" class="headerlink" title="使用parallel for 指令"></a>使用<code>parallel for</code> 指令</h2><p>&emsp;&emsp; <code>parallel for</code>指令可用于声明 for 循环为并行执行，上文的积分程序可以不使用 <code>parallel</code> 指令，而使用 <code>parallel for</code>指令，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">h = (b-a)/n;</span><br><span class="line">approx = (f(a) + f(b))/<span class="number">2.0</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> omp parallel for num_threads(thread_count) reduction(+:approx)</span></span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;= n<span class="number">-1</span>; i++) &#123;</span><br><span class="line">    approx += f(a+i*h);</span><br><span class="line">&#125;</span><br><span class="line">approx += h* approx;</span><br></pre></td></tr></table></figure>
+<p>值的注意的是，approx 必须被声明为还原变量，+为还原运算符。另外，在使用<code>parallel</code>声明时，每个线程所要完成的子任务由线程自己分配，但使用<code>parallel for</code>声明时，任务的分配由系统决定。</p>
+<p>for 循环中的 i 位于私有域中，即每个线程有一个 i 的拷贝，如果位于共享域，<code>i++</code>语句的执行 会导致数据竞争。对于被<code>parallel for</code>声明的for循环，其中的所有变量都位于共享域，但循环变量除外，例如这里的 i 。</p>
+<p>可以使用<code>parallel for</code> 声明的 for 循环是有限制的，它需要满足一定的规范形式。否则的话，运行时系统如何在执行之前知道for循环的迭代次数呢？</p>
+<p>另外，非常重要的两点是：</p>
+<ul>
+<li>对于使用 <code>parallel for</code>声明的for循环，OpenMP 编译器不会检测循环中不同迭代间的依赖关系，这些依赖必须由编程人员自己来检查。</li>
+<li>所以，对于不同迭代间存在依赖的 for循环，通常不能被 OpenMP 并行化。</li>
+</ul>
+<p>使用 <code>default(none)</code> 子句可以强制用户为每个变量声明域，例如循环变量，在前文我们知道，循环遍历默认是私有的，但使用<code>default(none)</code>子句后，我们必须使用<code>private</code>显式声明它是私有的。</p>
+<h3 id="并行化排序程序"><a href="#并行化排序程序" class="headerlink" title="并行化排序程序"></a>并行化排序程序</h3><h2 id="循环调度"><a href="#循环调度" class="headerlink" title="循环调度"></a>循环调度</h2><p>&emsp;&emsp;在使用<code>parallel for</code>声明 for 循环时，任务分配是由系统决定的，系统可以使用简单的块划分方法：前<code>n/thread_count</code>次迭代分配给线程0，接着的 <code>n/thread_count</code> 次迭代分配给线程1，依次类推，直到分配完所有迭代。但有时候这并不是最优的分配方案，比如当不同迭代的负载并不相同的时候。</p>
+<p>OpenMP 的 <code>schedule</code>子句可以用来调度迭代，来获得性能提升。格式为：</p>
+<p><code>schedule(&lt;type&gt; [, &lt;chunksize&gt;])</code></p>
+<p><code>&lt;type&gt;</code>可以是下面的任意一种：</p>
+<ul>
+<li><code>static</code>：在循环执行前分配迭代。</li>
+<li><code>dynamic</code> 或 <code>guided</code>：循环执行期间分配迭代，即一个线程完成它的任务后，还可以从运行时系统获取更多的任务。</li>
+<li><code>auto</code>：由编译器或者运行时系统决定调度。</li>
+<li><code>runtime</code>：由运行时系统决定调度。</li>
+</ul>
+<p>对于 <code>static</code> 调度，使用 <code>round-robin</code> 分配方法，如果我们有12个迭代和3个线程，<code>schedule(static, 1)</code>的分配方案如下：</p>
+<ul>
+<li>Thread0 ：0，3，6，9</li>
+<li>Thread1 ：1，4，7，10</li>
+<li>Thread2 ：2，5，8，11</li>
+</ul>
+<p><code>&lt;chunksize&gt;</code>默认为<code>total_iterations/thread_count</code>，在这种情况下的分配方案几乎等价于默认的分配方案（即简单的块划分）。</p>
+<p>对于 <code>dynamic</code>调度，<code>&lt;chunksize&gt;</code>默认为 1 。对于 <code>guided</code>调度，当某个线程完成它的任务时，重新获得的迭代个数会递减。</p>
+<p>对于 <code>runtime</code> 调度，具体的调度策略由环境变量 <code>OMP_SCHEDULE</code> 决定。</p>
+<p>那么应该使用哪一种调度策略呢？</p>
+<p><code>schedule</code>子句是存在开销（overhead）的，且<code>guided</code>调度的开销最大，<code>dynamic</code>次之，<code>static</code>最小。如果不使用 <code>schedule</code>子句时的程序性能是可以接受的，就不要使用它。下面是一些总结：</p>
+<ul>
+<li>如果每次迭代的负载基本相同，就<code>不要</code>使用<code>schedule</code>子句。</li>
+<li>如果每次迭代的负载是线性递增的，使用<code>schedule(static,1)</code> 或许可以获得更好的性能。</li>
+<li>如果迭代的负载不确定，可以使用不同的调度选项进行探测，这是可以使用 <code>schedule(runtime)</code>，每次探测可以对 <code>OMP_SCHEDULE</code>环境变量设定不同的值。</li>
+</ul>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>&emsp;&emsp; <code>pragma omp barrier</code> 可以在 <code>parallel</code>结构块的中间<strong>显式</strong>声明同步语义，即 team 中的任一线程必须在屏障点等待其他所有线程也到达屏障点之后才能继续执行。<strong>另外，<code>parallel</code>、<code>parallel for</code> 和 <code>for</code> 指令在结构块的结尾加入了一个隐含的屏障。对于一些 OpenMP 实现，支持使用<code>nowait</code>声明来取消这个隐式的屏障。</strong></p>
+<p>&emsp;&emsp; <code>pragma omp atomic</code> 指令类似 <code>critical</code> 但拥有更好的性能。使用 <code>atomic</code>声明的临界区只能是单语句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x &lt;op&gt;= &lt;expression&gt;</span><br><span class="line">x++;</span><br><span class="line">++x;</span><br><span class="line">x--;</span><br><span class="line">--x;</span><br></pre></td></tr></table></figure>
+<p>另外，<code>critical(name)</code> 与 <code>critical</code>不同，它可以声明不同的临界区（以不同的 name 命名），这些临界区的代码可以并行执行。</p>
+<p><strong>锁（locks）</strong>：被用于数据结构而非代码块的互斥访问。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">omp_init_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_set_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_unset_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">omp_destory_lock</span><span class="params">(<span class="type">omp_lock_t</span> *)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>另外需要注意的是：</p>
+<ul>
+<li>对于单个临界区不应该混合使用不同类型的同步原语。</li>
+<li><strong>不保证</strong>线程一定不会饥饿。</li>
+<li>嵌套使用同步原语是“危险”的，有可能造成死锁。</li>
+</ul>
+<h2 id="Cache一致性"><a href="#Cache一致性" class="headerlink" title="Cache一致性"></a>Cache一致性</h2><h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>&emsp;&emsp; 在结构块中调用外部函数时，要清楚地知道该函数是否线程安全（thread-safe），如果不是线程安全的，则该结构块不能被并行化，除非我们可以使用线程安全的函数替换它。</p>
+<h2 id="其他-directive-和-clause"><a href="#其他-directive-和-clause" class="headerlink" title="其他 directive 和 clause"></a>其他 directive 和 clause</h2><h3 id="directive"><a href="#directive" class="headerlink" title="directive"></a>directive</h3><ul>
+<li><code>atomic</code> : 内存位置将会原子更新（Specifies that a memory location that will be updated atomically）。</li>
+<li><code>flush</code> : 所有线程对所有共享对象具有相同的内存视图（view of memory）。</li>
+<li><code>master</code> : 指定由主线程来执行接下来的程式。</li>
+<li><code>ordered</code>: 指定在接下来的代码块中，被并行化的 for 循环将依序执行（sequential loop）。</li>
+<li><code>sections</code> : 将接下来的代码块包含将被并行执行的section块。</li>
+<li><code>single</code> : 之后的程式将只会在一个线程（未必是主线程）中被执行，不会被并行执行。</li>
+<li><code>threadprivate</code> : 指定一个变量是线程局部存储（thread local storage）。</li>
+</ul>
+<h3 id="clause"><a href="#clause" class="headerlink" title="clause"></a>clause</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/24/LLVM-2-Backend/" rel="prev" title="LLVM 2: Backend">
+                  <i class="fa fa-angle-left"></i> LLVM 2: Backend
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/06/MPI-Tutorial/" rel="next" title="MPI Tutorial">
+                  MPI Tutorial <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Practical Internet of Thing Security Notes">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-15T01:42:33.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.596Z">
+<meta property="article:author" content="顽石">
+<meta property="article:tag" content="嵌入式系统和IOT">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/","path":"2024/12/15/Practical-Internet-of-Thing-Security-Notes/","title":"Practical Internet of Thing Security Notes"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Practical Internet of Thing Security Notes | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B1%E9%99%A9%E7%9A%84%E6%96%B0%E4%B8%96%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">危险的新世界</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E4%B8%AD%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="nav-number">2.1.</span> <span class="nav-text">物联网中的实体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">通信协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E3%80%81%E6%94%BB%E5%87%BB%E5%92%8C%E5%AF%B9%E7%AD%96"><span class="nav-number">3.</span> <span class="nav-text">漏洞、攻击和对策</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E4%B8%8E%E5%AF%B9%E7%AD%96"><span class="nav-number">3.1.</span> <span class="nav-text">攻击与对策</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%A0%91"><span class="nav-number">3.2.</span> <span class="nav-text">攻击树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%A0%91"><span class="nav-number">3.3.</span> <span class="nav-text">错误树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A8%81%E8%83%81%E5%BB%BA%E6%A8%A1"><span class="nav-number">3.4.</span> <span class="nav-text">威胁建模</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%AE%89%E5%85%A8%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">物联网开发中的安全工程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">安全设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E8%BA%AB%E4%BB%BD%E8%AF%86%E5%88%AB%E5%92%8C%E8%AE%BF%E9%97%AE%E7%AE%A1%E7%90%86%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">5.</span> <span class="nav-text">物联网身份识别和访问管理解决方案</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/15/Practical-Internet-of-Thing-Security-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Practical Internet of Thing Security Notes | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Practical Internet of Thing Security Notes
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-12-15 09:42:33" itemprop="dateCreated datePublished" datetime="2024-12-15T09:42:33+08:00">2024-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>本文是阅读 Brian Russell 和 Drew Van Duren 合著的《物联网安全》的笔记。该书从物联网带来的改变开始，引出物联网中存在的漏洞、面临的攻击以及可采取的对策，详细阐述物联网安全工程、密码学基础、身份识别与访问控制、隐私管理、合规监控、云安全以及物联网安全事件响应等诸多方面的内容。</p>
+<span id="more"></span>
+
+<h3 id="危险的新世界"><a href="#危险的新世界" class="headerlink" title="危险的新世界"></a>危险的新世界</h3><p>（什么是 IOT？）</p>
+<blockquote>
+<p>一个信息社会的全球性基础设施，基于已有的和演化的、可互操作的信息与通信技术，利用（物理和虚拟）设备互联来提供先进的服务。—— ITU</p>
+</blockquote>
+<blockquote>
+<p>一个物联网是指这样一种网络，它将唯一标识的“实物”连接到互联网上。这里的实物具有感知&#x2F;驱动能力，以及潜在的可编程能力。通过对唯一身份标识和感知能力进行开发，<br>任意实体可以从任意时刻从任何位置收集“实物”相关信息，以及改变‘实物’的状态。 —— IETF</p>
+</blockquote>
+<p>（什么是物联网安全？）</p>
+<p>物联网安全不是传统意义上的网络安全，而是网络安全与其他工程规范融合的产物。…… 网络安全一般不关注硬件设备的物理和安全方面，或者是设备与物理世界的交互方面的内容。</p>
+<p>物理网安全的安全需求不再仅仅局限于包括可信性、完整性、不可否认性等内容的基本信息保障原则，还包括与在物理世界中生成并接收信息的物理资源和机器相关的原则。</p>
+<p>跨行业合作的必要性 （信息安全工程 + 行业核心工程规范）</p>
+<p><strong>信息安全是一个生态系统</strong></p>
+<blockquote>
+<p>物理安全：系统必须不对世界造成伤害。<br>信息安全：世界必须不对系统造成伤害。</p>
+</blockquote>
+<h4 id="物联网中的实体"><a href="#物联网中的实体" class="headerlink" title="物联网中的实体"></a>物联网中的实体</h4><p>ITU-T Y.2060 中的定义：</p>
+<ul>
+<li>设备：一个具有必需的通信能力和可选的感知、运动、数据收集、数据存储和数据处理能力的装置。</li>
+<li>实体：一个物理世界（物理实体）或虚拟世界（虚拟实体）中能够被识别或者被整合到通信网络中的对象。</li>
+</ul>
+<p>设备的生命周期：设备的实现（OEM、ODM、BSP）, 服务的实现（CSP、OEM），设备和服务的部署。<br>硬件：MCU、主板、传感器、通信模组<br>操作系统：RTOS，TinyOS、Mantis、FreeRTOS、BrilloOS、嵌入式Linux、Ubuntu Core等。<br>物联网通信：设备-&gt;网关-&gt;控制器或网络服务</p>
+<h4 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h4><p>应用层：REST、AMQP、MQTT、LLAP、CoAP、SSI、DDS、XMPP 和 MQTT-SN、XMPP-IoT<br>传输层：TCP、UDP 和 TLS\DTLS<br>网络层：IPv4、IPv6 和 6LoWPAN<br>链路&#x2F;物理层：Zigbee、Bluetooth&#x2F;LE、802.15.4、802.11 WIFI、WAVE、WBAN、LTE、CDMA、GRPS、LoaWAN</p>
+<h3 id="漏洞、攻击和对策"><a href="#漏洞、攻击和对策" class="headerlink" title="漏洞、攻击和对策"></a>漏洞、攻击和对策</h3><p>信息保障的传统核心概念：保密性、完整性、认证性、不可抵赖性、可用性。<br>与物联网的信息物理方面相关的安全保障需求：可快速恢复性和物理安全性。</p>
+<p>威胁、漏洞和风险</p>
+<p>风险可以通过威胁模型进行管理。</p>
+<h4 id="攻击与对策"><a href="#攻击与对策" class="headerlink" title="攻击与对策"></a>攻击与对策</h4><p>物联网相关的最重要的攻击类型：<br>有线&#x2F;无线扫描映射攻击、协议攻击、窃听攻击、密码算法和密钥管理攻击、伪装攻击、操作系统与应用完整性攻击、拒绝服务与干扰、物理安全攻击（如改装、接口薄露等）、访问控制攻击。</p>
+<h4 id="攻击树"><a href="#攻击树" class="headerlink" title="攻击树"></a>攻击树</h4><p>攻击树是一种概念图，可以用来展示一项资产或者目标可能被攻击的方式。<br>SecurITree 软件 基于能力的攻击树模型构建工具。</p>
+<p>攻击目标 + 攻击操作（攻击操作之间的关系可以是‘与’关系，也可以是‘或’关系）。操作也是一个节点，也可以进行展开。</p>
+<p>总的来说，攻击树可能有非常简单或者复杂的子树。一般地，子树越复杂，越需要在隔离主树的情况下对其进行分析，这个过程称为‘子树分析’。</p>
+<h4 id="错误树"><a href="#错误树" class="headerlink" title="错误树"></a>错误树</h4><p>物理安全和可靠性工程原则的模型构建工具被称为错误树（也被称为故障树），它被用于错误树分析（FTA）中。</p>
+<p>错误树和攻击树的区别（用户如何进入并遍历树）：</p>
+<ul>
+<li>错误树并不是基于精心编排的攻击行为来构建的，在错误树中，一个智能实体经过慎重考虑可以随意进入树的多个叶子节点。</li>
+<li>错误树可以基于随机过程（故障&#x2F;错误发生比率），从每个叶子节点经过所依赖的中间节点进行遍历。</li>
+<li>错误树的每个叶子节点完全独立（错误随机发生，且彼此相互独立）于树的所有其他叶子节点。</li>
+</ul>
+<h4 id="威胁建模"><a href="#威胁建模" class="headerlink" title="威胁建模"></a>威胁建模</h4><p>构建威胁模型为人们提供了一个系统的方法，来对一个系统或者系统设计进行安全评估。<br>构建威胁模型有助于加深对一个系统中的人员、入口点和资产的透彻理解。</p>
+<p>流程：</p>
+<ol>
+<li>识别资产</li>
+<li>创建对系统&#x2F;架构的纵览</li>
+<li>剖析物联网系统</li>
+<li>识别威胁</li>
+<li>记录威胁</li>
+<li>对威胁进行评级</li>
+</ol>
+<p>STRIDE 模型：<br>威胁类型：身份欺骗、篡改数据、否认抵赖、信息泄漏、拒绝服务、权限提升、物理安全绕过、社会工程和供应链问题。</p>
+<p>威胁矩阵</p>
+<h3 id="物联网开发中的安全工程"><a href="#物联网开发中的安全工程" class="headerlink" title="物联网开发中的安全工程"></a>物联网开发中的安全工程</h3><p>在设计和开发中融入安全。</p>
+<p>微软 SDL：致力于解决安全需求并且引入了‘需求分类’这一概念，以此减轻开发团队在每个迭代周期内的负担。微软的技术提出了‘一次性、每次迭代、筒状安全需求’的概念。</p>
+<p>一次性需求：</p>
+<ul>
+<li>建立在整个开发中必须遵守的编码指南。</li>
+<li>为第三方组件和库建立许可软件列表。</li>
+</ul>
+<p>每次迭代：</p>
+<ul>
+<li>为了发现错误，在并入基线前对代码进行用行评审。</li>
+<li>确保在持续集成（CI）环境中通过静态代码分析工具运行代码。</li>
+</ul>
+<h4 id="安全设计"><a href="#安全设计" class="headerlink" title="安全设计"></a>安全设计</h4><h3 id="物联网身份识别和访问管理解决方案"><a href="#物联网身份识别和访问管理解决方案" class="headerlink" title="物联网身份识别和访问管理解决方案"></a>物联网身份识别和访问管理解决方案</h3><p>IAM</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" rel="tag"># 嵌入式系统和IOT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/" rel="prev" title="Circle: Raspberry Pi 的裸机编程环境">
+                  <i class="fa fa-angle-left"></i> Circle: Raspberry Pi 的裸机编程环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/12/15/Go-Language-Tutorial/" rel="next" title="Go Language Tutorial">
+                  Go Language Tutorial <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

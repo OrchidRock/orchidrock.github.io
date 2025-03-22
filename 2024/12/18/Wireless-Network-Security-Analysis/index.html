@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述本文就无线网络安全协议（如 WEP、WPA&#x2F;WPA2 等）的流程、安全性等做一些总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wireless Network Security Analysis">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述本文就无线网络安全协议（如 WEP、WPA&#x2F;WPA2 等）的流程、安全性等做一些总结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/SKA.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/dataframe_encrypt.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/wpa_encrypt.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/ccmp.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/wpa_psk.png">
+<meta property="article:published_time" content="2024-12-18T09:53:32.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.692Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/","path":"2024/12/18/Wireless-Network-Security-Analysis/","title":"Wireless Network Security Analysis"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Wireless Network Security Analysis | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C"><span class="nav-number">2.</span> <span class="nav-text">无线网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STA-%E4%B8%8E-AP-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">STA 与 AP 建立连接的过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">无线局域网的安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WEP-%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">WEP 安全协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%AF%86%E9%92%A5%E8%AE%A4%E8%AF%81"><span class="nav-number">4.1.</span> <span class="nav-text">共享密钥认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%B5%81%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">数据加解密流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">4.3.</span> <span class="nav-text">安全性分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WPA-WPA2-WPA3-%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.</span> <span class="nav-text">WPA&#x2F;WPA2&#x2F;WPA3 安全协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WPA-%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.1.</span> <span class="nav-text">WPA 协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WPA2-%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.2.</span> <span class="nav-text">WPA2 协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WPA-WPA2-%E7%9A%84%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.3.</span> <span class="nav-text">WPA&#x2F;WPA2 的认证协议</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/18/Wireless-Network-Security-Analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Wireless Network Security Analysis | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Wireless Network Security Analysis
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-12-18 17:53:32" itemprop="dateCreated datePublished" datetime="2024-12-18T17:53:32+08:00">2024-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">信息安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文就无线网络安全协议（如 WEP、WPA&#x2F;WPA2 等）的流程、安全性等做一些总结。</p>
+<span id="more"></span>
+
+<h2 id="无线网络"><a href="#无线网络" class="headerlink" title="无线网络"></a>无线网络</h2><h3 id="STA-与-AP-建立连接的过程"><a href="#STA-与-AP-建立连接的过程" class="headerlink" title="STA 与 AP 建立连接的过程"></a>STA 与 AP 建立连接的过程</h3><p><img src="/2024/12/18/Wireless-Network-Security-Analysis/sta_ap.png"></p>
+<h2 id="无线局域网的安全问题"><a href="#无线局域网的安全问题" class="headerlink" title="无线局域网的安全问题"></a>无线局域网的安全问题</h2><ul>
+<li>信道干扰。攻击层次位于物理层，WLAN 的频段是公开的，因此 Attacker 很容易通过发射同频段的噪声信号实现信道干扰。</li>
+<li>窃听和嗅探。</li>
+<li>伪造 AP。AP 和 STA 的网络拓扑关系为中心化的，所有 STA 都是通过接入 AP 后通过 AP 完成数据转发的。攻击者可以伪造一个 AP，并在信号强度上合法 AP 发射的信号，进而截获甚至篡改 STA 的通信数据。</li>
+<li>重放攻击。</li>
+</ul>
+<h2 id="WEP-安全协议"><a href="#WEP-安全协议" class="headerlink" title="WEP 安全协议"></a>WEP 安全协议</h2><p><code>WEP (Wired Equivalent Privacy)</code> 是 IEEE 802.11b 中定义的第一个用于保护 WLAN 通信安全的协议。但目前因为其安全弱点，已经在 2003 年被 <code>Wi-FI Protected Access</code>淘汰，后来在 2004 年由完整的 IEEE 802.11i 标准（WPA2）所取代。</p>
+<p>802.11b 支持<strong>开放系统认证（open system authentication）</strong> 和 <strong>共享密钥认证（shared key authentication）</strong>。开放系统认证，也就是无认证。</p>
+<h3 id="共享密钥认证"><a href="#共享密钥认证" class="headerlink" title="共享密钥认证"></a>共享密钥认证</h3><p>共享密钥认证过程并不复杂，如下图所示：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/SKA.png"></p>
+<p>注意的是，上述认证过程是单向的，即只能 AP 向 STA 认证，因此 STA 容易受到<strong>伪 AP</strong> 的攻击。</p>
+<h3 id="数据加解密流程"><a href="#数据加解密流程" class="headerlink" title="数据加解密流程"></a>数据加解密流程</h3><p><strong>加密流程：</strong><br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png"></p>
+<p>加密数据帧 MPDU 格式：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/dataframe_encrypt.png"></p>
+<p><strong>解密流程：</strong><br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wep_encrypt.png"></p>
+<h3 id="安全性分析"><a href="#安全性分析" class="headerlink" title="安全性分析"></a>安全性分析</h3><ul>
+<li>密文逆向分析：根据加密流程，可以知道，当获取到两段密文 S1 和 S2 的情况下，即使不知道密钥流，也可以获得对应两个明文的异或结果。换句话说，在这种情况下，一旦知道了 S1 的明文，立即可以推导出 S2 的明文，反之亦然。因此，WEP 引入了 IV，这样每次加密时，即使密钥相同，IV 不同，也能产生不同的密钥流。</li>
+<li>密钥破解：穷举 IV</li>
+<li>数据完整性问题：CRC 不能解决身份认证问题，任何人根据明文都可以计算出 CRC 校验和。另外 CRC 具有线性性质，而且流密码器对异或运算也是线性的，从而使得数据篡改成为可能。</li>
+</ul>
+<p>给定密文 <code>C</code>: $ C &#x3D; RC4(IV, k) \bigotimes (M || CRC(M)) $<br>攻击者按如下方式可以将明文 M 修改为 M’：</p>
+<p>a. 计算 M 和 M’ 的差分 $ \Delta $：$ \Delta &#x3D; M \bigoplus M’ $<br>b. 创建新的密文 $ C’ $： $ C’ &#x3D; C \bigoplus (\Delta || CRC(\Delta)) $</p>
+<p>证明:<br>$$\begin{align}<br>C’ &amp;&#x3D; C \bigoplus (\Delta || CRC(\Delta)) \\<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M \bigoplus \Delta || CRC(M) \bigoplus CRC(\Delta)) \\<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M’ || CRC(M \bigoplus \Delta)) \\<br>&amp;&#x3D; RC4(IV,k) \bigoplus (M’ || CRC(M’)\\<br>\end{align}$$</p>
+<p>因此，攻击者可以有针对性地对明文进行修改，而不用加密或者解密原消息。</p>
+<h2 id="WPA-WPA2-WPA3-安全协议"><a href="#WPA-WPA2-WPA3-安全协议" class="headerlink" title="WPA&#x2F;WPA2&#x2F;WPA3 安全协议"></a>WPA&#x2F;WPA2&#x2F;WPA3 安全协议</h2><h3 id="WPA-协议"><a href="#WPA-协议" class="headerlink" title="WPA 协议"></a>WPA 协议</h3><p>由于 WEP 的安全性问题，IEEE 于 2003 年在 802.11g 标准中推出了 <code>WPA(Wi-Fi Protected Access)</code> 协议。<br>WPA 引入了临时密钥完整性协议 <code>TKIP</code>，相对 WEP，TKIP 在安全方面有两点增强：一是增加了密钥强度（但仍然使用 RC4 算法），从 40 位增加到 128 位；二是 <code>MIC</code>（Michael 算法） 代替 CRC 作为完整性校验算法。 </p>
+<p>加密过程：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wpa_encrypt.png"></p>
+<p>解密过程：</p>
+<p>WPA的安全性：</p>
+<ul>
+<li>使用 MIC 替换 CRC，提高了数据传输的完整性保护能力。</li>
+<li>动态变换密钥。在 TKIP 中，每个 STA 与 AP 进行通联时，会使用动态生成的临时密钥 TK。这个临时密钥通过将特定的会话内容与 AP 和 STA 生成的一些随机数以及 AP 和 STA 的 MAC 地址进行哈希运算来产生。</li>
+<li>使用 TSC 来抵抗重放攻击：接收方接收到报文后会首先提取 TSC，如果 TSC 和上次相比不在合法范围内则认定为重放报文；如果重放攻击累积到一定次数，则中断连接。</li>
+</ul>
+<h3 id="WPA2-协议"><a href="#WPA2-协议" class="headerlink" title="WPA2 协议"></a>WPA2 协议</h3><p>IEEE 在 2004 年的 802.11i 标准对 WPA 协议进行了更新，称为 WPA2。WPA2 弃用 RC4 算法，改用 AES 加密算法。WPA2 协议配套使用的加密协议改为 <code>CCMP (CTR mode with CBC-MAC Protocol)</code></p>
+<p>CCMP 加密过程：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/ccmp.png"></p>
+<h3 id="WPA-WPA2-的认证协议"><a href="#WPA-WPA2-的认证协议" class="headerlink" title="WPA&#x2F;WPA2 的认证协议"></a>WPA&#x2F;WPA2 的认证协议</h3><ul>
+<li>802.1x 认证方式：双向认证，面向企业</li>
+<li>WPA-PSK 方式：采用预共享密钥进行认证，主要面向个人。在这种方式下， AP 和 STA 之间预共享有相同的 PMK，认证过程需要四次握手。</li>
+</ul>
+<p>WPA-PSK 认证过程：<br><img src="/2024/12/18/Wireless-Network-Security-Analysis/wpa_psk.png"></p>
+<p><code>PMK</code> 由 AP 的 SSID 和 Wi-Fi 口令生成。由 <code>PMK</code>、SNonce、Anonce、AP 和 STA 的 MAC 地址等作为输入，生成 <code>PTK</code>，再由 <code>PTK</code> 生成 MIC。MIC 在上述握手过程中，是最重要的身份识别码 。</p>
+<p>WPA2 会遭受 <code>KRACK</code> 攻击：在四次握手过程中，第三个消息报文可能被篡改重放，可导致中间人重置重放计数器和随机数值（Nonce），重放给 STA端，使 STA 安装上不安全加密密钥。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/17/Diffie-HellMan-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E5%8F%8A%E5%85%B6%E6%94%B9%E8%BF%9B/" rel="prev" title="Diffie-Hellman 算法分析及其改进">
+                  <i class="fa fa-angle-left"></i> Diffie-Hellman 算法分析及其改进
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/" rel="next" title="Birthday Attack for Hash Function Analysis">
+                  Birthday Attack for Hash Function Analysis <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

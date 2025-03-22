@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 4G 模组的 GPS 小型定位器">
+<meta property="og:url" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/1732537646579.jpg">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/1732537646573.jpg">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/E_UTRAN.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/aliiot.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createProduct.png">
+<meta property="og:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createdevice.png">
+<meta property="article:published_time" content="2024-11-16T08:25:13.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.692Z">
+<meta property="article:author" content="顽石">
+<meta property="article:tag" content="嵌入式系统和IOT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/1732537646579.jpg">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/","path":"2024/11/16/基于-4G-模组的-GPS-小型定位器/","title":"基于 4G 模组的 GPS 小型定位器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于 4G 模组的 GPS 小型定位器 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">硬件准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E6%A8%A1%E7%BB%84"><span class="nav-number">2.1.</span> <span class="nav-text">通信模组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E8%BD%AC%E6%8D%A2%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">串口转换器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A9%E7%BA%BF"><span class="nav-number">2.3.</span> <span class="nav-text">天线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E5%8D%A1"><span class="nav-number">2.4.</span> <span class="nav-text">物联网卡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">软件工具准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%B2%E5%8F%A3%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">串口工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AT-%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">AT 命令测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">4.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SIM%E5%8D%A1%E4%BF%A1%E6%81%AF"><span class="nav-number">4.2.</span> <span class="nav-text">SIM卡信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BF%A1%E6%81%AF"><span class="nav-number">4.3.</span> <span class="nav-text">网络信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="nav-number">4.4.</span> <span class="nav-text">硬件相关信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%9F%9F%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="nav-number">4.5.</span> <span class="nav-text">分组域相关信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D"><span class="nav-number">4.6.</span> <span class="nav-text">定位</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BA%91%E5%B9%B3%E5%8F%B0%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">创建云平台实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BA%A7%E5%93%81"><span class="nav-number">5.1.</span> <span class="nav-text">创建产品</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%AE%BE%E5%A4%87"><span class="nav-number">5.2.</span> <span class="nav-text">创建设备</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-MQTT-%E5%8D%8F%E8%AE%AE%E8%BF%9E%E6%8E%A5%E4%BA%91%E5%B9%B3%E5%8F%B0"><span class="nav-number">6.</span> <span class="nav-text">使用 MQTT 协议连接云平台</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8-SSL"><span class="nav-number">6.1.</span> <span class="nav-text">不使用 SSL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-SSL"><span class="nav-number">6.2.</span> <span class="nav-text">使用 SSL</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于 4G 模组的 GPS 小型定位器 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于 4G 模组的 GPS 小型定位器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-11-16 16:25:13" itemprop="dateCreated datePublished" datetime="2024-11-16T16:25:13+08:00">2024-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>使用 4G Cat.1 模组可以满足一些中低速数据传输的应用场景，如进行实时定位。本文介绍使用 QUECTEL 的 EG800K-CN<br>模组进行 GPS 定位的方法以及进行实际场景追踪测试的流程。</p>
+<span id="more"></span>
+
+<h3 id="硬件准备"><a href="#硬件准备" class="headerlink" title="硬件准备"></a>硬件准备</h3><h4 id="通信模组"><a href="#通信模组" class="headerlink" title="通信模组"></a>通信模组</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/1732537646579.jpg"></p>
+<h4 id="串口转换器"><a href="#串口转换器" class="headerlink" title="串口转换器"></a>串口转换器</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/1732537646573.jpg"></p>
+<h4 id="天线"><a href="#天线" class="headerlink" title="天线"></a>天线</h4><h4 id="物联网卡"><a href="#物联网卡" class="headerlink" title="物联网卡"></a>物联网卡</h4><h3 id="软件工具准备"><a href="#软件工具准备" class="headerlink" title="软件工具准备"></a>软件工具准备</h3><p>在 Ubuntu 22.04 上如果无法为 ch340串口转 USB 工具生成 ttyUSBx 设备文件，并显示下面的错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usb 3-1: usbfs: interface 0 claimed by ch341 while &#x27;brltty&#x27; sets config #1</span><br></pre></td></tr></table></figure>
+<p>表明出现了驱动占用问题，此时卸载 <strong>‘brltty’</strong> 即可：</p>
+<p><code>$ sudo apt-get remove brltty</code></p>
+<p>最后重新插拔设备。</p>
+<h4 id="串口工具"><a href="#串口工具" class="headerlink" title="串口工具"></a>串口工具</h4><p>在 Ubuntu 下可以使用 CuteCom 串口工具，连接设备后，发送 <code>ATI</code> 命令，获取如下信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[17:31:24:250] Quectel␍␊</span><br><span class="line">[17:31:24:250] EG800K␍␊</span><br><span class="line">[17:31:24:250] Revision: EG800KCNGCR07A04M04␍␊</span><br><span class="line">[17:31:24:255] ␍␊</span><br><span class="line">[17:31:24:255] OK␍␊</span><br></pre></td></tr></table></figure>
+<p>表明通信正常</p>
+<h3 id="AT-命令测试"><a href="#AT-命令测试" class="headerlink" title="AT 命令测试"></a>AT 命令测试</h3><h4 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ATI       # 获取 MT 的 ID 信息</span><br><span class="line">$ AT+GMI    # 请求制造商信息</span><br><span class="line">$ AT+GSN    # 请求国际移动设备识别码</span><br><span class="line">$ AT+</span><br></pre></td></tr></table></figure>
+
+<h4 id="SIM卡信息"><a href="#SIM卡信息" class="headerlink" title="SIM卡信息"></a>SIM卡信息</h4><p>将 SIM 物联网卡 插入 4G 模组中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ AT+CIMI       # 查询 IMSI</span><br><span class="line">460066613329084␍␊</span><br><span class="line"></span><br><span class="line">$ AT+CLCK=&quot;SC&quot;,2    # 查询 SIM 的锁定状态</span><br><span class="line">+CLCK: 0␍␊          # 未锁定</span><br><span class="line"></span><br><span class="line">$ AT+QCCID      # 查询 CCID</span><br><span class="line">+QCCID: 89860622330027340843␍␊</span><br><span class="line"> </span><br><span class="line">$ AT+QINISTAT   # 查询 SIM 卡初始状态</span><br><span class="line">+QINISTAT: 3␍    # CPIN READY + SMS Done</span><br><span class="line"></span><br><span class="line">$ AT+CPIN=?     # 查询 SIM 卡是否需要密钥解锁</span><br><span class="line">+CPIN: READY␍␊  # 无密码等待输入 MT</span><br><span class="line"></span><br><span class="line">$ AT+QSIMDET=1,0    # 设置(U)SIM 卡插入时，(U)SIM 检测引脚为低电平。</span><br><span class="line">$ AT+QSIMSTAT=1     # 使能(U)SIM 卡的插拔状态上报功能。</span><br><span class="line">$ AT+QSIMSTAT?      # 查询当前(U)SIM 卡的插拔状态。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="网络信息"><a href="#网络信息" class="headerlink" title="网络信息"></a>网络信息</h4><p>连接上 GNSS 天线（可使用有源天线或者无源天线）和 LTE 天线。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ AT+QCFG=&quot;nwscanmode&quot;  # 查询支持的网络制式</span><br><span class="line">+QCFG: &quot;nwscanmode&quot;,3␍␊  # 3 代表仅支持 LTE</span><br><span class="line"></span><br><span class="line">$ AT+QCFG=&quot;band&quot;   # 查询 UE 的网络搜索频段</span><br><span class="line">+QCFG: &quot;band&quot;,0x0,0x1e200000095␍␊    </span><br><span class="line"># 不改变 GSM 和 WCDMA 的频段；支持 LTE B38、LTE B39、LTE B40、LTE B41 、LTE B34、LTE B8、 LTE B5、LTE B3 和 LTE B1 频段。 </span><br><span class="line"></span><br><span class="line">$ AT+COPS?      # 查询当前找网模式和当前所选运营商</span><br><span class="line">+COPS: 0,0,&quot;CHN-UNICOM&quot;,7␍␊</span><br><span class="line"># 自动搜网；长字符串格式；中国联通；网络接入技术（E-UTRAN）</span><br><span class="line"></span><br><span class="line">$ AT+CREG=2     # 启用带有位置信息的网络注册 URC</span><br><span class="line">OK␍␊</span><br><span class="line"></span><br><span class="line">$ AT+CREG?      # 查询网络注册状态</span><br><span class="line">+CREG: 2,1,&quot;XXXX&quot;,&quot;YYYYYY&quot;,7␍␊</span><br><span class="line"># 带有位置信息的网络注册URC；已注册；位置区编号；小区ID；接入技术（E-UTRAN）</span><br><span class="line"></span><br><span class="line">$ AT+QNWINFO    # 查询网络信息</span><br><span class="line">+QNWINFO: &quot;FDD LTE&quot;,&quot;46001&quot;,&quot;LTE BAND 3&quot;,1506␍␊</span><br><span class="line"></span><br><span class="line">$ AT+CSQ        # 信号强度</span><br><span class="line">+CSQ: 30,99␍␊</span><br><span class="line"></span><br><span class="line">$ AT+QCSQ        # 信号强度</span><br><span class="line">+QCSQ: &quot;LTE&quot;,53,-86,130,-14␍␊</span><br><span class="line"># RSSI(接收信号强度)；RSRP(参考信号接收功率); SINR(信号与干扰加噪声比); RSRQ(参考信号接收质量)。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>关于接入技术：<br><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/E_UTRAN.png" alt="E-UTRAN的结构图"></p>
+<h4 id="硬件相关信息"><a href="#硬件相关信息" class="headerlink" title="硬件相关信息"></a>硬件相关信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ AT+CCLK?      # 查询模块实时时钟（RTC）</span><br><span class="line">+CCLK: &quot;70/01/01,00:06:05+00&quot;␍␊</span><br><span class="line"></span><br><span class="line">$ AT+CBC        # 查询电池充电状态和电量</span><br><span class="line">+CBC: 0,0,3875␍␊</span><br><span class="line"># ME 未充电；电池剩余0%；电压(mv)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="分组域相关信息"><a href="#分组域相关信息" class="headerlink" title="分组域相关信息"></a>分组域相关信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h4><p>测试 GPS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ AT+QGPSCFG=&quot;outport&quot;, &quot;uartdebug&quot;     # 配置 NMEA 语句输出端口</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;gnssconfig&quot;,5             # 设置 GNSS 卫星导航系统</span><br><span class="line">OK</span><br><span class="line"># GPS + BDS + Galileo 混合定位</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;gnssconfig&quot;               # 查询支持的 GNSS 卫星导航系统</span><br><span class="line">+QGPSCFG: &quot;gnssconfig&quot;,5␍␊</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;autogps&quot;,1                # 设置模块启动时自动启动 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;nmeasrc&quot;                  # 用于启用或禁用通过 AT+QGPSGNMEA 获取 NMEA 语句</span><br><span class="line">+QGPSCFG: &quot;nmeasrc&quot;,1␍␊</span><br><span class="line"></span><br><span class="line">$ AT+QGPSCFG=&quot;apflash&quot;,0</span><br><span class="line"></span><br><span class="line">$ AT+QGPS=1                             # 打开 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSEND                            # 关闭 GNSS</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">$ AT+QGPSLOC=2                          # 获取定位信息</span><br><span class="line">+QGPSLOC: 141445.00,31.26329,121.68116,1.24,62.8,3,,0.184,0.101,251124,22␍</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建云平台实例"><a href="#创建云平台实例" class="headerlink" title="创建云平台实例"></a>创建云平台实例</h3><p>在<a target="_blank" rel="noopener" href="https://iot.console.aliyun.com/lk/summary/new">阿里云物联网平台</a> 开通公共实例，如下图所示：</p>
+<p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/aliiot.png"></p>
+<h4 id="创建产品"><a href="#创建产品" class="headerlink" title="创建产品"></a>创建产品</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createProduct.png"></p>
+<h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p><img src="/2024/11/16/%E5%9F%BA%E4%BA%8E-4G-%E6%A8%A1%E7%BB%84%E7%9A%84-GPS-%E5%B0%8F%E5%9E%8B%E5%AE%9A%E4%BD%8D%E5%99%A8/createdevice.png"></p>
+<p>注意生成的设备证书和 MQTT 连接参数。</p>
+<h3 id="使用-MQTT-协议连接云平台"><a href="#使用-MQTT-协议连接云平台" class="headerlink" title="使用 MQTT 协议连接云平台"></a>使用 MQTT 协议连接云平台</h3><h4 id="不使用-SSL"><a href="#不使用-SSL" class="headerlink" title="不使用 SSL"></a>不使用 SSL</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"># 配置消息接收模式</span><br><span class="line">$ AT+QMTCFG=&quot;recv/mode&quot;,0,0,1    # client_idx = 0; 消息内容和消息长度均包含在 URC 中</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"># 配置阿里云设备信息（product_key + device_name + device_secret）</span><br><span class="line">$ AT+QMTCFG=&quot;aliauth&quot;,0,&quot;k21omXYRDQU&quot;,&quot;EG800KCN&quot;,&quot;3c6bc85d94f6dfa58b5c1c812a56f64e&quot;</span><br><span class="line"></span><br><span class="line"># Open 网络端口</span><br><span class="line">$ AT+QMTOPEN=0,&quot;iot-06z00i7jerba07i.mqtt.iothub.aliyuncs.com&quot;,1883</span><br><span class="line">+QMTOPEN: 0,0␍␊</span><br><span class="line"></span><br><span class="line"># 建立连接</span><br><span class="line">$ AT+QMTCONN=0,&quot;clientEG800K_CN&quot;</span><br><span class="line"></span><br><span class="line"># 订阅 Topic</span><br><span class="line">$ AT+QMTSUB=0,1,&quot;/k21omXYRDQU/EG800KCN/user/get&quot;,2</span><br><span class="line">OK</span><br><span class="line">+QMTSUB: 0,1,0,1</span><br><span class="line"></span><br><span class="line">$ AT+QMTSUB=0,1,&quot;/sys/k21omXYRDQU/EG800KCN/thing/event/property/post_reply&quot;,2</span><br><span class="line">OK</span><br><span class="line">+QMTSUB: 0,1,0,1</span><br><span class="line"></span><br><span class="line"># 发布属性</span><br><span class="line">$ AT+QMTPUBEX=0,0,0,0,&quot;/sys/k21omXYRDQU/EG800KCN/thing/event/property/post&quot;,30</span><br><span class="line">&gt; &#123;id:0, version: 1.0&#125;</span><br><span class="line">OK</span><br><span class="line">+QMTPUBEX: 0,0,0</span><br><span class="line"></span><br><span class="line"># 关闭连接</span><br><span class="line">$ AT+QMTDISC=0</span><br><span class="line">+QMTDISC: 0,0␍␊</span><br><span class="line">+QMTSTAT: 0,5␍␊</span><br><span class="line"></span><br><span class="line"># Close 网络端口</span><br><span class="line">$ AT+QMTCLOSE=0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-SSL"><a href="#使用-SSL" class="headerlink" title="使用 SSL"></a>使用 SSL</h4>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" rel="tag"># 嵌入式系统和IOT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/12/RaspberryPi5-And-AI-Hailo8L-Tutorial/" rel="prev" title="RaspberryPi5 And AI Hailo8L Tutorial">
+                  <i class="fa fa-angle-left"></i> RaspberryPi5 And AI Hailo8L Tutorial
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/12/12/Circle-Raspberry-Pi-%E7%9A%84%E8%A3%B8%E6%9C%BA%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83/" rel="next" title="Circle: Raspberry Pi 的裸机编程环境">
+                  Circle: Raspberry Pi 的裸机编程环境 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

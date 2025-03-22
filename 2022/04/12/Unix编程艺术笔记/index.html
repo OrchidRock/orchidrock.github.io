@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第1章 Unix 哲学&emsp;&emsp; K.I.S.S Keep It Simple, Stupid!&emsp;&emsp;一个程序只做好一件事，并做好。程序要能够协作，要能够处理文本流，因为这是最通用的接口。&emsp;&emsp; 不懂Unix的人最终还要发明一个蹩脚的Unix。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unix编程艺术笔记">
+<meta property="og:url" content="https://orchidrock.github.io/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="第1章 Unix 哲学&emsp;&emsp; K.I.S.S Keep It Simple, Stupid!&emsp;&emsp;一个程序只做好一件事，并做好。程序要能够协作，要能够处理文本流，因为这是最通用的接口。&emsp;&emsp; 不懂Unix的人最终还要发明一个蹩脚的Unix。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-12T00:05:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.616Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/","path":"2022/04/12/Unix编程艺术笔记/","title":"Unix编程艺术笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unix编程艺术笔记 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC1%E7%AB%A0-Unix-%E5%93%B2%E5%AD%A6"><span class="nav-number">1.</span> <span class="nav-text">第1章 Unix 哲学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid"><span class="nav-number">1.1.</span> <span class="nav-text">   K.I.S.S Keep It Simple, Stupid!</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC4%E7%AB%A0-%E6%A8%A1%E5%9D%97%E6%80%A7%EF%BC%9A%E4%BF%9D%E6%8C%81%E6%B8%85%E6%99%B0%EF%BC%8C%E4%BF%9D%E6%8C%81%E7%AE%80%E5%8D%95"><span class="nav-number">2.</span> <span class="nav-text">第4章 模块性：保持清晰，保持简单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC5%E7%AB%A0-%E6%96%87%E6%9C%AC%E5%8C%96%EF%BC%9A%E5%A5%BD%E5%8D%8F%E8%AE%AE%E4%BA%A7%E7%94%9F%E5%A5%BD%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">第5章 文本化：好协议产生好实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC6%E7%AB%A0-%E9%80%8F%E6%98%8E%E6%80%A7%EF%BC%9A%E6%9D%A5%E7%82%B9%E5%85%89"><span class="nav-number">4.</span> <span class="nav-text">第6章 透明性：来点光</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC7%E7%AB%A0-%E5%A4%9A%E9%81%93%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%88%86%E7%A6%BB%E8%BF%9B%E7%A8%8B%E4%B8%BA%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">5.</span> <span class="nav-text">第7章 多道程序设计：分离进程为独立的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC8%E7%AB%A0-%E5%BE%AE%E5%9E%8B%E8%AF%AD%E8%A8%80%EF%BC%9A%E5%AF%BB%E6%89%BE%E6%AD%8C%E5%94%B1%E7%9A%84%E9%9F%B3%E7%AC%A6"><span class="nav-number">6.</span> <span class="nav-text">第8章 微型语言：寻找歌唱的音符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC9%E7%AB%A0-%E7%94%9F%E6%88%90%EF%BC%9A%E6%8F%90%E9%AB%98%E8%A7%84%E6%A0%BC%E8%AF%B4%E6%98%8E%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="nav-number">7.</span> <span class="nav-text">第9章 生成：提高规格说明的层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC10%E7%AB%A0-%E9%85%8D%E7%BD%AE%EF%BC%9A%E8%BF%88%E5%87%BA%E6%AD%A3%E7%A1%AE%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="nav-number">8.</span> <span class="nav-text">第10章 配置：迈出正确的第一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC11%E7%AB%A0-%E6%8E%A5%E5%8F%A3"><span class="nav-number">9.</span> <span class="nav-text">第11章 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC12%E7%AB%A0-%E4%BC%98%E5%8C%96"><span class="nav-number">10.</span> <span class="nav-text">第12章 优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC13%E7%AB%A0-%E5%A4%8D%E6%9D%82%E5%BA%A6%EF%BC%9A%E5%B0%BD%E5%8F%AF%E8%83%BD%E7%AE%80%E5%8D%95%EF%BC%8C%E4%BD%86%E4%B8%8D%E8%A6%81%E7%AE%80%E5%8D%95%E8%BF%87%E4%BA%86%E5%A4%B4"><span class="nav-number">11.</span> <span class="nav-text">第13章 复杂度：尽可能简单，但不要简单过了头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC14%E7%AB%A0-C%E8%BF%98%E6%98%AF%E9%9D%9EC"><span class="nav-number">12.</span> <span class="nav-text">第14章 C还是非C</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC15%E7%AB%A0-%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%BC%80%E5%8F%91%E7%9A%84%E6%88%98%E6%9C%AF"><span class="nav-number">13.</span> <span class="nav-text">第15章 工具，开发的战术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC16%E7%AB%A0-%E9%87%8D%E7%94%A8%EF%BC%9A%E4%B8%8D%E8%A6%81%E9%87%8D%E5%A4%8D%E5%8F%91%E6%98%8E%E8%BD%AE%E5%AD%90"><span class="nav-number">14.</span> <span class="nav-text">第16章 重用：不要重复发明轮子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC17%E7%AB%A0-%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7"><span class="nav-number">15.</span> <span class="nav-text">第17章 可移植性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC18%E7%AB%A0-%E6%96%87%E6%A1%A3-%E5%90%91%E7%BD%91%E7%BB%9C%E4%B8%96%E7%95%8C%E9%98%90%E9%87%8A%E4%BB%A3%E7%A0%81"><span class="nav-number">16.</span> <span class="nav-text">第18章 文档:向网络世界阐释代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC19%E7%AB%A0-%E5%BC%80%E6%94%BE%E6%BA%90%E7%A0%81%EF%BC%9A%E5%9C%A8Unix%E7%A4%BE%E5%8C%BA%E4%B8%AD%E7%BC%96%E7%A8%8B"><span class="nav-number">17.</span> <span class="nav-text">第19章 开放源码：在Unix社区中编程</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/04/12/Unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unix编程艺术笔记 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unix编程艺术笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-12 08:05:00" itemprop="dateCreated datePublished" datetime="2022-04-12T08:05:00+08:00">2022-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">计算机科学</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="第1章-Unix-哲学"><a href="#第1章-Unix-哲学" class="headerlink" title="第1章 Unix 哲学"></a>第1章 Unix 哲学</h3><h4 id="emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid"><a href="#emsp-emsp-K-I-S-S-Keep-It-Simple-Stupid" class="headerlink" title="&emsp;&emsp; K.I.S.S Keep It Simple, Stupid!"></a>&emsp;&emsp; <code>K.I.S.S</code> <code>Keep It Simple, Stupid!</code></h4><p>&emsp;&emsp;一个程序只做好一件事，并做好。程序要能够协作，要能够处理文本流，因为这是最通用的接口。<br>&emsp;&emsp; <em><code>不懂Unix的人最终还要发明一个蹩脚的Unix。</code></em></p>
+<span id="more"></span>
+
+<p>&emsp;&emsp; <strong>Robe Pike的表述:</strong></p>
+<ul>
+<li>a. 你无法断定程序会在什么地方耗费运行时间。（不要过早优化！）</li>
+<li>b. 估量。在对代码没有进行估量前，不要优化速度。</li>
+<li>c. 花哨的算法在n很小时通常很慢，而n通常很小。花哨算法的的常数复杂度通常很大。除非你确定n总是很大，否则不要用花哨的算法（即使n很大，也优先考虑原则b）。</li>
+<li>d. 花哨的算法比简单算法更容易出bug、更难实现。尽量使用<strong>简单的数据算法配合简单的数据结构</strong>。（这个原则突出表现了Unix哲学传统追求实用、实效的特点，这也决定了它不可能诞生于那些‘过于理论的’‘学者’之手。）*<code>（Ken Thomson: 拿不准就穷举。）</code>*</li>
+<li>e.数据压倒一切。如果已经选择了正确的数据结构并且把一切都组织得仅仅有条，正确的算法也就不言自明。<strong>编程的核心是数据结构，而不是算法。</strong>（SICP：一种数据结构和操作它的一百种方法要比10种数据结构，每种都有10种操作方法更简单。复杂的数据数据弥漫在各种流行的编程语言中。）</li>
+</ul>
+<p>&emsp;&emsp; <strong>总结：</strong></p>
+<ul>
+<li><strong>a.模块原则</strong>：使用简单的接口拼合简单的部件。(Fred Brooks: 没有万能药。)</li>
+<li><strong>b.清晰原则</strong>：清晰胜于机巧。（很多人重机巧来‘炫耀’自己；一些公司管理拙劣，研发的系统过分追求机巧，可维护性极差，还没有自知之明。）……为了取得程序一丁点的性能提升就大幅度增加技术的复杂度和晦涩性。</li>
+<li><strong>c.组合原则</strong>：设计时考虑拼接组合。（既联结又独立）要想让程序具有组合性，就要使程序彼此独立。</li>
+<li><strong>d.分离原则</strong>：策略同机制分离，接口同引擎分离。</li>
+<li><strong>e.简洁原则</strong>：设计要简洁，复杂度能低就低。技术上的虚荣心理：程序员都很聪明，常常以能玩转复杂东西和卖弄抽象概念的能力为傲，这一点也无可厚非。（但程序员和一些科学家都‘嫉妒’数学家，因为没有什么人可以比数学家更能‘摆弄’抽象概念。）更为常见的是商业环境下的要求使得软件的复杂度上升。要避免这些陷阱，唯一的方法就是鼓励另一种软件文化，以简洁为美。</li>
+<li><strong>f.吝啬原则</strong>：除非别无它法，不要编写庞大的程序。（Windows平台的软件都以‘庞大’自居自傲！）</li>
+<li><strong>g.透明性原则</strong>：设计要可见，以便审查和调试。软件系统的透明性是指你一眼就能看出软件是做什么的以及怎么做的。显见性是指程序带有监视和显示内部状态的功能，这样程序不仅能够运行良好，而且能够看得出它以何种方式运行。</li>
+<li><strong>h.健壮性原则</strong>：健壮源于透明和简洁。在有异常输入的情况下，保证软件健壮的一个相当重要的策略就是避免在代码中出现特例。bug通常隐藏在处理特例的代码以及处理不同特殊情况的交互操作部分的代码中。</li>
+<li><strong>i.表示原则</strong>：把知识叠入数据以求逻辑质朴而健壮。数据要比编程逻辑更容易驾驭。在设计中，你应该主动将代码的复杂度转移到数据之中去。</li>
+<li><strong>j.通俗原则</strong>：接口设计避免标新立异。（最少惊奇原则）最易用的程序就是用户需要学习新东西最小的东西——或者，换句话说，最易用的程序就是最切合用户已有知识的程序。（程序和求知的关系，程序如果能够使得用户获得新的知识或者对已有知识产生更深刻的理解，那么程序和人的交互就会产生质的变化，程序不在仅仅作为一种解决问题的工具，而是一种认知的方式和媒介。）</li>
+<li><strong>k.缄默原则</strong>：如果一个程序没什么好说的，就保持沉默。</li>
+<li><strong>l.补救原则</strong>：出现异常时，马上退出并给出足够错误信息。</li>
+<li><strong>m.经济原则</strong>：宁花机器一分，不花程序员一秒。</li>
+<li><strong>n.生成原则</strong>：避免手工hack, 尽量编写程序去生成程序。</li>
+<li><strong>o.优化原则</strong>：雕琢前先得有原型， 跑之前先学会走。”90%的功能现在能够实现，比100%的功能永远实现不了强。”做好原型设计可以帮助你避免为蝇头小利而投入过多的时间。（Donald Knuth: 过早优化是万恶之源。）<strong>先制作原型，再精雕细琢。优化之前先确保能用。</strong>先给你的设计做个未优化的、运行缓慢、很耗内存但是正确的实现，然后进行系统地调整，寻找那些可以铜鼓牺牲最小的局部简洁性而获得较大性能提升的地方。<strong>Ken Thompson: “我最有成效的一天就是扔掉了1000行代码。”</strong></li>
+<li><strong>p.多样性原则</strong>：绝不相信“不二法门”的断言。设计一种僵化、封闭、不愿意与外界沟通的软件，简直就是一种病态的傲慢。（这一点还表现在人的性格上！！！）</li>
+<li><strong>q.扩展原则</strong>：设计着眼未来，未来总比预想快。绝不要认为自己找到了最终答案。</li>
+</ul>
+<h3 id="第4章-模块性：保持清晰，保持简单"><a href="#第4章-模块性：保持清晰，保持简单" class="headerlink" title="第4章 模块性：保持清晰，保持简单"></a>第4章 模块性：保持清晰，保持简单</h3><p><strong>1. 紧凑性和正交性：</strong></p>
+<ul>
+<li>紧凑性：这是一个设计能否装入人脑的特性。有经验的用户需要手册吗？许多软件是相对紧凑或者半紧凑的，即它们有一个紧凑的功能子集，能够满足专家用户80%以上的一般需求。</li>
+<li>正交性：任何操作都没有副作用，每一个动作只改变一件事，不会影响其他。无论你控制什么系统，改变每个属性的方法有且只有一个。<strong>重构</strong>：改变代码的组织和结构，而不改变其外在行为。重构的原则性目标就是提高正交性。</li>
+<li>STOP原则：不要重复自身。任何一个知识点在系统内都应当有一个唯一、明确和权威的表述。<strong>无论何时，重复代码都是危险信号。</strong></li>
+<li>强单一中心：Unix的许多有效工具都是围绕强单一算法直接转换的瘦包装器。<br>&emsp;&emsp;<strong>不要想着多做什么事情，要尽量去想最少能做的事情。</strong></li>
+</ul>
+<p><strong>2. 层次化：</strong></p>
+<ul>
+<li>自底向上和自顶向下的结合。</li>
+<li>胶合层的作用：顶层的应用逻辑和底层的域原语必须用胶合逻辑层来进行阻抗匹配。<strong>胶合层要尽可能薄。</strong> <strong>完美之道，不在无可增加，而在无可删减。</strong></li>
+</ul>
+<p><strong>3. 程序库：</strong><br>&emsp;&emsp;Unix编程风格强调模块性和定义良好的API，它所产生的影响之一就是：强烈倾向于将程序分解为由胶合层连接的库集合，特别是共享库。</p>
+<p><strong>4.OO面向对象：</strong><br>&emsp;&emsp;OO往往产生过厚的胶合层，OO在GUI、仿真和图形领域取得成功，在于在这些领域很难弄错类型的本体问题。（或者说这些领域中模拟的对象以及对象间的关系与现实世界有着清晰的对应关系。）</p>
+<p><strong>5.模块化编码</strong></p>
+<p>&emsp;&emsp;Unix 風格程序设计所面临的主要挑战就是如何将分离法的优点（将问题从原始的场景中简化、归纳）同代码和设计的薄胶合、浅平透层次结构的优点相结合。</p>
+<p>&emsp;&emsp; (LLVM的设计就是程序库、模块化和及模块、组合原则的应用体现。)</p>
+<h3 id="第5章-文本化：好协议产生好实践"><a href="#第5章-文本化：好协议产生好实践" class="headerlink" title="第5章 文本化：好协议产生好实践"></a>第5章 文本化：好协议产生好实践</h3><p>&emsp;&emsp;为了便于数据的传输和存储，像链表这样的数据结构，其可遍历的准空间部署需要平整化或者序列化为字节流表达，以便日后能够从这个表达中恢复数据结构。（我以前没有深入思考过这点，数据结构如何在不同的机器间的移植问题，现代的网络协议是如何做到这点的？）<br>&emsp;&emsp;互用性，透明性，可扩展性和存储&#x2F;事务处理的经济性——这些都是设计文件格式和应用协议时需要考虑的重要方向。<br><strong>数据文件元格式：</strong>（范例：SMTP、POP、IMAP）</p>
+<ul>
+<li>DSV风格： 使用分隔符分隔值（例如passwd文件使用冒号作为值分隔符）</li>
+<li>RFC822风格：如HTTP1.1</li>
+<li>Cookie-Jar风格：%%或%作为文本分隔符</li>
+<li>Record-Jar风格：</li>
+<li>XML</li>
+<li>Windows INI</li>
+</ul>
+<p>** Unix文本文件格式的约定：**</p>
+<ul>
+<li>1.如果可能，以新行符结束的每一行只存一个记录</li>
+<li>2.如果可能，每行不超过80个字符</li>
+<li>3.使用#引入注释</li>
+<li>4.支持反斜杠约定</li>
+<li>5.在每行一条记录的格式中，使用冒号或任何连续的空白作为字段分割符</li>
+<li>6.不要过分区分tab和whitespace</li>
+<li>7.优先使用十六进制而不是八进制</li>
+<li>8.对于复杂的记录，使用节（stanza）格式，一个记录若有多行，就使用%%\n或%\n作为记录分割符</li>
+<li>9.在节格式中，要么每行一个记录字段，要么让记录格式和RFC822电子邮件头类似，用冒号终止的字段名关键字作为引导字段</li>
+<li>10.在节格式中，支持连续行</li>
+<li>11.要么包含一个版本号，要么将格式设计成相互独立的自描述字节块</li>
+<li>12.注意浮点取整问题</li>
+<li>13.不要仅对文件的一部分压缩或二进制编码</li>
+</ul>
+<p>&emsp;&emsp;（LLVM IR 的设计体现了该原则的应用。）</p>
+<h3 id="第6章-透明性：来点光"><a href="#第6章-透明性：来点光" class="headerlink" title="第6章 透明性：来点光"></a>第6章 透明性：来点光</h3><p>&emsp;&emsp;美在计算机科学中的地位，要比在其他任何技术中的地位都重要。因为软件太复杂了，而美是抵御复杂的终极武器。——《机器美学:优雅和技术本质》</p>
+<p>&emsp;&emsp;如果软件所包含的功能是为了帮助用户建立对软件”做什么，怎么做”的心理模型而设计的，这个软件系统就是可显的。…可显性是一种主动品质。</p>
+<p>&emsp;&emsp;优雅是力量和简洁的结合。优雅的代码事半功倍;优雅的代码不仅正确，而且显然正确;优雅的代码不仅将算法传递给计算机，同时还将见解和信心传递给阅读代码的人。通过追求优雅的代码，我们可以编写更好的代码。</p>
+<p><strong>&emsp;&emsp;为透明性和可显性设计：</strong></p>
+<ul>
+<li>不要在具体操作的代码上叠放太多的抽象层。</li>
+</ul>
+<p><strong>&emsp;&emsp;为可维护性而设计</strong></p>
+<h3 id="第7章-多道程序设计：分离进程为独立的功能"><a href="#第7章-多道程序设计：分离进程为独立的功能" class="headerlink" title="第7章 多道程序设计：分离进程为独立的功能"></a>第7章 多道程序设计：分离进程为独立的功能</h3><p>&emsp;&emsp; <strong><code>做单件事并做好</code></strong></p>
+<ol>
+<li><strong>从性能调整中分离复杂度控制</strong><br>&emsp;&emsp;尽量使用协作进程，而不是线程。</li>
+<li>IPC分类：</li>
+</ol>
+<ul>
+<li>将任务传给专门程序（shellout）：两者不需要交流</li>
+<li>管道、重定向和过滤器</li>
+<li>wrapper（包装器）</li>
+<li>从进程：需要内部状态机处理两者的通信协议（如scp和ssh）</li>
+<li>对等进程间通信：临时文件、信号、套接字、共享内存。<br>&emsp;&emsp; <strong>慎用RPC和线程</strong></li>
+</ul>
+<h3 id="第8章-微型语言：寻找歌唱的音符"><a href="#第8章-微型语言：寻找歌唱的音符" class="headerlink" title="第8章 微型语言：寻找歌唱的音符"></a>第8章 微型语言：寻找歌唱的音符</h3><p>&emsp;&emsp; <strong><code>专门领域的小语言是非常强大的设计理念。</code><strong>使用微型语言比起采用低级硬编码的设计而言，降低了全局复杂度。首先，微型语言提高了编程问题规格的层次，这种表示法与通用语言所支持的表示法相比，</strong>更加紧凑，更具有表现力</strong>。（和SICP中的<strong>元语言抽象</strong>概念相似）。<br>&emsp;&emsp;分类：</p>
+<ul>
+<li>数据格式：SNG，passwd，vimrc等</li>
+<li>微型语言：m4、yacc、lex、make、xslt、pic、tbl、eqn、awk、troff、script、（dc|bc）等。趋势是从声明性发展到命令性。</li>
+<li>解释器：（dc|bc）、Lisp、JS、tcl、shell、Perl、Python、Java</li>
+</ul>
+<h3 id="第9章-生成：提高规格说明的层次"><a href="#第9章-生成：提高规格说明的层次" class="headerlink" title="第9章 生成：提高规格说明的层次"></a>第9章 生成：提高规格说明的层次</h3><p>&emsp;&emsp;数据比程序更容易理解，不管这些数据是普通表格、<em>说明性标记语言</em>、模板系统还是一组可以扩展为逻辑控制的宏。<strong>尽可能把设计的复杂度由程序代码转移到数据中去。</strong>（说明式标记语言区别于过程性或者命令式语言，它只提供说明式的’做什么‘的知识，而不包含’怎么做‘的知识。）</p>
+<ul>
+<li><strong>数据驱动编程</strong> ：（注意与SICP中数据导向风格编程的对比，在那里，数据与过程的界限已经很模糊。）与OO相比，这里的数据不仅仅指对象的状态还表示程序的控制流。这里重要的思想其实是将程序逻辑从硬编定的控制结构转移到数据中。*<code>尽量避免手工编码。</code>*</li>
+<li><strong>专用代码的生成：</strong>尽量少干活、让数据塑造代码、依靠工具、将机制从策略中分离。<strong>建设性的懒惰是大师级程序员的美德。</strong></li>
+</ul>
+<h3 id="第10章-配置：迈出正确的第一步"><a href="#第10章-配置：迈出正确的第一步" class="headerlink" title="第10章 配置：迈出正确的第一步"></a>第10章 配置：迈出正确的第一步</h3><p>Unix：<strong>一切都是可配置的。</strong> <strong>但什么是不应该可配置的？</strong></p>
+<ul>
+<li>a. 能够可靠的进行自动检测的东西，就不要提供配置开关（自动检测可能会稍微增加运行时的延迟，但延迟不超过一定界限就是可以接受的）；</li>
+<li>b. 能够用脚本包装器或简单管道实现的任务就不要用配置开关实现。能够简单使用其他程序实现的任务，就不要增加本程序的复杂度。（*<code>不要过度配置</code>*）</li>
+</ul>
+<p><strong>配置的位置</strong>：对调用时可能发生变化的选项，使用命令和开关；对改动很少但确实应该由各个用户控制的选项，使用用户主目录的运行控制文件；对需要由系统管理员设置而不是由用户改变的整个系统级选项数据，使用整个系统里运行控制文件。</p>
+<ul>
+<li>特殊情况是坏消息。（特殊情况会破坏程序的简单性和透明性，增加复杂度。）</li>
+</ul>
+<p><strong>运行控制文件配置的一般通用规则：</strong></p>
+<ul>
+<li>支持说明性注释</li>
+<li>不要区别隐匿的空白符</li>
+<li>把多个空行和注释行视为单个空行</li>
+<li>词法上把文件视为简单的用空白分隔的标记序列，或多行标记</li>
+<li>支持反斜杠语法以在字符串中嵌入不可打印字符或者特殊字符</li>
+</ul>
+<p><strong>环境变量：</strong>系统环境变量、用户环境变量。在有些情况下，使用用户环境变量是有用的，特别当这些变量由大量不同程序共享，独立于应用程序的优先选项。**</p>
+<p><strong>使用环境变量的情况：</strong></p>
+<ul>
+<li>变量值根据共享点文件或者父进程需要向多个子进程传递信息的上下文环境的不同而变化。</li>
+<li>变量值随点文件不同而频繁改变，但每次启动都不变化。</li>
+<li>进程唯一的覆盖必须以不要求改变命令行调用的方式来表述。例如LD_LIBRARY_PATH环境变量。</li>
+</ul>
+<p><strong>命令行选项：</strong></p>
+<h3 id="第11章-接口"><a href="#第11章-接口" class="headerlink" title="第11章 接口"></a>第11章 接口</h3><p>&emsp;&emsp;<strong>最小立异原则</strong>：如有可能，尽量允许用户将接口功能委派给熟悉的程序来完成。提倡以共生或委派策略来提高代码的复用并降低软件复杂度。**<code>不能委派就仿效。</code>**<br>&emsp;&emsp; 评估标准：简洁、表现力、易用、透明和脚本化能力。<br>&emsp;&emsp;<strong>Unix接口设计模式:</strong></p>
+<ul>
+<li>过滤器模式</li>
+<li>Cantrip模式：没有输入、没有输出、只被调用一次，产生退出状态数值</li>
+<li>源模式：不需要输入、输出在启动条件中控制。如ls、who、ps等。</li>
+<li>接收器模式：只接纳标准输入而不发送任何东西到标准输出。</li>
+<li>编译器模式：无标准输入、无标准输出，只将错误信息发送到标准错误端。</li>
+<li>ed模式：交互设计模式</li>
+<li>Roguelike模式：支持全屏幕、可视界面风格、但使用字符界面显示，没有鼠标和图形界面。</li>
+<li>引擎与接口分离模式：将程序的引擎部分与接口部分分离。（参考MVC模式，模型-视图-控制器）。这种模式的一种形式是将策略接口（通常是结合了视图和控制器功能的GUI）和包含了一个专用定义域微型语言解释器的引擎相连。（如mysql数据库程序）<ul>
+<li>配置者&#x2F;执行者组合</li>
+<li>假脱机&#x2F;守护进程组合： Spooler将任务和数据放入spool目录，daemon不断轮询spool目录，如果有任务就执行任务，完成后将其从spool目录中删除。 （如Unix打印程序 lpr&#x2F;lprd）</li>
+<li>驱动&#x2F;引擎组合：a)交互性 b)引擎以自身接口单独运行的能力。</li>
+<li>CS组合：两者之间的协议可以由开放标准定义（如HTTP、FTP、DNS等）</li>
+<li>CLI服务器</li>
+</ul>
+</li>
+<li>基于语言的接口模式</li>
+<li>多价程序模式：程序的应用定义域逻辑封存在一个文档化的API库中，该库可以被其他程序链接。程序同外部的接口逻辑是一个基于库的薄胶合层。或者有几个不同风格的UI层，每一个层都可以链接该库。</li>
+</ul>
+<h3 id="第12章-优化"><a href="#第12章-优化" class="headerlink" title="第12章 优化"></a>第12章 优化</h3><p>&emsp;&emsp; <em><code>过早优化是万恶之源</code></em><br>&emsp;&emsp;程序员工具箱中最强大的优化技术就是不去优化。<br>&emsp;&emsp; <em><code>小就是美</code></em></p>
+<h3 id="第13章-复杂度：尽可能简单，但不要简单过了头"><a href="#第13章-复杂度：尽可能简单，但不要简单过了头" class="headerlink" title="第13章 复杂度：尽可能简单，但不要简单过了头"></a>第13章 复杂度：尽可能简单，但不要简单过了头</h3><p>&emsp;&emsp; <strong>代码量、实现复杂度和接口复杂度</strong><br>&emsp;&emsp; <strong>本质的、偶然的和选择复杂度</strong><br>&emsp;&emsp;不要为了简洁而简洁。同其他美学形式一样，我们需要注意何时设计上的简约已经不再是有价值的自律形式，而开始成为一件伪装的苦行者外衣——一种实际上把美德作为接口来敷衍工作的纵容方式。<br>&emsp;&emsp; <strong>框架的重要性：</strong>对共享上下文环境的统一管理，是Emacs的选择复杂度换来的。小巧锐利工具的教义，降低接口复杂度和代码库规模的压力，可能正好导向<strong>手工陷阱</strong>——用户不得不自己维护所有共享的上下文环境。（vi的<strong>专用陷阱</strong>问题）</p>
+<h3 id="第14章-C还是非C"><a href="#第14章-C还是非C" class="headerlink" title="第14章 C还是非C"></a>第14章 C还是非C</h3><p>&emsp;&emsp;要有效应用Unix哲学，在工具包中就不能只有Ｃ语言，必须学会使用Ｕnix的其他语言（特别是脚本语言），并且学会如何在大型程序系统中把担任各个专门角色的多个语言轻松地融合在一起。</p>
+<h3 id="第15章-工具，开发的战术"><a href="#第15章-工具，开发的战术" class="headerlink" title="第15章 工具，开发的战术"></a>第15章 工具，开发的战术</h3><ul>
+<li><strong>操作系统</strong>：IDE对于缺乏工具的单一语言编程非常有意义。然而在Unix下，语言和工具的选择广泛多样。所以同时使用多个代码生成器、定制配置器以及许多其他标准定制工具就是司空见惯的事。Unix提倡一种更灵活的风格，一种以编辑&#x2F;编译&#x2F;调试循环为中心、排它性更少的风格。</li>
+<li><strong>编辑器</strong>： <code>vi</code>和<code>Emacs</code></li>
+<li><strong>专用代码生成器</strong>：<code>lex</code>和<code>yacc</code></li>
+<li><strong>自动化编译</strong>: <code>make</code>工具，尽量不要嵌套使用make，这样会使问题复杂化。</li>
+<li><strong>版本控制系统</strong>：</li>
+<li><strong>运行期调试</strong>：牢记Unix哲学。将时间花费在设计质量上，而不是低层次的细节上，尽可能自动化一切——包括运行期调试的细节工作。</li>
+<li><strong>性能分析</strong>：</li>
+<li>使用Emacs整合工具</li>
+</ul>
+<h3 id="第16章-重用：不要重复发明轮子"><a href="#第16章-重用：不要重复发明轮子" class="headerlink" title="第16章 重用：不要重复发明轮子"></a>第16章 重用：不要重复发明轮子</h3><p>&emsp;&emsp; <code>重用代码</code>是程序员良好的美德。</p>
+<p>&emsp;&emsp; <code>透明性</code>是重用的关键。</p>
+<p>&emsp;&emsp; <code>开源</code>:设计最好的实践需要情感的投入，而不是冷漠无聊的过程。软件开发者，同任何其他类型的工匠和技师一样：它们想要成为艺术家，这并不是什么私密。<strong>他们不仅仅希望重用代码，也希望自己的代码得到重用。</strong></p>
+<h3 id="第17章-可移植性"><a href="#第17章-可移植性" class="headerlink" title="第17章 可移植性"></a>第17章 可移植性</h3><h3 id="第18章-文档-向网络世界阐释代码"><a href="#第18章-文档-向网络世界阐释代码" class="headerlink" title="第18章 文档:向网络世界阐释代码"></a>第18章 文档:向网络世界阐释代码</h3><p>&emsp;&emsp; <code>troff</code>和<code>TEX</code>排版工具; <code>Textinfo</code>、<code>HTML</code>、<code>DocBook</code></p>
+<h3 id="第19章-开放源码：在Unix社区中编程"><a href="#第19章-开放源码：在Unix社区中编程" class="headerlink" title="第19章 开放源码：在Unix社区中编程"></a>第19章 开放源码：在Unix社区中编程</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/08/SICP-%E7%AC%94%E8%AE%B0/" rel="prev" title="SICP 笔记">
+                  <i class="fa fa-angle-left"></i> SICP 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/14/Bash%E4%BD%BF%E7%94%A8%E7%AE%80%E6%98%8E%E7%AC%94%E8%AE%B0/" rel="next" title="Bash 使用简明笔记">
+                  Bash 使用简明笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

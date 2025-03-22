@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。 我们将使用 Scapy 第三方库来做实际的扫描测试。Scapy 可以用来做 package 嗅探和伪造 package，并且它已经在内部实现了大量的网络协议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Network Scanning Based on TCP">
+<meta property="og:url" content="https://orchidrock.github.io/2024/12/16/Network-Scanning-Based-on-TCP/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。 我们将使用 Scapy 第三方库来做实际的扫描测试。Scapy 可以用来做 package 嗅探和伪造 package，并且它已经在内部实现了大量的网络协议。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-16T12:42:53.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.580Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2024/12/16/Network-Scanning-Based-on-TCP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2024/12/16/Network-Scanning-Based-on-TCP/","path":"2024/12/16/Network-Scanning-Based-on-TCP/","title":"Network Scanning Based on TCP"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Network Scanning Based on TCP | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E8%BF%9E%E6%8E%A5%E6%89%AB%E6%8F%8F"><span class="nav-number">2.</span> <span class="nav-text">TCP 连接扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-SYN-%E6%89%AB%E6%8F%8F"><span class="nav-number">3.</span> <span class="nav-text">TCP SYN 扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Xmas-%E6%89%AB%E6%8F%8F%EF%BC%88%E5%9C%A3%E8%AF%9E%E6%A0%91%E6%89%AB%E6%8F%8F%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">TCP Xmas 扫描（圣诞树扫描）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-ACK-%E6%89%AB%E6%8F%8F"><span class="nav-number">5.</span> <span class="nav-text">TCP ACK 扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E7%AA%97%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">6.</span> <span class="nav-text">TCP 窗口扫描</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2024/12/16/Network-Scanning-Based-on-TCP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Network Scanning Based on TCP | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Network Scanning Based on TCP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-12-16 20:42:53" itemprop="dateCreated datePublished" datetime="2024-12-16T20:42:53+08:00">2024-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">信息安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>TCP 协议的很多特性可以被攻击者广泛利用，如进行网络扫描和端口嗅探。基于 TCP 的常用的端口扫描类型包括：TCP 连接扫描、TCP SYN扫描、TCP Xmas 扫描、TCP FIN 扫描、TCP Null 扫描等等。</p>
+<p>我们将使用 <a target="_blank" rel="noopener" href="https://pypi.org/project/scapy/">Scapy</a> 第三方库来做实际的扫描测试。Scapy 可以用来做 package 嗅探和伪造 package，并且它已经在内部实现了大量的网络协议。</p>
+<span id="more"></span>
+
+<h3 id="TCP-连接扫描"><a href="#TCP-连接扫描" class="headerlink" title="TCP 连接扫描"></a>TCP 连接扫描</h3><p>该方式尝试通过与目标主机上的待扫描 TCP 端口建立完整的 TCP 连接，根据连接的成败推断端口的工作状态。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">data = &#x27;hello, world&#x27;</span><br><span class="line"></span><br><span class="line">## 构造 package </span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088)/data</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &#x27;&#x27;:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;AR&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14: # RST+ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Closed&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-SYN-扫描"><a href="#TCP-SYN-扫描" class="headerlink" title="TCP SYN 扫描"></a>TCP SYN 扫描</h3><p>该类型扫描是向主机上的待扫描端口发送一个 SYN 标志被设置为 1 的 TCP 报文， 此动作与 TCP 的三次握手中的第一阶段相同。如果被扫描的端口处于监听状态，它将返回 SYN+ACK，响应连接请求<br>源主机在收到响应报文后，发送 RST 标志为 1 的报文，中断与主机的连接。如果被扫描主机的端口是关闭的，则会回复 RST 为 1 的报文。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">from scapy.layers.inet import TCP, IP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = &#x27;127.0.0.1&#x27;, dst = &#x27;127.0.0.1&#x27;)/TCP(sport=12345, dport=8088, flags=&quot;S&quot;)</span><br><span class="line">resp = sr1(pkt, timeout=10)</span><br><span class="line">if str(type(resp)) == &quot;&quot;:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br><span class="line">elif resp.haslayer(TCP):</span><br><span class="line">    if resp.getlayer(TCP).flags == 0x12:  # SYN+ACK</span><br><span class="line">        # 发送 ACK</span><br><span class="line">        sr(IP(src=&#x27;127.0.0.1&#x27;, dst=&#x27;127.0.0.1&#x27;) / TCP(sport=12345, dport=8088, flags=&quot;R&quot;), timeout=10)</span><br><span class="line">        print(&quot;Opened&quot;)</span><br><span class="line">    elif resp.getlayer(TCP).flags == 0x14:  # RST + ACK</span><br><span class="line">        print(&quot;Closed&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;Filtered&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-Xmas-扫描（圣诞树扫描）"><a href="#TCP-Xmas-扫描（圣诞树扫描）" class="headerlink" title="TCP Xmas 扫描（圣诞树扫描）"></a>TCP Xmas 扫描（圣诞树扫描）</h3><p>在该扫描类型中，源主机会向目标主机发送设置 PSH、FIN、URG 标识的数据包。判断逻辑如下：</p>
+<ul>
+<li>如果目标主机的端口是开放的，不会有任何响应</li>
+<li>如果目标主机返回了 RST 报文，那么说明端口处于关闭状态</li>
+<li>如果目标主机返回一个 ICMP 数据包，其中错误类型为 3 且状态码为 1, 2, 3, 9, 10 或 13, 则说明目标端口被过滤了无法确定是否处于开放状态。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12345</span>, dport=<span class="number">8088</span>, flags=<span class="string">&quot;FPU&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Open|Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).flags == <span class="number">0x14</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-ACK-扫描"><a href="#TCP-ACK-扫描" class="headerlink" title="TCP ACK 扫描"></a>TCP ACK 扫描</h3><p>ACK 扫描不是用于发现端口开启或关闭状态的，而是用于发现服务器上是否存在有状态防火墙的。它的结果只能说明端口是否被过滤。</p>
+<h3 id="TCP-窗口扫描"><a href="#TCP-窗口扫描" class="headerlink" title="TCP 窗口扫描"></a>TCP 窗口扫描</h3><p>TCP 窗口扫描的流程同 ACK 扫描类似，同样是客户端向服务器发送一个带有 ACK 标识和端口号的 TCP 数据包，但是这种扫描能够用于发现目标服务器端口的状态。在 ACK 扫描中返回 RST 表明没有被过滤，但在窗口扫描中，当收到返回的 RST 数据包后，它会检查窗口大小的值。</p>
+<ul>
+<li>如果窗口大小的值是个非零值，则说明目标端口是开放的。</li>
+<li>如果返回的 RST 数据包中的窗口大小为0，则说明目标端口是关闭的。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> TCP, IP, ICMP</span><br><span class="line"></span><br><span class="line">pkt = IP(src = <span class="string">&#x27;127.0.0.1&#x27;</span>, dst = <span class="string">&#x27;127.0.0.1&#x27;</span>)/TCP(sport=<span class="number">12346</span>, dport=<span class="number">8089</span>, flags=<span class="string">&quot;A&quot;</span>)</span><br><span class="line">resp = sr1(pkt, timeout=<span class="number">10</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(resp)) == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> resp <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;No Response&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(TCP):</span><br><span class="line">    <span class="keyword">if</span> resp.getlayer(TCP).window == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> resp.getlayer(TCP).window &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Opened&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> resp.haslayer(ICMP):</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">int</span>(resp.getlayer(ICMP).<span class="built_in">type</span>) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        <span class="built_in">int</span>(resp.getlayer(ICMP).code) <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">13</span>]):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Filtered&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/linagcheng/p/13033631.html">端口扫描之开放端口扫描方式</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/15/Go-Language-Tutorial/" rel="prev" title="Go Language Tutorial">
+                  <i class="fa fa-angle-left"></i> Go Language Tutorial
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/12/16/SSL-Protocol-Analysis/" rel="next" title="SSL Protocol Analysis">
+                  SSL Protocol Analysis <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

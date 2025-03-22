@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述OpenWrt 是针对嵌入式设备（特别是无线路由器）的 Linux 系统。OpenWrt使用带有包管理的完全可写的文件系统，这与静态、封闭的固件不同。OpenWrt 可以使用户获得更大的自由来进行个性化的配置（包括应用软件包的选择）、对系统及底层硬件资源完全的掌握。从安全的角度讲，用户可以自己检测固件是否包含安全漏洞或者后门（backdoor）程序，OpenWrt 的更新相对原固件更加及时，安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenWrt Introduction">
+<meta property="og:url" content="https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述OpenWrt 是针对嵌入式设备（特别是无线路由器）的 Linux 系统。OpenWrt使用带有包管理的完全可写的文件系统，这与静态、封闭的固件不同。OpenWrt 可以使用户获得更大的自由来进行个性化的配置（包括应用软件包的选择）、对系统及底层硬件资源完全的掌握。从安全的角度讲，用户可以自己检测固件是否包含安全漏洞或者后门（backdoor）程序，OpenWrt 的更新相对原固件更加及时，安">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/mt7628_arch.png">
+<meta property="article:published_time" content="2022-07-02T03:49:14.000Z">
+<meta property="article:modified_time" content="2025-03-07T04:31:13.839Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/mt7628_arch.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/","path":"2022/07/02/OpenWrt-Introduction/","title":"OpenWrt Introduction"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OpenWrt Introduction | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="nav-number">2.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%94%AF%E6%8C%81%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">设备支持和软件包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%94%AF%E6%8C%81"><span class="nav-number">3.1.</span> <span class="nav-text">设备支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">3.2.</span> <span class="nav-text">软件包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">源代码结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA"><span class="nav-number">6.</span> <span class="nav-text">构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E6%89%80%E5%B7%A5%E4%BD%9C%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9B%AE%E5%BD%95"><span class="nav-number">6.1.</span> <span class="nav-text">构建系统所工作的主要目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">6.2.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">6.3.</span> <span class="nav-text">构建流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E4%B8%81%E7%AE%A1%E7%90%86"><span class="nav-number">6.4.</span> <span class="nav-text">补丁管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buildroot"><span class="nav-number">6.5.</span> <span class="nav-text">Buildroot</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%AE%9E%E8%B7%B5"><span class="nav-number">7.</span> <span class="nav-text">简单实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E7%94%A8%E8%B7%AF%E7%94%B1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">7.1.</span> <span class="nav-text">所用路由器配置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2022/07/02/OpenWrt-Introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="OpenWrt Introduction | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenWrt Introduction
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-02 11:49:14" itemprop="dateCreated datePublished" datetime="2022-07-02T11:49:14+08:00">2022-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-07 12:31:13" itemprop="dateModified" datetime="2025-03-07T12:31:13+08:00">2025-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%92%8CIOT/" itemprop="url" rel="index"><span itemprop="name">嵌入式系统和IOT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a target="_blank" rel="noopener" href="https://openwrt.org/">OpenWrt</a> 是针对嵌入式设备（特别是无线路由器）的 <code>Linux</code> 系统。<code>OpenWrt</code>使用带有包管理的完全可写的文件系统，这与静态、封闭的固件不同。<code>OpenWrt</code> 可以使用户获得更大的自由来进行个性化的配置（包括应用软件包的选择）、对系统及底层硬件资源完全的掌握。从安全的角度讲，用户可以自己检测固件是否包含安全漏洞或者后门（backdoor）程序，<code>OpenWrt</code> 的更新相对原固件更加及时，安全问题会更快地发现并解决。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://openwrt.org/docs/guide-developer/start">OpenWrt Developer Guide</a></p>
+</blockquote>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>最新版本：<code>22.03.3</code></p>
+<h2 id="设备支持和软件包"><a href="#设备支持和软件包" class="headerlink" title="设备支持和软件包"></a>设备支持和软件包</h2><h3 id="设备支持"><a href="#设备支持" class="headerlink" title="设备支持"></a>设备支持</h3><p><code>OpenWrt</code> 支持超过 65+ Target&#x2F;Soc，覆盖的指令集架构包括 <code>ARM</code>、<code>MIPS</code>、<code>MIPS64</code>、<code>PPC</code>、<code>X86</code> 和 <code>x86_64</code> 。</p>
+<p>设备存储容量要求：</p>
+<ul>
+<li>最小 4M 的 Flash（不支持 GUI），8M 更好（支持 GUI）；</li>
+<li>最小 32M 的 RAM，64M 更好。</li>
+</ul>
+<p>如果使用 18.06 或 更高的 OpenWrt 版本，上述 <code>4/32</code> 的最小要求可能无法满足，参看 <code>4/32</code>警告。</p>
+<p><a target="_blank" rel="noopener" href="https://openwrt.org/toh/start">ToH</a> 中列举了当前支持的设备列表，根据厂商及型号索引相关支持信息。用户可以更新该列表，加入已经过测试的新设备。</p>
+<h3 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h3><p>现在最新 21.02 版本的软件包仓库: <a target="_blank" rel="noopener" href="https://openwrt.org/packages/index/start">Package Index</a></p>
+<p>这些软件包(1000+)可以用来扩展系统的功能，它包括一些分类：管理类（Administration）、语言类（Languages）、库（Libraries）、基础系统（Base System）、引导（BootLoader）、固件（Firmware）、网络类（Network）和 工具类（Utilties）等等。</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>OpenWrt 的整体架构和其他 Linux 发行版系统类似，基本上采用 <code>软件包+包管理器+内核</code> 的结构。</p>
+<p>OpenWrt 的软件包在源代码中基本上只有一个 <code>Makefile</code> 文件，其中包含软件包上游的信息以及 OpenWrt 自己所作的修改。这与<code>ArchLinux</code>的做法类似。所有的软件包都使用 OpenWrt 自己的工具链进行编译，但工具链本身需要先通过用户(<code>Host</code>)系统上的编译工具链生成。所以 OpenWrt 的工具链实际上是交叉编译工具链。在 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 0: LFS 项目介绍]</a> 中有更多关于交叉编译的细节。</p>
+<p>OpenWrt 使用 <code>opkg</code> 包管理器。其软件仓库分为 <code>base</code> 和 <code>luci</code>、<code>packages</code>、<code>routing</code>、<code>telephony</code>。<code>base</code> 为主仓库，由核心开发人员维护；后面 4 个仓库称为 <code>package feeds</code>，它们由社区维护，每个包都有一个维护者。<code>package feed</code>系统很容易扩展，用户可以将自己的包放入官方的<code>feed</code>中或者根据自己手头特殊的固件来定制化<code>feed</code>（将包放到自己的下载服务器中）。</p>
+<p>软件包的版本号：<code>上游主版本号-OpenWrt子版本号</code>，子版本号代表 OpenWrt 对该上游软件包进行了修改或者包装（与 debian 系统类似）。</p>
+<p>内核本身也可以看作一个软件包，虽然它的编译相对来说更加复杂，但<code>Makefile</code>中的结构和其他软件包基本上都是相同的。</p>
+<h2 id="源代码结构"><a href="#源代码结构" class="headerlink" title="源代码结构"></a>源代码结构</h2><p>OpenWrt 的源代码仓库：</p>
+<ul>
+<li>GitWeb - OpenWrt 的 <code>master</code> git仓库</li>
+<li>GitHub - 持续更新的 GitWeb 的镜像仓库</li>
+</ul>
+<p>目录结构：</p>
+<ul>
+<li>&#x2F;config : menuconfig 的配置文件</li>
+<li>&#x2F;include: 属于主仓库的软件包的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;scripts: 构建过程中使用的脚本（Perl、Python 和 shell 等）</li>
+<li>&#x2F;target: <code>Buildroot</code>构建<code>imagebuild</code>、<code>kernel</code>、<code>sdk</code>和<code>toolchain</code>的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;toolchain: 构建交叉编译工具链的<code>makefile</code>和<code>configuration</code></li>
+<li>&#x2F;tool: 构建过程中使用的工具的<code>makefile</code>和<code>configuration</code></li>
+</ul>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>在第3节中说，OpenWrt 的工具链为交叉编译工具链，因为大部分目标设备的CPU 架构都与 Host 系统不同。对于用户来说，可以手动构建自己的工具链，然后构建 OpenWrt，但这种做法相对困难且很容易出错。</p>
+<p>OpenWrt 的构建系统采取了不同的方法：它构建任何一部分都是从零开始、下载、打补丁和编译，包括交叉工具链也是如此。简单地说，OpenWrt 的构建系统不包含任何二进制代码或者源代码，它安全自动化的下载、针对给定的平台打补丁、针对给定的平台进行编译。另外，用户通过修改模板，进而改变这个过程中任何一步的行为。</p>
+<h3 id="构建系统所工作的主要目录"><a href="#构建系统所工作的主要目录" class="headerlink" title="构建系统所工作的主要目录"></a>构建系统所工作的主要目录</h3><ul>
+<li><p><strong>tools</strong>: 构建 <code>toolchain</code>、<code>packages</code>或<code>image generator</code>所使用的基本软件（例如<code>Autoconf</code>和<code>Automake</code>等）；虽然这些基本软件会有一部分已经安装在<code>Host</code>系统上，但 OpenWrt 选择编译自己的工具软件，这使得它不需要担心<code>Host</code>系统可能存在的版本不兼容问题。</p>
+</li>
+<li><p><strong>toolchain</strong>: 包括<code>编译器</code>、<code>链接器</code>、<code>汇编器</code>、<code>运行时库</code>和<code>通用工具</code>；构建过程中会生成两个其他目录 <code>toolchainbuild&#123;arch&#125;</code> 和 <code>stagingdir&#123;arch&#125;</code>；前者是构建<code>临时目录</code>，后者是工具链的<code>安装目录</code>。</p>
+</li>
+<li><p><strong>target</strong>: 包含针对特定嵌入式平台的补丁或者配置选项；例如<code>target/linux</code>子目录又根据不同的嵌入式平台进行划分，在某个嵌入式平台的目录中包含了对 Linux 内核的补丁和内核配置；类似的，<code>target/imagebuilder</code>子目录描述了如何针对特定平台打包固件。</p>
+</li>
+<li><p><strong>package</strong>: 打包后的软件包，后缀名为<code>ipk</code>（就像如果使用<code>debian</code>包格式，后缀名为<code>deb</code>）</p>
+</li>
+<li><p><strong>dl</strong>: 构建过程中下载的源代码等会放到该目录。</p>
+</li>
+</ul>
+<p>在<code>target</code>和<code>package</code>步骤中，也会生成临时构建目录<code>build_&#123;arch&#125;</code>。</p>
+<p>在主目录下会生成 <code>build_dir</code> 和 <code>staging_dir</code> 目录，<code>build_dir</code>用来解压下载后的软件包源码，然后编译它；<code>staging_dir</code>用来作为所有已编译好的程序的安装目录，它们可以用来构建其他软件包或者集成到最后的固件中。<code>build_dir</code>分为几个子目录：</p>
+<ul>
+<li><strong>build_dir&#x2F;host</strong>：所有将会运行在 Host系统上的工具，例如<code>sed</code>和<code>flex</code>等。</li>
+<li><strong>build_dir&#x2F;hostpkg:</strong></li>
+<li><strong>build_dir&#x2F;toolchain-xxxxxxx</strong> ：所有运行在<code>Host</code>系统上的交叉编译工具链、Linux内核，以及被运行在<code>Target</code>系统上的工具多需要链接的库，例如<code>musl</code>和<code>uClibc</code>（两者都是针对嵌入式设备的 C 库）等。</li>
+<li><strong>build_dir&#x2F;target-xxxxxxx</strong>：运行在<code>Target</code>系统上的软件。</li>
+</ul>
+<p><code>staging_dir</code> 目录也分类类似的几个子目录：</p>
+<ul>
+<li><strong>staging_dir&#x2F;host</strong> ：一个小型的 Linux 根目录，包括运行在 Host上的工具，其中有些工具符号链接到 Host 系统上已经安装的相同工具。</li>
+<li><strong>staging_dir&#x2F;hostpkg</strong>：</li>
+<li><strong>staging_dir&#x2F;toolchain-xxxxxxx</strong>：一个小型的 Linux 根目录，包含运行在 Host 上的交叉编译工具链，例如 aarch64-openwrt-linux-musl-gcc。</li>
+<li><strong>staging_dir&#x2F;target-xxxxxxx&#x2F;root-xxxx</strong>：一个 Linux 根目录，并且是最后生成固件的根文件系统的基础。</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>很容易移植软件。</li>
+<li>使用 <code>kconfig</code> 来配置相关特性。</li>
+<li>提供内置的交叉编译工具链。</li>
+<li>处理标准的下载、打补丁、配置、编译和打包工作流。</li>
+<li>对一些损坏的包提供一些通用的<code>fixups</code>。</li>
+</ul>
+<h3 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h3><p>a. tools</p>
+<p>b. toolchain&#x2F;binutils - 交叉汇编器、交叉连接器等</p>
+<p>c. toolchain&#x2F;gcc - 交叉编译器（我们在LFS 0: LFS 项目介绍中介绍过，gcc 的构建需要多次 Pass）</p>
+<p>d. target&#x2F;linux - 内核模块</p>
+<p>e. package - core(即base)仓库和feed仓库软件包</p>
+<p>f. target&#x2F;linux - 内核镜像</p>
+<p>g. target&#x2F;imagebuilder - 生成固件</p>
+<h3 id="补丁管理"><a href="#补丁管理" class="headerlink" title="补丁管理"></a>补丁管理</h3><h3 id="Buildroot"><a href="#Buildroot" class="headerlink" title="Buildroot"></a>Buildroot</h3><h2 id="简单实践"><a href="#简单实践" class="headerlink" title="简单实践"></a>简单实践</h2><h3 id="所用路由器配置"><a href="#所用路由器配置" class="headerlink" title="所用路由器配置"></a>所用路由器配置</h3><p>Flash芯片： <code>cFeon QN32B-104HIP</code> 32M 容量<br>微处理器 A：<code>MediaTek MT7628DBN</code>，该处理器的相关属性如下：</p>
+<ul>
+<li>CPU: 32位 MIPS 24K™CPU核</li>
+<li>时钟频率：580 MHZ</li>
+<li>I-Cache, D-Cache : 64kb, 32kb</li>
+<li>Memeory: 16bits</li>
+<li>RF : 2T2R 802.11n 2.4 GHz</li>
+<li>USB: 2.0</li>
+<li>DRAM ： 8M</li>
+</ul>
+<p>微处理器 B: <code>MediaTek MT7613BEN</code>，该处理器的相关属性如下：</p>
+<ul>
+<li>5G WIFI 芯片</li>
+<li>64M RAM</li>
+</ul>
+<p>MT7628 原理图：<br><img src="/2022/07/02/OpenWrt-Introduction/mt7628_arch.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/01/FreeRTOS-%E4%BB%8B%E7%BB%8D/" rel="prev" title="FreeRTOS 介绍">
+                  <i class="fa fa-angle-left"></i> FreeRTOS 介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/11/FreeRTOS-TCP%E4%BB%8B%E7%BB%8D/" rel="next" title="FreeRTOS+TCP介绍">
+                  FreeRTOS+TCP介绍 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

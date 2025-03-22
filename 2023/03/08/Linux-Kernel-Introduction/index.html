@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述Linux kernel 是开源的单内核(Monolithic Kernel)、模块化和多任务的类Unix操作系统。 在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux Kernel Introduction">
+<meta property="og:url" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述Linux kernel 是开源的单内核(Monolithic Kernel)、模块化和多任务的类Unix操作系统。 在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp">
+<meta property="og:image" content="https://img2.tfd.com/pp/wikiimg.ashx?p=commons%2fthumb%2f6%2f67%2fOS-structure.svg%2f750px-OS-structure.svg.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_subsystem.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_task_fsm.png">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-3f8f0a1ccadf4cf2ca408a0810417679_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-ea673275121a42b4ea81999a9707bbc7_720w.webp">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_mm.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_vfs.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_kernel_dev.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_char_device.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_bus_dev_dri.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_driver_layers.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/software_NN_1N.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/linux_input_subsystem.png">
+<meta property="article:published_time" content="2023-03-08T08:36:00.000Z">
+<meta property="article:modified_time" content="2025-03-09T04:55:04.032Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/","path":"2023/03/08/Linux-Kernel-Introduction/","title":"Linux Kernel Introduction"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux Kernel Introduction | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unix-%E6%B8%8A%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">Unix 渊源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-API"><span class="nav-number">3.1.</span> <span class="nav-text">内核-用户 API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8-%E7%94%A8%E6%88%B7-ABI"><span class="nav-number">3.2.</span> <span class="nav-text">内核-用户 ABI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">3.3.</span> <span class="nav-text">系统调用规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">内核的整体结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B-%E5%86%85%E6%A0%B8%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">进程&#x2F;内核模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%86%85%E6%A0%B8-Monolithic-kernel-%E4%B8%8E%E5%BE%AE%E5%86%85%E6%A0%B8-Microkernel"><span class="nav-number">4.2.</span> <span class="nav-text">单内核(Monolithic kernel)与微内核(Microkernel)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E5%86%85%E6%A0%B8"><span class="nav-number">4.3.</span> <span class="nav-text">可重入内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.4.</span> <span class="nav-text">子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">进程描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">5.3.</span> <span class="nav-text">进程标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%A0%88"><span class="nav-number">5.4.</span> <span class="nav-text">内核栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84%E7%BB%87"><span class="nav-number">5.5.</span> <span class="nav-text">进程组织</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">5.6.</span> <span class="nav-text">进程切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="nav-number">6.</span> <span class="nav-text">同步机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%9E%E4%BA%89%E5%92%8C%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-number">6.1.</span> <span class="nav-text">竞争和并发控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%8A%A2%E5%8D%A0"><span class="nav-number">6.2.</span> <span class="nav-text">内核抢占</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">6.3.</span> <span class="nav-text">原子操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E6%95%B4%E5%9E%8B%E5%8F%98%E9%87%8F%E7%9A%84%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">6.3.1.</span> <span class="nav-text">针对整型变量的原子操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E4%BD%8D%E7%9A%84%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">6.3.2.</span> <span class="nav-text">针对位的原子操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E6%9C%BA%E5%88%B6"><span class="nav-number">6.4.</span> <span class="nav-text">锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E9%94%81"><span class="nav-number">6.4.1.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RCU"><span class="nav-number">6.4.2.</span> <span class="nav-text">RCU</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><span class="nav-number">6.5.</span> <span class="nav-text">内存屏障</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E9%87%8F%EF%BC%88Completion%EF%BC%89"><span class="nav-number">6.6.</span> <span class="nav-text">完成量（Completion）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">7.1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="nav-number">7.2.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">7.3.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%86%B2%E5%92%8CTLB"><span class="nav-number">7.4.</span> <span class="nav-text">高速缓冲和TLB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">8.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VFS"><span class="nav-number">8.1.</span> <span class="nav-text">VFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">9.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">9.1.</span> <span class="nav-text">体系结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8"><span class="nav-number">10.</span> <span class="nav-text">设备驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#udev"><span class="nav-number">10.1.</span> <span class="nav-text">udev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B"><span class="nav-number">10.2.</span> <span class="nav-text">设备模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87"><span class="nav-number">10.3.</span> <span class="nav-text">字符设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84"><span class="nav-number">10.4.</span> <span class="nav-text">Linux 驱动的软件架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-%E5%86%85%E6%A0%B8%E8%BE%93%E5%85%A5%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">10.4.1.</span> <span class="nav-text">Linux 内核输入子系统</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/03/08/Linux-Kernel-Introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux Kernel Introduction | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux Kernel Introduction
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-08 16:36:00" itemprop="dateCreated datePublished" datetime="2023-03-08T16:36:00+08:00">2023-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-09 12:55:04" itemprop="dateModified" datetime="2025-03-09T12:55:04+08:00">2025-03-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux-Kernel/" itemprop="url" rel="index"><span itemprop="name">Linux Kernel</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>19 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a target="_blank" rel="noopener" href="https://www.kernel.org/">Linux kernel</a> 是开源的<code>单内核</code>(Monolithic Kernel)、<code>模块化</code>和<code>多任务</code>的<code>类Unix</code>操作系统。</p>
+<p>在本系列文章中，使用 “Linux” 均代指 “Linux 内核”，如果要指代像 Ubuntu 这样的 Linux 发行版系统，我们使用 “GNU&#x2F;Linux”。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://encyclopedia.thefreedictionary.com/linux+kernel">Linux Kernel - wikipedia</a><br>参考《Understanding the Linux Kernel, Third Edition》 By Daniel P. Bovet &amp; Marco Cesati.<br>参考 <a target="_blank" rel="noopener" href="https://0xax.gitbooks.io/linux-insides/content/">linux-insides</a> - By <strong>0xax</strong> | <a target="_blank" rel="noopener" href="https://www.bookstack.cn/read/linux-insides-zh/README.md">Linux内核揭秘-中文版</a>。<br>参考 <a target="_blank" rel="noopener" href="https://linux-kernel-labs.github.io/">kernel teaching</a><br>参考 《Linux内核驱动开发详解》By 宋宝华</p>
+</blockquote>
+<h2 id="Unix-渊源"><a href="#Unix-渊源" class="headerlink" title="Unix 渊源"></a>Unix 渊源</h2><p>Unix 系统最初在 1969 年诞生于贝尔实验室。Unix 衍生出了很多变种，例如 <code>OpenBSD</code>等，它的很多设计理念也深刻影响了 GNU&#x2F;Linux（<em>准确来说，主要影响的是内核上层的应用程序和环境</em>） 。更重要的是，<code>Unix</code>有着开放源码和同僚复审的传统，这种理念产生的优势被 Linux 充分的发挥和利用。关于这个主题，可以阅读经典的《The Art of UNIX Programming》 (在 <a target="_blank" rel="noopener" href="http://1.117.83.246/index.php/archives/187/">Unix编程艺术笔记</a> 中有一些摘要总结)。</p>
+<p>Linux 的成长伴随着互联网的崛起，这就使得它与 <code>Unix</code> 在开发模式上有些不同。Linux 几乎是通过来源于”网络部落“的一些“松散”的开发者贡献给世界的，但它现在已经变得十分强大。《大教堂与集市》一书中有详细和精彩的描述。</p>
+<blockquote>
+<p>乐趣是一个符号，意味着效能、效率和高产。 —— TAOUP</p>
+</blockquote>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="内核-用户-API"><a href="#内核-用户-API" class="headerlink" title="内核-用户 API"></a>内核-用户 API</h3><h3 id="内核-用户-ABI"><a href="#内核-用户-ABI" class="headerlink" title="内核-用户 ABI"></a>内核-用户 ABI</h3><p>当前针对在不同的 <code>GNU/Linux</code>系统间保持应用和二进制兼容的标准是 <strong>LSB(Linux Standard Base)<strong>。LSB 中和内核相关的标准包括：</strong>General ABI</strong>、<strong>System V ABI</strong>、<strong>ELF</strong>和<strong>Processor Specific ABI</strong>。其中，和处理器相关的 ABI 定义了在函数调用时如何传递系统调用号及其他参数（例如，使用寄存器还是栈，以及使用哪些寄存器）。</p>
+<h3 id="系统调用规范"><a href="#系统调用规范" class="headerlink" title="系统调用规范"></a>系统调用规范</h3><p>系统调用和用户空间中的函数调用存在一些不同点，以<code>x86_64</code>架构为例：</p>
+<ol>
+<li>进程内核栈除了需要保存内核空间过程调用外，还需要保存用户空间栈的数据和返回地址，以便 在返回用户空间继续执行。</li>
+<li>过程调用中寄存器调用约定不同。<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Registers on entry:</span><br><span class="line"> rax  system call number</span><br><span class="line"> rcx  return address</span><br><span class="line"> r11  saved rflags (note: r11 is callee-clobbered register in C ABI)</span><br><span class="line"> rdi   arg0</span><br><span class="line"> rsi    arg1</span><br><span class="line"> rdx  arg2</span><br><span class="line"> r10  arg3 (needs to be moved to rcx to conform to C ABI)</span><br><span class="line"> r8    arg4</span><br><span class="line"> r9    arg5</span><br><span class="line"> (note: r12-r15, rbp, rbx are callee-preserved in C ABI)</span><br></pre></td></tr></table></figure>
+具体定义可查看源代码<code>arch/x86/entry/common.c</code>。</li>
+</ol>
+<p>在代码 <code>arch/x86/entry/entry_64.S</code> 中可查看切换的具体过程：</p>
+<ol>
+<li>用户栈到进程内核栈的切换（修改 <code>rsp</code> 寄存器的值）。</li>
+<li>依次将用户空间寄存器压栈，和数据结构<code>struct pt_regs</code> 成员一一对应（顺序固定且是倒序）。</li>
+</ol>
+<img src="https://pic2.zhimg.com/80/v2-53e4c9fb41f2300d15c560d054e30bb5_720w.webp" width="70%">
+
+
+<h2 id="内核的整体结构"><a href="#内核的整体结构" class="headerlink" title="内核的整体结构"></a>内核的整体结构</h2><p>用一句话来总结内核的角色：<code>内核是最懒的资源管理者</code>。这里的资源可以分为三大类：<code>CPU</code>、<code>内存</code>和 <code>I/O</code>。内核通过抽象这些资源形成<code>进程</code>、<code>线程</code>、<code>文件</code>和<code>虚拟内存</code>等概念。抽象是对抗复杂性的很有效的手段之一。换句话说，内核也可以看作用户进程执行的<code>环境</code>。</p>
+<p>内核的<code>懒</code>是它的特点也是对它的要求，特别是对于支持多任务并发的内核来说。除非被唤醒，它应该什么都不做；即使被唤醒，也应该做的尽量少、尽量快，然后继续”睡觉“。这种特性与整个系统并发的效率紧密相关。</p>
+<h3 id="进程-内核模式"><a href="#进程-内核模式" class="headerlink" title="进程&#x2F;内核模式"></a>进程&#x2F;内核模式</h3><p>将内核唤醒的方式几乎都是事件驱动的，这些事件简单来说分为<code>中断</code>和<code>异常</code>，<code>中断</code>又可以大致分为<code>硬中断</code>和<code>软中断</code>。<code>POSIX</code>定义了系统调用接口 API，系统调用也可以认为是软中断的一种，支持从用户程序唤醒内核，但标准并没有限制内核如何设计。</p>
+<p>类Unix内核区分<code>内核态</code>和<code>用户态</code>。用户进程几乎不与硬件资源直接交互，而是使用系统调用进入内核态请求资源。</p>
+<h3 id="单内核-Monolithic-kernel-与微内核-Microkernel"><a href="#单内核-Monolithic-kernel-与微内核-Microkernel" class="headerlink" title="单内核(Monolithic kernel)与微内核(Microkernel)"></a>单内核(Monolithic kernel)与微内核(Microkernel)</h3><p>可以用下面一张图来描述二者的不同:</p>
+<img src="https://img2.tfd.com/pp/wikiimg.ashx?p=commons%2fthumb%2f6%2f67%2fOS-structure.svg%2f750px-OS-structure.svg.png" width=80%>
+
+<p>很容易看出，微内核更简单、更模块化，但模块间的通信交互开销会更高。另外，微内核的 RAM利用效率会更高，因为不被调用的系统进程可以被<code>换出</code>。Linux 为了既吸收微内核的优势又不影响性能，提供了<code>模块（Module）</code>。模块是一个目标文件，可以在运行时链接到内核或者从内核解除链接。<strong>模块不是作为一个特殊的进程来执行，它代表当前进程在内核态下执行。</strong></p>
+<h3 id="可重入内核"><a href="#可重入内核" class="headerlink" title="可重入内核"></a>可重入内核</h3><p>可重入内核也必须是可抢占内核。也就是说，即使当前 CPU 处于内核态，也仍然可以被抢占，这使得内核具有很高的<code>实时性</code>。可重入内核必须引入同步机制来访问共享数据结构。大多数传统的 Unix 内核都是非抢占内核，但 Linux 是可抢占内核，特别在 SMP 系统上，可抢占内核可以获得更好的并行性能。</p>
+<p>同步机制可以包括<code>禁止中断</code>、<code>信号量</code>、<code>自旋锁（针对SMP系统）</code>。</p>
+<h3 id="子系统"><a href="#子系统" class="headerlink" title="子系统"></a>子系统</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_subsystem.png"></p>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>我们说内核是最懒的资源管理者，从内核的角度看，进程的目的就是担当分配系统资源（CPU时间、内存）的实体。</p>
+<p>Linux 2.6 以后版本中的线程采用<code>NPTL</code>（Native POSIX Thread Library，本地POSIX 线程库）模型，操作速度得以极大提高，相比于Linux 2.4 内核时代的<code>LinuxThreads</code>模型，它也更加遵循<code>POSIX</code>规范的要求。</p>
+<h3 id="进程描述符"><a href="#进程描述符" class="headerlink" title="进程描述符"></a>进程描述符</h3><p>进程的核心数据结构是<code>进程描述符（Process Descriptor, PCB）</code>，它的子段包含了与一个进程相关的所有信息。PCB 是相当复杂的，它不仅包含了很多进程属性的子段，而且包括了指向其他数据结构的指针。其大致结构如下（具体定义位于头文件<code>include/linux/sched.h:624</code>中，以 5.4 版本为例）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">long</span> state;               <span class="comment">// 进程状态</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_THREAD_INFO_IN_TASK</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span>  <span class="title">thread_info</span>;</span>   <span class="comment">// 进程基本信息</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="type">void</span>  *<span class="built_in">stack</span>;                      <span class="comment">// 指向内核栈</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span> <span class="title">mm</span>;</span>               <span class="comment">// 指向进程内存空间描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">real_parent</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> __<span class="title">rcu</span> *<span class="title">parent</span>;</span>  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">children</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">sibling</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fs_struct</span> * <span class="title">fs</span>              // 文件系统（当前目录）</span></span><br><span class="line"><span class="class">    <span class="keyword">struct</span> <span class="title">files_struct</span> *<span class="title">files</span>;</span>        <span class="comment">// 指向打开文件的描述符的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">signal_struct</span> *<span class="title">signal</span>;</span>      <span class="comment">// 所接收信号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">tasks</span>;</span>            <span class="comment">// 进程链表</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><p>状态转换图：</p>
+<!--
+<pre class="mermaid">stateDiagram-v2
+    S00: 就绪(RUNNING)
+    S0: 正运行(RUNNING)
+    S1: 可中断等待或不可中断等待
+    S4: 暂停(STOPPED)
+    S8: 跟踪(TRACED)
+    S20: 僵死(ZOMBIE)
+    S10: 僵死撤消(DEAD)
+    S00 \-\-> S0
+    S0 \-\-> S00
+    S0 \-\-> S1
+    S1 \-\-> S00
+    S0 \-\->  S10</pre>
+-->
+<p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_task_fsm.png"></p>
+<h3 id="进程标识符"><a href="#进程标识符" class="headerlink" title="进程标识符"></a>进程标识符</h3><p>进程与进程描述符之间有严格的一一对应关系，可以使用<strong>进程描述符地址</strong>描述进程。另外，内核也允许用户使用 <strong>PID</strong>来标识进程，<strong>PID</strong>存放在 PCB 的 <code>pid</code>  字段中。另外<code>tgid</code>字段代表所在线程组中领头线程的 <strong>PID</strong>。 PID是 32 位的无符号整数，它被顺序编号。<strong>PID 是 内核提供给用户操作进程的接口</strong>。</p>
+<p>内核必须有效地从进程 <strong>PID</strong> 导出它的进程描述符指针，效率非常重要。内核使用 pid 哈希链表<code>pidhash</code>来建立映射关系，内核引入了<code>PIDTYPE_MAX</code> 个 pid 哈希链表，在 PCB 中对应字段<code>struct hlist_node pid_links[PIDTYPE_MAX]</code>。</p>
+<h3 id="内核栈"><a href="#内核栈" class="headerlink" title="内核栈"></a>内核栈</h3><p>在每一个进程的生命周期中，经常会通过系统调用（SYSCALL）陷入内核。在执行系统调用陷入内核之后，这些内核代码所使用的栈并不是原先用户空间中的栈，而是一个内核空间的栈，这个称作进程的<code>内核栈</code>。每个 task 的栈都包含用户栈和内核栈两部分。进程内核栈的定义如下（<code>include/linux/sched.h:1628</code>）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">thread_union</span> &#123;</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_ARCH_TASK_STRUCT_ON_STACK</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> <span class="title">task</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_THREAD_INFO_IN_TASK</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> <span class="title">thread_info</span>;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span> <span class="built_in">stack</span>[THREAD_SIZE/<span class="keyword">sizeof</span>(<span class="type">long</span>)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中<code>THREAD_SIZE</code> 在 32 位系统是 8KB，64 位系统里是 16KB。那么，其中 <code>thread_info</code> 有什么用呢？<br>在不同的体系结构里，进程需要存储的信息不尽相同，Linux 使用<code>task_struct</code>存储通用的信息，将体系结构相关的部分存储在<code>thread_info</code>中。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* x86 */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span>        flags;    <span class="comment">/* low level flags */</span></span><br><span class="line">	u32                  status;   <span class="comment">/* thread synchronous flags */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ARM */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span>        flags;             <span class="comment">/* low level flags */</span></span><br><span class="line">	<span class="type">int</span>                  preempt_count;     <span class="comment">/* 0 =&gt; preemptable, &lt;0 =&gt; bug */</span></span><br><span class="line">	<span class="type">mm_segment_t</span>         addr_limit;        <span class="comment">/* address limit */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>   *<span class="title">task</span>;</span>             <span class="comment">/* main task structure */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>进程描述符 <code>task_struct</code> 中的字段<code>void *stack</code>指向内核栈。根据宏<code>CONFIG_THREAD_INFO_IN_TASK</code> 是否设置，我们可以分情况讨论。<br>首先，如果<code>thread_info</code>在进程内核栈中，我们可以得到下面的结构图（以 ARM 为例）：</p>
+<img src="https://pic2.zhimg.com/80/v2-3f8f0a1ccadf4cf2ca408a0810417679_720w.webp" width="80%">
+
+<p>因此，我们可以获得当前进程内核栈的sp寄存器存储的地址时，根据THREAD_SIZE对齐就可以获取<code>thread_info</code>结构的基地址。</p>
+<p>然后，如果 <code>thread_info</code> 结构在进程描述符中，以下面结构图所示：<br><img src="https://pic4.zhimg.com/80/v2-ea673275121a42b4ea81999a9707bbc7_720w.webp" width="80%"></p>
+<p>以上复杂的结构，用于实现<code>current</code>宏，来获得当前进程对应的 PCB 地址。例如对于 ARM 架构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// arch/arm/include/asm/thread_info.h</span></span><br><span class="line">        <span class="keyword">register</span> <span class="type">unsigned</span> <span class="type">long</span> current_stack_pointer <span class="title function_">asm</span> <span class="params">(<span class="string">&quot;sp&quot;</span>)</span>;</span><br><span class="line">	</span><br><span class="line">        <span class="type">static</span> <span class="keyword">inline</span> <span class="keyword">struct</span> thread_info *<span class="title function_">current_thread_info</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">return</span> (<span class="keyword">struct</span> thread_info *)</span><br><span class="line">                (current_stack_pointer &amp; ~(THREAD_SIZE - <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">// include/asm-generic/current.h</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> get_current() (current_thread_info()-&gt;task)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">define</span> current get_current()</span></span><br></pre></td></tr></table></figure>
+
+<p>ARM64 不再使用通过计算栈偏移量的方式获得进程 PCB 地址，而是使用寄存器<code>sp_el0</code>，在进程切换时暂存 PCB 地址。</p>
+<p>而在 x86 体系结构中，linux 一直采用另一种方式：使用了<code>current_task</code>这个 CPU 变量，来存储当前正在使用的 CPU 的进程 PCB 地址。如下所示（<code>arch/x86/include/asm/current.h</code>）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span>;</span></span><br><span class="line">DECLARE_PER_CPU(<span class="keyword">struct</span> task_struct *, current_task);</span><br><span class="line"><span class="type">static</span> __always_inline <span class="keyword">struct</span> task_struct *<span class="title function_">get_current</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> this_cpu_read_stable(current_task);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> current get_current()</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>DECLARE_PER_CPU</code> 和 <code>this_cpu_read_stable</code> 用于支持 SMP 系统。</p>
+<p>那么如何获得内核栈的栈指针呢？在<code>x86</code>架构中，使用特殊的段类型： <code>TSS</code>，它被用来存放硬件上下文。TSS 反映了 CPU 上的当前进程的特权级。linux 为每一个 cpu 提供一个 <code>TSS段</code>，并且在<code>tr</code>寄存器中保存该段。</p>
+<p>在从用户态切换到内核态时，可以通过获取 <code>TSS段</code>中的 <code>esp0</code>来获取当前进程的内核栈 <strong>栈顶指针</strong>，从而可以保存用户态的<code>cs</code>，<code>esp</code>，<code>eip</code>等上下文。相关结构体和宏在<code>arch/x86/include/asm/processor.h</code> 中定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> cpu_current_top_of_stack cpu_tss_rw.x86_tss.sp1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tss_struct</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">x86_hw_tss</span> <span class="title">x86_tss</span>;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> io_bitmap[IO_BITMAP_LONGS + <span class="number">1</span>];</span><br><span class="line">&#125; __aligned(PAGE_SIZE);</span><br><span class="line"></span><br><span class="line">DECLARE_PER_CPU_PAGE_ALIGNED(<span class="keyword">struct</span> tss_struct cpu_tss_rw);</span><br><span class="line"></span><br><span class="line"><span class="comment">// for x86_64</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">x86_hw_tss</span> &#123;</span></span><br><span class="line">    u32 reserved1;</span><br><span class="line">    u64 sp0;</span><br><span class="line">    u64 sp1;</span><br><span class="line">    ...</span><br><span class="line">&#125; __attribute__((packed));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>linux的<code>tss段</code>中只使用<code>esp0</code>和<code>iomap</code>等字段，并且不用它的其他字段来保存寄存器。在一个用户进程被中断进入内核态的时候，从<code>tss</code>中的硬件状态结构中取出<code>esp0</code>（即内核栈栈顶指针），然后切到<code>esp0</code>，其它的寄存器则保存在<code>esp0</code>指的内核栈上而不保存在<code>tss</code>中。</p>
+<h3 id="进程组织"><a href="#进程组织" class="headerlink" title="进程组织"></a>进程组织</h3><p>所有（处于TASK_RUNNING状态的）进程被组织在双向链表中。在每个进程的 PCB 中都包含链表节点（<code>struct list_head tasks</code>），<code>tasks</code>和其他指针字段一起将所有进程组织成<strong>进程树</strong>。</p>
+<p>表示进程间亲属关系的字段有<code>parent</code>、<code>real_parent</code>、<code>children</code>和<code>sibling</code>。进程之间还存在非亲属关系，例如一个进程可能是一个进程组或登陆会话的领头进程。这些字段包括<code>group_leader</code>、<code>tgid</code>等。</p>
+<p>对于处于等待状态中的进程，内核将它放入被等待事件的<strong>等待队列</strong>中，并可以在未来条件满足时唤醒进程。<strong>等待队列</strong>由双向链表实现。</p>
+<h3 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h3><p>进程切换任务主要由 <code>siwtch_to</code>宏完成，它定义在<code>include/asm-generic/switch-to.h</code>中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *__<span class="title">switch_to</span>(<span class="keyword">struct</span> <span class="title">task_struct</span> *,</span></span><br><span class="line"><span class="class">				       <span class="keyword">struct</span> <span class="title">task_struct</span> *);</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> switch_to(prev, next, last)					\</span></span><br><span class="line"><span class="meta">	do &#123;								\</span></span><br><span class="line"><span class="meta">		((last) = __switch_to((prev), (next)));			\</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="同步机制"><a href="#同步机制" class="headerlink" title="同步机制"></a>同步机制</h2><h3 id="竞争和并发控制"><a href="#竞争和并发控制" class="headerlink" title="竞争和并发控制"></a>竞争和并发控制</h3><p><code>SMP</code> 架构</p>
+<h3 id="内核抢占"><a href="#内核抢占" class="headerlink" title="内核抢占"></a>内核抢占</h3><p><code>local_irq_enable</code> 和 <code>local_irq_disable</code> 用于单核的本地中断的开关。对于 ARM 处理器而言，其实就是保存和恢复<code>CPSR</code>。</p>
+<p><code>local_bh_enable</code> 和 <code>local_bh_disable</code> 用于下半部（tasklet、sortirq）的开启和关闭。</p>
+<h3 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h3><h4 id="针对整型变量的原子操作"><a href="#针对整型变量的原子操作" class="headerlink" title="针对整型变量的原子操作"></a>针对整型变量的原子操作</h4><h4 id="针对位的原子操作"><a href="#针对位的原子操作" class="headerlink" title="针对位的原子操作"></a>针对位的原子操作</h4><h3 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h3><p>自旋锁、互斥体、信号量、读写锁和顺序锁。</p>
+<h4 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h4><p>自旋锁一般用于 SMP 和内核可抢占的情况。</p>
+<p>自旋锁一般和 <code>local_irq_xxxxx</code>、<code>local_bh_xxxxx</code> 的使能和禁止结合使用，使得无论是在核 0 的中断上下文、进程上下文还是核 1 上的中断上下文、进程上下文都可以避免并发的可能性。</p>
+<p>使用自旋锁需要注意：</p>
+<ul>
+<li>自旋锁是忙等锁，因此，只有在占用锁的时间极短的情况下，使用自旋锁才是合理的。但临界区很大时或有共享设备的适合，需要较长时间占用锁，使用自旋锁会降低系统的性能。</li>
+<li>自旋锁可能导致系统死锁。</li>
+<li>自旋锁所保护的临界区不能睡眠或者其他引起进程调度的函数。</li>
+</ul>
+<h4 id="RCU"><a href="#RCU" class="headerlink" title="RCU"></a>RCU</h4><p>关于 RCU 的经典文档 <a target="_blank" rel="noopener" href="https://www.kernel.org/doc/ols/2001/read-copy.pdf">Read-Copy Update</a>。</p>
+<p>不同于<code>自旋锁</code>, 使用<code>RCU</code>的读端没有锁、内存屏席、原子指令类的开销，几乎可以认为是直接读（只是简单地标明读开始和读结束），而<code>RCU</code>的写执行单元在访问它的共享资源前首先复制一个副本， 然后对副本进行修改， 最后使用一个回调机制在适当的时机把指向原来数据的指针重新指向新的被修改的数据，这个时机就是所有引用该数据的<code>CPU</code>都退出对共享数据读操作的时候， 等待适当时机的这一时期称为<code>宽限期(Grace Period)</code>。</p>
+<p><code>RCU</code>可以看作<code>读写锁</code>的高性能版本，相比<code>读写锁</code>，<code>RCU</code>的优点存于既允许多个读执行单元同时访问被保护的数据。又允许多个读执行单元和多个写执行单元同时访问被保护的数据。但是，<code>RCU</code>不能替代<code>读写锁</code>，因为如果写比较多时，对读执行单元的性能不能弥补写执行单元同步导致的损失。因为使用<code>RCU</code>时，写执行单元之间的同步开销会比较大， 它需要延迟数据结构的释放、复制被修改的数据结构， 它也必须使用某种锁机剖来同步并发的其他写执行单元的修改操作。</p>
+<h3 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h3><h3 id="完成量（Completion）"><a href="#完成量（Completion）" class="headerlink" title="完成量（Completion）"></a>完成量（Completion）</h3><h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_mm.png"></p>
+<h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p>从虚拟内存的角度来看，2.6 之后的内核融合了<code>r-map（反向映射）</code>技术，显著改善虚拟内存在一定大小负载下的性能。</p>
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>Linux 在32位系统使用传统的二级页表，在64位系统使用三级或四级页表。<code>分页</code>是内核与硬件共同协作完成的功能。概括来说，每个进程在自己的地址空间中都有属于自己的多级页表，并且在进程描述符中包含第一级页表的指针。该指针使用时会被写入一个特定的控制寄存器（在 <code>80x86</code>中为<code>cr3</code>控制寄存器）。在进程切换时，控制寄存器的值会被保存到前一个进程的进程描述符中，随后的地址翻译几乎全由硬件完成（<code>MMU</code>）。相关头文件：<code>arch/&lt;ARCH&gt;/include/asm/&#123;page.h, pgtable.h&#125;</code>等。</p>
+<p>页表的每一项是一个无符号整数，其中包含标志位和（<strong>页或者下一级页表的</strong>）物理地址的高位。对于<code>4k</code>大小的页，页物理地址的低12位为0，所以正好可以放置标志位。重要的几个标志位如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">位</th>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left"><strong>Present</strong></td>
+<td align="left">1: 该页在物理内存中；0: 该页没有分配，其他标志位无意义。</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left"><strong>Writeable</strong></td>
+<td align="left">1: 该页可写；0：该页只读。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>User&#x2F;Supervisor</strong></td>
+<td align="left">1：用户<strong>可以</strong>访问该页；0：用户<strong>不可以</strong>访问该页。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>PWT</strong></td>
+<td align="left">1：该页对应的 cache 使用<code>write through</code>模式；0：使用<code>write back</code>模式。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>PCD</strong></td>
+<td align="left">1：该页不能被cache；0：是否可以被cache，由<code>cr0</code>寄存器的<code>CD</code>位决定。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>Access</strong></td>
+<td align="left">该页被访问（读&#x2F;写）后，被置1；用户可以置0；此位决定了该页的地址映射关系是否可以被 <code>TLB</code>缓存。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><strong>Dirty</strong></td>
+<td align="left">该位只对映射非线性磁盘文件的页有意义。当该页被写入时，则置1；后续需要回收页时，该页被flush到下级存储，然后此位被置0。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left"><strong>PSE&#x2F;PAT</strong></td>
+<td align="left">1：PSE，使用<code>4M或2M</code>的页；0：PAT，使用<code>4k</code>的页。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><strong>Global</strong></td>
+<td align="left">该位用于决定在<code>上下文切换</code>时是否需要冲刷(flush) TLB 中的 entry。</td>
+</tr>
+</tbody></table>
+<p><strong>内核页表</strong></p>
+<h3 id="高速缓冲和TLB"><a href="#高速缓冲和TLB" class="headerlink" title="高速缓冲和TLB"></a>高速缓冲和TLB</h3><p><code>高速缓存</code>处于内存和寄存器之间，一般使用 SRAM 实现。高速缓存与内存的一致性由 CPU 自动同步；但 <code>TLB</code> 与进程页表的同步需要内核来完成。</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><h3 id="VFS"><a href="#VFS" class="headerlink" title="VFS"></a>VFS</h3><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_vfs.png"></p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><h2 id="设备驱动"><a href="#设备驱动" class="headerlink" title="设备驱动"></a>设备驱动</h2><p>内核一般要做到<code>drivers</code>与<code>arch</code>的软件架构分离，驱动中不包含板级信息，让驱动跨平台。同时内核的通用部分（如<code>kernel</code>、<code>fs</code>、<code>ipc</code>、<code>net</code> 等）则与具体的硬件（<code>arch</code> 和<code>drivers</code>）剥离。</p>
+<h3 id="udev"><a href="#udev" class="headerlink" title="udev"></a>udev</h3><p><code>udev</code> 取代 <code>devfs</code>（关于策略与机制的分离，内核负责提供机制，和策略相关的事情放到用户空间来做）。</p>
+<p><code>udev</code> 完全在用户态工作， 利用设备加入或移除时内核所发送的<code>热插拔事件</code>(HotplugEvent)来工作，在热插拔时，设备的详细信息会由内核通过<code>netlink</code>套按字发送出来， 发出的事件叫<code>uevent</code>。<code>udev</code>的设备命名策略、权限控制和事件处理都是用户态下完成的， 它利用从内核收到的信息来进行创建设备文件节点等工作。</p>
+<h3 id="设备模型"><a href="#设备模型" class="headerlink" title="设备模型"></a>设备模型</h3><p>Linux 2.6以后的内核引入了<code>sysfs</code>文件系统，<code>sysfs</code>被看成是与<code>proc</code> 、<code>devfs</code>和<code>devpty</code>同类别的文件系统。</p>
+<p><code>sysfs</code>把连接在系统上的设备和总线组织成为一个分级的文件。它们可以由用户空间存取，向用户空问导出内核数据结构以及它们的属性。 <code>sysfs</code>的一个目的就是展示设备驱动模型中各组件的层次关系。</p>
+<p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_kernel_dev.png"></p>
+<p>从代码分析的角度看，<code>struct bus_type</code> 定义总线，<code>struct device_driver</code> 定义驱动，<code>struct device</code> 定义设备，<code>struct class</code> 定义类。驱动和设备是分开注册的，依靠 <code>bus_type</code> 的 <code>match()</code> 函数将两者绑定到一起，一旦配对成功，<code>xxxx_driver</code> 的 <code>probe()</code> 函数就被执行（<code>xxxx</code> 是总线名，如<code>platform</code>、<code>pci</code>、<code>i2c</code>、<code>spi</code>、<code>usb</code>等）。</p>
+<blockquote>
+<p>总线、驱动和设备最终都会落实为<code>sysfs</code>中的 1 个目录，因为进一步追踪代码会发现，它们实际上都可以认为是<code>kobject</code>的派生类，<code>kobject</code>可看作是所有<code>总线</code>、<code>设备</code>和<code>驱动</code>的抽象基类，1 个<code>kobject</code>对应<code>sysfs</code>中的 1 个目录。<code>总线</code>、<code>设备</code>和<code>驱动</code>的各个 <code>attibute</code> 则直接落实为 <code>sysfs</code> 中的一个文件，<code>attribute</code> 会伴随着<code>show()</code> 和 <code>store()</code> 这两个函数。</p>
+</blockquote>
+<h3 id="字符设备"><a href="#字符设备" class="headerlink" title="字符设备"></a>字符设备</h3><p><code>struct cdev</code> 结构体描述了一个字符设备。</p>
+<p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_char_device.png"></p>
+<p><strong>a. 加载和卸载函数</strong></p>
+<p>在加载函数中应该实现设备号的申请和 <code>cdev</code> 的注册，而在卸载函数中应该实现设备号的释放和 <code>cdev</code> 的注销。</p>
+<p><strong>b. file_operations 结构体中的成员函数</strong></p>
+<p><code>file_operations</code> 结构体中的成员函数是字符设备驱动与内核虚拟文件的接口。</p>
+<p>特别注意的是，在这些接口中，很多需要进行内核空间与用户空间的数据拷贝，内核必须检查用户空间缓冲区的合法性显得尤其重要，很多内核漏洞都是因为忽略这一检查造成的。攻击者可以伪造一片内核空间的缓冲区地址传入系统调用的接口，让内核对这个 evil 指针指向的内核空间填充数据。</p>
+<p>内核在实现 <code>copy_from_user()</code> 和 <code>copy_to_user()</code> 等函数时会调用 <code>access_ok()</code> 函数，该函数会做用户空间地址合法性检查。</p>
+<h3 id="Linux-驱动的软件架构"><a href="#Linux-驱动的软件架构" class="headerlink" title="Linux 驱动的软件架构"></a>Linux 驱动的软件架构</h3><p>Linux 设备驱动非常重视软件的可重用和跨平台能力，驱动和硬件平台信息应该解耦。Linux 设备、驱动和总线结合起来可以做到这一点。另外 Linux 也采用分层机制，将驱动层中通用的部分提炼为一个中间层，减少驱动层的复杂性。</p>
+<p>设备和驱动的分离：<br><img src="/2023/03/08/Linux-Kernel-Introduction/linux_bus_dev_dri.png"></p>
+<p>Linux 驱动的分层：<br><img src="/2023/03/08/Linux-Kernel-Introduction/linux_driver_layers.png"></p>
+<p><strong>分隔</strong>：<br><img src="/2023/03/08/Linux-Kernel-Introduction/software_NN_1N.png">  </p>
+<p>Linux 为 SoC 内存空间的外设（SoC中集成的独立外设控制器）发明了一种虚拟的总线，称为 <code>platform</code> 总线，相应的设备称为 <code>platform_device</code>，而驱动称为 <code>platform_driver</code>（与 <code>i2c_driver</code>、<code>spi_driver</code>、<code>usb_driver</code>、<code>pci_driver</code> 对等）。</p>
+<p>如前文所述，系统也为 <code>platform</code> 总线定义了 <code>bus_type</code> 的实例 <code>platform_bus_type</code> ，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bus_type</span> <span class="title">platform_bus_type</span> =</span> &#123;</span><br><span class="line">	.name		= <span class="string">&quot;platform&quot;</span>,</span><br><span class="line">	.dev_groups	= platform_dev_groups,</span><br><span class="line">	.match		= platform_match,</span><br><span class="line">	.uevent		= platform_uevent,</span><br><span class="line">	.dma_configure	= platform_dma_configure,</span><br><span class="line">	.pm		= &amp;platform_dev_pm_ops,</span><br><span class="line">&#125;;</span><br><span class="line">EXPORT_SYMBOL_GPL(platform_bus_type);</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>match()</code> 函数用于确定 <code>platform_device</code> 和 <code>platform_driver</code> 的匹配。</p>
+<p>四种匹配方法：</p>
+<ul>
+<li>基于设备树风格的匹配 </li>
+<li>基于 <code>ACPI</code> 风格的匹配</li>
+<li>匹配 <code>ID</code> 表（即 <code>platform_device</code> 设备名是否出现在 <code>platform driver</code> 的 <code>ID</code> 表中）</li>
+<li>匹配 <code>platform_device</code> 设备名和驱动的名字。</li>
+</ul>
+<p>在设备驱动中引入 <code>platform</code> 的概念至少有如下好处：</p>
+<ul>
+<li>使设备被挂载在一个总线上，符合 Linux 2.6 以后内核的设备模型。</li>
+<li>隔离 <code>BSP</code> 和 <code>驱动</code>。在 <code>BSP</code> 中定义 <code>platform</code> 设备和设备所使用的资源、设备的具体配置信息，而在驱动中，只需要通过调用 <code>API</code> 去获取资源和数据。使得驱动具有更好的可扩展性和跨平台性。</li>
+<li>让一个驱动支持多个设备实例。</li>
+</ul>
+<p>这中分层设计类似于面向对象的编程模型。</p>
+<h4 id="Linux-内核输入子系统"><a href="#Linux-内核输入子系统" class="headerlink" title="Linux 内核输入子系统"></a>Linux 内核输入子系统</h4><p><img src="/2023/03/08/Linux-Kernel-Introduction/linux_input_subsystem.png"></p>
+<p>驱动的核心层的职责：</p>
+<ul>
+<li>对上提供接口。file_operations 的接口被中间层完成，各种 IO 模型也被处理。</li>
+<li>中间层实现通用逻辑。</li>
+<li>对下定义框架。底层的驱动不需要关心 Linux 内核 <code>VFS</code> 的接口和各种可能的 IO 模型，而只需要处理和硬件相关的访问。</li>
+</ul>
+<p>主机驱动和外设驱动分离的核心思想。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/07/OpenWRT-for-Raspberry-Pi-Model-3/" rel="prev" title="OpenWRT for Raspberry Pi Model 3">
+                  <i class="fa fa-angle-left"></i> OpenWRT for Raspberry Pi Model 3
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/09/Linux-kernel-User-Guide/" rel="next" title="Linux kernel User Guide">
+                  Linux kernel User Guide <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

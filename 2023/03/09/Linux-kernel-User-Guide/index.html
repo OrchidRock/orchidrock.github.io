@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述本文对内核的使用方法（包括构建、编译等）作一些总结。  参考 The Linux kernel user’s and administrator’s guide。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux kernel User Guide">
+<meta property="og:url" content="https://orchidrock.github.io/2023/03/09/Linux-kernel-User-Guide/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述本文对内核的使用方法（包括构建、编译等）作一些总结。  参考 The Linux kernel user’s and administrator’s guide。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-09T06:28:00.000Z">
+<meta property="article:modified_time" content="2025-03-21T05:58:26.154Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/03/09/Linux-kernel-User-Guide/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/03/09/Linux-kernel-User-Guide/","path":"2023/03/09/Linux-kernel-User-Guide/","title":"Linux kernel User Guide"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux kernel User Guide | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%BA%90%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">获取源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.2.</span> <span class="nav-text">编译环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%98%E5%8E%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text">还原环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">配置命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9E%B6%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">其他架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">6.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-bzImage"><span class="nav-number">6.1.</span> <span class="nav-text">安装 bzImage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%A8%A1%E5%9D%97"><span class="nav-number">6.2.</span> <span class="nav-text">安装模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-map-%E6%96%87%E4%BB%B6"><span class="nav-number">6.3.</span> <span class="nav-text">System.map 文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">7.</span> <span class="nav-text">内核命令行参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%8F%82%E6%95%B0"><span class="nav-number">7.1.</span> <span class="nav-text">模块参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E6%A0%BC%E5%BC%8F"><span class="nav-number">7.2.</span> <span class="nav-text">命令行参数格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E5%88%97%E8%A1%A8"><span class="nav-number">8.</span> <span class="nav-text">设备列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">内核参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95"><span class="nav-number">10.</span> <span class="nav-text">内核调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">10.1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#U-Boot"><span class="nav-number">10.2.</span> <span class="nav-text">U-Boot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%86%85%E6%A0%B8"><span class="nav-number">10.3.</span> <span class="nav-text">构建内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">10.4.</span> <span class="nav-text">制作根文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%A0%B9%E7%9B%AE%E5%BD%95%E9%95%9C%E5%83%8F%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">10.4.1.</span> <span class="nav-text">准备根目录镜像并初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA-busybox"><span class="nav-number">10.4.2.</span> <span class="nav-text">构建 busybox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-qemu-%E9%AA%8C%E8%AF%81"><span class="nav-number">10.4.3.</span> <span class="nav-text">使用 qemu 验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qemu-gdb-%E8%B0%83%E8%AF%95%E5%86%85%E6%A0%B8"><span class="nav-number">10.5.</span> <span class="nav-text">qemu + gdb 调试内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9D%97%E5%B9%B6%E8%B0%83%E8%AF%95"><span class="nav-number">10.6.</span> <span class="nav-text">构建模块并调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="nav-number">10.7.</span> <span class="nav-text">调试技巧</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/03/09/Linux-kernel-User-Guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux kernel User Guide | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux kernel User Guide
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-09 14:28:00" itemprop="dateCreated datePublished" datetime="2023-03-09T14:28:00+08:00">2023-03-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-21 13:58:26" itemprop="dateModified" datetime="2025-03-21T13:58:26+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">GNU/Linux操作系统</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/GNU-Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux-Kernel/" itemprop="url" rel="index"><span itemprop="name">Linux Kernel</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文对内核的使用方法（包括构建、编译等）作一些总结。</p>
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.kernel.org/admin-guide/index.html">The Linux kernel user’s and administrator’s guide</a>。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><p>可以在 <a target="_blank" rel="noopener" href="https://mirrors.edge.kernel.org/pub/linux/kernel">内核仓库</a> 中找到对应版本的源码压缩包、签名和补丁，也可以使用 git 克隆内核仓库。我们以 <code>5.4</code> 版本为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.tar.sign</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">也可以使用国内的镜像源：</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.xz</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget https://mirror.tuna.tsinghua.edu.cn/kernel/v5.x/linux-5.4.tar.sign</span></span><br></pre></td></tr></table></figure>
+
+<p>获取 <em>Greg Kroah-Hartman</em> 和 <em>Linus Torvalds</em> 的公钥：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gpg2 --locate-keys torvalds@kernel.org gregkh@kernel.org</span></span><br></pre></td></tr></table></figure>
+
+<p>解压并验证签名：<br><code>$ xz -cd linux-5.4.tar.xz | gpg2 --verify linux-5.4.tar.sign -</code></p>
+<p><code>$ tar xf linux-5.4.tar</code><br><code>$ cd linux-5.4</code></p>
+<p>如果验证签名失败，并显示“缺少公钥”，可以根据提示的用户 ID 从密钥服务器导入公钥（前提是密钥服务器没有受到攻击）：</p>
+<p><code>$ gpg2 --keyserver keyserver.ubuntu.com --recv-keys 0D3B3537C4790F9D</code></p>
+<h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><p>编译环境所依赖的软件包列表：<a target="_blank" rel="noopener" href="https://docs.kernel.org/process/changes.html#changes">Minimal requirements to compile the Kernel</a>。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="还原环境"><a href="#还原环境" class="headerlink" title="还原环境"></a>还原环境</h3><p><code>$ make mrproper</code><br>每次需要将内核源码树还原到刚解压时的状态，可运行该命令。</p>
+<p><code>$ make clean</code><br>删除生成的目标文件（不会删除<code>.config</code>）</p>
+<h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><p><code>make oldconfig</code> - 基于<code>Host</code>系统上的.config 进行配置，如<code>/boot/config-5.xx.xx-xx-generic</code></p>
+<p><code>make defconfig</code> - 按默认选项进行配置（<strong>x86_64_defconfig</strong>）<br><code>make allnoconfig</code> - 除必须选项外，其他一律不选（常用于嵌入式系统）<br><code>make allyesconfig</code> -</p>
+<p><code>make menuconfig</code> - 交互式界面</p>
+<p>可以查看 <code>make help</code> 来获取更多信息。</p>
+<p><strong>建议：</strong></p>
+<ul>
+<li>使用 <code>make defconfig</code> 获取默认配置</li>
+<li>使用当前<code>Host</code>系统上的 config 文件，一般为 <code>/boot/config-xxxxxxxxx</code></li>
+<li>其他发行版系统的配置文件</li>
+</ul>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p><code>make -j&lt;N&gt;</code></p>
+<p>可以使用 <code>ccache</code> 加速编译。</p>
+<p>如果遇到下面的问题：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://lkml.org/lkml/2021/1/14/387">https://lkml.org/lkml/2021/1/14/387</a></p>
+<p>如果遇到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ld: arch/x86/boot/compressed/pgtable_64.o:(.bss+0x0): multiple definition of `__force_order&#x27;;</span><br><span class="line">arch/x86/boot/compressed/kaslr_64.o:(.bss+0x0): first defined here</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://lkml.org/lkml/2020/1/29/494">https://lkml.org/lkml/2020/1/29/494</a></p>
+<p>如果遇到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc1: error: code model kernel does not support PIC mode</span><br></pre></td></tr></table></figure>
+<p>则可以修改内核源码中的 <code>Makefile</code> 文件，添加<code>-fno-pie</code> 到变量 <code>KBUILD_CFLAGS</code> 。</p>
+<p>很多编译问题都可以在<a target="_blank" rel="noopener" href="https://lkml.org/">内核邮件列表</a>中查找到解决方法。</p>
+<h2 id="其他架构"><a href="#其他架构" class="headerlink" title="其他架构"></a>其他架构</h2><p>如果要交叉构建基于 <code>vexpress-a9</code> 架构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- menuconfig   <span class="comment"># 注意配置 DEBUG_PLL 和 EARLY_PRINTK</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -j8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装-bzImage"><a href="#安装-bzImage" class="headerlink" title="安装 bzImage"></a>安装 <code>bzImage</code></h3><p><code>bzImage</code> 是源码树根目录下生成的 <code>vmlinux</code> 的压缩版本。它的位置在<code>arch/x86/boot/bzImage</code>。</p>
+<p>首先将它拷贝到<code>Host</code>系统的<code>/boot</code>目录中（可以重命名为<code>vmlinuz-5.4-xxx</code>，<code>xxx</code>为区分标记，可以设置为任意特定的字符串）<br><code>$ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-5.4-xxx</code></p>
+<p>然后修改 <code>grub</code> 配置文件</p>
+<h3 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h3><p><code>$ sudo make modules_install</code></p>
+<h3 id="System-map-文件"><a href="#System-map-文件" class="headerlink" title="System.map 文件"></a>System.map 文件</h3><h2 id="内核命令行参数"><a href="#内核命令行参数" class="headerlink" title="内核命令行参数"></a>内核命令行参数</h2><p>我们将内核也看作一个单独的程序（带<code>main</code>函数）时，也可以给它传入命令行参数（例如由引导程序传递）。</p>
+<h3 id="模块参数"><a href="#模块参数" class="headerlink" title="模块参数"></a>模块参数</h3><p>模块的参数可以通过内核命令行设置，例如：<br><code>usbcore.blinkenlights=1</code></p>
+<p>也可以使用 <code>modprobe</code> ：<br><code>modprobe usbcore blinkenlights=1</code></p>
+<p>使用 <code>modinfo info &lt;module_name&gt;</code> 可以获取可加载模块的参数列表。对于可加载模块，当被载入内核时，会将所有参数映射为 <code>/proc/modules/&#123;module_name&#125;/parameters/</code> 中的文件，这使得用户可以直接修改该文件来设置模块参数。</p>
+<h3 id="命令行参数格式"><a href="#命令行参数格式" class="headerlink" title="命令行参数格式"></a>命令行参数格式</h3><ul>
+<li><code>-</code> 与 <code>_</code> 是等价的，例如<code>log_buf=1M</code> 等价于 <code>log-buf=1M</code></li>
+<li>对于带空格的字符串使用双引号，例如<code>param=&quot;spaces in here&quot;</code></li>
+<li></li>
+</ul>
+<h2 id="设备列表"><a href="#设备列表" class="headerlink" title="设备列表"></a>设备列表</h2><h2 id="内核参数"><a href="#内核参数" class="headerlink" title="内核参数"></a>内核参数</h2><p>使用<code>/proc/sys</code>虚拟文件系统可以动态修改内核参数。直接修改该目录下的参数文件会立即生效，但重启后就失效了。如果需要永久生效，则需要修改<code>/etc/sysctl.conf</code>文件，并在修改后执行<code>sysctl -p</code>生效。使用<code>sysctl -a</code>查看所有可修改的变量名。</p>
+<h2 id="内核调试"><a href="#内核调试" class="headerlink" title="内核调试"></a>内核调试</h2><blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19544957/article/details/129472898">跟踪分析Linux内核启动过程 - CSDN</a><br>参考 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35180950">学习ulk3,搭建linux2.6内核的调试环境</a><br>参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/randyjang/p/14828909.html">使用GDB调试Linux Kernel</a><br>参考 <a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/v6.13-rc6/dev-tools/gdb-kernel-debugging.html">Debugging kernel and modules via gdb</a></p>
+</blockquote>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>安装 qemu 虚拟机：<code>$ sudo apt-get install qemu</code>  或者对于 ARM 架构：<code>$ sudo apt-get install qemu-system-arm</code><br>安装 gdb ：<code>$ sudo apt-get install gdb</code></p>
+<h3 id="U-Boot"><a href="#U-Boot" class="headerlink" title="U-Boot"></a>U-Boot</h3><p><code>U-Boot</code> 主要用于嵌入式 Linux 系统的 <code>bootloader</code>，编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://gitee.com/mirrors/u-boot.git</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> u-boot</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_ca9x4_defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -j8</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>qemu</code> 虚拟机：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-arm -M vexpress-a9 -m 256 -kernel u-boot -nographic</span></span><br><span class="line">U-Boot 2025.04-rc3-00052-g0fd7ee0306a8 (Mar 08 2025 - 17:55:54 +0800)</span><br><span class="line"></span><br><span class="line">DRAM:  256 MiB</span><br><span class="line">WARNING: Caches not enabled</span><br><span class="line">Core:  23 devices, 11 uclasses, devicetree: embed</span><br><span class="line">Flash: 128 MiB</span><br><span class="line">MMC:   mmci@5000: 0</span><br><span class="line">Loading Environment from Flash... *** Warning - bad CRC, using default environment</span><br><span class="line"></span><br><span class="line">In:    uart@9000</span><br><span class="line">Out:   uart@9000</span><br><span class="line">Err:   uart@9000</span><br><span class="line">Net:   eth0: ethernet@3,02000000</span><br><span class="line">Hit any key to stop autoboot:  0</span><br><span class="line">=&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://geekdaxue.co/read/barret@xhw7bc/dp7crb">基于 QEMU 的 ARM 仿真</a> 。<br>参考 <a target="_blank" rel="noopener" href="https://chenlongos.com/raspi4-with-arceos-doc/chapter_1.1.html">支持树莓派4b的 Qemu 环境搭建</a></p>
+</blockquote>
+<h3 id="构建内核"><a href="#构建内核" class="headerlink" title="构建内核"></a>构建内核</h3><p>构建内核时，注意在<code>kernel hacking</code> 配置项中选择打开 <code>compile the kernel with debug info</code> 以及 <code>Provide GDB scripts for kernel debugging</code>。另外取消 <code>Kernel Features -&gt; Randomize the address of the kernel image</code> 配置项。</p>
+<h3 id="制作根文件系统"><a href="#制作根文件系统" class="headerlink" title="制作根文件系统"></a>制作根文件系统</h3><p>使用 <a target="_blank" rel="noopener" href="https://buildroot.org/">Buildroot 工具</a> 来制作根文件系统。官网下载源代码后，编译构建：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig  <span class="comment"># 选择架构和文件系统类型</span></span></span><br></pre></td></tr></table></figure>
+
+<p>BuildRoot 会从源代码构建所以基础软件包，相对来说比较耗时。使用方法参考<a href="/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/" title="BuildRoot工具介绍">[BuildRoot 工具介绍]</a></p>
+<p>如果只需要使用非常简单的根文件系统，可以直接使用 <a target="_blank" rel="noopener" href="https://www.busybox.net/">busybox</a> 来制作。</p>
+<h4 id="准备根目录镜像并初始化"><a href="#准备根目录镜像并初始化" class="headerlink" title="准备根目录镜像并初始化"></a>准备根目录镜像并初始化</h4><p>a. 创建并格式化 img 文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=rootfs.img bs=4096 count=1024</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mke2fs rootfs.img</span></span><br></pre></td></tr></table></figure>
+
+<p>b. 挂载镜像文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> rootfs</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> mount -o loop rootfs.img rootfs</span></span><br></pre></td></tr></table></figure>
+
+<p>c. 准备 dev 目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> rootfs/dev</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">linux 启动过程中会使用 console 设备</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mknod</span> rootfs/dev/console c 5 1</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">另外需要一个 Linux 根设备</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mknod</span> rootfs/dev/ram b 1 0</span></span><br></pre></td></tr></table></figure>
+
+<p>d. 新建其他目录（可选）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> rootfs/&#123;proc,sys,var,run&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>特别的，<code>/proc</code> 目录中包含了许多内核数据结构的映射，对于调试非常重要。一种方法是使用 qemu 进入 shell 后手动挂载：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t proc none /proc</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以手动挂载 <code>sysfs</code> 文件系统：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mount -t sysfs sysfs /sys</span></span><br></pre></td></tr></table></figure>
+
+<p>特别注意的是，如果要支持设备热插拔（如<code>udev</code> 或者 <code>mdev</code>），需要挂载 <code>/dev</code> 和 <code>/dev/pts</code> 文件系统：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mount -t devtmpfs devtmpfs /dev </span><br><span class="line">mkdir /dev/pts</span><br><span class="line">mount -t devpts devpts /dev/pts</span><br></pre></td></tr></table></figure>
+
+<p>但重启后配置会消失。使用 <code>/etc/fstab</code> 或者 <code>/etc/init.d/rcS</code> 来自动挂载。</p>
+<h4 id="构建-busybox"><a href="#构建-busybox" class="headerlink" title="构建 busybox"></a>构建 busybox</h4><p>下载 <a target="_blank" rel="noopener" href="https://www.busybox.net/downloads/">BusyBox 源代码</a> 并验证数字签名后，进行构建：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make defconfig</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make menuconfig</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意修改配置：busybox settings -&gt; build options -&gt; build busybox as a static binary (no share libs)。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果生成的不是静态链接的可执行文件，那么 busybox 就会依赖宿主机上的一些动态链接库，而一个单 linux 内核无法提供这些库。</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> make CONFIG_PREFIX=&lt;rootfs path&gt;/ install</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上述命令将 busybox 安装到已经挂载的 rootfs 根目录中</span></span><br></pre></td></tr></table></figure>
+
+<p>最后卸载 rootfs 即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> umount rootfs</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-qemu-验证"><a href="#使用-qemu-验证" class="headerlink" title="使用 qemu 验证"></a>使用 qemu 验证</h4><p>在 树莓派5 ARM64 架构下验证：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意使用制作的 rootfs.img 镜像文件</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">root=/dev/vda 使用 vda 关键字，而不是 ram 或者 sda</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">init=/bin/ash 这里使用 ash 作为内核启动后第一个运行的用户程序</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"> qemu-system-aarch64 -M virt -cpu cortex-a72 -kernel  <span class="built_in">arch</span>/arm64/boot/Image -drive format=raw,file=rootfs.img,media=disk -append <span class="string">&quot;root=/dev/vda init=/bin/ash&quot;</span> -serial stdio -display none</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">[    0.853700] EXT4-fs (vda): mounted filesystem without journal. Opts: (null)</span><br><span class="line">[    0.854244] VFS: Mounted root (ext4 filesystem) readonly on device 254:0.</span><br><span class="line">[    0.859716] devtmpfs: mounted</span><br><span class="line">[    0.893438] Freeing unused kernel memory: 5056K</span><br><span class="line">[    0.894555] Run /bin/ash as init process</span><br><span class="line">/bin/ash: can&#x27;t access tty; job control turned off</span><br><span class="line">~ # ls</span><br><span class="line">bin         linuxrc     proc        sbin        usr</span><br><span class="line">dev         lost+found  run         sys         var</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>vexpress-a9</code> 架构下验证：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-arm -M vexpress-a9 -m 512M -kernel <span class="built_in">arch</span>/arm/boot/zImage \</span></span><br><span class="line"><span class="language-bash">-dtb <span class="built_in">arch</span>/arm/boot/dts/vexpress-v2p-ca9.dtb -nographic \</span></span><br><span class="line"><span class="language-bash">-append <span class="string">&quot;root=/dev/mmcblk0 rw console=ttyAMA0&quot;</span> -sd rootfs.img</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="qemu-gdb-调试内核"><a href="#qemu-gdb-调试内核" class="headerlink" title="qemu + gdb 调试内核"></a>qemu + gdb 调试内核</h3><p>在调试模式下启动 qemu，其中 “-s” 选项表示：使用 tcp 1234 端口；“-S” 选项表示只有在 gdb 连上 tcp 1234 端口后，CPU 才会继续执行。<code>nokaslr</code> 禁用 <strong>ASLR</strong> 安全机制。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-x86_64 -s -S -kernel <span class="built_in">arch</span>/x86/boot/bzImage -append <span class="string">&quot;root=/dev/zero console=ttyS0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
+<p>如果是 <code>arm64</code> 架构： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-aarch64 -s -S -no-reboot -M virt -cpu cortex-a72 -smp 4 -kernel <span class="built_in">arch</span>/arm64/boot/Image --append <span class="string">&quot;root=/dev/vda2 console=ttyAMA0 nokaslr&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
+
+<p>指定 rootfs 的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">qemu-system-aarch64 -s -S -no-reboot -M virt -cpu cortex-a72 -smp 4 -kernel <span class="built_in">arch</span>/arm64/boot/Image -drive format=raw,file=rootfs.img,media=disk --append <span class="string">&quot;nokaslr root=/dev/vda init=/bin/ash&quot;</span> -serial stdio -display none</span></span><br></pre></td></tr></table></figure>
+
+<p>运行 gdb：<code>$ gdb vmlinux</code> 或者 <code>$ gdb vmlinuz</code><br>注意这里如果提示无法加载<code>vmlinux-gdb.py</code>，则根据提示在 gdb 配置文件中为 <code>add-auto-load-safe-path</code> 设置脚本绝对路径。该脚本中扩展了一些 gdb 命令，比如查看内核缓冲区、查看进程等。</p>
+<p>然后在 gdb 中 输入 <code>target remote localhost:1234</code> 并设置断点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">(gdb) break start_kernel</span><br><span class="line">(gdb) continue</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:576</span><br><span class="line">576	&#123;</span><br><span class="line"></span><br><span class="line">(gdb) lx-dmesg</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建模块并调试"><a href="#构建模块并调试" class="headerlink" title="构建模块并调试"></a>构建模块并调试</h3><blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.linuxkernel.org.cn/kbuild/modules.html">构建外部模块</a></p>
+</blockquote>
+<p>在编译完内核后，将内核模块安装到 rootfs 的 <code>lib/modules</code> 目录中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make INSTALL_MOD_PATH=rootfs/ modules_install</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>如果要关闭某个函数的编译优化，使用 <code>__attribute__((optimize(0)))</code> 编译器优化选项。如果要关闭某段代码的优化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">    fun1();</span><br><span class="line"><span class="meta">#prama GCC push_options</span></span><br><span class="line"><span class="meta">#prama GCC optimize (0)</span></span><br><span class="line">    fun2();</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line"><span class="meta">#prama GCC pop_options</span></span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果进入根文件系统后，需要创建文件或者目录，需要在内核启动时设定根文件系统的读写权限：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.... --append &quot;nokaslr root=/dev/vda rw init=/bin/ash&quot; ...</span><br></pre></td></tr></table></figure>
+<p>在 <code>root=/dev/vda</code> 后紧跟 <code>rw</code> 标志。</p>
+<p>如果要 <code>init</code> 进程在进入 shell 前做一些其他任务，则启动参数<code>init</code>可以使用  <code>/linuxrc</code>，并在根文件系统中创建 <code>/etc/init.d/rcS</code> 可执行脚本，在脚本中可以编写启动其他用户进程。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/08/Linux-Kernel-Introduction/" rel="prev" title="Linux Kernel Introduction">
+                  <i class="fa fa-angle-left"></i> Linux Kernel Introduction
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/13/TSP%E9%97%AE%E9%A2%98%E7%9A%84%E6%95%B0%E5%80%BC%E6%A8%A1%E6%8B%9F/" rel="next" title="TSP问题的数值模拟">
+                  TSP问题的数值模拟 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

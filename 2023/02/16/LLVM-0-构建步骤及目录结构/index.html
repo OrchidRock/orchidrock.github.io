@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; LLVM 项目包括多个组件，并以核心组件 LLVM 的名字作为项目名。这些组件包括了处理 IR 和生成目标代码的工具、库和头文件。其中 clang 作为C&#x2F;C++&#x2F;Object-C的前端，其本质上是使用 LLVM 核心库的驱动程序，这得益于 LLVM 优秀的模块化特性。  参考 《Getting Started with the LLVM Syst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLVM 0: 构建步骤及目录结构">
+<meta property="og:url" content="https://orchidrock.github.io/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; LLVM 项目包括多个组件，并以核心组件 LLVM 的名字作为项目名。这些组件包括了处理 IR 和生成目标代码的工具、库和头文件。其中 clang 作为C&#x2F;C++&#x2F;Object-C的前端，其本质上是使用 LLVM 核心库的驱动程序，这得益于 LLVM 优秀的模块化特性。  参考 《Getting Started with the LLVM Syst">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-16T02:41:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.648Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/","path":"2023/02/16/LLVM-0-构建步骤及目录结构/","title":"LLVM 0: 构建步骤及目录结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LLVM 0: 构建步骤及目录结构 | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E6%9E%84%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">开始构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%80%89%E9%A1%B9"><span class="nav-number">2.3.</span> <span class="nav-text">配置选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#llvm-%E6%A0%B8%E5%BF%83%E5%BA%93"><span class="nav-number">3.1.</span> <span class="nav-text">llvm 核心库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polly"><span class="nav-number">3.2.</span> <span class="nav-text">Polly</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MLIR"><span class="nav-number">3.3.</span> <span class="nav-text">MLIR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clang"><span class="nav-number">3.4.</span> <span class="nav-text">clang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flang"><span class="nav-number">3.5.</span> <span class="nav-text">flang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lld"><span class="nav-number">3.6.</span> <span class="nav-text">lld</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lldb"><span class="nav-number">3.7.</span> <span class="nav-text">lldb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%93"><span class="nav-number">3.8.</span> <span class="nav-text">运行时库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clang-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">clang 简单使用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/02/16/LLVM-0-%E6%9E%84%E5%BB%BA%E6%AD%A5%E9%AA%A4%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LLVM 0: 构建步骤及目录结构 | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LLVM 0: 构建步骤及目录结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-16 10:41:00" itemprop="dateCreated datePublished" datetime="2023-02-16T10:41:00+08:00">2023-02-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">编译器</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/LLVM-Project/" itemprop="url" rel="index"><span itemprop="name">LLVM Project</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a target="_blank" rel="noopener" href="https://llvm.org/">LLVM</a> 项目包括多个组件，并以核心组件 <strong>LLVM</strong> 的名字作为项目名。这些组件包括了处理 <strong>IR</strong> 和生成目标代码的工具、库和头文件。其中 <strong>clang</strong> 作为C&#x2F;C++&#x2F;Object-C的前端，其本质上是使用 LLVM 核心库的驱动程序，这得益于 LLVM 优秀的模块化特性。</p>
+<blockquote>
+<p>参考 《<a target="_blank" rel="noopener" href="https://llvm.org/docs/GettingStarted.html">Getting Started with the LLVM System</a>》 From <a target="_blank" rel="noopener" href="https://llvm.org/docs/">LLVM Document</a>.<br>参考 《Learn LLVM 12》 by Kai Nacke.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>a. 工具包:<br>&emsp;&emsp;编译 LLVM 需要的软件包包括 <code>cmake</code>, <code>GCC</code>, <code>python</code> 等, 如果在通用的 Linux 系统上，大部分软件包已经预先安装。编译工具链可以不使用 GCC，也可以使用 <code>clang</code> 等。</p>
+<p>b. 克隆仓库：<br><code>$ git clone https://github.com/llvm/llvm-project.git</code></p>
+<p>或者直接下载压缩包并解压后获得源代码。</p>
+<h3 id="开始构建"><a href="#开始构建" class="headerlink" title="开始构建"></a>开始构建</h3><p><code>$ cd llvm-project</code></p>
+<p>可先构建库及部分工具：<br><code>$ cd llvm</code></p>
+<p>切换到目标分支（<strong>可选</strong>，以 <em>llvmorg-12.0.0</em> 为例）<br><code>$ git checkout  -b llvmorg-12.0.0</code></p>
+<p>执行 cmake 并创建构建目录：<br><code>$ cmake -B build -DCMAKE_BUILD_TYPE=Release</code></p>
+<p>如果要使用 <strong>clang</strong> 工具链，可执行下面的命令：<br><code>$ CC=clang CXX=clang++  cmake -B build -DCMAKE_BUILD_TYPE=Release</code></p>
+<p>编译：<br><code>$ cd build &amp;&amp; make -j2</code></p>
+<p><code>注意</code>：上述cmake命令默认使用<em>Makefile生成器</em>, 使用 <em>Ninja 生成器</em> 可增加命令选项 <code>-G Ninja</code>。</p>
+<h3 id="配置选项"><a href="#配置选项" class="headerlink" title="配置选项"></a>配置选项</h3><ul>
+<li><p><strong>CMAKE_INSTALL_PREFIX</strong> : 如果要将编译好的 llvm 安装到 &#x2F;opt&#x2F;llvm 目录， 则需要在cmake命令选项中指定 <code>-DCMAKE_INSTALL_PREFIX=/opt/llvm</code>，这样当执行 <code>make install</code> 后库、工具和头文件将分别安装到 &#x2F;opt&#x2F;llvm&#x2F;lib 、&#x2F;opt&#x2F;llvm&#x2F;bin 和 &#x2F;opt&#x2F;llvm&#x2F;include。</p>
+</li>
+<li><p><strong>CMAKE_BUILD_TYPE</strong>:</p>
+<ul>
+<li><code>DEBUG</code>: 使用调试符号构建；</li>
+<li><code>RELEASE</code>: 以速度优化为主的构建；</li>
+<li><code>RELWITHDEBINFO</code>: 使用调试符号的发布构建；</li>
+<li><code>MINSIZEREL</code>: 以优化生成文件大小为主的构建；默认的构建类型是 DEBUG (<code>会占用相当大的磁盘空间</code>)。<br>要构建为发布版本，必须指定<code>-DCMAKE_BUILD_TYPE=RELEASE</code>。</li>
+</ul>
+</li>
+<li><p><strong>CMAKE_C_FLAGS</strong>： 指定 C 编译器的编译选项，初始值为 <code>CFLAGS</code> 环境变量。</p>
+</li>
+<li><p><strong>CMAKE_FLAGS</strong>：指定 C++ 编译器的编译选项，初始值为 <code>CXXFLAGS</code> 环境变量。</p>
+</li>
+<li><p><strong>LLVM_ENABLE_PROJECTS</strong>: 指定额外构建的子项目列表（以分号分隔），例如 clang、clang-tools-extra、lldb、compiler-rt、lld、polly、cross-project-tests 或用户自定义项目。</p>
+</li>
+<li><p><strong>LLVM_ENABLE_RUNTIMES</strong>：指定需要构建的运行时库，例如 libcxx;libcxxabi。</p>
+</li>
+<li><p><strong>LLVM_TARGETS_TO_BUILD</strong>：指定目标机器，默认为 <code>LLVM_ALL_TARGETS</code>，也可以单独指定某种目标机器，例如 <code>AArch64</code>、<code>AMDGPU</code>、<code>ARM</code>、<code>AVR</code>、<code>BPF</code>、<code>Hexagon</code>、<code>Lanai</code>、<code>Mips</code>、<code>MSP430</code>、<code>NVPTX</code>、<code>PowerPC</code>、<code>RISCV</code>、<code>Sparc</code>、<code>SystemZ</code>、<code>WebAssembly</code>、<code>X86</code>、<code>XCore</code>等。</p>
+</li>
+<li><p>其他</p>
+</li>
+</ul>
+<p>可以使用下面的帮助命令查询某个配置选项：<br><code>$ cmake --help-variable CMAKE_BUILD_TYPE</code></p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="llvm-核心库"><a href="#llvm-核心库" class="headerlink" title="llvm 核心库"></a>llvm 核心库</h3><ul>
+<li><strong>llvm&#x2F;cmake</strong> : 主要分为 <em>modules</em> 和 <em>platforms</em>两个文件夹，当用户基于 LLVM 开发自己的项目时，可以引入这些 cmake 模块，达到复用和快速构建的目的。这些 cmake 模块也会随库一起安装和发布，位于<code>&lt;安装目录的PREFIX&gt;/lib/cmake/llvm</code> 目录。</li>
+<li><strong>llvm&#x2F;example</strong>：示例项目</li>
+<li><strong>llvm&#x2F;include</strong>: 公共头文件</li>
+<li><strong>llvm&#x2F;lib</strong>：包含大部分源代码，每个子模块都会生成对应的库。这些子模块包括 <code>IR</code>、<code>AsmParser</code>、<code>Bitcode</code>、<code>Analysis</code>、<code>Transforms</code>、<code>Target</code>、<code>CodeGen</code>、<code>MC</code>、<code>ExecutionEngine</code>和<code>Support</code>。</li>
+<li><strong>llvm&#x2F;bindings</strong>：对非C&#x2F;C++语言的绑定，包括 <code>go</code>, <code>python</code>和<code>ocaml</code>。</li>
+<li><strong>llvm&#x2F;projects</strong>：该目录不是 LLVM 本身的一部分，但可以放置用户的二次开发项目，并可以直接使用 LLVM 现有的构建系统，达到快速开发部署的目的。</li>
+<li><strong>llvm&#x2F;test</strong>：</li>
+<li><strong>llvm&#x2F;tools</strong>：基于 lib 中的库开发的工具，主要的包括 <code>llvm-ar</code>、<code>llvm-as</code>、<code>llvm-link</code>、<code>lli</code>、<code>llc</code>、<code>llvm-dis</code>和<code>opt</code>等。</li>
+<li><strong>llvm&#x2F;utils</strong>：</li>
+</ul>
+<h3 id="Polly"><a href="#Polly" class="headerlink" title="Polly"></a>Polly</h3><h3 id="MLIR"><a href="#MLIR" class="headerlink" title="MLIR"></a><a target="_blank" rel="noopener" href="https://mlir.llvm.org/">MLIR</a></h3><p>&emsp;&emsp;MLIR 是一种新型的用于构建可复用、可扩展的编译器框架。</p>
+<h3 id="clang"><a href="#clang" class="headerlink" title="clang"></a>clang</h3><p>&emsp;&emsp; C&#x2F;C++&#x2F;Object-C 前端。</p>
+<h3 id="flang"><a href="#flang" class="headerlink" title="flang"></a>flang</h3><p>&emsp;&emsp; Fortran前端。</p>
+<h3 id="lld"><a href="#lld" class="headerlink" title="lld"></a>lld</h3><h3 id="lldb"><a href="#lldb" class="headerlink" title="lldb"></a>lldb</h3><h3 id="运行时库"><a href="#运行时库" class="headerlink" title="运行时库"></a>运行时库</h3><ul>
+<li><strong>compiler-rt</strong>：提供独立于编程语言的支持库，它包括泛型函数，例如：可在 32 位 (i386) 机上使用的 64 位除法、各种 sanitizer、模糊库和分析库。</li>
+<li><strong>libunwind</strong>：提供了基于 DWARF 标准的堆栈展开帮助函数。这通常用于 C++ 等语言的异常处理。该库用 C 编写，函数没有绑定到特定的异常处理模型上。</li>
+<li><strong>libcxxabi</strong>： 在 libunwind 上实现了 C++ 的异常处理，并为其提供了标准的 C++ 函数。</li>
+<li><strong>libclc</strong>：OpenCL 的运行时库。</li>
+<li><strong>libcxx</strong>: C++ 标准库实现。</li>
+<li><strong>libc</strong>：C 库支持。</li>
+<li><strong>OpenMP</strong>：对 OpenMP API 的支持。</li>
+</ul>
+<h2 id="clang-简单使用"><a href="#clang-简单使用" class="headerlink" title="clang 简单使用"></a>clang 简单使用</h2><p><strong>预处理</strong>：</p>
+<p><code>cland -E main.c</code></p>
+<p><strong>词法分析</strong>：</p>
+<p><code>clang -fmodules -fsyntax-only -Xclang -dump-tokens main.c</code></p>
+<p>其中<code>-fmodules</code>，指启动<strong>模块</strong>语言功能；<code>-fsyntax-only</code> 运行预处理器；<code>-Xclang &lt;arg&gt;</code> 将参数传递给<code>clang</code>；<code>-dump-tokens</code> 转储 <strong>tokens</strong> 内部表示。</p>
+<p><strong>语法分析和语义分析</strong>：</p>
+<p><code>clang -fmodules -fsyntax-only -Xclang -ast-dump main.c</code></p>
+<p><strong>代码生成和优化</strong>：</p>
+<p><code>clang -emit-llvm -S main.c -o main.ll</code><br><code>llvm-as main.ll -o main.bc</code><br><code>llvm-dis main.bc -o main.ll</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/01/Chris-Lattner%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E9%BB%84%E9%87%91%E6%97%B6%E4%BB%A3/" rel="prev" title="Chris Lattner：编译器的黄金时代">
+                  <i class="fa fa-angle-left"></i> Chris Lattner：编译器的黄金时代
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/" rel="next" title="LLVM 1: IR 汇编语言参考">
+                  LLVM 1: IR 汇编语言参考 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>

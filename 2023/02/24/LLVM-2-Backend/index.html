@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"orchidrock.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"buttons","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述&emsp;&emsp; 在 LLVM 项目介绍 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如指令选择及其所使用的目标描述语言（.td文件）的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLVM 2: Backend">
+<meta property="og:url" content="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/">
+<meta property="og:site_name" content="StoneTough">
+<meta property="og:description" content="概述&emsp;&emsp; 在 LLVM 项目介绍 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如指令选择及其所使用的目标描述语言（.td文件）的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/flow.png">
+<meta property="og:image" content="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/X86Target.png">
+<meta property="article:published_time" content="2023-02-24T08:02:00.000Z">
+<meta property="article:modified_time" content="2025-03-05T15:26:38.588Z">
+<meta property="article:author" content="顽石">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/flow.png">
+
+
+<link rel="canonical" href="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/","path":"2023/02/24/LLVM-2-Backend/","title":"LLVM 2: Backend"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LLVM 2: Backend | StoneTough</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">StoneTough</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一只银杏独傲，悠悠灰鸟单飞</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-laboratory"><a href="/laboratory/" rel="section"><i class="fa fa-solid fa-flask-vial fa-fw"></i>实验室</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">主要流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E9%80%89%E6%8B%A9"><span class="nav-number">3.</span> <span class="nav-text">指令选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%88%86%E9%85%8D"><span class="nav-number">4.</span> <span class="nav-text">寄存器分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TableGen-%E8%AF%AD%E8%A8%80"><span class="nav-number">5.</span> <span class="nav-text">TableGen 语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E8%BF%B0"><span class="nav-number">5.1.</span> <span class="nav-text">总述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E5%B1%82%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.2.</span> <span class="nav-text">顶层描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.3.</span> <span class="nav-text">寄存器描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.4.</span> <span class="nav-text">指令描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E8%A7%84%E5%88%99%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.5.</span> <span class="nav-text">调用规则描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%BC%8F%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.6.</span> <span class="nav-text">调度模式描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-DAG-%E6%8C%87%E4%BB%A4%E9%80%89%E6%8B%A9%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">实现 DAG 指令选择类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8"><span class="nav-number">6.1.</span> <span class="nav-text">初始化目标机器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-SelectionDAG-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.2.</span> <span class="nav-text">添加 SelectionDAG 的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87-Lowering"><span class="nav-number">6.3.</span> <span class="nav-text">目标 Lowering</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">顽石</p>
+  <div class="site-description" itemprop="description">软件工程师、文艺青年:)</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/OrchidRock" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;OrchidRock" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1058712592@qq.com" title="E-Mail → mailto:1058712592@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://ysl05.github.io/" title="https:&#x2F;&#x2F;ysl05.github.io" rel="noopener" target="_blank">Ysl's Blogs</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://xcellerator.github.io/" title="https:&#x2F;&#x2F;xcellerator.github.io&#x2F;" rel="noopener" target="_blank">TheXcellerator's Blogs</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://orchidrock.github.io/2023/02/24/LLVM-2-Backend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="顽石">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="StoneTough">
+      <meta itemprop="description" content="软件工程师、文艺青年:)">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LLVM 2: Backend | StoneTough">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LLVM 2: Backend
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-24 16:02:00" itemprop="dateCreated datePublished" datetime="2023-02-24T16:02:00+08:00">2023-02-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-05 23:26:38" itemprop="dateModified" datetime="2025-03-05T23:26:38+08:00">2025-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">编译器</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%99%A8/LLVM-Project/" itemprop="url" rel="index"><span itemprop="name">LLVM Project</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在 <a target="_blank" rel="noopener" href="http://1.117.83.246/index.php/archives/235/">LLVM 项目介绍</a> 中我们说 LLVM 的后端代码生成器是由 一系列 Pass 组成的，本篇文章会进一步描述一些重要的 Pass：例如<code>指令选择</code>及其所使用的<strong>目标描述语言（.td文件）</strong>的细节。如果需要一个新的后端，在大多数情况下，我们都可以通过移植已经存在的后端来完成。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a target="_blank" rel="noopener" href="https://llvm.org/docs/WritingAnLLVMBackend.html">Writing an LLVM Backend</a><br>参考 <a target="_blank" rel="noopener" href="http://jonathan2251.github.io/lbd/">Creating an LLVM Backend for the Cpu0 Architecture</a>。<br>参考 <a target="_blank" rel="noopener" href="https://llvm.org/docs/CodeGenerator.html#introduction">The LLVM Target-Independent Code Generator</a>。<br>参考 <a target="_blank" rel="noopener" href="http://www.aosabook.org/en/llvm.html">The Architecture of Open Source Applications</a> by Chris Lattern.<br>参考 《Learn-LLVM-12》 by Kai Nacke.</p>
+</blockquote>
+<h2 id="主要流程"><a href="#主要流程" class="headerlink" title="主要流程"></a>主要流程</h2><p>后端的工作流程大致如下图所示：</p>
+<p><img src="/2023/02/24/LLVM-2-Backend/flow.png"></p>
+<p>后端的主要工作任务总结如下:</p>
+<ul>
+<li>指令选择</li>
+<li>基于 SSA 的机器代码优化</li>
+<li>寄存器分配</li>
+<li>Prolog&#x2F;Epilog 代码插入</li>
+<li>后期机器代码优化</li>
+<li>代码 Emission</li>
+</ul>
+<p>所有这些步骤都是由 <code>MachineFucntionPass</code>类派生的子类实现的，它自己是 <code>FunctionPass</code>的子类。在整个过程中，LLVM 指令会进行一系列的转换，首先对于输入 IR 中的每个指令在代码层对应 <code>Instruction</code> 类的实例；在 <strong>指令选择Pass</strong> 完成后，它转换为 <code>MachineInstr</code>类的实例，它更接近于实际机器表示，但仍使用虚拟寄存器；后面的 Pass 会对其继续进行转换，直到最后生成 <code>MCInstr</code>类的实例，它是真实机器指令的表示。</p>
+<p>我们以下面的 LLVM IR code 作为例子（sum.ll）：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="type">i16</span> <span class="title">@sum</span>(<span class="type">i16</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="type">i16</span> <span class="variable">%b</span>) &#123;</span><br><span class="line">    <span class="variable">%res</span> <span class="operator">=</span> <span class="keyword">add</span> <span class="type">i16</span> <span class="variable">%a</span><span class="punctuation">,</span> <span class="number">3</span></span><br><span class="line">    <span class="keyword">ret</span> <span class="type">i16</span> <span class="variable">%res</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 <code>llc</code> 编译，并输出中间 Pass 列表：</p>
+<p><code>$ llc -mtripe=mips-linux-gnu -debug-pass=Structure &lt; sum.ll</code></p>
+<p>后端的 Pass 大多数不是在 LLVM IR 上运行，而是在 MIR 上运行，它是依赖于目标指令的表示。但它仍可以包含虚拟寄存器，所以并不是纯粹的 目标CPU 指令。我们可以在每个 Pass 完成后停止，并打印 MIR 的文本表示，如下所示：</p>
+<p><code>$ llc -mtripe=mips-linux-gnu -stop-after=finalize-isel &lt; sum.ll</code></p>
+<p>它指示 <code>llc</code> 在 <strong>指令选择 Pass</strong> 后转储 MIR ，部分内容如下：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">name:</span> sum</span><br><span class="line">...</span><br><span class="line"><span class="symbol">body:</span>             |</span><br><span class="line">  bb.<span class="number">0</span> (<span class="variable">%ir-block.0</span>):</span><br><span class="line"><span class="symbol">    liveins:</span> $a<span class="number">0</span><span class="punctuation">,</span> $a<span class="number">1</span></span><br><span class="line">   </span><br><span class="line">    <span class="variable">%1</span>:gpr<span class="number">32</span> <span class="operator">=</span> COPY $a<span class="number">1</span></span><br><span class="line">    <span class="variable">%0</span>:gpr<span class="number">32</span> <span class="operator">=</span> COPY $a<span class="number">0</span></span><br><span class="line">    <span class="variable">%2</span>:gpr<span class="number">32</span> <span class="operator">=</span> ADDu <span class="variable">%0</span><span class="punctuation">,</span> <span class="variable">%1</span></span><br><span class="line">    $v<span class="number">0</span> <span class="operator">=</span> COPY <span class="variable">%2</span></span><br><span class="line">    RetRA implicit $v<span class="number">0</span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>MIR 中的细节可以参考文档 <a target="_blank" rel="noopener" href="https://llvm.org/docs/MIRLangRef.html">MIR 语言参考</a>。</p>
+<h2 id="指令选择"><a href="#指令选择" class="headerlink" title="指令选择"></a>指令选择</h2><p>&emsp;&emsp;指令选择可以使用<code>树重写（Tree Coverage）</code>方法或者 <code>DAG</code>方法来完成。其中，DAG 表示方法可以生成更好的代码，但匹配更加复杂。即使如此，LLVM 使用 <code>SelectionDAG</code> 作为基础的<code>指令选择器（Instruction Selector）</code>。该指令选择器的一部分是由 <code>.td</code>文件生成的，虽然 LLVM 正致力于在未来完全使用<code>.td</code>文件来生成指令选择器，但目前仍需要直接使用部分特定的 C++ 代码。<a target="_blank" rel="noopener" href="https://llvm.org/docs/GlobalISel/index.html">GlobalISel</a> 致力于替换<code>SelectionDAG</code>和<code>FastISel</code>，提供更高性能、更加模块化的指令选择器。</p>
+<p>&emsp;&emsp;<code>树重写</code>方法首先需要为当前目标 ISA 中的指令构建 <strong>模板树</strong>，其中树的叶子可以是寄存器、常量或者内存地址（可能会带有附加的语义约束信息）。接下来需要进行<strong>树模式匹配</strong>，例如如果 IR 以 <em>输入树</em> 的形式表示，我们将 <strong>输入树</strong> 中的子树与树模板匹配，一旦成功，就输出对应的指令并替换 <strong>输入树</strong> 中的对应节点。重复该匹配过程，直到<strong>输入树</strong>归约为单个节点。另外，作为核心的<strong>树模式匹配</strong>的具体实现是如何呢？一种方法是：可以将输入树转换为<strong>基于前缀的文本串</strong>，模板树转换为<strong>上下文无关文法的产生式</strong>，那么接下来只需要使用 LR 语法分析技术就可以完成模式匹配了。</p>
+<p>&emsp;&emsp;<strong>SelectionDAG</strong>是一种代码表示的抽象方法，它不仅适合以自动化技术进行指令选择，而且适合其他子流程，例如基本块的底层优化（常量折叠、公共子表达式消除、死代码消除等）。<a target="_blank" rel="noopener" href="https://llvm.org/doxygen/classllvm_1_1SelectionDAG.html">SelectionDAG</a> 由 <a target="_blank" rel="noopener" href="https://llvm.org/doxygen/classllvm_1_1SDNode.html">SDNode</a> 类型的节点组成，该节点表示的操作称为 OpCode，除了操作外，该节点还存储操作数及其生成的值。节点的值和操作数形成<strong>数据依赖关系</strong>，另外使用“链边”表示<strong>控制流依赖关系</strong>，这使得保留具有副作用的指令的顺序称为可能，例如：<code>load</code>、<code>store</code>、<code>call</code>和<code>return</code>等。</p>
+<p>使用<code>SelectionDAG</code>进行指令选择的步骤如下：</p>
+<ol>
+<li><strong>构建初始化 DAG</strong> ： 该阶段将输入的 LLVM IR code 转换为合法的 <strong>SelectionDAG</strong>。</li>
+<li><strong>优化 SelectionDAG</strong>：</li>
+<li><strong>检查 SelectionDAG 中类型的合法性</strong>：该阶段会转换&#x2F;消除一些节点，这些节点对应的类型在目标机器中不支持。</li>
+<li><strong>优化 SelectionDAG</strong>：</li>
+<li><strong>检查 SelectionDAG 中操作的合法性</strong>：该阶段会转换&#x2F;消除一些节点，这些节点对应的操作在目标机器中不支持。</li>
+<li><strong>优化 SelectionDAG</strong>：</li>
+<li><strong>指令选择</strong>：目标指令选择器会将 DAG 中的操作节点匹配到目标指令。该阶段最终会将<strong>与目标无关的输入DAG</strong>转换为另一个<strong>目标指令DAG</strong>。</li>
+<li><strong>调度和重排</strong>：</li>
+</ol>
+<p>上面所有步骤完成后，<strong>SelectionDAG</strong> 会被销毁，然后运行剩下的其他 <strong>Pass</strong>。</p>
+<p>我们可以使用 <code>llc</code> 的部分命令行选型来查看指令选择各个阶段的细节。另外，还可以在 <code>Graphviz</code> 软件的帮助下生成 <strong>SelectionDAG</strong> 的可视化：</p>
+<ul>
+<li><code>-view-dag-combine1-dags</code>：显示第1步中构建的 初始化DAG。</li>
+<li><code>-view-legalize-dags</code>：显示第3步前的 DAG。</li>
+<li><code>-view-dag-combine2-dags </code>：显示第3步后的 DAG。</li>
+<li><code>-view-isel-dags</code> ：显示第7步指令选择前的 DAG。</li>
+<li><code>-view-sched-dags</code>：显示第7步指令选择后的 DAG。</li>
+</ul>
+<p>上面的命令行选项可能只包含在 Debug 版本的 <code>llc</code>中。</p>
+<p>在 <strong>指令选择</strong> 阶段，其输入是已经进行合法性转换后的 <strong>SelectionDAG</strong>，然后进行模式匹配，最后输出目标代码的 DAG。以下面的一个代码片段为例：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">%t1</span> <span class="operator">=</span> <span class="keyword">fadd</span> <span class="type">float</span> <span class="variable">%W</span><span class="punctuation">,</span> <span class="variable">%X</span></span><br><span class="line"><span class="variable">%t2</span> <span class="operator">=</span> <span class="keyword">fmul</span> <span class="type">float</span> <span class="variable">%t1</span><span class="punctuation">,</span> <span class="variable">%Y</span></span><br><span class="line"><span class="variable">%t3</span> <span class="operator">=</span> <span class="keyword">fadd</span> <span class="type">float</span> <span class="variable">%t2</span><span class="punctuation">,</span> <span class="variable">%Z</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的 LLVM IR 代码对应的 <strong>SelectionDAG</strong> 的前缀表示形式：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">fadd</span>:f<span class="number">32</span> (<span class="keyword">fmul</span>:f<span class="number">32</span> (<span class="keyword">fadd</span>:f<span class="number">32</span> W<span class="punctuation">,</span> X)<span class="punctuation">,</span> Y)<span class="punctuation">,</span> Z)</span><br></pre></td></tr></table></figure>
+
+<p>对于支持 <code>multiply-and-add</code> 的 PowerPC 机器来说，模式匹配后的 DAG 如下所示：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(FMADDS (FADDS W<span class="punctuation">,</span> X)<span class="punctuation">,</span> Y<span class="punctuation">,</span> Z)</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>FMADDS</code> 在 <code>.td</code> 文件中定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def FMADDS : AForm_1&lt;59, 29,</span><br><span class="line">                    (ops F4RC:$FRT, F4RC:$FRA, F4RC:$FRC, F4RC:$FRB),</span><br><span class="line">                    &quot;fmadds $FRT, $FRA, $FRC, $FRB&quot;,</span><br><span class="line">                    [(set F4RC:$FRT, (fadd (fmul F4RC:$FRA, F4RC:$FRC),</span><br><span class="line">                                           F4RC:$FRB))]&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>其中，4-5行代表匹配该指令的模式，其中<code>fadd</code>和<code>fmul</code>在 <code>include/llvm/Target/TargetSelectionDAG.td</code>中定义，<code>F4RC</code>代表寄存器类。<code>llvm-tblgen</code>会根据<code>.td</code>文件生成模式匹配器。</p>
+<p>关于 <code>tblgen</code> 更多的信息参看第8节 <a href="#8">TableGen 语言</a>。</p>
+<p>特别注意的是，<strong>SelectionDAG</strong> 的节点和选择的指令之间没有一一对应的关系。一个 DAG 节点可能扩展为多个指令，而多个节点也可能合并成一条指令。</p>
+<p>对于 IR 中的每个函数，<code>SelectionDAG</code> 类的一个实例由 <code>SelectionDAGBuilder</code>填充。但目标需要一些回调函数来进行降级调用、参数处理、返回跳转等，它为此，必须实现<code>targetlower</code>接口。<code>targetlower</code> 接口的实现提供指令选择过程所需的所有信息，例如：目标上支持哪些数据类型和哪些操作。</p>
+<p>在 <strong>类型合法化</strong>阶段，目标上不支持的类型将被支持的类型替换，例如：如果目标机只支持 32 位范围的整数，那么较小的值将被<strong>符号扩展</strong>或者<strong>零扩展</strong>为32位，较大的值会被分隔。<code>vector</code>类型也会做类似的处理。</p>
+<p>在 <strong>调度和重排</strong> 阶段，会将 DAG 进行序列化，也就是说指令需要按照顺序排列。即使在满足数据流和控制流依赖关系的情况下，仍然存在多种排列方案，我们需要选择最能充分利用硬件的顺序。开发者可以将调度模型添加到目标描述文件中（.td文件）。</p>
+<h2 id="寄存器分配"><a href="#寄存器分配" class="headerlink" title="寄存器分配"></a>寄存器分配</h2><h2 id="TableGen-语言"><a href="#TableGen-语言" class="headerlink" title="TableGen 语言"></a>TableGen 语言</h2><h3 id="总述"><a href="#总述" class="headerlink" title="总述"></a>总述</h3><p>&emsp;&emsp; 后端 Pass 需要一种通用的方式获取目标机器的一些属性信息，例如**寄存器分配 Pass **需要知道目标的寄存器类型和数量、指令间约束和寄存器操作符。LLVM 使用一种专门的声明式语言来进行目标描述，这个描述文件将被 <code>tblgen</code>工具进行处理。以 x86 目标为例：</p>
+<p><img src="/2023/02/24/LLVM-2-Backend/X86Target.png"></p>
+<p>从上图可知，目标描述被 <code>tblgen</code>生成多个源片段，这些源片段可以被其他工具或代码使用。</p>
+<p>简单示例（来自 <code>llvm/Target/Target.td</code>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Register&lt;string n, list&lt;string&gt; altNames = []&gt; &#123;</span><br><span class="line">    string Namespace = &quot;&quot;;</span><br><span class="line">    string AsmName = n;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def R0 : Register &#123;</span><br><span class="line">    let AsmName = &quot;R0&quot;;</span><br><span class="line">    string altName = &quot;$0&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TableGen 是静态类型的，它必须指定每个值的类型。另外，<code>TableGen</code>工具本身也是模块化的，你可以使用 <code>TableGen库</code>实现自己的<strong>TableGen生成器</strong>。</p>
+<p>在 <code>.td</code> 文件中，类似于 C++，<code>class</code> <strong>描述</strong> 了数据的布局结构，<code>def</code><strong>创建</strong>了类的一个<code>实例</code>。<code>class</code>之间可以存在<code>继承（包括多种继承）</code>关系，子类会继承父类的所有数据成员，并且可以使用<code>let</code>关键字重写某个数据成员的值。类也可以声明带有模板形参。</p>
+<p>一些支持的类型如下：</p>
+<ul>
+<li><code>bit</code>：一个位</li>
+<li><code>bits&lt;n&gt;</code>：由 <strong>n</strong> 位组成的整数类型</li>
+<li><code>int</code>：整数值</li>
+<li><code>string</code>：字符串</li>
+<li><code>list&lt;t&gt;</code>：类型为<strong>t</strong>的元素列表</li>
+<li><code>dag</code>：DAG（在<code>指令选择</code>中使用）</li>
+<li><code>class 类</code>：由<code>class</code>声明的类也可以用作类型。</li>
+</ul>
+<p>另外，<code>tblgen</code> 支持使用 <code>include</code>包含其他文件，也支持<code>#define</code>、<code>#if</code>和<code>#endif</code>等预处理指令。</p>
+<h3 id="顶层描述"><a href="#顶层描述" class="headerlink" title="顶层描述"></a>顶层描述</h3><h3 id="寄存器描述"><a href="#寄存器描述" class="headerlink" title="寄存器描述"></a>寄存器描述</h3><p>&emsp;&emsp; CPU 的体系结构通常会定义一组寄存器，这些寄存器的特性可以有很大的不同。比如有些是<strong>通用寄存器</strong>、<strong>浮点寄存器</strong>和<strong>向量寄存器</strong>，有些可以是特殊寄存器，例如<strong>状态寄存器</strong>、<strong>控制寄存器</strong>等。</p>
+<p>&emsp;&emsp;在具体后端实现中，可以首先定义一个<strong>超类</strong>，该类继承自<code>Register</code>类；然后为不同类型的寄存器定义子类。注意，所有的寄存器定义都应该放在对应后端的命令空间中（<code>let Namesapce = &quot;&lt;my-backend&gt;&quot;</code>）。然后，可以定义<strong>寄存器分组</strong>，它实例化自<code>RegisterClass</code>类（当然也可以先定义<code>RegisterClass</code>的子类，做一些定制化，再实例化<strong>寄存器分组</strong>）。最后也可以定义基于寄存器类的操作数，它可以由<code>RegisterOperand&lt;寄存器分组&gt;</code> 类实例化。</p>
+<h3 id="指令描述"><a href="#指令描述" class="headerlink" title="指令描述"></a>指令描述</h3><p>&emsp;&emsp; 在<strong>指令描述</strong>中一般分为定义<strong>位编码</strong>的类和指令的具体定义类。首先定义一个基类，该基类继承自<code>Instruction</code>类。这个类最重要的字段是 <code>Inst</code>，它保存了指令的编码，其他字段大部分都是对<code>Instruction</code>类的数据成员进行赋值。</p>
+<p>&emsp;&emsp;定义<strong>位编码</strong>的类可以有多种类型，它们都定义为上述基类的子类。例如对于 MIPS，它包含<code>R型</code>、<code>L型</code>和<code>J型</code>指令，这三种类型指令的编码是不同的。特别对于跳转指令，由于它是<code>基本块</code>的最后一条指令，需要设置<code>isTerminator=1</code>，另外由于控制流不能通过这条指令，需要设置 <code>isBarrier=1</code>，对于分支指令，也要设置<code>isBranch=1</code>。</p>
+<h3 id="调用规则描述"><a href="#调用规则描述" class="headerlink" title="调用规则描述"></a>调用规则描述</h3><p>&emsp;&emsp;调用规则定义了如何将参数传递给函数以及如果由函数返回值。这些规则包含在 CPU 体系结构的 <strong>ABI</strong> 规范中。以 MIPS 为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def CC_MipsN_VarArg : CallingConv&lt;[</span><br><span class="line">  ...</span><br><span class="line">  // All integers are promoted to 64-bit.</span><br><span class="line">  CCIfType&lt;[i8, i16, i32], CCPromoteToType&lt;i64&gt;&gt;,</span><br><span class="line">  CCIfType&lt;[f32], CCAssignToReg&lt;[A0, A1, A2, A3, T0, T1, T2, T3]&gt;&gt;,</span><br><span class="line">  CCIfType&lt;[i64, f64], CCAssignToReg&lt;[A0_64, A1_64, A2_64, A3_64,</span><br><span class="line">                                      T0_64, T1_64, T2_64, T3_64]&gt;&gt;,</span><br><span class="line"></span><br><span class="line">  // All stack parameter slots become 64-bit doublewords and are 8-byte aligned.</span><br><span class="line">  CCIfType&lt;[f32], CCAssignToStack&lt;4, 8&gt;&gt;,</span><br><span class="line">  CCIfType&lt;[i64, f64], CCAssignToStack&lt;8, 8&gt;&gt;</span><br><span class="line">]&gt;;</span><br><span class="line"></span><br><span class="line">def RetCC_MipsN : CallingConv&lt;[</span><br><span class="line">  ...</span><br><span class="line">  CCIfType&lt;[i64], CCAssignToReg&lt;[V0_64, V1_64]&gt;&gt;,</span><br><span class="line">  CCIfType&lt;[f32], CCAssignToReg&lt;[F0, F2]&gt;&gt;,</span><br><span class="line">  CCIfType&lt;[f64], CCAssignToReg&lt;[D0_64, D2_64]&gt;&gt;</span><br><span class="line">]&gt;;</span><br></pre></td></tr></table></figure>
+<p>其中，在<code>CC_MipsN_VarArg</code>中<code>CCPromoteToType</code> 用于将将小的值提升到 64 位；<code>CCAssignToReg</code>定义了传递参数的寄存器；<code>CCAssignToStack</code>定义了附加参数在栈上分配时的对齐方式。另外，在 <code>RetCC_MipsN</code> 中定义了如何将结果传递给调用函数。</p>
+<p>还可以使用 <code>CalleeSavedRegs</code> 类定义<strong>被调用函数</strong>负责保存的寄存器。</p>
+<h3 id="调度模式描述"><a href="#调度模式描述" class="headerlink" title="调度模式描述"></a>调度模式描述</h3><p>&emsp;&emsp; 在<strong>调度模式描述</strong>中一般会包含和 CPU 相关的底层信息,例如功能单元和流水线级数等。它可以用于<strong>指令调度和重排</strong>，以获得相对最优的代码顺序。以 MIPS 为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def MipsGenericModel : SchedMachineModel &#123;</span><br><span class="line">  int IssueWidth = 1;</span><br><span class="line">  int MicroOpBufferSize = 0;</span><br><span class="line"></span><br><span class="line">  // These figures assume an L1 hit.</span><br><span class="line">  int LoadLatency = 2;</span><br><span class="line">  int MispredictPenalty = 4;</span><br><span class="line"></span><br><span class="line">  let CompleteModel = 1;</span><br><span class="line">  let PostRAScheduler = 1;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，<code>IssueWidth</code>定义了同时发射指令的个数，<code>LoadLatency</code>定义了<code>load</code>指令的延迟，<code>MispredictPenalty</code>定义了分支预测失败的代价。</p>
+<h2 id="实现-DAG-指令选择类"><a href="#实现-DAG-指令选择类" class="headerlink" title="实现 DAG 指令选择类"></a>实现 DAG 指令选择类</h2><p>&emsp;&emsp; DAG 指令选择的大部分代码都可以使用<code>tblgen</code>工具生成，但目前仍需要使用手写代码创建类，并将所有内容放在一起。</p>
+<h3 id="初始化目标机器"><a href="#初始化目标机器" class="headerlink" title="初始化目标机器"></a>初始化目标机器</h3><h3 id="添加-SelectionDAG-的实现"><a href="#添加-SelectionDAG-的实现" class="headerlink" title="添加 SelectionDAG 的实现"></a>添加 SelectionDAG 的实现</h3><h3 id="目标-Lowering"><a href="#目标-Lowering" class="headerlink" title="目标 Lowering"></a>目标 Lowering</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/18/LLVM-1-IR-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83/" rel="prev" title="LLVM 1: IR 汇编语言参考">
+                  <i class="fa fa-angle-left"></i> LLVM 1: IR 汇编语言参考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/02/OpenMP-Tutorial/" rel="next" title="OpenMP Tutorial">
+                  OpenMP Tutorial <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">顽石</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">317k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:49</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"cdn":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
