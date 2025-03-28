@@ -1945,8 +1945,55 @@
 <p>虽然 <code>mount ns</code> 限制了进程对文件的访问，但攻击者仍然可以利用<strong>进程间通信</strong>将本不能被进程访问的文件内容暴露给进程。所以，需要引入进程间通信命名空间。</p>
 <p><strong>b. 进程间通信命名空间</strong><br>进程间通信的标识存储在进程间通信命名空间中，进程中通信命名空间不同，进程寻找到的进程间通信实例就不同。</p>
 <p><strong>c. Unix 分时命名空间(UTS)</strong></p>
-<p><strong>d. 进程号命名空间</strong><br>使得容器中的进程不能够看到容器外的进程。</p>
-<h3 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h3><h3 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h3><h3 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR"></a>ASLR</h3><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2><h3 id="Linux-CVE"><a href="#Linux-CVE" class="headerlink" title="Linux CVE"></a>Linux CVE</h3><p><a href="https://www.cvedetails.com/product/47/Linux-Linux-Kernel.html">Linux CVE 列表</a></p>
+<p><strong>d. 进程号命名空间</strong><br>使得容器中的进程不能够看到容器外的进程（比如通过 <code>kill</code> 命令向容器外的进程发送信号）。</p>
+<p><strong>e. 网络命名空间</strong></p>
+<p><strong>f. 用户命名空间</strong></p>
+<p>在 <code>/proc/[pid]/ns</code> 下可以看到一些进程的命名空间信息。</p>
+<blockquote>
+<p>实际上，命名空间的开发和设计只能是量力而行和适可而止，因为在宏内核上理想的和绝对的隔离是不可能做到的。</p>
+</blockquote>
+<h3 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h3><blockquote>
+<p>参考 <a href="https://loverhythm1990.github.io/2024/10/01/cgroup-v2/">使用 cgroupv2 限制进程资源使用</a><br>参考 <a href="http://arthurchiao.art/blog/cgroupv2-zh/">Control Group v2 - Kerneldoc</a></p>
+</blockquote>
+<p>一种安全攻击（Fork_bomb: 耗尽系统进程号资源）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bomb() &#123;</span><br><span class="line">   bomb | bomb &amp;</span><br><span class="line">&#125;</span><br><span class="line">bomb</span><br></pre></td></tr></table></figure>
+
+<p>Unix 为应对上述安全挑战，提供了<code>配额（quota）</code> 和 <code>资源限制（rlimit）</code>机制。但存在<code>分散式管理</code>和 <code>缺乏统一资源管理机制</code>的问题。</p>
+<p><code>CGroups</code> 控制组来源于 Google 开发的 <code>Process Containers</code> 的模块。其设计理念是将框架和具体的资源管理分离。Linux 内核子系统 <code>cgroup</code> 提供的用户态和内核的接口是名为<code>cgroup</code>的伪文件系统。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建 CGroup2 类型的控制组</span></span><br><span class="line">mkdir -p /sys/fs/cgroup/cgrp1/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改 CPU 配额为 50%</span></span><br><span class="line">echo &quot;50000 100000&quot; &gt; /sys/fs/cgroup/cgrp1/cpu.max</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将目标进程加入到该控制组，假设目标进程的 pid 为 1604</span></span><br><span class="line">echo 1604 &gt; /sys/fs/cgroup/cgrp1/cgroup.procs</span><br></pre></td></tr></table></figure>
+
+<p>设计原则总结如下：</p>
+<ul>
+<li>以进程为控制单位</li>
+<li>集中式管理</li>
+<li>功能模块化</li>
+<li>动态调配</li>
+<li>层级结构</li>
+<li>多对多结构：一个进程可以加入多个控制组，一个控制组可以包含度多个进程。</li>
+</ul>
+<p><code>cgroup v2</code> 是现代容器化技术（如 <code>Docker</code>、<code>Kubernertes</code>）的核心组件之一。它用于限制容器的资源使用，确保容器之间的资源隔离和公平分配。例如：</p>
+<ul>
+<li><code>Docker</code> 使用 <code>cgroup v2</code> 限制容器的 <code>CPU</code>、<code>内存</code> 和 <code>I/O</code>。</li>
+<li><code>Kubernetes</code> 使用 <code>cgroup v2</code> 实现 <code>Pod</code> 的资源限制和 <code>QoS（服务质量）</code>策略。</li>
+</ul>
+<h3 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h3><blockquote>
+<p>参考 <a href="https://blog.csdn.net/qq_44846324/article/details/121731640">Sandbox的安全机制 —— 使用 seccomp</a></p>
+</blockquote>
+<p><code>seccomp</code> 是内核的一个安全特性。它的原理是限制用户进程可以使用的系统调用。因此，<code>seccomp</code> 可以与其他安全技术一起用于构建<code>沙箱</code>。</p>
+<p>三种模式：</p>
+<ul>
+<li><strong>DISABLED</strong>: 不使用 <code>seccomp</code>，进程的系统调用可以不受限制。</li>
+<li><strong>STRICT</strong>：只能使用 4 个系统调用：<code>read</code>、<code>write</code>、<code>exit</code> 和 <code>sigreturn</code>。</li>
+<li><strong>FILTER</strong>：对系统调用的限制被存入 <code>seccomp</code>结构体的第二个成员 <code>filter</code> 中，由 <code>filter</code> 决定系统调用是否可以使用。</li>
+</ul>
+<p><code>BPF 虚拟机</code>运行 <code>filter</code> 链中定义的<code>BPF 指令</code>。</p>
+<p>在 <code>/proc/self/status</code> 文件中会显示当前进程的 <code>seccomp</code> 状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status</span></span><br><span class="line">...</span><br><span class="line">CapInh:	0000000000000000</span><br><span class="line">CapPrm:	0000000000000000</span><br><span class="line">CapEff:	0000000000000000</span><br><span class="line">CapBnd:	000001ffffffffff</span><br><span class="line">CapAmb:	0000000000000000</span><br><span class="line">NoNewPrivs:	0</span><br><span class="line">Seccomp:	0</span><br><span class="line">Seccomp_filters:	0</span><br><span class="line">Speculation_Store_Bypass:	thread vulnerable</span><br><span class="line">SpeculationIndirectBranch:	unknown</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>例如，使用 <code>seccomp</code> 限制 <code>execve</code> 系统调用的使用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    scmp_filter_ctx ctx;</span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW);</span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>);</span><br><span class="line">    seccomp_load(ctx);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *filename = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *argv[] = &#123;<span class="string">&quot;/bin/sh&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="type">char</span> *envp[] = &#123;<span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line">    syscall(SYS_execve, filename, argv, envp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR"></a>ASLR</h3><h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2><h3 id="Linux-CVE"><a href="#Linux-CVE" class="headerlink" title="Linux CVE"></a>Linux CVE</h3><p><a href="https://www.cvedetails.com/product/47/Linux-Linux-Kernel.html">Linux CVE 列表</a></p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
