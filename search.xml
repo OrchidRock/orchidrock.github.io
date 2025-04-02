@@ -6012,4 +6012,20 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>读书笔记</category>
       </categories>
   </entry>
+  <entry>
+    <title>Keras 深度学习框架使用总结</title>
+    <url>/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，<code>深度卷积神经网络</code>已经成为所有计算机视觉任务的首选算法。<code>深度学习</code>利用在计算机视觉上的两个关键思想：<code>卷积神经网络</code>和<code>反向传播</code>，并数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。</p>
+<p>深度学习的框架包括<code>TensorFlow</code>、<code>PyTorch</code>和 <code>Keras</code>等。本文就 <code>Keras</code> 的实践以及深度学习的一些理论进行总结。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Deep Learning with Python》 By 【美】弗朗索瓦·肖莱</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>人工智能</category>
+        <category>深度学习</category>
+      </categories>
+  </entry>
 </search>
