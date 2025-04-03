@@ -6015,32 +6015,47 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>Keras 深度学习框架使用总结</title>
     <url>/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，<code>深度卷积神经网络</code>已经成为所有计算机视觉任务的首选算法。<code>深度学习</code>利用在计算机视觉上的两个关键思想：<code>卷积神经网络</code>和<code>反向传播</code>，并数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。</p>
-<p>深度学习的框架包括<code>TensorFlow</code>、<code>PyTorch</code>和 <code>Keras</code>等，其中 <code>JAX</code>、<code>TensorFlow</code>和 <code>PyTorch</code>可以作为 <code>Keras</code> 的**后端(backend)**来进行张量处理、求微分等低层次的运算。本文就 <code>Keras</code> 的实践以及深度学习的一些理论进行总结。</p>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，<code>深度卷积神经网络</code>已经成为所有计算机视觉任务的首选算法。<code>深度学习</code>利用在计算机视觉上的两个关键思想：<code>卷积神经网络</code>和<code>反向传播</code>，并在数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。</p>
+<p>深度学习的框架包括<code>TensorFlow</code>、<code>PyTorch</code>和 <code>Keras</code>等，其中 <code>JAX</code>、<code>TensorFlow</code>和 <code>PyTorch</code>可以作为 <code>Keras</code> 的 <strong>后端(backend)</strong> 来进行张量处理、求微分等低层次的运算。本文就 <code>Keras</code> 的实践以及深度学习的一些理论进行总结。</p>
 <span id="more"></span>
 
 <blockquote>
-<p>参考 《Deep Learning with Python》 By 【美】弗朗索瓦·肖莱</p>
+<p>参考 《Deep Learning with Python》 By【美】弗朗索瓦·肖莱<br>参考 《Advanced Deep Learning with Python》By【保加利亚】伊凡·瓦西列夫</p>
 </blockquote>
 <h2 id="神经网络的数学基础"><a href="#神经网络的数学基础" class="headerlink" title="神经网络的数学基础"></a>神经网络的数学基础</h2><p>参考 《DLP》</p>
-<h2 id="安装及初步使用"><a href="#安装及初步使用" class="headerlink" title="安装及初步使用"></a>安装及初步使用</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>如果主机上配备有 <code>GPU</code>，确保驱动正常工作。</p>
-<p>安装 <code>BLAS</code> 线性代数库：</p>
+<h2 id="安装及初步使用"><a href="#安装及初步使用" class="headerlink" title="安装及初步使用"></a>安装及初步使用</h2><h3 id="安装依赖（可选）"><a href="#安装依赖（可选）" class="headerlink" title="安装依赖（可选）"></a>安装依赖（可选）</h3><ol>
+<li>如果主机上配备有 <code>GPU</code>，确保驱动正常工作。如果没有 NVIDIA 的 GPU，而是使用 Intel 的集成显卡，需要下载 <code>oneAPI</code> 计算平台和 <code>oneDNN</code> 深度学习加速库。<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libdnnl2 libdnnl-dev</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>如果使用树梅派等平台，可以安装 GPU 加速库（<code>OpenCL</code>和<code>OpenCV</code>），参考<a href="https://blog.csdn.net/qq_38342510/article/details/143098708">树莓派5 gpu 加速</a>。</p>
+<ol start="2">
+<li><p>安装 <code>BLAS</code> 线性代数库：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libopenblas-dev liblapack-dev</span></span><br></pre></td></tr></table></figure>
-
-<p>安装 Python 科学计算套件：<code>Numpy</code>、<code>Scipy</code> 和 <code>matplotlib</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install <span class="built_in">sudo</span> apt-get install python3-numpy python3-scipy python3-matplotlib</span></span><br></pre></td></tr></table></figure>
-
-<p>安装 <code>HDF5</code>，用于将 <code>Keras</code> 模型快速高效地保存到磁盘：</p>
+</li>
+<li><p>安装 Python 科学计算套件：<code>Numpy</code>、<code>Scipy</code> 和 <code>matplotlib</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-numpy python3-scipy python3-matplotlib</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 <code>HDF5</code>，用于将 <code>Keras</code> 模型快速高效地保存到磁盘：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-h5py python3-h5py-serial</span></span><br></pre></td></tr></table></figure>
-
-<p>安装 <code>CUDA</code>:</p>
-<p>安装后端（默认使用 <code>TensorFlow</code>）:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip3 install tensorflow</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="安装-keras"><a href="#安装-keras" class="headerlink" title="安装 keras"></a>安装 keras</h3><p>在 <code>Ubuntu</code>上安装：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip3 install keras</span></span><br></pre></td></tr></table></figure>
-
+</li>
+<li><p>安装 <code>CUDA</code>:<br>参考 <a href="/2023/04/12/CUDA-Tutorial/" title="CUDA Tutorial">[CUDA Tutorial]</a> 。</p>
+</li>
+</ol>
+<h3 id="安装-keras"><a href="#安装-keras" class="headerlink" title="安装 keras"></a>安装 keras</h3><ol>
+<li><p>新建虚拟环境并激活</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">python3 -m venv venv</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">source</span> venv/bin/activate</span></span><br><span class="line">(venv) $</span><br></pre></td></tr></table></figure></li>
+<li><p>安装后端（默认使用 <code>TensorFlow</code>）:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install tensorflow</span><br></pre></td></tr></table></figure>
+<p>在 <code>~/.keras/keras.json</code> 中可以修改使用的后端类型。</p>
+</li>
+<li><p>安装 <code>keras</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install keras</span><br></pre></td></tr></table></figure></li>
+</ol>
 <h3 id="初步使用"><a href="#初步使用" class="headerlink" title="初步使用"></a>初步使用</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line">...</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792365</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792367</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line"><span class="number">2025</span>-04-02 <span class="number">22</span>:<span class="number">56</span>:<span class="number">47.795267</span>: I tensorflow/core/platform/cpu_feature_guard.cc:<span class="number">210</span>] This TensorFlow binary <span class="keyword">is</span> optimized to use available CPU instructions <span class="keyword">in</span> performance-critical operations.</span><br><span class="line">To enable the following instructions: AVX2 AVX_VNNI FMA, <span class="keyword">in</span> other operations, rebuild TensorFlow <span class="keyword">with</span> the appropriate compiler flags.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keras.__version__</span><br><span class="line"><span class="string">&#x27;3.9.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <a href="https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz">MNIST</a> 数据集，它是机器学习领域的一个经典数据库，用于手写数字的自动识别（最先用于邮政业务中的邮编识别）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"></span><br><span class="line">(train_images, train_labels), (test_images, test_labels) = mnist.load_data()</span><br></pre></td></tr></table></figure>
+
+<p>如果没有下载 <code>MNIST</code>，上述代码会自动将其下载到 <code>~/.keras/datasets/</code> 目录中。</p>
 ]]></content>
       <categories>
         <category>人工智能</category>
