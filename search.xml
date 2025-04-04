@@ -208,18 +208,6 @@
       </categories>
   </entry>
   <entry>
-    <title>BuildRoot工具介绍</title>
-    <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a> 类似。</p>
-<span id="more"></span>
-
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
-<h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Birthday Attack for Hash Function Analysis</title>
     <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
@@ -242,6 +230,18 @@
       <categories>
         <category>信息安全</category>
         <category>密码学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>BuildRoot工具介绍</title>
+    <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a> 类似。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
+<h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -953,62 +953,6 @@
       </categories>
   </entry>
   <entry>
-    <title>GNU编译调试工具链手册</title>
-    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
-<span id="more"></span>
-
-
-<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
-<blockquote>
-<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
-</blockquote>
-<ul>
-<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
-</li>
-<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
-</li>
-<li><p><strong>递归</strong>：</p>
-</li>
-<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
-</li>
-</ul>
-<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
-<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
-<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
-<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
-<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
-<li><p><strong>开始和停止</strong></p>
-<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
-</li>
-<li><p><strong>断点</strong></p>
-<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
-</li>
-<li><p><strong>执行</strong></p>
-<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
-</li>
-<li><p><strong>检查代码</strong></p>
-<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
-</li>
-<li><p><strong>检查数据</strong></p>
-<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
-</li>
-<li><p><strong>信息</strong></p>
-<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
-</li>
-</ul>
-<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
-<li>gprof</li>
-<li>valgrind</li>
-</ul>
-<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>GNU Unix/Linux下 常用工具</title>
     <url>/2022/04/14/GNU-Unix-Linux%E4%B8%8B-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<h3 id="终端类"><a href="#终端类" class="headerlink" title="终端类"></a>终端类</h3><ul>
@@ -1093,29 +1037,68 @@
       </categories>
   </entry>
   <entry>
+    <title>GNU编译调试工具链手册</title>
+    <url>/2022/04/29/GNU%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E9%93%BE%E6%89%8B%E5%86%8C/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp; GNU软件开发环境（GDE）提供了全功能的、协作式的开发环境。它包含众多了强大的开发工具，这些工具或者（标准）提供了开发高质量产品软件的高效的环境。另外，GDE的工具都可以免费获得下载，而且很多软件还关联着活跃的开源社区。GDE不等同于集成开发环境（IDE），它在工具的选择上有更多灵活性。</p>
+<span id="more"></span>
+
+
+<h3 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h3><h3 id="Make"><a href="#Make" class="headerlink" title="Make"></a>Make</h3><h3 id="Lex和Yacc"><a href="#Lex和Yacc" class="headerlink" title="Lex和Yacc"></a>Lex和Yacc</h3><h3 id="M4"><a href="#M4" class="headerlink" title="M4"></a>M4</h3><p>&emsp;&emsp; <code>M4</code>是通用Unix宏处理器，它接受输入流，并将输入流中的宏进行扩展后拷贝到输出。宏可以是内置的也可以是用户自定义的。M4作为微型语言，不仅仅可以完成宏扩展功能，它还可以通过内置函数完成命名文件、执行Unix命令、算术运算、操作文本字符和递归。M4不但可以作为宏处理器，也可以作为编译器的前端。某种程度上说，m4是完备图灵机。M4最大的使用场景是在<code>GNU Autoconf</code>工具中。<br>&emsp;&emsp;C语言提供了对于宏的支持，但一般认为要<strong>慎用</strong>宏。使用宏最然可以避免相比使用函数调用带来的开销，但却容易使程序变得<em>看起来</em>复杂，违背清晰和透明的原则。<br>&emsp;&emsp; 详细手册可以参看<code>info m4</code>或浏览在线资源 <a href="https://www.gnu.org/software/m4/manual/m4.html">M4 手册</a>。</p>
+<blockquote>
+<p><strong>Beware that m4 may be dangerous for the health of compulsive programmers.</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>基本格式</strong>： <code>define(宏名，宏体)</code>（宏本身也会被m4展开，不过展开为空字符）。宏也可以带参数，使用$1,%2,…,$9表示。m4 的宏名名规则是：只允许使用字母、数字以及下划线构造宏名，并且宏名只能以字母或下划线开头。只有符合宏名规则的宏，m4 才会将它视为真正的宏。<strong>m4 将一切没有引号的文本都视为宏。对于已定义的宏，m4 会将其展开；对于未定义的宏，m4 会按其字面将其输出。加了引号的文本，m4 不再检测它们是不是宏，而是将其作为普通文本按字面输出。</strong>需要注意的是，<code>define</code>本身就是宏，后面括号内是它的参数，从这点来说，它和用它定义的用户宏没有区别。</p>
+</li>
+<li><p><strong>条件宏</strong>：<br><code>ifdef(``a&#39;,b)，如果a是已定义的宏，则该条件宏被展开为b </code>ifdef(&#96;&#96;a’,b,c)，如果a是已定义的宏，则该条件宏被展开为b；如果未定义，则展开为c。<br><code>ifelse(a,b,c,d)</code> 比较字符串 a 与 b 是否相同，如果它们相同，这条语句的展开结果是字符串 c，否则展开为字符串 d。</p>
+</li>
+<li><p><strong>递归</strong>：</p>
+</li>
+<li><p><strong>执行shell命令</strong>：<code>esyscmd</code></p>
+</li>
+</ul>
+<p>&emsp;&emsp;参看中文博客 <a href="https://segmentfault.com/a/1190000004104696?msclkid=4062645ccaa011ec839f701f4a18f0f6">M4简介</a> 。<strong>牢记：宏是用来缩写那些复杂但是又经常重复出现的文本模式的。</strong></p>
+<h3 id="Autoconf"><a href="#Autoconf" class="headerlink" title="Autoconf"></a>Autoconf</h3><p>&emsp;&emsp; Autoconf工具致力于保证程序的<code>可移植性</code>，使得不需要为不同的系统开发不同的源程序，特别是当系统之间的差异比想象中的大的情况下。首先，源程序会按照一个理想的机器模型（POSIX）编程；然后，当源程序拷贝到用户系统时，autoconf会尽力假装用户系统时满足POSIX的标准的。<strong>Autoconf会帮助源程序的维护者学习用户的系统，诊断该系统不满足POSIX标准的地方，然后提供变通的方法。</strong>审核程序可以直接使用shell来编写，但shell本身的兼容性使得编写脚本非常复杂，就像编写汇编语言。<strong>Autoconf则使得不需要专门写shell脚本来对系统进行审核。</strong><br>&emsp;&emsp; Autoconf可以基本上认为是一个M4的宏库，但m4代码太过底层，且Autoconf要生成shell脚本，因此Autoconf是工作在m4变体<code>m4sh</code>之上的高层代码。<br>&emsp;&emsp; 任何Autoconf脚本必须以<code>AC_INIT</code>开头，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AC_INIT(Auditor, 1.0)</span><br><span class="line">AC_PROG_CC                                       # 检测C编译器</span><br><span class="line">AC_CONFIG_FILES([Makefile], [chmod +x Makefile]) # 模板文件</span><br><span class="line">AC_OUTPUT</span><br></pre></td></tr></table></figure>
+<h3 id="Automake"><a href="#Automake" class="headerlink" title="Automake"></a>Automake</h3><p>&emsp;&emsp;Automake是从Makefile.am(定义一系列make变量的文件)自动生成Makefile.in文件的工具。生成的Makefile.in符合GNU Makefile 标准。</p>
+<h3 id="Libtool"><a href="#Libtool" class="headerlink" title="Libtool"></a>Libtool</h3><p>&emsp;&emsp;Libtool同样为解决软件<code>可移植性</code>问题而设计，不过它关注的是动态链接库。使用 GNU Libtool 可以容易的在不同的系统中建立动态链接库。</p>
+<h3 id="Autotest"><a href="#Autotest" class="headerlink" title="Autotest"></a>Autotest</h3><h3 id="Gdb"><a href="#Gdb" class="headerlink" title="Gdb"></a>Gdb</h3><ul>
+<li><p><strong>开始和停止</strong></p>
+<p><code>quit</code> : 退出GDB<br><code>run [命令行参数]</code>： 运行程序（并给出命令行参数）<br><code>kill</code>：停止程序</p>
+</li>
+<li><p><strong>断点</strong></p>
+<p><code>break sum</code>：在函数sum入口处设置断点<br><code>break *0x80483625</code>：在地址0x80483625处设置断点<br><code>delete 1</code>：删除断点1<br><code>delete</code>：删除所有断点<br><code>commands &lt;断点号&gt;</code>：在到达断点时执行命令</p>
+</li>
+<li><p><strong>执行</strong></p>
+<p><code>stepi</code>：执行1条指令<br><code>stepi 4</code>：执行4条指令<br><code>nexti</code>：执行下一条指令<br><code>continue</code> : 继续执行<br><code>finish</code>：运行直到当前函数返回</p>
+</li>
+<li><p><strong>检查代码</strong></p>
+<p><code>disas</code>：反汇编当前函数<br><code>disas sum</code>：反汇编sum函数<br><code>disas 0x8048397</code>：反汇编0x8048397附近的函数<br><code>disas 0xA 0xB</code>：反汇编指定地址范围内的代码<br><code>print /x $eip</code>：以16进制打印寄存器的值</p>
+</li>
+<li><p><strong>检查数据</strong></p>
+<p><code>print $eip</code><br><code>print /t $eip</code><br><code>print 0x100</code><br><code>print /x 555</code><br><code>print /x ($ebp+8)</code><br><code>print *(int*) 0xfff076b0</code> ：输出地址0xfff076b0处的整数<br><code>print *(int*) ($ebp+8)</code> ：输出地址($ebp+8)处的整数<br><code>x/2w 0xfff076b0</code>：检查从0xfff076b0地址处开始的双字<br><code>x/20b sum</code>：检查函数sum的前20个字节<br><code>backtrace</code>：打印程序栈<br><code>list [行号或函数名]</code>：打印当前位置（或指定位置）处周围代码<br><code>@&lt;number&gt;</code>：打印指定数目的数组元素<br><code>display &lt;exp&gt;</code></p>
+</li>
+<li><p><strong>信息</strong></p>
+<p><code>info frame</code>：打印当前栈帧<br><code>info registers</code>：打印寄存器<br><code>help</code>：帮助</p>
+</li>
+</ul>
+<h3 id="Profiling-and-Optimising"><a href="#Profiling-and-Optimising" class="headerlink" title="Profiling and Optimising"></a>Profiling and Optimising</h3><ul>
+<li>gprof</li>
+<li>valgrind</li>
+</ul>
+<h3 id="ARM开发工具链"><a href="#ARM开发工具链" class="headerlink" title="ARM开发工具链"></a>ARM开发工具链</h3><p>&emsp;&emsp; 参考 <a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">GNU Arm开发工具链</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Gaussian Elimination Method For Flip Game</title>
     <url>/2024/12/26/Gaussian-Elimination-Method-For-Flip-Game/</url>
     <content><![CDATA[<span id="more"></span>
 ]]></content>
       <categories>
         <category>算法</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Go Language Tutorial</title>
-    <url>/2024/12/15/Go-Language-Tutorial/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
-<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
-<ul>
-<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
-</ul>
-<span id="more"></span>
-
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Go 语言</category>
       </categories>
   </entry>
   <entry>
@@ -1186,6 +1169,23 @@
       </categories>
   </entry>
   <entry>
+    <title>Go Language Tutorial</title>
+    <url>/2024/12/15/Go-Language-Tutorial/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://golang.google.cn/">Go</a> 最初在 2007 年由工作在谷歌的 Robert Griesemer，Rob Pike 和 Ken Thompson（C语言和 Unix 的发明人）提出构想<br>，并在 2009 年正式发布。Go及其工具的目标致力于在编译、执行上的效率和表达能力，并致力于高效地编写可靠和健壮的程序。</p>
+<p>Go 的特性包括：高并发、灵活的数据抽象和面向对象和垃圾收集。<br>Go 的哲学包括：</p>
+<ul>
+<li>简洁（Simplicity）:没有隐式数值转换、没有构造器和析构器、没有运算符重载、没有支持默认参数值、不支持继承、不支持范型、不支持异常、不支持宏、不支持函数注、不支持线程本地存储。</li>
+</ul>
+<span id="more"></span>
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>设置代理（加速第三方模块的下载）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置代理</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.cn,direct</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查一下环境变量</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go <span class="built_in">env</span> | grep GOPROXY</span></span><br><span class="line">GOPROXY=&#x27;https://goproxy.cn,direct&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Go 语言</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Go 语言中的 Defer，Panic 和 Recover</title>
     <url>/2024/12/17/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84-Defer%EF%BC%8CPanic-%E5%92%8C-Recover/</url>
     <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go拥有一些通用的控制流机制：<code>if</code>，<code>for</code>，<code>switch</code>，<code>goto</code>。同时，Go可以使用 <code>go</code> 语句将代码运行在一个独立的 <code>goroutine</code> 中。但本文想要讨论一些不太常用的控制流机制：<code>defer</code>，<code>panic</code> 和 <code>recover</code>。</p>
@@ -1250,6 +1250,63 @@
       <categories>
         <category>信息安全</category>
         <category>网络安全</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Keras 深度学习框架使用总结</title>
+    <url>/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，<code>深度卷积神经网络</code>已经成为所有计算机视觉任务的首选算法。<code>深度学习</code>利用在计算机视觉上的两个关键思想：<code>卷积神经网络</code>和<code>反向传播</code>，并在数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。</p>
+<p>深度学习的框架包括<code>TensorFlow</code>、<code>PyTorch</code>和 <code>Keras</code>等，其中 <code>JAX</code>、<code>TensorFlow</code>和 <code>PyTorch</code>可以作为 <code>Keras</code> 的 <strong>后端(backend)</strong> 来进行张量处理、求微分等低层次的运算。本文就 <code>Keras</code> 的实践以及深度学习的一些理论进行总结。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Deep Learning with Python》 By【美】弗朗索瓦·肖莱<br>参考 《Advanced Deep Learning with Python》By【保加利亚】伊凡·瓦西列夫</p>
+</blockquote>
+<h2 id="神经网络的数学基础"><a href="#神经网络的数学基础" class="headerlink" title="神经网络的数学基础"></a>神经网络的数学基础</h2><p>参考 《DLP》</p>
+<h2 id="安装及初步使用"><a href="#安装及初步使用" class="headerlink" title="安装及初步使用"></a>安装及初步使用</h2><h3 id="安装依赖（可选）"><a href="#安装依赖（可选）" class="headerlink" title="安装依赖（可选）"></a>安装依赖（可选）</h3><ol>
+<li>如果主机上配备有 <code>GPU</code>，确保驱动正常工作。如果没有 NVIDIA 的 GPU，而是使用 Intel 的集成显卡，需要下载 <code>oneAPI</code> 计算平台和 <code>oneDNN</code> 深度学习加速库。<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libdnnl2 libdnnl-dev</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>如果使用树梅派等平台，可以安装 GPU 加速库（<code>OpenCL</code>和<code>OpenCV</code>），参考<a href="https://blog.csdn.net/qq_38342510/article/details/143098708">树莓派5 gpu 加速</a>。</p>
+<ol start="2">
+<li><p>安装 <code>BLAS</code> 线性代数库：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libopenblas-dev liblapack-dev</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 Python 科学计算套件：<code>Numpy</code>、<code>Scipy</code> 和 <code>matplotlib</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-numpy python3-scipy python3-matplotlib</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 <code>HDF5</code>，用于将 <code>Keras</code> 模型快速高效地保存到磁盘：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-h5py python3-h5py-serial</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 <code>CUDA</code>:<br>参考 <a href="/2023/04/12/CUDA-Tutorial/" title="CUDA Tutorial">[CUDA Tutorial]</a> 。</p>
+</li>
+</ol>
+<h3 id="安装-keras"><a href="#安装-keras" class="headerlink" title="安装 keras"></a>安装 keras</h3><ol>
+<li><p>新建虚拟环境并激活</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">python3 -m venv venv</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">source</span> venv/bin/activate</span></span><br><span class="line">(venv) $</span><br></pre></td></tr></table></figure></li>
+<li><p>安装后端（默认使用 <code>TensorFlow</code>）:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install tensorflow</span><br></pre></td></tr></table></figure>
+<p>在 <code>~/.keras/keras.json</code> 中可以修改使用的后端类型。</p>
+</li>
+<li><p>安装 <code>keras</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install keras</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="初步使用"><a href="#初步使用" class="headerlink" title="初步使用"></a>初步使用</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line">...</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792365</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792367</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line"><span class="number">2025</span>-04-02 <span class="number">22</span>:<span class="number">56</span>:<span class="number">47.795267</span>: I tensorflow/core/platform/cpu_feature_guard.cc:<span class="number">210</span>] This TensorFlow binary <span class="keyword">is</span> optimized to use available CPU instructions <span class="keyword">in</span> performance-critical operations.</span><br><span class="line">To enable the following instructions: AVX2 AVX_VNNI FMA, <span class="keyword">in</span> other operations, rebuild TensorFlow <span class="keyword">with</span> the appropriate compiler flags.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keras.__version__</span><br><span class="line"><span class="string">&#x27;3.9.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <a href="https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz">MNIST</a> 数据集，它是机器学习领域的一个经典数据库，用于手写数字的自动识别（最先用于邮政业务中的邮编识别）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"></span><br><span class="line">(train_images, train_labels), (test_images, test_labels) = mnist.load_data()</span><br></pre></td></tr></table></figure>
+
+<p>如果没有下载 <code>MNIST</code>，上述代码会自动将其下载到 <code>~/.keras/datasets/</code> 目录中。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h3 id="软件栈和硬件栈"><a href="#软件栈和硬件栈" class="headerlink" title="软件栈和硬件栈"></a>软件栈和硬件栈</h3><p><img src="/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/keras_stack.png"></p>
+<p>Keras 具有的特性：</p>
+<ul>
+<li>相同的代码可以无缝切换到不同的后端，也就可以在 CPU 和 GPU 上无缝切换运行。</li>
+<li>用户友好 API</li>
+<li>支持任意网络架构</li>
+</ul>
+]]></content>
+      <categories>
+        <category>人工智能</category>
+        <category>深度学习</category>
       </categories>
   </entry>
   <entry>
@@ -1806,222 +1863,6 @@
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux Kernel Security Summary</title>
-    <url>/2025/02/28/Linux-Kernel-Security-Summary/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>内核安全是系统安全体系中的核心，但系统管理者和内核开发者在刚开始追求性能和功能的时候，却往往会牺牲安全性。但随着 Linux 应用在更广泛和更复杂的系统中，对增强其安全机制的呼声也越来越强烈，也越来越重要。本文根据相关资料就内核安全的诸多方面做一些总结。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0<br>参考 <a href="https://blog.csdn.net/shizheng_Li/article/details/145945741">深入剖析Linux sudo的实现原理</a><br>参考 <a href="https://blog.csdn.net/xiao_yi_xiao/article/details/117735278">Linux ACL访问控制权限</a></p>
-</blockquote>
-<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
-<p>计算机系统应对安全的办法大致有四种：隔离、控制、混淆和监视。—— 《剖析》</p>
-</blockquote>
-<h2 id="自主访问控制"><a href="#自主访问控制" class="headerlink" title="自主访问控制"></a>自主访问控制</h2><p>自主访问控制是指<strong>由用户决定</strong>制定访问<strong>策略</strong>。</p>
-<p>Unix 的自主访问控制：进程操作文件（<code>r</code>,<code>w</code>, <code>x</code>），<code>root</code> 用户的进程几乎可以做任何事情。</p>
-<p>Linux 的自动访问控制：增加了 <code>ACL (Access Control List)</code>，规定某一个用户或者某一个组的操作许可；而是对特权操作细化，就是 <code>Capabilities</code> ，将属于 <code>root</code> 用户的特权细化为互不相关的几十个能力。</p>
-<h3 id="凭证-Credentials"><a href="#凭证-Credentials" class="headerlink" title="凭证 (Credentials)"></a>凭证 (Credentials)</h3><p><code>主体（Subjective）</code>凭证和<code>客体（Objective）</code>凭证：进程可以是主体，也可以是客体。</p>
-<blockquote>
-<p>在大多数情况下，主体凭证和客体凭证的值都是相同的，但在某些情况下内核代码会修改当前进程的主体凭证，以获得某种访问权限，待执行完任务后再将主体凭证改回原值。 ——《剖析》</p>
-</blockquote>
-<p>进程 TCB 结构体中和凭证相关的成员：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">  ...</span><br><span class="line">	/* Process credentials: */</span><br><span class="line">	</span><br><span class="line">	const struct cred __rcu		*ptracer_cred;    /* Tracer&#x27;s credentials at attach: */</span><br><span class="line">	const struct cred __rcu		*real_cred;       /* Objective and real subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*cred;            /* Effective (overridable) subjective task credentials (COW): */</span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>struct cred</code> 结构体中包含 <code>ID</code>(gid 和 uid)、<code>能力集</code>、<code>密钥环（keyring）</code>及<code>强制访问控制</code>相关的成员。</p>
-<p>可以读取 <code>/proc/[pid]/status</code> 查看进程凭证。</p>
-<h4 id="关于-uid、euid、suid-和-fuid"><a href="#关于-uid、euid、suid-和-fuid" class="headerlink" title="关于 uid、euid、suid 和 fuid"></a>关于 uid、euid、suid 和 fuid</h4><p><code>euid</code> 和提升权限有关。</p>
-<p>初始时，<code>suid</code> 为 0，当需要提升进程权限时，<code>suid</code> 和 <code>euid</code> 做交换，此时进程拥有特权；执行完特权操作，再将两者做一次交换，进程就失去特权。</p>
-<p><code>gid</code> 和 <code>uid</code> 类似，但 <code>group id</code> 与特权无关，<code>egid</code> 或者别的 <code>gid</code> 为 0，进程不会因此获得特权。</p>
-<p>（内核在判断是否赋予特权时，依据的是 <code>capabilities</code>，不是 <code>uid</code>）。</p>
-<h4 id="相关系统调用"><a href="#相关系统调用" class="headerlink" title="相关系统调用"></a>相关系统调用</h4><p><code>setuid</code> 和 <code>seteuid</code>，调用这些系统调用本身也需要特权。</p>
-<h4 id="sudo-命令的实现原理"><a href="#sudo-命令的实现原理" class="headerlink" title="sudo 命令的实现原理"></a>sudo 命令的实现原理</h4><p>a. 利用 <code>euid</code> 进行临时权限提升</p>
-<p>b. <code>setuid</code>机制</p>
-<p><code>sudo</code>本身是一个二进制可执行文件（通常位于&#x2F;usr&#x2F;bin&#x2F;sudo），它被设置了<code>setuid</code>位。通过<code>ls -l</code>查看，可以看到：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rwsr-xr-x 1 root root  sudo</span><br></pre></td></tr></table></figure>
-
-<p>这里的<code>s</code>表示<code>setuid</code>位。当普通用户运行<code>sudo</code>时，进程的<code>EUID</code>会自动变为文件拥有者的<code>UID</code>（即<code>root</code>，UID&#x3D;0），从而具备<code>root</code>权限。</p>
-<p>c. 配置文件解析</p>
-<p><code>sudo</code>启动后，首先以<code>root</code>权限运行，然后解析<code>/etc/sudoers</code>文件，检查调用者的权限。它使用严格的语法解析器，确保规则匹配。</p>
-<p>d. 安全检查</p>
-<p>在执行命令前，<code>sudo</code>会进行多项安全检查，例如验证用户密码、检查命令是否在允许范围内等。这些检查防止了未授权的操作。</p>
-<p>e. 执行目标命令<br><code>sudo</code>通过<code>fork</code>创建一个子进程，并在子进程中调用<code>setuid</code>或<code>seteuid</code>将<code>EUID</code>切换为目标用户ID（通常是<code>root</code>）。然后，它使用<code>execvp</code>或类似函数执行用户指定的命令。</p>
-<h3 id="客体标记和文件属性"><a href="#客体标记和文件属性" class="headerlink" title="客体标记和文件属性"></a>客体标记和文件属性</h3><p>在 <code>struct inode</code> 结构体中保存了文件属性，这些属性包括<code>允许位</code>、<code>属主和属组</code>、<code>ACL相关</code>、<code>强制访问控制</code>等。</p>
-<p>相关的系统调用：<code>chown</code>(需要特权) 、<code>fchown</code>。</p>
-<p>查看：<code>stat</code>、<code>fstat</code> 和 <code>lstat</code> 。</p>
-<p>其他客体：<code>目录</code>（一种特殊的文件）、<code>管道</code>、<code>设备</code>、<code>socket</code>、<code>IPC</code>、<code>Key（密钥）</code>。</p>
-<p>针对 <code>IPC</code> 和 <code>密钥</code>有专门的系统调用查看和修改属性。</p>
-<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>主体凭证和客体标记都设置好后，就可以通过系统调用完成主体对客体的操作，更重要的是，内核需要在系统调用中判断相应的操作许可，进而实现访问控制。</p>
-<p>操作：<code>读</code>、<code>写</code>、<code>执行</code> 和部分客体特有的操作。</p>
-<h4 id="允许位"><a href="#允许位" class="headerlink" title="允许位"></a>允许位</h4><p>普通文件使用 9 个bit 的允许位。</p>
-<h4 id="设置位"><a href="#设置位" class="headerlink" title="设置位"></a>设置位</h4><p>Unix 在 9 个允许位的基础上增加了允许位 <code>setuid</code>、<code>setgid</code>、<code>set-other-bit or sticky bit</code>，这三个允许位与操作许无关。</p>
-<p><code>setuid</code>的机制 ： 进程调用 <code>execve</code> 执行了允许位 <code>setuid</code> 为 1 的文件后，进程的 <code>euid</code>，还有 Linux 特有的 <code>fsuid</code>，被改变为所执行文件的属主 id，于是，进程可以操作一些之前不能操作的客体。比如 <code>/usr/bin/sudo</code> 文件。</p>
-<p><code>setgid</code>的机制 ： 与 <code>setuid</code> 类似。</p>
-<p><code>sticky bit</code>的机制 ：在 Linux 中不再使用。</p>
-<h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>chmod</code> 和 <code>fchmod</code> 可以修改文件和目录上的允许位。</p>
-<h3 id="ACL（访问控制列表）"><a href="#ACL（访问控制列表）" class="headerlink" title="ACL（访问控制列表）"></a>ACL（访问控制列表）</h3><p><code>ACL</code> 只作用于文件和目录。在普通权限中，用户对文件只有三种身份，就是属主、属组和其他；但在实际场景中，这三种身份是不够的，Linux 使用 ACL 对此进行了扩展，来实现更细粒度的访问控制。</p>
-<p>在很多 Linux 系统上，<code>ACL</code> 权限默认是开启的，可以通过查看根分区文件系统信息进行确认：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> dumpe2fs -h /dev/sdx</span></span><br><span class="line">...</span><br><span class="line">Filesystem flags:         unsigned_directory_hash</span><br><span class="line">Default mount options:    user_xattr acl</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>在 <code>Default mount options</code> 中可以看到是否开启 <code>ACL</code> 权限。</p>
-<h4 id="扩展属性"><a href="#扩展属性" class="headerlink" title="扩展属性"></a>扩展属性</h4><p>在 <code>inode</code> 结构体中有指向和 <code>ACL</code> 相关的扩展属性<code>i_acl</code> 及 <code>i_default_acl</code> 的指针。</p>
-<p>这两个属性的类型是 <code>struct posix_acl</code>，它是一个变长数组。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span> &#123;</span></span><br><span class="line">	<span class="type">short</span>			e_tag;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">short</span>		e_perm;</span><br><span class="line">	<span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">		<span class="type">kuid_t</span>		e_uid;</span><br><span class="line">		<span class="type">kgid_t</span>		e_gid;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl</span> &#123;</span></span><br><span class="line">	<span class="type">refcount_t</span>		a_refcount;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">rcu_head</span>		<span class="title">a_rcu</span>;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		a_count;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span>	<span class="title">a_entries</span>[0];</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><code>struct posix_acl_entry</code> 可以记录一个用户或者一个组的操作许可，也就实现了细粒度访问控制。</p>
-<h4 id="系统调用-1"><a href="#系统调用-1" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>setxattr</code> 、 <code>getxattr</code>、<code>removexattr</code> 等</p>
-<h4 id="权限设置指导"><a href="#权限设置指导" class="headerlink" title="权限设置指导"></a>权限设置指导</h4><p>a.  查看 <code>ACL</code> 权限</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl &lt;file&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>b.  设置 <code>ACL</code> 权限到特定用户</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chown</span> root:my_group tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 700 tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> useradd test_user</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m u:test_user:rx tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
-
-<p>c.  设置 <code>ACL</code> 权限到特定用户组</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> groupadd test_group</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m g:test_group:rwx tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">group:test_group:rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
-
-<p>d. 删除 <code>ACL</code> 权限</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x u:test_user tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x g:test_group tmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除所有权限</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> serfacl -b tmp</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Capabilities（能力）"><a href="#Capabilities（能力）" class="headerlink" title="Capabilities（能力）"></a>Capabilities（能力）</h3><p><strong>特权机制</strong>：一些操作无法纳入允许位控制，如重启系统或者设置系统时间；另外一类是超越允许位控制。</p>
-<blockquote>
-<p>如果没有设计特权机制，为了解决设置系统时间这类任务，必须要引入新的客体类型，或者引入一种新的文件类型（如 SELinux）。 —— 《剖析》</p>
-</blockquote>
-<p>Linux 参考 <code>IEEE 1003.1e</code> 和 <code>IEEE 1003.2c</code> 实现了自己的能力机制。</p>
-<h4 id="能力分类"><a href="#能力分类" class="headerlink" title="能力分类"></a>能力分类</h4><ul>
-<li>文件：如 <code>chown</code>、<code>dac_override</code>、<code>fowner</code> 等。</li>
-<li>进程：如 <code>kill</code>、<code>setuid</code> 和 <code>setgid</code>及 <code>setpcap</code> 、<code>sys_chroot</code> 、<code>sys_nice</code> 等。</li>
-<li>网络：如 <code>net_bind_service</code>（绑定系统特权端口）、<code>net_admin</code> 和 <code>net_raw</code> 等。</li>
-<li>ipc: 如 <code>ipc_lock</code>(不受 rlimit 锁定内存限制)</li>
-<li>系统：如 <code>block_suspend</code>、<code>sys_admin</code>、<code>sys_boot</code>、<code>sys_module</code>、<code>sys_time</code>、<code>sys_resource</code> 和 <code>wake_alarm</code> 等。</li>
-<li>设备：如 <code>mknod</code></li>
-<li>审计：如 <code>audit_write</code> 和 <code>audit_control</code></li>
-<li>强制访问控制（MAC）</li>
-</ul>
-<h4 id="能力集合"><a href="#能力集合" class="headerlink" title="能力集合"></a>能力集合</h4><p><code>struct cred</code> 结构体中可以看到多个能力集：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cred</span> &#123;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_inheritable; <span class="comment">/* caps our children can inherit */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_permitted;	<span class="comment">/* caps we&#x27;re permitted */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_effective;	<span class="comment">/* caps we can actually use */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_bset;	<span class="comment">/* capability bounding set */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_ambient;	<span class="comment">/* Ambient capability set */</span></span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><code>Ambient</code> 和 <code>Inheritable</code> 集合的意义就在于可以帮助我们在进程树或 <code>namespace</code> 的范围内创建一个允许任意进程使用某些 <code>capabilities</code> 的环境。</p>
-<h4 id="能力机制"><a href="#能力机制" class="headerlink" title="能力机制"></a>能力机制</h4><blockquote>
-<p>Linux 内核在做特权判断时，判断的是进程凭证中的有效能力集中是否具备所要求的能力。—— 《剖析》</p>
-</blockquote>
-<blockquote>
-<p>进程在execve 后的允许能力集有两个来源，一个是进程的可继承能力集和文件的可继承能力集的交集，另一个是文件的允许能力集和进程的限制能力集的交集。—— 《剖析》</p>
-</blockquote>
-<p><code>capget</code> 和 <code>capset</code> 系统调用。</p>
-<h4 id="向后兼容"><a href="#向后兼容" class="headerlink" title="向后兼容"></a>向后兼容</h4><blockquote>
-<p>Linux 内核判断进程是否进行特权操作的唯一标准就是相关的能力是否在进程的有效能力集中。Linux 内核中没有任何依据用户 id 进行授权的逻辑。</p>
-</blockquote>
-<blockquote>
-<p>为了做到向后兼容，内核在涉及用户id 变化的系统调用中（setuid、seteuid、setreuid、setresuid、setfsuid）增加了调整进程的能力集的逻辑。</p>
-</blockquote>
-<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>通过查看 <code>/proc/self/status</code> 中的 <code>CapEff</code> 项获取当前进程的有效能力集：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status| grep Cap</span></span><br><span class="line">CapInh: 0000000000000000</span><br><span class="line">CapPrm: 0000000000000000</span><br><span class="line">CapEff: 0000000000000000</span><br><span class="line">CapBnd: 000001ffffffffff</span><br><span class="line">CapAmb: 0000000000000000</span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>capsh</code> 解析16进制数中每个 1 bit所对应的能力：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> capsh --decode=000001ffffffffff</span></span><br><span class="line">0x000001ffffffffff=cap_chown,cap_dac_override,cap_dac_read_search ...</span><br></pre></td></tr></table></figure>
-
-<p><code>ping</code> 命令没有使用<code>能力</code>，而是使用了 <code>setuid</code> 允许位来做特权提升。可以自行编译 ping 来使用<code>能力</code>：</p>
-<p>新编译的 <code>ping</code> 并没有设置 <code>suid</code>:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ls</span> -l builddir/ping/ping</span></span><br><span class="line">-rwxr-xr-x 1 mimose mimose 311960  3月 4日 12:30 builddir/ping/ping</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">setcap</span> <span class="string">&#x27;cap_net_raw+p&#x27;</span> builddir/ping/ping</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">getcap</span> builddir/ping/ping</span></span><br><span class="line">builddir/ping/ping cap_net_raw=p</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>参考 <a href="https://blog.csdn.net/demon7552003/article/details/117161829">Linux Capabilities 入门教程</a></p>
-</blockquote>
-<h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h3 id="SELinux"><a href="#SELinux" class="headerlink" title="SELinux"></a>SELinux</h3><p><code>SELinux</code> 的安全机制包括：<code>基于角色的访问控制（RBAC）</code>、<code>类型增强（TE）</code> 和<code>多级安全（MLS）</code>。</p>
-<p><code>类型增强</code>机制下，进程和文件都有一个类型。</p>
-<p><code>MLS</code> 机制来源于 <code>BLP</code> 模型，<code>BLP</code> 模型下，进程和文件都有安全标签，标签有两项：敏感度和组别。</p>
-<ul>
-<li>低敏感的进程不能读高敏感度文件，高敏感度进程不能写低敏感度文件。</li>
-<li>当进程的组别包含或者等于文件的组别时，进程可以操作文件。</li>
-</ul>
-<h3 id="SMACK"><a href="#SMACK" class="headerlink" title="SMACK"></a>SMACK</h3><h3 id="Tomovo"><a href="#Tomovo" class="headerlink" title="Tomovo"></a>Tomovo</h3><h3 id="AppArmor"><a href="#AppArmor" class="headerlink" title="AppArmor"></a>AppArmor</h3><blockquote>
-<p>参考 <a href="https://blog.axiaoxin.com/post/apparmor/">AppArmor使用指南：Linux应用安全防护利器</a></p>
-</blockquote>
-<p><code>AppArmor</code> 的机制也是 <code>类型增强</code>，类型也可以被称为 <code>域</code>。<code>AppArmor</code> 的目标是限制应用程序的权限，从而保护操作系统和应用程序免受内部和外部威胁，包括<code>零日攻击</code>。它通过定义每个应用程序的安全配置文件来实现此目的，这些配置文件指定了应用程序可以访问的资源和允许的操作。</p>
-<p>即使应用程序存在漏洞，<code>AppArmor</code> 也能通过限制其行为，来阻止漏洞被利用。**<code>AppArmor</code> 的核心思想是将访问控制属性绑定到程序而不是用户。** 它也被称为 “应用装甲”。</p>
-<p><code>AppArmor</code> 基于文件路径进行访问控制。</p>
-<p>查看安装状态：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-status</span></span><br><span class="line">63 profiles are loaded.</span><br><span class="line">57 profiles are in enforce mode.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>在 <code>raspi OS</code>上需要修改 <code>cmdline.txt</code>：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.... lsm=apparmor</span><br></pre></td></tr></table></figure>
-
-<p><code>AppArmor</code> 的配置文件：</p>
-<ul>
-<li><strong>强制模式（enforce）</strong>：在此模式下，<code>AppArmor</code> 将强制执行配置文件中定义的策略，并阻止任何违反规则的操作，并将违规尝试记录到日志中。</li>
-<li><strong>抱怨模式（complain）</strong>：在此模式下，AppArmor 不会阻止违反规则的操作，但会将违规尝试记录到日志中。此模式对于测试和开发新的配置文件很有用。</li>
-</ul>
-<p>使用 <code>aa-complain</code> 命令将配置文件设置为抱怨模式，使用 <code>aa-enforce</code> 命令将其设置为强制模式。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-complain /path/to/bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-enforce /path/to/bin</span></span><br></pre></td></tr></table></figure>
-
-<p>为应用程序创建一个新的配置文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-genprof /usr/bin/myapp</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Yama"><a href="#Yama" class="headerlink" title="Yama"></a>Yama</h3><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h3 id="命名空间-namespace"><a href="#命名空间-namespace" class="headerlink" title="命名空间(namespace)"></a>命名空间(namespace)</h3><p>针对 <code>chroot</code> 的安全漏洞。</p>
-<p><strong>a. 挂载命名空间（mount)</strong></p>
-<p>Linux 通过挂载命名空间可以提供比 <code>chroot</code> 机制更完备的隔离方案。通过挂载命令空间，进程和一棵挂载树相联系，改变了进程的挂载命名空间，进程就和另一颗挂载树相对应。</p>
-<p>虽然 <code>mount ns</code> 限制了进程对文件的访问，但攻击者仍然可以利用<strong>进程间通信</strong>将本不能被进程访问的文件内容暴露给进程。所以，需要引入进程间通信命名空间。</p>
-<p><strong>b. 进程间通信命名空间</strong><br>进程间通信的标识存储在进程间通信命名空间中，进程中通信命名空间不同，进程寻找到的进程间通信实例就不同。</p>
-<p><strong>c. Unix 分时命名空间(UTS)</strong></p>
-<p><strong>d. 进程号命名空间</strong><br>使得容器中的进程不能够看到容器外的进程（比如通过 <code>kill</code> 命令向容器外的进程发送信号）。</p>
-<p><strong>e. 网络命名空间</strong></p>
-<p><strong>f. 用户命名空间</strong></p>
-<p>在 <code>/proc/[pid]/ns</code> 下可以看到一些进程的命名空间信息。</p>
-<blockquote>
-<p>实际上，命名空间的开发和设计只能是量力而行和适可而止，因为在宏内核上理想的和绝对的隔离是不可能做到的。</p>
-</blockquote>
-<h3 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h3><blockquote>
-<p>参考 <a href="https://loverhythm1990.github.io/2024/10/01/cgroup-v2/">使用 cgroupv2 限制进程资源使用</a><br>参考 <a href="http://arthurchiao.art/blog/cgroupv2-zh/">Control Group v2 - Kerneldoc</a></p>
-</blockquote>
-<p>一种安全攻击（Fork_bomb: 耗尽系统进程号资源）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bomb() &#123;</span><br><span class="line">   bomb | bomb &amp;</span><br><span class="line">&#125;</span><br><span class="line">bomb</span><br></pre></td></tr></table></figure>
-
-<p>Unix 为应对上述安全挑战，提供了<code>配额（quota）</code> 和 <code>资源限制（rlimit）</code>机制。但存在<code>分散式管理</code>和 <code>缺乏统一资源管理机制</code>的问题。</p>
-<p><code>CGroups</code> 控制组来源于 Google 开发的 <code>Process Containers</code> 的模块。其设计理念是将框架和具体的资源管理分离。Linux 内核子系统 <code>cgroup</code> 提供的用户态和内核的接口是名为<code>cgroup</code>的伪文件系统。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建 CGroup2 类型的控制组</span></span><br><span class="line">mkdir -p /sys/fs/cgroup/cgrp1/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改 CPU 配额为 50%</span></span><br><span class="line">echo &quot;50000 100000&quot; &gt; /sys/fs/cgroup/cgrp1/cpu.max</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将目标进程加入到该控制组，假设目标进程的 pid 为 1604</span></span><br><span class="line">echo 1604 &gt; /sys/fs/cgroup/cgrp1/cgroup.procs</span><br></pre></td></tr></table></figure>
-
-<p>设计原则总结如下：</p>
-<ul>
-<li>以进程为控制单位</li>
-<li>集中式管理</li>
-<li>功能模块化</li>
-<li>动态调配</li>
-<li>层级结构</li>
-<li>多对多结构：一个进程可以加入多个控制组，一个控制组可以包含度多个进程。</li>
-</ul>
-<p><code>cgroup v2</code> 是现代容器化技术（如 <code>Docker</code>、<code>Kubernertes</code>）的核心组件之一。它用于限制容器的资源使用，确保容器之间的资源隔离和公平分配。例如：</p>
-<ul>
-<li><code>Docker</code> 使用 <code>cgroup v2</code> 限制容器的 <code>CPU</code>、<code>内存</code> 和 <code>I/O</code>。</li>
-<li><code>Kubernetes</code> 使用 <code>cgroup v2</code> 实现 <code>Pod</code> 的资源限制和 <code>QoS（服务质量）</code>策略。</li>
-</ul>
-<h3 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h3><blockquote>
-<p>参考 <a href="https://blog.csdn.net/qq_44846324/article/details/121731640">Sandbox的安全机制 —— 使用 seccomp</a></p>
-</blockquote>
-<p><code>seccomp</code> 是内核的一个安全特性。它的原理是限制用户进程可以使用的系统调用。因此，<code>seccomp</code> 可以与其他安全技术一起用于构建<code>沙箱</code>。</p>
-<p>三种模式：</p>
-<ul>
-<li><strong>DISABLED</strong>: 不使用 <code>seccomp</code>，进程的系统调用可以不受限制。</li>
-<li><strong>STRICT</strong>：只能使用 4 个系统调用：<code>read</code>、<code>write</code>、<code>exit</code> 和 <code>sigreturn</code>。</li>
-<li><strong>FILTER</strong>：对系统调用的限制被存入 <code>seccomp</code>结构体的第二个成员 <code>filter</code> 中，由 <code>filter</code> 决定系统调用是否可以使用。</li>
-</ul>
-<p><code>BPF 虚拟机</code>运行 <code>filter</code> 链中定义的<code>BPF 指令</code>。</p>
-<p>在 <code>/proc/self/status</code> 文件中会显示当前进程的 <code>seccomp</code> 状态：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status</span></span><br><span class="line">...</span><br><span class="line">CapInh:	0000000000000000</span><br><span class="line">CapPrm:	0000000000000000</span><br><span class="line">CapEff:	0000000000000000</span><br><span class="line">CapBnd:	000001ffffffffff</span><br><span class="line">CapAmb:	0000000000000000</span><br><span class="line">NoNewPrivs:	0</span><br><span class="line">Seccomp:	0</span><br><span class="line">Seccomp_filters:	0</span><br><span class="line">Speculation_Store_Bypass:	thread vulnerable</span><br><span class="line">SpeculationIndirectBranch:	unknown</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>例如，使用 <code>seccomp</code> 限制 <code>execve</code> 系统调用的使用：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    scmp_filter_ctx ctx;</span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW);</span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>);</span><br><span class="line">    seccomp_load(ctx);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *filename = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *argv[] = &#123;<span class="string">&quot;/bin/sh&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="type">char</span> *envp[] = &#123;<span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line">    syscall(SYS_execve, filename, argv, envp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR"></a>ASLR</h3><p><code>ASLR</code> 可以对<code>栈（stack）</code>、<code>堆（heap）</code>、<code>内存映射（mmap）</code>、<code>vdso</code> 的地址做随机化处理。所谓随机化，就是内存区域的起点在一定范围内浮动，而浮动的依据是内核随机数设备产生的随机数。</p>
-<p>随机化最好的是位置无关的可执行文件，除了 <code>vsyscall</code> 区，其余区域都做了地址随机化。<code>vsyscall</code>不能做随机化是因为它本身是 <code>Linux 内核 ABI</code> 的一部分。如果不考虑兼容老旧应用，可以在编译内核时把对 <code>vsyscall</code> 的支持去掉。</p>
-<h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2><h3 id="Linux-CVE"><a href="#Linux-CVE" class="headerlink" title="Linux CVE"></a>Linux CVE</h3><p><a href="https://www.cvedetails.com/product/47/Linux-Linux-Kernel.html">Linux CVE 列表</a></p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>信息安全</category>
         <category>Linux Kernel</category>
       </categories>
   </entry>
@@ -3541,6 +3382,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -3629,46 +3492,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
-<span id="more"></span>
-
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>flex 规范参考</title>
-    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
-<span id="more"></span>
-
-<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>编译器</category>
-      </categories>
-      <tags>
-        <tag>微型语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Wireless Network Security Analysis</title>
     <url>/2024/12/18/Wireless-Network-Security-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文就无线网络安全协议（如 WEP、WPA&#x2F;WPA2 等）的流程、安全性等做一些总结。</p>
@@ -3720,6 +3543,24 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
         <category>信息安全</category>
         <category>网络安全</category>
       </categories>
+  </entry>
+  <entry>
+    <title>flex 规范参考</title>
+    <url>/2022/08/28/flex-%E8%A7%84%E8%8C%83%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; <a href="https://github.com/westes/flex/">Flex</a> 是扫描器（scanner）生成工具，在编译器开发中，则可以作为词法分析器。<strong>Flex</strong> 通过<code>正则表达式</code>和部分C代码片段对输入文本进行扫描和匹配，并可以输出 Token 流。这些 Token 流可以作为下一级工具（如语法分析工具 <code>Bison</code>）的输入。<br>&emsp;&emsp; <strong>Flex</strong> 是由<code>ratfor</code>语言写成的<code>lex</code>工具演化而来的，被命名为 “Flex”，意为 “快速词法分析器生成程序”（Fast Lexical Analyzer Generator）。</p>
+<span id="more"></span>
+
+<h2 id="结构规范"><a href="#结构规范" class="headerlink" title="结构规范"></a>结构规范</h2><p>flex 程序由三部分构成：定义部分、规则部分和用户子例程（subroutine）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">// C头文件 或 变量声明</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">...定义...</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line">...规则...</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">...用户子例程...</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>编译器</category>
+      </categories>
+      <tags>
+        <tag>微型语言</tag>
+      </tags>
   </entry>
   <entry>
     <title>vim配置及命令手册</title>
@@ -4877,6 +4718,222 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
+    <title>Linux Kernel Security Summary</title>
+    <url>/2025/02/28/Linux-Kernel-Security-Summary/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>内核安全是系统安全体系中的核心，但系统管理者和内核开发者在刚开始追求性能和功能的时候，却往往会牺牲安全性。但随着 Linux 应用在更广泛和更复杂的系统中，对增强其安全机制的呼声也越来越强烈，也越来越重要。本文根据相关资料就内核安全的诸多方面做一些总结。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 《Linx 内核安全模块深入剖析》by 李志<br>参考 《Linux系统安全：纵深防御、安全扫描与入侵检测》by 胥峰<br>参考  <a href="https://xz.aliyun.com/news/14272?time__1311=eqUxuiDtitDQi=D8D9DBLad2rqIzTKreO4D&u_atoken=63518ee0fb5b3e760cf728d9278c8b1b&u_asig=0a47314717410058547638926e0033">Linux内核安全探究：漏洞利用、防御机制与调试技术</a> By Ba1_Ma0<br>参考 <a href="https://blog.csdn.net/shizheng_Li/article/details/145945741">深入剖析Linux sudo的实现原理</a><br>参考 <a href="https://blog.csdn.net/xiao_yi_xiao/article/details/117735278">Linux ACL访问控制权限</a></p>
+</blockquote>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><blockquote>
+<p>计算机系统应对安全的办法大致有四种：隔离、控制、混淆和监视。—— 《剖析》</p>
+</blockquote>
+<h2 id="自主访问控制"><a href="#自主访问控制" class="headerlink" title="自主访问控制"></a>自主访问控制</h2><p>自主访问控制是指<strong>由用户决定</strong>制定访问<strong>策略</strong>。</p>
+<p>Unix 的自主访问控制：进程操作文件（<code>r</code>,<code>w</code>, <code>x</code>），<code>root</code> 用户的进程几乎可以做任何事情。</p>
+<p>Linux 的自动访问控制：增加了 <code>ACL (Access Control List)</code>，规定某一个用户或者某一个组的操作许可；而是对特权操作细化，就是 <code>Capabilities</code> ，将属于 <code>root</code> 用户的特权细化为互不相关的几十个能力。</p>
+<h3 id="凭证-Credentials"><a href="#凭证-Credentials" class="headerlink" title="凭证 (Credentials)"></a>凭证 (Credentials)</h3><p><code>主体（Subjective）</code>凭证和<code>客体（Objective）</code>凭证：进程可以是主体，也可以是客体。</p>
+<blockquote>
+<p>在大多数情况下，主体凭证和客体凭证的值都是相同的，但在某些情况下内核代码会修改当前进程的主体凭证，以获得某种访问权限，待执行完任务后再将主体凭证改回原值。 ——《剖析》</p>
+</blockquote>
+<p>进程 TCB 结构体中和凭证相关的成员：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">struct task_struct &#123;</span><br><span class="line">  ...</span><br><span class="line">	/* Process credentials: */</span><br><span class="line">	</span><br><span class="line">	const struct cred __rcu		*ptracer_cred;    /* Tracer&#x27;s credentials at attach: */</span><br><span class="line">	const struct cred __rcu		*real_cred;       /* Objective and real subjective task credentials (COW): */</span><br><span class="line">	const struct cred __rcu		*cred;            /* Effective (overridable) subjective task credentials (COW): */</span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>struct cred</code> 结构体中包含 <code>ID</code>(gid 和 uid)、<code>能力集</code>、<code>密钥环（keyring）</code>及<code>强制访问控制</code>相关的成员。</p>
+<p>可以读取 <code>/proc/[pid]/status</code> 查看进程凭证。</p>
+<h4 id="关于-uid、euid、suid-和-fuid"><a href="#关于-uid、euid、suid-和-fuid" class="headerlink" title="关于 uid、euid、suid 和 fuid"></a>关于 uid、euid、suid 和 fuid</h4><p><code>euid</code> 和提升权限有关。</p>
+<p>初始时，<code>suid</code> 为 0，当需要提升进程权限时，<code>suid</code> 和 <code>euid</code> 做交换，此时进程拥有特权；执行完特权操作，再将两者做一次交换，进程就失去特权。</p>
+<p><code>gid</code> 和 <code>uid</code> 类似，但 <code>group id</code> 与特权无关，<code>egid</code> 或者别的 <code>gid</code> 为 0，进程不会因此获得特权。</p>
+<p>（内核在判断是否赋予特权时，依据的是 <code>capabilities</code>，不是 <code>uid</code>）。</p>
+<h4 id="相关系统调用"><a href="#相关系统调用" class="headerlink" title="相关系统调用"></a>相关系统调用</h4><p><code>setuid</code> 和 <code>seteuid</code>，调用这些系统调用本身也需要特权。</p>
+<h4 id="sudo-命令的实现原理"><a href="#sudo-命令的实现原理" class="headerlink" title="sudo 命令的实现原理"></a>sudo 命令的实现原理</h4><p>a. 利用 <code>euid</code> 进行临时权限提升</p>
+<p>b. <code>setuid</code>机制</p>
+<p><code>sudo</code>本身是一个二进制可执行文件（通常位于&#x2F;usr&#x2F;bin&#x2F;sudo），它被设置了<code>setuid</code>位。通过<code>ls -l</code>查看，可以看到：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rwsr-xr-x 1 root root  sudo</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>s</code>表示<code>setuid</code>位。当普通用户运行<code>sudo</code>时，进程的<code>EUID</code>会自动变为文件拥有者的<code>UID</code>（即<code>root</code>，UID&#x3D;0），从而具备<code>root</code>权限。</p>
+<p>c. 配置文件解析</p>
+<p><code>sudo</code>启动后，首先以<code>root</code>权限运行，然后解析<code>/etc/sudoers</code>文件，检查调用者的权限。它使用严格的语法解析器，确保规则匹配。</p>
+<p>d. 安全检查</p>
+<p>在执行命令前，<code>sudo</code>会进行多项安全检查，例如验证用户密码、检查命令是否在允许范围内等。这些检查防止了未授权的操作。</p>
+<p>e. 执行目标命令<br><code>sudo</code>通过<code>fork</code>创建一个子进程，并在子进程中调用<code>setuid</code>或<code>seteuid</code>将<code>EUID</code>切换为目标用户ID（通常是<code>root</code>）。然后，它使用<code>execvp</code>或类似函数执行用户指定的命令。</p>
+<h3 id="客体标记和文件属性"><a href="#客体标记和文件属性" class="headerlink" title="客体标记和文件属性"></a>客体标记和文件属性</h3><p>在 <code>struct inode</code> 结构体中保存了文件属性，这些属性包括<code>允许位</code>、<code>属主和属组</code>、<code>ACL相关</code>、<code>强制访问控制</code>等。</p>
+<p>相关的系统调用：<code>chown</code>(需要特权) 、<code>fchown</code>。</p>
+<p>查看：<code>stat</code>、<code>fstat</code> 和 <code>lstat</code> 。</p>
+<p>其他客体：<code>目录</code>（一种特殊的文件）、<code>管道</code>、<code>设备</code>、<code>socket</code>、<code>IPC</code>、<code>Key（密钥）</code>。</p>
+<p>针对 <code>IPC</code> 和 <code>密钥</code>有专门的系统调用查看和修改属性。</p>
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>主体凭证和客体标记都设置好后，就可以通过系统调用完成主体对客体的操作，更重要的是，内核需要在系统调用中判断相应的操作许可，进而实现访问控制。</p>
+<p>操作：<code>读</code>、<code>写</code>、<code>执行</code> 和部分客体特有的操作。</p>
+<h4 id="允许位"><a href="#允许位" class="headerlink" title="允许位"></a>允许位</h4><p>普通文件使用 9 个bit 的允许位。</p>
+<h4 id="设置位"><a href="#设置位" class="headerlink" title="设置位"></a>设置位</h4><p>Unix 在 9 个允许位的基础上增加了允许位 <code>setuid</code>、<code>setgid</code>、<code>set-other-bit or sticky bit</code>，这三个允许位与操作许无关。</p>
+<p><code>setuid</code>的机制 ： 进程调用 <code>execve</code> 执行了允许位 <code>setuid</code> 为 1 的文件后，进程的 <code>euid</code>，还有 Linux 特有的 <code>fsuid</code>，被改变为所执行文件的属主 id，于是，进程可以操作一些之前不能操作的客体。比如 <code>/usr/bin/sudo</code> 文件。</p>
+<p><code>setgid</code>的机制 ： 与 <code>setuid</code> 类似。</p>
+<p><code>sticky bit</code>的机制 ：在 Linux 中不再使用。</p>
+<h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>chmod</code> 和 <code>fchmod</code> 可以修改文件和目录上的允许位。</p>
+<h3 id="ACL（访问控制列表）"><a href="#ACL（访问控制列表）" class="headerlink" title="ACL（访问控制列表）"></a>ACL（访问控制列表）</h3><p><code>ACL</code> 只作用于文件和目录。在普通权限中，用户对文件只有三种身份，就是属主、属组和其他；但在实际场景中，这三种身份是不够的，Linux 使用 ACL 对此进行了扩展，来实现更细粒度的访问控制。</p>
+<p>在很多 Linux 系统上，<code>ACL</code> 权限默认是开启的，可以通过查看根分区文件系统信息进行确认：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> dumpe2fs -h /dev/sdx</span></span><br><span class="line">...</span><br><span class="line">Filesystem flags:         unsigned_directory_hash</span><br><span class="line">Default mount options:    user_xattr acl</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>在 <code>Default mount options</code> 中可以看到是否开启 <code>ACL</code> 权限。</p>
+<h4 id="扩展属性"><a href="#扩展属性" class="headerlink" title="扩展属性"></a>扩展属性</h4><p>在 <code>inode</code> 结构体中有指向和 <code>ACL</code> 相关的扩展属性<code>i_acl</code> 及 <code>i_default_acl</code> 的指针。</p>
+<p>这两个属性的类型是 <code>struct posix_acl</code>，它是一个变长数组。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span> &#123;</span></span><br><span class="line">	<span class="type">short</span>			e_tag;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">short</span>		e_perm;</span><br><span class="line">	<span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">		<span class="type">kuid_t</span>		e_uid;</span><br><span class="line">		<span class="type">kgid_t</span>		e_gid;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">posix_acl</span> &#123;</span></span><br><span class="line">	<span class="type">refcount_t</span>		a_refcount;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">rcu_head</span>		<span class="title">a_rcu</span>;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span>		a_count;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">posix_acl_entry</span>	<span class="title">a_entries</span>[0];</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>struct posix_acl_entry</code> 可以记录一个用户或者一个组的操作许可，也就实现了细粒度访问控制。</p>
+<h4 id="系统调用-1"><a href="#系统调用-1" class="headerlink" title="系统调用"></a>系统调用</h4><p><code>setxattr</code> 、 <code>getxattr</code>、<code>removexattr</code> 等</p>
+<h4 id="权限设置指导"><a href="#权限设置指导" class="headerlink" title="权限设置指导"></a>权限设置指导</h4><p>a.  查看 <code>ACL</code> 权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl &lt;file&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>b.  设置 <code>ACL</code> 权限到特定用户</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chown</span> root:my_group tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 700 tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> useradd test_user</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m u:test_user:rx tmp/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp/</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+
+<p>c.  设置 <code>ACL</code> 权限到特定用户组</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> groupadd test_group</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -m g:test_group:rwx tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> getfacl tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">file: tmp</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">owner: root</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">group: my_group</span></span><br><span class="line">user::rwx</span><br><span class="line">user:test_test_user:r-x</span><br><span class="line">group::rwx</span><br><span class="line">group:test_group:rwx</span><br><span class="line">mask::rwx</span><br><span class="line">other::---</span><br></pre></td></tr></table></figure>
+
+<p>d. 删除 <code>ACL</code> 权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x u:test_user tmp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> setfacl -x g:test_group tmp</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除所有权限</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> serfacl -b tmp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Capabilities（能力）"><a href="#Capabilities（能力）" class="headerlink" title="Capabilities（能力）"></a>Capabilities（能力）</h3><p><strong>特权机制</strong>：一些操作无法纳入允许位控制，如重启系统或者设置系统时间；另外一类是超越允许位控制。</p>
+<blockquote>
+<p>如果没有设计特权机制，为了解决设置系统时间这类任务，必须要引入新的客体类型，或者引入一种新的文件类型（如 SELinux）。 —— 《剖析》</p>
+</blockquote>
+<p>Linux 参考 <code>IEEE 1003.1e</code> 和 <code>IEEE 1003.2c</code> 实现了自己的能力机制。</p>
+<h4 id="能力分类"><a href="#能力分类" class="headerlink" title="能力分类"></a>能力分类</h4><ul>
+<li>文件：如 <code>chown</code>、<code>dac_override</code>、<code>fowner</code> 等。</li>
+<li>进程：如 <code>kill</code>、<code>setuid</code> 和 <code>setgid</code>及 <code>setpcap</code> 、<code>sys_chroot</code> 、<code>sys_nice</code> 等。</li>
+<li>网络：如 <code>net_bind_service</code>（绑定系统特权端口）、<code>net_admin</code> 和 <code>net_raw</code> 等。</li>
+<li>ipc: 如 <code>ipc_lock</code>(不受 rlimit 锁定内存限制)</li>
+<li>系统：如 <code>block_suspend</code>、<code>sys_admin</code>、<code>sys_boot</code>、<code>sys_module</code>、<code>sys_time</code>、<code>sys_resource</code> 和 <code>wake_alarm</code> 等。</li>
+<li>设备：如 <code>mknod</code></li>
+<li>审计：如 <code>audit_write</code> 和 <code>audit_control</code></li>
+<li>强制访问控制（MAC）</li>
+</ul>
+<h4 id="能力集合"><a href="#能力集合" class="headerlink" title="能力集合"></a>能力集合</h4><p><code>struct cred</code> 结构体中可以看到多个能力集：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cred</span> &#123;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_inheritable; <span class="comment">/* caps our children can inherit */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_permitted;	<span class="comment">/* caps we&#x27;re permitted */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_effective;	<span class="comment">/* caps we can actually use */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_bset;	<span class="comment">/* capability bounding set */</span></span><br><span class="line">	<span class="type">kernel_cap_t</span>	cap_ambient;	<span class="comment">/* Ambient capability set */</span></span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Ambient</code> 和 <code>Inheritable</code> 集合的意义就在于可以帮助我们在进程树或 <code>namespace</code> 的范围内创建一个允许任意进程使用某些 <code>capabilities</code> 的环境。</p>
+<h4 id="能力机制"><a href="#能力机制" class="headerlink" title="能力机制"></a>能力机制</h4><blockquote>
+<p>Linux 内核在做特权判断时，判断的是进程凭证中的有效能力集中是否具备所要求的能力。—— 《剖析》</p>
+</blockquote>
+<blockquote>
+<p>进程在execve 后的允许能力集有两个来源，一个是进程的可继承能力集和文件的可继承能力集的交集，另一个是文件的允许能力集和进程的限制能力集的交集。—— 《剖析》</p>
+</blockquote>
+<p><code>capget</code> 和 <code>capset</code> 系统调用。</p>
+<h4 id="向后兼容"><a href="#向后兼容" class="headerlink" title="向后兼容"></a>向后兼容</h4><blockquote>
+<p>Linux 内核判断进程是否进行特权操作的唯一标准就是相关的能力是否在进程的有效能力集中。Linux 内核中没有任何依据用户 id 进行授权的逻辑。</p>
+</blockquote>
+<blockquote>
+<p>为了做到向后兼容，内核在涉及用户id 变化的系统调用中（setuid、seteuid、setreuid、setresuid、setfsuid）增加了调整进程的能力集的逻辑。</p>
+</blockquote>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>通过查看 <code>/proc/self/status</code> 中的 <code>CapEff</code> 项获取当前进程的有效能力集：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status| grep Cap</span></span><br><span class="line">CapInh: 0000000000000000</span><br><span class="line">CapPrm: 0000000000000000</span><br><span class="line">CapEff: 0000000000000000</span><br><span class="line">CapBnd: 000001ffffffffff</span><br><span class="line">CapAmb: 0000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>capsh</code> 解析16进制数中每个 1 bit所对应的能力：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> capsh --decode=000001ffffffffff</span></span><br><span class="line">0x000001ffffffffff=cap_chown,cap_dac_override,cap_dac_read_search ...</span><br></pre></td></tr></table></figure>
+
+<p><code>ping</code> 命令没有使用<code>能力</code>，而是使用了 <code>setuid</code> 允许位来做特权提升。可以自行编译 ping 来使用<code>能力</code>：</p>
+<p>新编译的 <code>ping</code> 并没有设置 <code>suid</code>:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">ls</span> -l builddir/ping/ping</span></span><br><span class="line">-rwxr-xr-x 1 mimose mimose 311960  3月 4日 12:30 builddir/ping/ping</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">setcap</span> <span class="string">&#x27;cap_net_raw+p&#x27;</span> builddir/ping/ping</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">getcap</span> builddir/ping/ping</span></span><br><span class="line">builddir/ping/ping cap_net_raw=p</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考 <a href="https://blog.csdn.net/demon7552003/article/details/117161829">Linux Capabilities 入门教程</a></p>
+</blockquote>
+<h2 id="强制访问控制"><a href="#强制访问控制" class="headerlink" title="强制访问控制"></a>强制访问控制</h2><h3 id="SELinux"><a href="#SELinux" class="headerlink" title="SELinux"></a>SELinux</h3><p><code>SELinux</code> 的安全机制包括：<code>基于角色的访问控制（RBAC）</code>、<code>类型增强（TE）</code> 和<code>多级安全（MLS）</code>。</p>
+<p><code>类型增强</code>机制下，进程和文件都有一个类型。</p>
+<p><code>MLS</code> 机制来源于 <code>BLP</code> 模型，<code>BLP</code> 模型下，进程和文件都有安全标签，标签有两项：敏感度和组别。</p>
+<ul>
+<li>低敏感的进程不能读高敏感度文件，高敏感度进程不能写低敏感度文件。</li>
+<li>当进程的组别包含或者等于文件的组别时，进程可以操作文件。</li>
+</ul>
+<h3 id="SMACK"><a href="#SMACK" class="headerlink" title="SMACK"></a>SMACK</h3><h3 id="Tomovo"><a href="#Tomovo" class="headerlink" title="Tomovo"></a>Tomovo</h3><h3 id="AppArmor"><a href="#AppArmor" class="headerlink" title="AppArmor"></a>AppArmor</h3><blockquote>
+<p>参考 <a href="https://blog.axiaoxin.com/post/apparmor/">AppArmor使用指南：Linux应用安全防护利器</a></p>
+</blockquote>
+<p><code>AppArmor</code> 的机制也是 <code>类型增强</code>，类型也可以被称为 <code>域</code>。<code>AppArmor</code> 的目标是限制应用程序的权限，从而保护操作系统和应用程序免受内部和外部威胁，包括<code>零日攻击</code>。它通过定义每个应用程序的安全配置文件来实现此目的，这些配置文件指定了应用程序可以访问的资源和允许的操作。</p>
+<p>即使应用程序存在漏洞，<code>AppArmor</code> 也能通过限制其行为，来阻止漏洞被利用。**<code>AppArmor</code> 的核心思想是将访问控制属性绑定到程序而不是用户。** 它也被称为 “应用装甲”。</p>
+<p><code>AppArmor</code> 基于文件路径进行访问控制。</p>
+<p>查看安装状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-status</span></span><br><span class="line">63 profiles are loaded.</span><br><span class="line">57 profiles are in enforce mode.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>raspi OS</code>上需要修改 <code>cmdline.txt</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.... lsm=apparmor</span><br></pre></td></tr></table></figure>
+
+<p><code>AppArmor</code> 的配置文件：</p>
+<ul>
+<li><strong>强制模式（enforce）</strong>：在此模式下，<code>AppArmor</code> 将强制执行配置文件中定义的策略，并阻止任何违反规则的操作，并将违规尝试记录到日志中。</li>
+<li><strong>抱怨模式（complain）</strong>：在此模式下，AppArmor 不会阻止违反规则的操作，但会将违规尝试记录到日志中。此模式对于测试和开发新的配置文件很有用。</li>
+</ul>
+<p>使用 <code>aa-complain</code> 命令将配置文件设置为抱怨模式，使用 <code>aa-enforce</code> 命令将其设置为强制模式。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-complain /path/to/bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-enforce /path/to/bin</span></span><br></pre></td></tr></table></figure>
+
+<p>为应用程序创建一个新的配置文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> aa-genprof /usr/bin/myapp</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Yama"><a href="#Yama" class="headerlink" title="Yama"></a>Yama</h3><h2 id="完整性保护"><a href="#完整性保护" class="headerlink" title="完整性保护"></a>完整性保护</h2><h2 id="审计和日志"><a href="#审计和日志" class="headerlink" title="审计和日志"></a>审计和日志</h2><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><h2 id="其他机制"><a href="#其他机制" class="headerlink" title="其他机制"></a>其他机制</h2><h3 id="命名空间-namespace"><a href="#命名空间-namespace" class="headerlink" title="命名空间(namespace)"></a>命名空间(namespace)</h3><p>针对 <code>chroot</code> 的安全漏洞。</p>
+<p><strong>a. 挂载命名空间（mount)</strong></p>
+<p>Linux 通过挂载命名空间可以提供比 <code>chroot</code> 机制更完备的隔离方案。通过挂载命令空间，进程和一棵挂载树相联系，改变了进程的挂载命名空间，进程就和另一颗挂载树相对应。</p>
+<p>虽然 <code>mount ns</code> 限制了进程对文件的访问，但攻击者仍然可以利用<strong>进程间通信</strong>将本不能被进程访问的文件内容暴露给进程。所以，需要引入进程间通信命名空间。</p>
+<p><strong>b. 进程间通信命名空间</strong><br>进程间通信的标识存储在进程间通信命名空间中，进程中通信命名空间不同，进程寻找到的进程间通信实例就不同。</p>
+<p><strong>c. Unix 分时命名空间(UTS)</strong></p>
+<p><strong>d. 进程号命名空间</strong><br>使得容器中的进程不能够看到容器外的进程（比如通过 <code>kill</code> 命令向容器外的进程发送信号）。</p>
+<p><strong>e. 网络命名空间</strong></p>
+<p><strong>f. 用户命名空间</strong></p>
+<p>在 <code>/proc/[pid]/ns</code> 下可以看到一些进程的命名空间信息。</p>
+<blockquote>
+<p>实际上，命名空间的开发和设计只能是量力而行和适可而止，因为在宏内核上理想的和绝对的隔离是不可能做到的。</p>
+</blockquote>
+<h3 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h3><blockquote>
+<p>参考 <a href="https://loverhythm1990.github.io/2024/10/01/cgroup-v2/">使用 cgroupv2 限制进程资源使用</a><br>参考 <a href="http://arthurchiao.art/blog/cgroupv2-zh/">Control Group v2 - Kerneldoc</a></p>
+</blockquote>
+<p>一种安全攻击（Fork_bomb: 耗尽系统进程号资源）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bomb() &#123;</span><br><span class="line">   bomb | bomb &amp;</span><br><span class="line">&#125;</span><br><span class="line">bomb</span><br></pre></td></tr></table></figure>
+
+<p>Unix 为应对上述安全挑战，提供了<code>配额（quota）</code> 和 <code>资源限制（rlimit）</code>机制。但存在<code>分散式管理</code>和 <code>缺乏统一资源管理机制</code>的问题。</p>
+<p><code>CGroups</code> 控制组来源于 Google 开发的 <code>Process Containers</code> 的模块。其设计理念是将框架和具体的资源管理分离。Linux 内核子系统 <code>cgroup</code> 提供的用户态和内核的接口是名为<code>cgroup</code>的伪文件系统。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建 CGroup2 类型的控制组</span></span><br><span class="line">mkdir -p /sys/fs/cgroup/cgrp1/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改 CPU 配额为 50%</span></span><br><span class="line">echo &quot;50000 100000&quot; &gt; /sys/fs/cgroup/cgrp1/cpu.max</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将目标进程加入到该控制组，假设目标进程的 pid 为 1604</span></span><br><span class="line">echo 1604 &gt; /sys/fs/cgroup/cgrp1/cgroup.procs</span><br></pre></td></tr></table></figure>
+
+<p>设计原则总结如下：</p>
+<ul>
+<li>以进程为控制单位</li>
+<li>集中式管理</li>
+<li>功能模块化</li>
+<li>动态调配</li>
+<li>层级结构</li>
+<li>多对多结构：一个进程可以加入多个控制组，一个控制组可以包含度多个进程。</li>
+</ul>
+<p><code>cgroup v2</code> 是现代容器化技术（如 <code>Docker</code>、<code>Kubernertes</code>）的核心组件之一。它用于限制容器的资源使用，确保容器之间的资源隔离和公平分配。例如：</p>
+<ul>
+<li><code>Docker</code> 使用 <code>cgroup v2</code> 限制容器的 <code>CPU</code>、<code>内存</code> 和 <code>I/O</code>。</li>
+<li><code>Kubernetes</code> 使用 <code>cgroup v2</code> 实现 <code>Pod</code> 的资源限制和 <code>QoS（服务质量）</code>策略。</li>
+</ul>
+<h3 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h3><blockquote>
+<p>参考 <a href="https://blog.csdn.net/qq_44846324/article/details/121731640">Sandbox的安全机制 —— 使用 seccomp</a></p>
+</blockquote>
+<p><code>seccomp</code> 是内核的一个安全特性。它的原理是限制用户进程可以使用的系统调用。因此，<code>seccomp</code> 可以与其他安全技术一起用于构建<code>沙箱</code>。</p>
+<p>三种模式：</p>
+<ul>
+<li><strong>DISABLED</strong>: 不使用 <code>seccomp</code>，进程的系统调用可以不受限制。</li>
+<li><strong>STRICT</strong>：只能使用 4 个系统调用：<code>read</code>、<code>write</code>、<code>exit</code> 和 <code>sigreturn</code>。</li>
+<li><strong>FILTER</strong>：对系统调用的限制被存入 <code>seccomp</code>结构体的第二个成员 <code>filter</code> 中，由 <code>filter</code> 决定系统调用是否可以使用。</li>
+</ul>
+<p><code>BPF 虚拟机</code>运行 <code>filter</code> 链中定义的<code>BPF 指令</code>。</p>
+<p>在 <code>/proc/self/status</code> 文件中会显示当前进程的 <code>seccomp</code> 状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/self/status</span></span><br><span class="line">...</span><br><span class="line">CapInh:	0000000000000000</span><br><span class="line">CapPrm:	0000000000000000</span><br><span class="line">CapEff:	0000000000000000</span><br><span class="line">CapBnd:	000001ffffffffff</span><br><span class="line">CapAmb:	0000000000000000</span><br><span class="line">NoNewPrivs:	0</span><br><span class="line">Seccomp:	0</span><br><span class="line">Seccomp_filters:	0</span><br><span class="line">Speculation_Store_Bypass:	thread vulnerable</span><br><span class="line">SpeculationIndirectBranch:	unknown</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>例如，使用 <code>seccomp</code> 限制 <code>execve</code> 系统调用的使用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    scmp_filter_ctx ctx;</span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW);</span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>);</span><br><span class="line">    seccomp_load(ctx);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *filename = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *argv[] = &#123;<span class="string">&quot;/bin/sh&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="type">char</span> *envp[] = &#123;<span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line">    syscall(SYS_execve, filename, argv, envp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR"></a>ASLR</h3><p><code>ASLR</code> 可以对<code>栈（stack）</code>、<code>堆（heap）</code>、<code>内存映射（mmap）</code>、<code>vdso</code> 的地址做随机化处理。所谓随机化，就是内存区域的起点在一定范围内浮动，而浮动的依据是内核随机数设备产生的随机数。</p>
+<p>随机化最好的是位置无关的可执行文件，除了 <code>vsyscall</code> 区，其余区域都做了地址随机化。<code>vsyscall</code>不能做随机化是因为它本身是 <code>Linux 内核 ABI</code> 的一部分。如果不考虑兼容老旧应用，可以在编译内核时把对 <code>vsyscall</code> 的支持去掉。</p>
+<h2 id="漏洞利用与防御"><a href="#漏洞利用与防御" class="headerlink" title="漏洞利用与防御"></a>漏洞利用与防御</h2><h3 id="Linux-CVE"><a href="#Linux-CVE" class="headerlink" title="Linux CVE"></a>Linux CVE</h3><p><a href="https://www.cvedetails.com/product/47/Linux-Linux-Kernel.html">Linux CVE 列表</a></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>信息安全</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
     <title>MPI Tutorial</title>
     <url>/2023/03/06/MPI-Tutorial/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>&emsp;&emsp; 在并行 MIMD（多指令多数据）的世界中的大多数计算机都可以分为<code>分布式内存型</code>和<code>共享内存型</code>两种类型的系统。我们在<a href="http://1.117.83.246/index.php/archives/265/">OpenMP Tutorial</a> 中介绍了后一种，从编程人员的角度看，共享内存型的系统由多个核及可以全局访问的内存组成，在那里任何核可以访问任何内存地址。我们这篇文章介绍前一种系统的并行编程，通过使用一种消息传递（Message-Passing）接口 API。</p>
@@ -6010,63 +6067,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>读书笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Keras 深度学习框架使用总结</title>
-    <url>/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，<code>深度卷积神经网络</code>已经成为所有计算机视觉任务的首选算法。<code>深度学习</code>利用在计算机视觉上的两个关键思想：<code>卷积神经网络</code>和<code>反向传播</code>，并在数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。</p>
-<p>深度学习的框架包括<code>TensorFlow</code>、<code>PyTorch</code>和 <code>Keras</code>等，其中 <code>JAX</code>、<code>TensorFlow</code>和 <code>PyTorch</code>可以作为 <code>Keras</code> 的 <strong>后端(backend)</strong> 来进行张量处理、求微分等低层次的运算。本文就 <code>Keras</code> 的实践以及深度学习的一些理论进行总结。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 《Deep Learning with Python》 By【美】弗朗索瓦·肖莱<br>参考 《Advanced Deep Learning with Python》By【保加利亚】伊凡·瓦西列夫</p>
-</blockquote>
-<h2 id="神经网络的数学基础"><a href="#神经网络的数学基础" class="headerlink" title="神经网络的数学基础"></a>神经网络的数学基础</h2><p>参考 《DLP》</p>
-<h2 id="安装及初步使用"><a href="#安装及初步使用" class="headerlink" title="安装及初步使用"></a>安装及初步使用</h2><h3 id="安装依赖（可选）"><a href="#安装依赖（可选）" class="headerlink" title="安装依赖（可选）"></a>安装依赖（可选）</h3><ol>
-<li>如果主机上配备有 <code>GPU</code>，确保驱动正常工作。如果没有 NVIDIA 的 GPU，而是使用 Intel 的集成显卡，需要下载 <code>oneAPI</code> 计算平台和 <code>oneDNN</code> 深度学习加速库。<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libdnnl2 libdnnl-dev</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>如果使用树梅派等平台，可以安装 GPU 加速库（<code>OpenCL</code>和<code>OpenCV</code>），参考<a href="https://blog.csdn.net/qq_38342510/article/details/143098708">树莓派5 gpu 加速</a>。</p>
-<ol start="2">
-<li><p>安装 <code>BLAS</code> 线性代数库：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libopenblas-dev liblapack-dev</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装 Python 科学计算套件：<code>Numpy</code>、<code>Scipy</code> 和 <code>matplotlib</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-numpy python3-scipy python3-matplotlib</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装 <code>HDF5</code>，用于将 <code>Keras</code> 模型快速高效地保存到磁盘：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install python3-h5py python3-h5py-serial</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装 <code>CUDA</code>:<br>参考 <a href="/2023/04/12/CUDA-Tutorial/" title="CUDA Tutorial">[CUDA Tutorial]</a> 。</p>
-</li>
-</ol>
-<h3 id="安装-keras"><a href="#安装-keras" class="headerlink" title="安装 keras"></a>安装 keras</h3><ol>
-<li><p>新建虚拟环境并激活</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">python3 -m venv venv</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">source</span> venv/bin/activate</span></span><br><span class="line">(venv) $</span><br></pre></td></tr></table></figure></li>
-<li><p>安装后端（默认使用 <code>TensorFlow</code>）:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install tensorflow</span><br></pre></td></tr></table></figure>
-<p>在 <code>~/.keras/keras.json</code> 中可以修改使用的后端类型。</p>
-</li>
-<li><p>安装 <code>keras</code>：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) $ pip3 install keras</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="初步使用"><a href="#初步使用" class="headerlink" title="初步使用"></a>初步使用</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line">...</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792365</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line">W0000 <span class="number">00</span>:<span class="number">00</span>:<span class="number">1743605807.792367</span>   <span class="number">17935</span> computation_placer.cc:<span class="number">177</span>] computation placer already registered. Please check linkage <span class="keyword">and</span> avoid linking the same target more than once.</span><br><span class="line"><span class="number">2025</span>-04-02 <span class="number">22</span>:<span class="number">56</span>:<span class="number">47.795267</span>: I tensorflow/core/platform/cpu_feature_guard.cc:<span class="number">210</span>] This TensorFlow binary <span class="keyword">is</span> optimized to use available CPU instructions <span class="keyword">in</span> performance-critical operations.</span><br><span class="line">To enable the following instructions: AVX2 AVX_VNNI FMA, <span class="keyword">in</span> other operations, rebuild TensorFlow <span class="keyword">with</span> the appropriate compiler flags.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keras.__version__</span><br><span class="line"><span class="string">&#x27;3.9.1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>使用 <a href="https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz">MNIST</a> 数据集，它是机器学习领域的一个经典数据库，用于手写数字的自动识别（最先用于邮政业务中的邮编识别）。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"></span><br><span class="line">(train_images, train_labels), (test_images, test_labels) = mnist.load_data()</span><br></pre></td></tr></table></figure>
-
-<p>如果没有下载 <code>MNIST</code>，上述代码会自动将其下载到 <code>~/.keras/datasets/</code> 目录中。</p>
-<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h3 id="软件栈和硬件栈"><a href="#软件栈和硬件栈" class="headerlink" title="软件栈和硬件栈"></a>软件栈和硬件栈</h3><p><img src="/2025/03/11/AOSP-Introduction/eras_stack.png"></p>
-<p>Keras 具有的特性：</p>
-<ul>
-<li>相同的代码可以无缝切换到不同的后端，也就可以在 CPU 和 GPU 上无缝切换运行。</li>
-<li>用户友好 API</li>
-<li>支持任意网络架构</li>
-</ul>
-]]></content>
-      <categories>
-        <category>人工智能</category>
-        <category>深度学习</category>
       </categories>
   </entry>
 </search>
