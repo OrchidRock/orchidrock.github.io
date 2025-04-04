@@ -1263,6 +1263,9 @@
 <p>参考 《Deep Learning with Python》 By【美】弗朗索瓦·肖莱<br>参考 《Advanced Deep Learning with Python》By【保加利亚】伊凡·瓦西列夫</p>
 </blockquote>
 <h2 id="神经网络的数学基础"><a href="#神经网络的数学基础" class="headerlink" title="神经网络的数学基础"></a>神经网络的数学基础</h2><p>参考 《DLP》</p>
+<h3 id="随机变量和概率分布"><a href="#随机变量和概率分布" class="headerlink" title="随机变量和概率分布"></a>随机变量和概率分布</h3><p>通常情况下，神经网络产生一些输出概率分布 $ Q(x) $，在训练中将其与目标分布 $ P(x) $ 进行比较。可以用<code>交叉熵</code>来定义两个分布的距离：<br>$$ H(P, Q) &#x3D; -\displaystyle\sum_{i&#x3D;1}^n P(X&#x3D;x_i)logQ(X&#x3D;x_i)$$</p>
+<p><code>交叉熵损失</code>定义为：<br>$$ Loss &#x3D; - \displaystyle\sum_{i&#x3D;1}^n y_ilog{x_i} $$</p>
+<p>其中，$ y_i $ 是训练标签值，$ x_i $ 是预测值。</p>
 <h2 id="安装及初步使用"><a href="#安装及初步使用" class="headerlink" title="安装及初步使用"></a>安装及初步使用</h2><h3 id="安装依赖（可选）"><a href="#安装依赖（可选）" class="headerlink" title="安装依赖（可选）"></a>安装依赖（可选）</h3><ol>
 <li>如果主机上配备有 <code>GPU</code>，确保驱动正常工作。如果没有 NVIDIA 的 GPU，而是使用 Intel 的集成显卡，需要下载 <code>oneAPI</code> 计算平台和 <code>oneDNN</code> 深度学习加速库。<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install libdnnl2 libdnnl-dev</span></span><br></pre></td></tr></table></figure></li>
 </ol>
@@ -1303,6 +1306,9 @@
 <li>用户友好 API</li>
 <li>支持任意网络架构</li>
 </ul>
+<h2 id="用户API"><a href="#用户API" class="headerlink" title="用户API"></a>用户API</h2><h3 id="激活器"><a href="#激活器" class="headerlink" title="激活器"></a>激活器</h3><blockquote>
+<p>如果没有 <code>relu</code> 这样的激活函数（非线性函数），<code>Dense</code> 层只包含线性运算，这样就只能学习输入数据的 <code>线性变换（仿射变换）</code>。这种所有线性变换组成的<code>假设空间</code>非常有限，无法利用多个多个表示层的优势，因为多个线性层堆叠实现的仍然是线性运算。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>人工智能</category>
