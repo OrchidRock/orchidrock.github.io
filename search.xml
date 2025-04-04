@@ -6056,6 +6056,13 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"></span><br><span class="line">(train_images, train_labels), (test_images, test_labels) = mnist.load_data()</span><br></pre></td></tr></table></figure>
 
 <p>如果没有下载 <code>MNIST</code>，上述代码会自动将其下载到 <code>~/.keras/datasets/</code> 目录中。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h3 id="软件栈和硬件栈"><a href="#软件栈和硬件栈" class="headerlink" title="软件栈和硬件栈"></a>软件栈和硬件栈</h3><p><img src="/2025/03/11/AOSP-Introduction/eras_stack.png"></p>
+<p>Keras 具有的特性：</p>
+<ul>
+<li>相同的代码可以无缝切换到不同的后端，也就可以在 CPU 和 GPU 上无缝切换运行。</li>
+<li>用户友好 API</li>
+<li>支持任意网络架构</li>
+</ul>
 ]]></content>
       <categories>
         <category>人工智能</category>

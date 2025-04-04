@@ -26,10 +26,12 @@
 <meta property="og:site_name" content="StoneTough">
 <meta property="og:description" content="概述神经网络在 2012 年后被认为是机器学习领域最受关注的技术，而在神经网络的技术中，深度卷积神经网络已经成为所有计算机视觉任务的首选算法。深度学习利用在计算机视觉上的两个关键思想：卷积神经网络和反向传播，并在数据的学习上，通过渐进的、逐层的方式形成越来越复杂的表示，并对中间的渐进表示共同进行学习。 深度学习的框架包括TensorFlow、PyTorch和 Keras等，其中 JAX、Tenso">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://orchidrock.github.io/2025/03/11/AOSP-Introduction/eras_stack.png">
 <meta property="article:published_time" content="2025-04-02T13:41:50.000Z">
-<meta property="article:modified_time" content="2025-04-03T03:20:07.664Z">
+<meta property="article:modified_time" content="2025-04-04T05:14:33.994Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://orchidrock.github.io/2025/03/11/AOSP-Introduction/eras_stack.png">
 
 
 <link rel="canonical" href="https://orchidrock.github.io/2025/04/02/Keras-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
@@ -139,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">神经网络的数学基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">安装及初步使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">安装依赖（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-keras"><span class="nav-number">3.2.</span> <span class="nav-text">安装 keras</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">初步使用</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">神经网络的数学基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">安装及初步使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">安装依赖（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-keras"><span class="nav-number">3.2.</span> <span class="nav-text">安装 keras</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">初步使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E6%A0%88%E5%92%8C%E7%A1%AC%E4%BB%B6%E6%A0%88"><span class="nav-number">4.1.</span> <span class="nav-text">软件栈和硬件栈</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -249,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-04-03 11:20:07" itemprop="dateModified" datetime="2025-04-03T11:20:07+08:00">2025-04-03</time>
+      <time title="修改时间：2025-04-04 13:14:33" itemprop="dateModified" datetime="2025-04-04T13:14:33+08:00">2025-04-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -279,7 +281,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -330,6 +332,13 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist</span><br><span class="line"></span><br><span class="line">(train_images, train_labels), (test_images, test_labels) = mnist.load_data()</span><br></pre></td></tr></table></figure>
 
 <p>如果没有下载 <code>MNIST</code>，上述代码会自动将其下载到 <code>~/.keras/datasets/</code> 目录中。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h3 id="软件栈和硬件栈"><a href="#软件栈和硬件栈" class="headerlink" title="软件栈和硬件栈"></a>软件栈和硬件栈</h3><p><img src="/2025/03/11/AOSP-Introduction/eras_stack.png"></p>
+<p>Keras 具有的特性：</p>
+<ul>
+<li>相同的代码可以无缝切换到不同的后端，也就可以在 CPU 和 GPU 上无缝切换运行。</li>
+<li>用户友好 API</li>
+<li>支持任意网络架构</li>
+</ul>
 
     </div>
 
