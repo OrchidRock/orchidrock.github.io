@@ -208,6 +208,18 @@
       </categories>
   </entry>
   <entry>
+    <title>BuildRoot工具介绍</title>
+    <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a> 类似。</p>
+<span id="more"></span>
+
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
+<h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Birthday Attack for Hash Function Analysis</title>
     <url>/2024/12/19/Birthday-Attack-for-Hash-Function-Analysis/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>生日攻击</code>是一种密码学攻击手段，它常用于攻击<code>弱散列函数</code>，因为它不具有抗强碰撞性。生日攻击源于概率论中的<code>生日问题</code>。</p>
@@ -230,18 +242,6 @@
       <categories>
         <category>信息安全</category>
         <category>密码学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BuildRoot工具介绍</title>
-    <url>/2025/02/28/BuildRoot%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://buildroot.org/">Buildroot</a> 是一个可以快速制作 Linux 系统（包括内核、rootfs、bootloader等）的工具，并支持交叉编译，它与 <a href="/2021/04/05/LFS-0-LFS-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" title="LFS 0: LFS 项目介绍">[LFS 项目]</a> 类似。</p>
-<span id="more"></span>
-
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Buildroot 所依赖的宿主 Linux 系统上的软件包（包括编译工具链等）、工具等参考<a href="https://buildroot.org/downloads/manual/manual.html#_getting_started">Buildroot 官方文档</a></p>
-<h2 id="构建-Buildroot"><a href="#构建-Buildroot" class="headerlink" title="构建 Buildroot"></a>构建 Buildroot</h2><h3 id="下载源码包"><a href="#下载源码包" class="headerlink" title="下载源码包"></a>下载源码包</h3>]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -1309,6 +1309,33 @@
 <h2 id="用户API"><a href="#用户API" class="headerlink" title="用户API"></a>用户API</h2><h3 id="激活器"><a href="#激活器" class="headerlink" title="激活器"></a>激活器</h3><blockquote>
 <p>如果没有 <code>relu</code> 这样的激活函数（非线性函数），<code>Dense</code> 层只包含线性运算，这样就只能学习输入数据的 <code>线性变换（仿射变换）</code>。这种所有线性变换组成的<code>假设空间</code>非常有限，无法利用多个多个表示层的优势，因为多个线性层堆叠实现的仍然是线性运算。</p>
 </blockquote>
+<h3 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h3><h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>最常见的机器学习任务：<code>二分类问题</code>、<code>多分类问题</code>和<code>标量回归问题</code> 所使用的损失函数是不同的。<code>标量回归问题</code>的常用损失函数是 <code>均方误差（MSE）</code>。</p>
+<p>同样，回归问题的评估指标与分类问题不同，常见的回归指标是<code>平均绝对误差（MAE）</code>。</p>
+<h2 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h2><p>机器学习的分支很复杂，大致分为<code>监督学习</code>、<code>非监督学习</code>、<code>自监督学习</code>和<code>强化学习</code>。</p>
+<h3 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h3><p><code>二分类问题</code>、<code>多分类问题</code>和<code>标量回归问题</code>都是<code>监督学习（supervised learning）</code>的例子。 监督学习的目标是学习训练输入和训练目标之间的关系，其中训练目标是由人工标注的<code>正确答案</code>。</p>
+<p>监督学习的其他变体：</p>
+<ul>
+<li>序列生成</li>
+<li>语法树预测</li>
+<li>目标检测</li>
+<li>图像分割</li>
+</ul>
+<h3 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h3><blockquote>
+<p><code>无监督学习</code>是指在没有目标的情况下寻找输入数据的变换，其目的在于<code>数据可视化</code>、<code>数据压缩</code>、<code>数据去噪</code>或更好地理解数据中的相关性。</p>
+</blockquote>
+<blockquote>
+<p><code>降维（dimensionality）</code>和 <code>聚类（clustering）</code> 都是众所周知的无监督学习方法。</p>
+</blockquote>
+<p>对于没有标签的数据，<code>聚类（clustering）</code>算法可以将样本数据分为不同的数据簇。</p>
+<h3 id="自监督学习"><a href="#自监督学习" class="headerlink" title="自监督学习"></a>自监督学习</h3><h3 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h3><h3 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h3><h4 id="过拟合问题"><a href="#过拟合问题" class="headerlink" title="过拟合问题"></a>过拟合问题</h4><p>泛化</p>
+<p>数据集：<code>训练集</code>、<code>验证集</code>和<code>测试集</code>。</p>
+<h2 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h2><blockquote>
+<p>卷积层和密集连接层的区别在于，<code>Dense</code>层从输入特征空间中学到的是全局模式，而卷积层学到的是局部模式。<br>卷积神经网络的两个重要性质：<code>平移不变形</code>和<code>模式的空间层次结构</code>。</p>
+</blockquote>
+<p>卷积运算</p>
+<blockquote>
+<p>深度神经网络学到的表示的一个重要普遍特征：随着层数的加深，层所提取的特征变得越来越抽象。更高的层激活包含关于特定输入的信息越来越少，而关于目标的信息越来越多。深度神经网络可以有效地作为<code>信息蒸馏管道</code>，输入原始数据，反复对其进行变换，将无关信息过滤掉，并放大和细化有用的信息。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>人工智能</category>
@@ -2019,6 +2046,30 @@
       </categories>
   </entry>
   <entry>
+    <title>Linux内核的进程调度算法分析</title>
+    <url>/2025/02/27/Linux%E5%86%85%E6%A0%B8%E7%9A%84%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是操作系统的核心概念之一，也是自多任务（分时）处理系统出现以来最成功的抽象概念之一。在多任务并发系统中，对计算、存储、IO等资源的合理、高效分配是决定系统性能和稳定性的关键因素。在复杂的系统中，各种任务对资源的占用种类、时间、实时要求等有着很大的差异，对于执行任务的进程而言，这个问题就等价于如何高效、合理地对进程进行调度。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>参考 <a href="https://zhuanlan.zhihu.com/p/460055814">玩转 Linux 内核-进程调度</a></p>
+</blockquote>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Linux 2.6 以后的内核仍然存在<code>中断</code>、<code>软中断</code>、<code>自旋锁</code>等<code>原子上下文</code>进程无法抢占执行的情况，这是 Linux 内核本身只提供<code>软实时能力</code>的原因。</p>
+<p>如果给 Linux 内核打上 <code>RT-Preempt</code> 补丁，则<code>中断</code>和<code>软中断</code>都被<strong>线程化</strong>了，<code>自旋锁</code>也被<code>互斥体</code>替换，Linux 内核变得能支持<code>硬实时</code>。</p>
+<h2 id="调度算法的常用策略"><a href="#调度算法的常用策略" class="headerlink" title="调度算法的常用策略"></a>调度算法的常用策略</h2><h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><h3 id="基于优先级"><a href="#基于优先级" class="headerlink" title="基于优先级"></a>基于优先级</h3><h3 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h3><h3 id="时间片"><a href="#时间片" class="headerlink" title="时间片"></a>时间片</h3><h2 id="O-N-调度算法"><a href="#O-N-调度算法" class="headerlink" title="O(N) 调度算法"></a>O(N) 调度算法</h2><h2 id="O-1-调度算法"><a href="#O-1-调度算法" class="headerlink" title="O(1) 调度算法"></a>O(1) 调度算法</h2><h2 id="CFS-调度算法"><a href="#CFS-调度算法" class="headerlink" title="CFS 调度算法"></a>CFS 调度算法</h2><blockquote>
+<p>任何进程所获得的处理器时间是由它自己和其他所有可运行进程 nice 值的相对差值决定的。nice 值对时间片的作用不再是算术加权，而是几何加权。任何 nice 值对应的绝对时间不再是一个绝对值，而是处理器的使用比。<br>—— LKD</p>
+</blockquote>
+<p>CFS 调度算法的核心：选择具有最小 vruntime 的任务。任务被组织成红黑树（rbtree）的结构，树上节点的键值就是可运行进程的 vruntime。</p>
+<blockquote>
+<p>CFS 的进程选择算法可简单总结为： “运行 rbtree 树中最左边叶子节点所代表的那个进程。”</p>
+</blockquote>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="更换调度器模块"><a href="#更换调度器模块" class="headerlink" title="更换调度器模块"></a>更换调度器模块</h3>]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
+        <category>Linux Kernel</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Linux内核性能优化</title>
     <url>/2025/03/03/Linux%E5%86%85%E6%A0%B8%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Linux 内核作为众多操作系统的核心，已经运行在大量设备上（包括服务器、桌面和嵌入式设备），其参数的调优对于性能的提升至关重要。性能的提升是系统性工程，它包括多个层面，如 CPU、文件系统、内存性能、网络性能等，这些不同方面也会相互制约。优化工程师需要根据不同的应用场景做出权衡才达到最好的效果。</p>
@@ -2180,30 +2231,6 @@
 <li>2 ： 完全随机化（栈、共享库、堆、内存映射）</li>
 </ul>
 ]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-        <category>Linux Kernel</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux内核的进程调度算法分析</title>
-    <url>/2025/02/27/Linux%E5%86%85%E6%A0%B8%E7%9A%84%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是操作系统的核心概念之一，也是自多任务（分时）处理系统出现以来最成功的抽象概念之一。在多任务并发系统中，对计算、存储、IO等资源的合理、高效分配是决定系统性能和稳定性的关键因素。在复杂的系统中，各种任务对资源的占用种类、时间、实时要求等有着很大的差异，对于执行任务的进程而言，这个问题就等价于如何高效、合理地对进程进行调度。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>参考 <a href="https://zhuanlan.zhihu.com/p/460055814">玩转 Linux 内核-进程调度</a></p>
-</blockquote>
-<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>Linux 2.6 以后的内核仍然存在<code>中断</code>、<code>软中断</code>、<code>自旋锁</code>等<code>原子上下文</code>进程无法抢占执行的情况，这是 Linux 内核本身只提供<code>软实时能力</code>的原因。</p>
-<p>如果给 Linux 内核打上 <code>RT-Preempt</code> 补丁，则<code>中断</code>和<code>软中断</code>都被<strong>线程化</strong>了，<code>自旋锁</code>也被<code>互斥体</code>替换，Linux 内核变得能支持<code>硬实时</code>。</p>
-<h2 id="调度算法的常用策略"><a href="#调度算法的常用策略" class="headerlink" title="调度算法的常用策略"></a>调度算法的常用策略</h2><h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><h3 id="基于优先级"><a href="#基于优先级" class="headerlink" title="基于优先级"></a>基于优先级</h3><h3 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h3><h3 id="时间片"><a href="#时间片" class="headerlink" title="时间片"></a>时间片</h3><h2 id="O-N-调度算法"><a href="#O-N-调度算法" class="headerlink" title="O(N) 调度算法"></a>O(N) 调度算法</h2><h2 id="O-1-调度算法"><a href="#O-1-调度算法" class="headerlink" title="O(1) 调度算法"></a>O(1) 调度算法</h2><h2 id="CFS-调度算法"><a href="#CFS-调度算法" class="headerlink" title="CFS 调度算法"></a>CFS 调度算法</h2><blockquote>
-<p>任何进程所获得的处理器时间是由它自己和其他所有可运行进程 nice 值的相对差值决定的。nice 值对时间片的作用不再是算术加权，而是几何加权。任何 nice 值对应的绝对时间不再是一个绝对值，而是处理器的使用比。<br>—— LKD</p>
-</blockquote>
-<p>CFS 调度算法的核心：选择具有最小 vruntime 的任务。任务被组织成红黑树（rbtree）的结构，树上节点的键值就是可运行进程的 vruntime。</p>
-<blockquote>
-<p>CFS 的进程选择算法可简单总结为： “运行 rbtree 树中最左边叶子节点所代表的那个进程。”</p>
-</blockquote>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="更换调度器模块"><a href="#更换调度器模块" class="headerlink" title="更换调度器模块"></a>更换调度器模块</h3>]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
         <category>Linux Kernel</category>
@@ -3388,28 +3415,6 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
       </categories>
   </entry>
   <entry>
-    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
-    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
-<span id="more"></span>
-
-<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
-<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
-<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux操作系统</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UART/TTL/RS232学习总结</title>
     <url>/2018/03/17/UART-TTL-RS232%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="关于RS232与TTL间的转换"><a href="#关于RS232与TTL间的转换" class="headerlink" title="关于RS232与TTL间的转换"></a>关于RS232与TTL间的转换</h2><p>特别注意的是:UART是将计算机的并行信号转换成串行信号的硬件设备，不要简单理解为协议</p>
@@ -3495,6 +3500,28 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
 ]]></content>
       <categories>
         <category>嵌入式系统和IOT</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 上安装Tenda U9无线网卡驱动</title>
+    <url>/2021/12/31/Ubuntu-18-04-%E4%B8%8A%E5%AE%89%E8%A3%85Tenda-U9%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<h3 id="网卡芯片"><a href="#网卡芯片" class="headerlink" title="网卡芯片"></a>网卡芯片</h3><p>内部芯片型号为 Realtek 8811CU Wireless LAN 802.11ac</p>
+<span id="more"></span>
+
+<h3 id="获取驱动代码"><a href="#获取驱动代码" class="headerlink" title="获取驱动代码"></a>获取驱动代码</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/brektrou/rtl8821CU.git</span><br></pre></td></tr></table></figure>
+<p>该驱动适用于 Realtek 8811CU&#x2F;8821CU USB Wi-Fi适配器</p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd rtl8821CU</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h3 id="检查驱动"><a href="#检查驱动" class="headerlink" title="检查驱动"></a>检查驱动</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls /lib/modules/$(uname -r)/kernel/drivers/net/wireless/realtek/rtl8821cu</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行usb-modeswitch"><a href="#执行usb-modeswitch" class="headerlink" title="执行usb_modeswitch"></a>执行usb_modeswitch</h3><p>usb_modswaitch命令将USB适配器切换到网络设备模式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo usb_modeswitch -K -v 0bda -p 1a2b</span><br></pre></td></tr></table></figure>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>为避免每次重启系统或者USB适配器重新插拔时都要手动执行上面的命令,可以增加一条udev规则,使得当udev检测到设备时自动执行相应的命令.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/udev/rules.d/40-usb_modeswitch.rules</span><br></pre></td></tr></table></figure>
+<p>在文件中增加一条规则<code>ATTR&#123;idVendor&#125;=&quot;0bda&quot;, ATTR&#123;idProduct&#125;=&quot;1a2b&quot;, RUN+=&quot;usb_modeswitch &#39;/%k&#39;&quot;</code></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在一台机器上增加了udev规则后,重启系统后USB网卡并不能总是正常工作,但这不是udev的问题,而是内核更新后,8821cu内核模块不能自动安装到新的内核模块目录(&#x2F;lib&#x2F;modules&#x2F;$(uname -r)&#x2F;…)中,手动安装后就可以正常工作了.更方便的方法是使用dkms系统,它可以自动编译和安装内核外的驱动模块.</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux操作系统</category>
       </categories>
   </entry>
   <entry>
