@@ -2109,6 +2109,7 @@
 <h3 id="交换分区"><a href="#交换分区" class="headerlink" title="交换分区"></a>交换分区</h3><p>如果要增加交换分区大小：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> swapon -s           <span class="comment"># 查看当前 swap 分区</span></span></span><br><span class="line">Filename                                Type            Size            Used            Priority</span><br><span class="line">/var/swap                               file            524272          511392          -2</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">touch</span> /var/swap2</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 600 /var/swap2</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/var/swap2 bs=1M count=512   <span class="comment"># dd 创建 swap 文件 512M</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> mkswap /var/swap2  <span class="comment"># 格式化为 swap 分区</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> swapon /var/swap2  <span class="comment"># 激活并挂载 swap2 分区</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> swapon -s          <span class="comment"># 重新查看 swap 分区总大小</span></span></span><br><span class="line">Filename                                Type            Size            Used            Priority</span><br><span class="line">/var/swap                               file            524272          461856          -2</span><br><span class="line">/var/swap2                              file            524272          0               -3</span><br></pre></td></tr></table></figure>
 
+<p><code>memstat</code>: 分析了应用层内存使用的情况，并从匿名页和文件页两个角度给出了详尽的数据。</p>
 <h2 id="CPU-性能"><a href="#CPU-性能" class="headerlink" title="CPU 性能"></a>CPU 性能</h2><h3 id="CPU-调度器"><a href="#CPU-调度器" class="headerlink" title="CPU 调度器"></a>CPU 调度器</h3><h4 id="noop-调度器"><a href="#noop-调度器" class="headerlink" title="noop 调度器"></a>noop 调度器</h4><p><code>noop</code> 调度器是最简单的 I&#x2F;O 调度器，它只执行基本的合并操作，并按 FIFO（先来先服务）的顺序将请求发送到磁盘。这种调度器非常轻量,适用于以下场景：</p>
 <ul>
 <li>虚拟化环境：因为虚拟机通常会有自己的 I&#x2F;O 调度器。</li>
@@ -2230,6 +2231,12 @@
 <li>1 :  部分随机数（栈、共享库、堆）</li>
 <li>2 ： 完全随机化（栈、共享库、堆、内存映射）</li>
 </ul>
+<h2 id="实时性"><a href="#实时性" class="headerlink" title="实时性"></a>实时性</h2><p>官方网站 <a href="https://wiki.linuxfoundation.org/realtime/start">RealTime Linux</a>。</p>
+<p><code>Ftrace</code> 是内核自带的跟踪调试工具，可以跟踪检测调度延迟。</p>
+<p><code>mpstat</code> 可以查看 CPU 核相关的统计信息。</p>
+<p><code>dstat</code> 多功能资源统计工具，可以查看上下文切换的次数。</p>
+<p><code>powertop</code> 功耗信息统计工具</p>
+<p><code>latencytop</code> 系统延迟调试工具</p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
