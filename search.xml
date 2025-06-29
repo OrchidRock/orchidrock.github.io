@@ -617,9 +617,24 @@
 <h4 id="对象的内存布局模型"><a href="#对象的内存布局模型" class="headerlink" title="对象的内存布局模型"></a>对象的内存布局模型</h4><p>class 的布局模型和 struct 完全一样。<code>this</code> 指针的使用。</p>
 <h3 id="静态类型检查"><a href="#静态类型检查" class="headerlink" title="静态类型检查"></a>静态类型检查</h3><p>对调用不加声明函数是否需要检查以及如何检查的讨论。带类的 C 引入了 <code>void</code> 关键字。</p>
 <p>是否支持隐式窄转换（如 int -&gt; char）的讨论。（不阻止，但会报告警告信息，但多数程序员往往忽略编译器的警告信息）</p>
+<blockquote>
+<p>语言设计并不是从某个第一原理出发的设计，而是一种需要经验，试验和有效工程折衷的艺术。</p>
+</blockquote>
 <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>C++ 引入的很多对 C 的语法的改进最后也被 ASNI C 标准所接受，但作者的原则是一贯的：对 C 用户的兼容是第一位的。不会做激进地改进，“什么都不做就什么都做了”。</p>
 <h3 id="派生类与虚函数"><a href="#派生类与虚函数" class="headerlink" title="派生类与虚函数"></a>派生类与虚函数</h3><p>没有虚函数时的多态性：用户可以使用派生类的对象而把基类当作实现细节。</p>
-]]></content>
+<p>（显式控制机制越多，越精细，系统就越复杂！）</p>
+<h3 id="保护模型"><a href="#保护模型" class="headerlink" title="保护模型"></a>保护模型</h3><ul>
+<li>保护是通过编译时机制提供的，目标是防止意外事件，而不是防止欺骗或者有意的侵犯。</li>
+<li>访问权由类本身授予，而不是单方面的取用。</li>
+<li>访问权控制是通过名字实行的。</li>
+<li>保护的单位是 <code>类</code>，而不是个别的对象。</li>
+<li><strong>受控制的是访问权，而不是可见性。</strong></li>
+</ul>
+<p>“去做一些有趣的事情。”</p>
+<h3 id="工作环境"><a href="#工作环境" class="headerlink" title="工作环境"></a>工作环境</h3><blockquote>
+<p>像所有语言一样，C++ 也需要为了生存而在其儿童时代就开始工作、它在成熟时带着一条实践和现实主义的绶带，也带着累累伤痕。基于作业库的对于网络、电路板布局、芯片、网络程控等等的模拟，这些都是在早期年代里我的面包和黄油。</p>
+</blockquote>
+<h3 id="C-的诞生"><a href="#C-的诞生" class="headerlink" title="C++ 的诞生"></a>C++ 的诞生</h3>]]></content>
       <categories>
         <category>C++</category>
       </categories>
@@ -2231,7 +2246,7 @@
 <li>1 :  部分随机数（栈、共享库、堆）</li>
 <li>2 ： 完全随机化（栈、共享库、堆、内存映射）</li>
 </ul>
-<h2 id="实时性"><a href="#实时性" class="headerlink" title="实时性"></a>实时性</h2><p>官方网站 <a href="https://wiki.linuxfoundation.org/realtime/start">RealTime Linux</a>。</p>
+<h2 id="实时性"><a href="#实时性" class="headerlink" title="实时性"></a>实时性</h2><p>官方网站 <a href="https://wiki.linuxfoundation.org/realtime/start">RealTime Linux</a>。<br><code>rt-tests</code> 实时性能测试工具</p>
 <p><code>Ftrace</code> 是内核自带的跟踪调试工具，可以跟踪检测调度延迟。</p>
 <p><code>mpstat</code> 可以查看 CPU 核相关的统计信息。</p>
 <p><code>dstat</code> 多功能资源统计工具，可以查看上下文切换的次数。</p>
