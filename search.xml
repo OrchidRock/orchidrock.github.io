@@ -6182,8 +6182,25 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
   <entry>
     <title>Python History and Design Philosophy</title>
     <url>/2026/01/10/Python-History-and-Design-Philosophy/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
-]]></content>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本篇重要关注 Python 的历史和设计哲学，这对从设计者的角度深入理解 python 的特性非常关键，更重要的是，这对我们在实际的项目中更好、更合理有效地使用 Python 提供帮助。</p>
+<span id="more"></span>
+
+<h2 id="编程语言的基础概念"><a href="#编程语言的基础概念" class="headerlink" title="编程语言的基础概念"></a>编程语言的基础概念</h2><h3 id="解释型语言和编译型语言的区别"><a href="#解释型语言和编译型语言的区别" class="headerlink" title="解释型语言和编译型语言的区别"></a>解释型语言和编译型语言的区别</h3><p>解释器的简单工作机制和原理。<br><a href="https://blog.csdn.net/cooldream2009/article/details/148362279">理解解释器架构：原理、组成与运行机制全解析</a></p>
+<h2 id="Python-作为胶合语言"><a href="#Python-作为胶合语言" class="headerlink" title="Python 作为胶合语言"></a>Python 作为胶合语言</h2><h3 id="C-语言开发的不足"><a href="#C-语言开发的不足" class="headerlink" title="C 语言开发的不足"></a>C 语言开发的不足</h3><ul>
+<li>开发效率</li>
+<li></li>
+</ul>
+<h3 id="作者眼中的-Python"><a href="#作者眼中的-Python" class="headerlink" title="作者眼中的 Python"></a>作者眼中的 Python</h3><ul>
+<li>Python 大量的采用了 C 语言里面的设计，比如 if、else 等关键字都直接来源 C 语言。但是放弃了 C 语言的大括号和分号，选择了缩进去区分不同的编程语句。</li>
+<li>Python 是一门动态语言，不像 C 语言一样需要预先声明变量和指定变量类型，，因此 Python 里的变量只是所引用对象的名称，并且也可以在程序运行时改变变量类型。</li>
+<li>Python 内置了大量的数据类型，包括布尔（Boolean）、数字（Number）和字符串（String）等，这些类型都是不可变的。除此以外还有像列表、元组和字典这种容器型的数据类型。</li>
+<li>为了程序的模块化，Python 引入了包（packages）、模块（modules ）、类、方法和函数。为了流程控制，Python 提供了 if&#x2F;else、while 和可迭代的实例。为了处理程序异常，Python 使用了 Exception 语法，raise 关键字可以抛出异常（exception），try&#x2F;except&#x2F;finally 可以处理异常。</li>
+<li>Python 的所有对象都是<strong>第一类对象</strong>，这意味着函数、类、方法、模块和所有的其他对象都可以在运行时自由地传递，并放入在各种数据结构（例如列表或字典）中去。</li>
+<li>Python 支持面向对象编程。</li>
+<li>除了自身特性外，Python 还拥有着大量的标准库和第三方库，方便使用者完成各种各样的需求。</li>
+<li>最后，Python 的标准实现使用 C 语言实现的，但是 Python 不仅仅局限于 C 语言，它也可以用 Java（Jython）、Microsoft .NET（IronPython），甚至是 Python 自己实现（PyPy）。</li>
+</ul>
+<h2 id="Python-哲学"><a href="#Python-哲学" class="headerlink" title="Python 哲学"></a>Python 哲学</h2><h3 id="EveryThing-is-Object"><a href="#EveryThing-is-Object" class="headerlink" title="EveryThing is Object"></a>EveryThing is Object</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>]]></content>
       <categories>
         <category>Python</category>
       </categories>
@@ -6192,7 +6209,9 @@ emperor3((3)) -- 4 --> emperor1((1))</pre>]]></content>
     <title>Python 语言参考和核心库总结</title>
     <url>/2026/01/10/Python-%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83%E5%92%8C%E6%A0%B8%E5%BF%83%E5%BA%93%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><span id="more"></span>
-]]></content>
+
+<p>参考 <a href="https://liaoxuefeng.com/books/python/history/index.html">Python 教程</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>]]></content>
       <categories>
         <category>Python</category>
       </categories>
