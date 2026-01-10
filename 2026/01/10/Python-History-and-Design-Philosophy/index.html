@@ -27,7 +27,7 @@
 <meta property="og:description" content="概述本篇重要关注 Python 的历史和设计哲学，这对从设计者的角度深入理解 python 的特性非常关键，更重要的是，这对我们在实际的项目中更好、更合理有效地使用 Python 提供帮助。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-10T01:33:51.000Z">
-<meta property="article:modified_time" content="2026-01-10T02:33:29.476Z">
+<meta property="article:modified_time" content="2026-01-10T02:53:10.294Z">
 <meta property="article:author" content="顽石">
 <meta name="twitter:card" content="summary">
 
@@ -139,7 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">编程语言的基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80%E5%92%8C%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">解释型语言和编译型语言的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-%E4%BD%9C%E4%B8%BA%E8%83%B6%E5%90%88%E8%AF%AD%E8%A8%80"><span class="nav-number">3.</span> <span class="nav-text">Python 作为胶合语言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="nav-number">3.1.</span> <span class="nav-text">C 语言开发的不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E8%80%85%E7%9C%BC%E4%B8%AD%E7%9A%84-Python"><span class="nav-number">3.2.</span> <span class="nav-text">作者眼中的 Python</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-%E5%93%B2%E5%AD%A6"><span class="nav-number">4.</span> <span class="nav-text">Python 哲学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EveryThing-is-Object"><span class="nav-number">4.1.</span> <span class="nav-text">EveryThing is Object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">编程语言的基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E5%9E%8B%E8%AF%AD%E8%A8%80%E5%92%8C%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">解释型语言和编译型语言的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-%E7%9A%84%E5%8E%86%E5%8F%B2"><span class="nav-number">3.</span> <span class="nav-text">Python 的历史</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-%E4%BD%9C%E4%B8%BA%E8%83%B6%E5%90%88%E8%AF%AD%E8%A8%80"><span class="nav-number">3.1.</span> <span class="nav-text">Python 作为胶合语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="nav-number">3.2.</span> <span class="nav-text">C 语言开发的不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E8%80%85%E7%9C%BC%E4%B8%AD%E7%9A%84-Python"><span class="nav-number">3.3.</span> <span class="nav-text">作者眼中的 Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.4.</span> <span class="nav-text">Python 的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cpython"><span class="nav-number">3.4.1.</span> <span class="nav-text">Cpython</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PyPy"><span class="nav-number">3.4.2.</span> <span class="nav-text">PyPy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-%E5%93%B2%E5%AD%A6"><span class="nav-number">4.</span> <span class="nav-text">Python 哲学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EveryThing-is-Object"><span class="nav-number">4.1.</span> <span class="nav-text">EveryThing is Object</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%81%B7%E6%87%92%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6"><span class="nav-number">4.2.</span> <span class="nav-text">可以偷懒的设计哲学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%81%B7%E6%87%92%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6"><span class="nav-number">4.3.</span> <span class="nav-text">不可以偷懒的设计哲学</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -243,7 +243,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2026-01-10 09:33:51 / 修改时间：10:33:29" itemprop="dateCreated datePublished" datetime="2026-01-10T09:33:51+08:00">2026-01-10</time>
+      <time title="创建时间：2026-01-10 09:33:51 / 修改时间：10:53:10" itemprop="dateCreated datePublished" datetime="2026-01-10T09:33:51+08:00">2026-01-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -262,14 +262,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>931</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -283,7 +283,7 @@
 <span id="more"></span>
 
 <h2 id="编程语言的基础概念"><a href="#编程语言的基础概念" class="headerlink" title="编程语言的基础概念"></a>编程语言的基础概念</h2><h3 id="解释型语言和编译型语言的区别"><a href="#解释型语言和编译型语言的区别" class="headerlink" title="解释型语言和编译型语言的区别"></a>解释型语言和编译型语言的区别</h3><p>解释器的简单工作机制和原理。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/cooldream2009/article/details/148362279">理解解释器架构：原理、组成与运行机制全解析</a></p>
-<h2 id="Python-作为胶合语言"><a href="#Python-作为胶合语言" class="headerlink" title="Python 作为胶合语言"></a>Python 作为胶合语言</h2><h3 id="C-语言开发的不足"><a href="#C-语言开发的不足" class="headerlink" title="C 语言开发的不足"></a>C 语言开发的不足</h3><ul>
+<h2 id="Python-的历史"><a href="#Python-的历史" class="headerlink" title="Python 的历史"></a>Python 的历史</h2><h3 id="Python-作为胶合语言"><a href="#Python-作为胶合语言" class="headerlink" title="Python 作为胶合语言"></a>Python 作为胶合语言</h3><h3 id="C-语言开发的不足"><a href="#C-语言开发的不足" class="headerlink" title="C 语言开发的不足"></a>C 语言开发的不足</h3><ul>
 <li>开发效率</li>
 <li></li>
 </ul>
@@ -297,7 +297,26 @@
 <li>除了自身特性外，Python 还拥有着大量的标准库和第三方库，方便使用者完成各种各样的需求。</li>
 <li>最后，Python 的标准实现使用 C 语言实现的，但是 Python 不仅仅局限于 C 语言，它也可以用 Java（Jython）、Microsoft .NET（IronPython），甚至是 Python 自己实现（PyPy）。</li>
 </ul>
-<h2 id="Python-哲学"><a href="#Python-哲学" class="headerlink" title="Python 哲学"></a>Python 哲学</h2><h3 id="EveryThing-is-Object"><a href="#EveryThing-is-Object" class="headerlink" title="EveryThing is Object"></a>EveryThing is Object</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
+<h3 id="Python-的实现"><a href="#Python-的实现" class="headerlink" title="Python 的实现"></a>Python 的实现</h3><h4 id="Cpython"><a href="#Cpython" class="headerlink" title="Cpython"></a>Cpython</h4><h4 id="PyPy"><a href="#PyPy" class="headerlink" title="PyPy"></a>PyPy</h4><h2 id="Python-哲学"><a href="#Python-哲学" class="headerlink" title="Python 哲学"></a>Python 哲学</h2><h3 id="EveryThing-is-Object"><a href="#EveryThing-is-Object" class="headerlink" title="EveryThing is Object"></a>EveryThing is Object</h3><h3 id="可以偷懒的设计哲学"><a href="#可以偷懒的设计哲学" class="headerlink" title="可以偷懒的设计哲学"></a>可以偷懒的设计哲学</h3><ul>
+<li>尽可能从其他地方借用想法。</li>
+<li>“事情应该尽可能简单，但不要简化。”</li>
+<li>只做好一件事情（UNIX哲学思想）</li>
+<li>不要对性能太担心-以后有需要时，再进行优化。[重要]</li>
+<li>不要与环境（environment）抗争，顺其自然。</li>
+<li>不要追求完美，“足够好”就可以了。</li>
+<li>（因此）有时可以偷工减料，后续可以想办法弥补。</li>
+</ul>
+<h3 id="不可以偷懒的设计哲学"><a href="#不可以偷懒的设计哲学" class="headerlink" title="不可以偷懒的设计哲学"></a>不可以偷懒的设计哲学</h3><ul>
+<li>Python 不能仅仅运行在某个特定平台（Linux 或者是 Windows）上，虽然 Python 在一些平台上的某些功能并不总是可用的，但是其核心功能应该在任何平台上都可以使用。</li>
+<li>不要用机器可以处理的细节去打扰用户，也就是说，机器能够完成的，就需要用户去实现它。</li>
+<li>支持和鼓励只能运行于特定平台的用户代码，但不能让用户不能访问对平台本身的功能或特性（这与Java形成了鲜明对比）(Python 可以方便地嵌入 C 库)。</li>
+<li>一个大型的复杂系统应具有不同级别的抽象扩展能力，这可以为有想法的的用户（无论其是否熟练）提供最大的自由去实现他想要的功能。</li>
+<li>错误不应该是致命的，也就是说，只要虚拟机仍在运行，用户代码就能够从错误状况中恢复过来。</li>
+<li>同样的，错误不应该被静默地传递。</li>
+<li>不应该让用户 Python 代码中的 bug 导致 Python 解释器出现未定义行为。</li>
+<li>最后，为了尽可能保持 Python 的可读性，标点符号使用应该符合书面英语或高等代数中的常用用法，除非遇上了编程语言里的历史传统（比如用 x * y 表示乘法）。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
     </div>
 
     
@@ -358,13 +377,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">327k</span>
+    <span title="站点总字数">328k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:05</span>
+    <span title="站点阅读时长">9:06</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
