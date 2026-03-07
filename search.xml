@@ -1189,12 +1189,14 @@
 </ul>
 <h2 id="分支功能"><a href="#分支功能" class="headerlink" title="分支功能"></a>分支功能</h2><p>Git 的杀手级特性是它的分支功能。<br>参考手册：<a href="https://git-scm.cn/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Git-分支</a></p>
 <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p><a href="https://git-scm.cn/book/en/v2/Getting-Started-Installing-Git">git 手册</a></p>
-<h3 id="重写历史"><a href="#重写历史" class="headerlink" title="重写历史"></a>重写历史</h3><p><a href="https://git-scm.cn/book/en/v2/Git-Tools-Rewriting-History">手册-重写历史</a><br>使用交互式 rebase 命令修改历史：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git rebase -i</span></span><br></pre></td></tr></table></figure>
-
 <ul>
+<li><p><strong>重写历史</strong><br><a href="https://git-scm.cn/book/en/v2/Git-Tools-Rewriting-History">手册-重写历史</a><br>使用交互式 rebase 命令修改历史：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git rebase -i</span></span><br></pre></td></tr></table></figure>
+</li>
 <li><p><strong>配置工具</strong></p>
 <p><code>git config --global user.name &quot;[name]&quot;</code><br><code>git config --global user.email &quot;[email address]&quot;</code><br><code>git config --global color.ui auto</code><br><code>git config --global core.editor &quot;[vim|emacs]&quot;</code></p>
+</li>
+<li><p><strong>设置别名</strong><br><code>git config --global alias.ci commit</code>: 为 commit 设置别名为 ci<br><code>git config --global alias.st status</code>: 为 status 设置别名为 st</p>
 </li>
 <li><p><strong>分支</strong></p>
 <p><code>git branch [branch-name]</code> 创建新分支<br><code>git switch -c [branch-name]</code> 切换到指定分支并更新工作目录<br><code>git merge [branch-name]</code> 将指定分支的历史合并到当前分支，git会处理过程中可能会出现的冲突问题。<br><code>git branch -d [branch-name]</code> 删除指定分支<br><code>git stash</code> 储藏当前脏工作目录下的修改；该命令经常用于下面的场景：当想切换到另一个分支修复Bug，但又不想提交当前分支下的修改，这时候可以使用 <code>git stash</code> 来储存当前修改，后面可以使用<code>git stash pop</code> 恢复；另外其储存内容<strong>不会</strong> <code>git push</code> 到服务器。</p>
@@ -1206,26 +1208,32 @@
 <p><code>git reset  [commit]</code> 撤销所有commit后的提交，在本地保存更改<br><code>git reset --soft [commit]</code> 保留历史，改回指定提交<br><code>git reset --hard [commit]</code> 放弃所有历史，改回指定提交<br><code>git commit --amend </code>对commit的反悔<br><code>git reset HEAD &lt;file&gt;...</code> 对add命令的撤回<br><code>git checkout -- &lt;file&gt;</code> 对一个Modified的文件撤回修改</p>
 </li>
 <li><p><strong>创建仓库</strong></p>
-<p><code>git init</code> 创建新的仓库<br><code>git remote add origin [url]</code> 将本地仓库与远程仓库连接起来<br><code>git remote show [remote-name]</code><br><code>git remote rename</code> 改变远程仓库的名字<br><code>git clone [url]</code> 镜像远程仓库到本地</p>
+<p><code>git init</code> 创建新的仓库<br><code>git remote add origin [url]</code> 将本地仓库与远程仓库连接起来<br><code>git remote show [remote-name]</code><br><code>git remote rename</code> 改变远程仓库的名字<br><code>git clone [url]</code> 镜像远程仓库到本地<br><code>git clone --bare projecta projecta.git</code>: 创建不带工作区的裸版本库，一般用于中央版本库。</p>
 </li>
 <li><p><strong>标签tag</strong></p>
 <p><code>git tag</code> 列出标签<br><code>git tag -a [tag-name]</code> 创建annotated类型的标签，该类型标签比较正式，它指向所有信息<br><code>git tag [tag-name]</code> 创建lightweight类型的标签，不正式，临时指向小部分信息<br><code>git show [tag-name]</code> 显示标签信息<br><code>git tag -a [tag-name] [commit-checksum]</code> 给某次提交添加tag</p>
 </li>
 <li><p><strong>同步更改</strong><br><code>git fetch</code> 下载远程跟踪分支的全部历史，它只获取本地没有的那部分数据，clone命令封装了fetch命令<br><code>git push</code> 将所有本地分支上传到远程服务器<br><code>git merge</code> 将远端跟踪分支合并到当前本地分支<br><code>git pull</code> 使用来自对应远端分支的所有新提交更新你当前的本地工作分支。git pull是 git fetch 和 git merge 的结合。</p>
 </li>
-<li><p><strong>子模块</strong> ：</p>
+<li><p><strong>子模块</strong> </p>
 <blockquote>
 <p>子模块允许用户将一个git仓库作为另一个git仓库的子目录。它能让你将另一个仓库克隆到自己的项目中，同时还保持提交的独立。</p>
 </blockquote>
 <p>  <code>git submodule add [url]</code><br>  <code>git submodule init</code> 初始化本地配置文件<br>  <code>git submodule update</code> 该项目中抓取所有数据并检出父项目中列出的合适的提交<br>  <code>git clone --recurse-submodules [url]</code> 自动初始化并更新仓库中的每一个子模块， 包括可能存在的嵌套子模块。<br>  <code>git submodule update --remote --init</code></p>
 </li>
-<li><p><strong>Patching:</strong><br><code>git apply --stat xxxx.patch</code> 检查 patch 文件<br><code>git apply --check xxxx.patch</code> 检查能否应用成功<br><code>git am --signoff &lt; xxxx.patch</code> 应用补丁</p>
+<li><p><strong>Patching</strong><br><code>git apply --stat xxxx.patch</code> 检查 patch 文件<br><code>git apply --check xxxx.patch</code> 检查能否应用成功<br><code>git am --signoff &lt; xxxx.patch</code> 应用补丁</p>
 </li>
-<li><p><strong>调试:</strong><br><code>git blame</code>: 追溯一个文件的历史修改记录。</p>
+<li><p><strong>调试</strong><br><code>git blame</code>: 追溯一个文件的历史修改记录。</p>
 </li>
+<li><p><strong>临时忽略版本化的文件</strong><br><code>git update-index --assume-unchanged foo.txt</code>: 该命令会创建某种标记，以确保 Git 会不再检查这些被标记所指定的文件是否被修改过。<br><code>git update-index --no-assume-unchanged foo.txt</code>: 该命令会取消 –assume-unchanged 选项对各但单一文件的影响。<br><code>git update-index --really-refresh</code>: 重置所有文件的状态。 </p>
+</li>
+<li><p><strong>检查对文本文件的修改</strong><br><code>git diff --word-diff</code>: 按单词显示所做的修改。<br><code>git diff --word-diff=color</code>: 以不同的颜色显示文件中的不同。</p>
+</li>
+<li><p><strong>将提交移动到另一个分支</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git rebase --interactive</span></span><br><span class="line">pick 6a2f459 should stay in A 1</span><br><span class="line">pick 05c2935 should stay in A 2</span><br><span class="line">exec git branch -f tmp/SPLIT</span><br><span class="line">pick af22ed6 should go to B 1</span><br><span class="line">pick 4f30adf should go to B 2</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout -B tmp/MOVE A</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git rebase tmp/SPLIT --onto B</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git checkout B</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git merge -ff tmp/MOVE</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git branch --force A tmp/SPLIT</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h3><p>参考<a href="https://git-scm.com/docs/gitignore">gitignore文件指导</a></p>
-<h3 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h3><p>使用 <code>wget</code> 下载 github 上的单个文件：</p>
+<h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><h2 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h2><p>参考<a href="https://git-scm.com/docs/gitignore">gitignore文件指导</a></p>
+<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p>使用 <code>wget</code> 下载 github 上的单个文件：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget -L https://raw.github.com/[user name]/[repositorty name]/[branch]/[file].</span></span><br></pre></td></tr></table></figure>
 
 <p>如果遇到类似下面的错误报告：</p>
@@ -1234,7 +1242,7 @@
 <p>则可以修改 <code>/etc/hosts</code> 文件，使得对 <code>raw.github.com</code> 域名的解析指向国内可以访问的 IP 地址：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">/etc/hosts</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Hong Kong</span></span><br><span class="line">151.101.76.133 raw.githubusercontent.com</span><br><span class="line">151.101.76.133 raw.github.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h3><ul>
+<h2 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h2><ul>
 <li><strong>commit 提交</strong>: 一个 Git 对象，是你整个仓库的快照的哈希值</li>
 <li><strong>branch 分支</strong>: 一个轻型可移动的 commit 指针</li>
 <li><strong>clone</strong>: 一个仓库的本地版本，包含所有提交和分支</li>
@@ -1243,7 +1251,7 @@
 <li><strong>pull request 拉取请求</strong>: 一处用于比较和讨论分支上引入的差异，且具有评审、评论、集成测试等功能的地方</li>
 <li><strong>HEAD</strong>: 代表你当前的工作目录。使用git checkout 可移动 HEAD 指针到不同的分支、标记(tags)或提交。</li>
 </ul>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://git-scm.com/docs">Git 参考手册</a><br><a href="https://git-scm.com/docs/giteveryday">Everyday Git</a></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://git-scm.com/docs">Git 参考手册</a><br><a href="https://git-scm.com/docs/giteveryday">Everyday Git</a></p>
 ]]></content>
       <categories>
         <category>GNU/Linux操作系统</category>
